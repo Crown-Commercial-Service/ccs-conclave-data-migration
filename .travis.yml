@@ -13,9 +13,8 @@ script:
 deploy:
   - provider: cloudfoundry
     api: https://api.london.cloud.service.gov.uk
-    username: 
-    password:
-      secure: 
-    organization: cccs-conclave-data-migration
+    username: $CF_USER
+    password: $CF_PASS
+    organization: $CF_ORG
     space: sandbox
-    manifest: manifest-sandbox.yml
+    manifest: manifest.yml
