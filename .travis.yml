@@ -1,0 +1,21 @@
+language: java
+jdk:
+  - openjdk11
+env:
+  matrix:
+    - API_ROOT=$deploy_api_uri
+  global:
+    - CF_USER=$deploy_username
+    - CF_ORG=$deploy_org_name
+    - CF_PASS=$deploy_password
+script:
+  - mvn verify
+deploy:
+  - provider: cloudfoundry
+    api: https://api.london.cloud.service.gov.uk
+    username: 
+    password:
+      secure: 
+    organization: cccs-conclave-data-migration
+    space: sandbox
+    manifest: manifest-sandbox.yml
