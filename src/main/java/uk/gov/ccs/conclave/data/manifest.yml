@@ -14,4 +14,3 @@ applications:
       SPRING_PROFILES_ACTIVE: sandbox
     health-check-type: http
     health-check-http-endpoint: /actuator/health
-    
