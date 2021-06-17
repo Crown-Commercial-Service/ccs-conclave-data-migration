@@ -7,10 +7,10 @@ applications:
     routes:
       - route: sandbox-ccs-conclave-data-migration.london.cloudapps.digital
     buildpacks:
-      - https://github.com/cloudfoundry/java-buildpack
+      - https://github.com/cloudfoundry/java-buildpack.git
     path: target/conclave-data-migration-1.0.jar
     services:
     - conclave-data-migration-pg-service
     env:
-      JBP_CONFIG_JAVA_MAIN '{ arguments: "--server.port=9090" }'
+      JBP_CONFIG_JAVA_MAIN: '{ arguments: "--server.port=9090" }'
       SERVER_ENV_NAME: develop
