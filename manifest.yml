@@ -8,7 +8,7 @@ applications:
       - route: sandbox-ccs-conclave-data-migration.london.cloudapps.digital
     buildpacks:
       - https://github.com/cloudfoundry/java-buildpack#v4.38
-    path: target/ccs-conclave-data-migration-1.0.0-SNAPSHOT.jar
+    path: target/conclave-data-migration-1.0.jar
     env:
       JBP_CONFIG_OPEN_JDK_JRE: '{ "jre": { version: 11.+ } }'
       SPRING_PROFILES_ACTIVE: sandbox
