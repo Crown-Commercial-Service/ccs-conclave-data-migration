@@ -9,11 +9,6 @@ applications:
     buildpacks:
       - https://github.com/cloudfoundry/java-buildpack#v4.33
     path: target/conclave-data-migration-1.0.jar
-    env:
-      JBP_CONFIG_OPEN_JDK_JRE: '{ "jre": { version: 11.+ } }'
-      SPRING_PROFILES_ACTIVE: sandbox
-    health-check-type: http
-    health-check-http-endpoint: /actuator/health
     services:
     - conclave-data-migration-pg-service
     env:
