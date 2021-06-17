@@ -3,7 +3,7 @@ jdk:
   - openjdk11
 env:
   matrix:
-    - API_ROOT=$deploy_api_uri
+    - API_ROOT=$API_ROOT
   global:
     - CF_USER=$deploy_username
     - CF_ORG=$deploy_org_name
@@ -14,7 +14,7 @@ script:
 deploy:
     edge: true
     provider: cloudfoundry
-    api: $API_ROOT
+    api: https://api.london.cloud.service.gov.uk
     username: $deploy_username
     password: $deploy_password
     organization: $deploy_org_name
@@ -22,8 +22,9 @@ deploy:
     manifest: manifest.yml
     on:
       repo: Crown-Commercial-Service/ccs-conclave-data-migration
-      all_branches: true
-      condition: $DEPLOY_BRANCH = TRUE
+      branch: develop
+      # all_branches: true
+      # condition: $DEPLOY_BRANCH = TRUE
 services:
   - postgresql
 addons:
