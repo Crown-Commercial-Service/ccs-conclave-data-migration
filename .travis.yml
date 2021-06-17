@@ -8,7 +8,7 @@ env:
     - CF_USER=$deploy_username
     - CF_ORG=$deploy_org_name
     - CF_PASS=$deploy_password
-    - CF_SPACE=$space_name
+    # - CF_SPACE=$space_name
 script:
   - mvn verify
 deploy:
