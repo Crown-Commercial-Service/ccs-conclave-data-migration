@@ -3,7 +3,7 @@
 #
 applications:
   - name: cccs-conclave-data-migration
-    instances: 2
+    instances: 1
     routes:
       - route: sandbox-ccs-conclave-data-migration.london.cloudapps.digital
     buildpacks:
@@ -14,3 +14,7 @@ applications:
       SPRING_PROFILES_ACTIVE: sandbox
     health-check-type: http
     health-check-http-endpoint: /actuator/health
+    services:
+    - conclave-data-migration-pg-service
+    env:
+      SERVER_ENV_NAME: develop

@@ -1,0 +1,30 @@
+language: java
+jdk:
+  - openjdk11
+env:
+  matrix:
+    - API_ROOT=$deploy_api_uri
+  global:
+    - CF_USER=$deploy_username
+    - CF_ORG=$deploy_org_name
+    - CF_PASS=$deploy_password
+    - CF_SPACE=$space_name
+script:
+  - mvn verify
+deploy:
+    edge: true
+    provider: cloudfoundry
+    api: $API_ROOT
+    username: $deploy_username
+    password: $deploy_password
+    organization: $deploy_org_name
+    space: $SPACE_NAME
+    manifest: manifest.yml
+    on:
+      repo: Crown-Commercial-Service/ccs-conclave-data-migration
+      all_branches: true
+      condition: $DEPLOY_BRANCH = TRUE
+services:
+  - postgresql
+addons:
+  postgresql: '11'
