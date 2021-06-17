@@ -7,7 +7,7 @@ applications:
     routes:
       - route: sandbox-ccs-conclave-data-migration.london.cloudapps.digital
     buildpacks:
-      - https://github.com/cloudfoundry/java-buildpack#v4.38
+      - https://github.com/cloudfoundry/java-buildpack#v4.33
     path: target/conclave-data-migration-1.0.jar
     env:
       JBP_CONFIG_OPEN_JDK_JRE: '{ "jre": { version: 11.+ } }'
