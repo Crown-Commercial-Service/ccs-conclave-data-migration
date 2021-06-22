@@ -1,6 +1,8 @@
 language: java
 jdk:
   - openjdk11
+cache:
+  - $HOME/.m2
 env:
   matrix:
     - API_ROOT=$API_ROOT
