@@ -13,5 +13,4 @@ applications:
     - conclave-data-migration-pg-service
     env:
       JBP_CONFIG_OPEN_JDK_JRE: '{ "jre": { version: 11.+ } }'
-      SPRING_PROFILES_ACTIVE: dev
       SERVER_ENV_NAME: develop
