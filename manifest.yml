@@ -12,4 +12,5 @@ applications:
     services:
     - conclave-data-migration-pg-service
     env:
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ }, memory_calculator: { stack_threads: 25 } }'
       SERVER_ENV_NAME: develop
