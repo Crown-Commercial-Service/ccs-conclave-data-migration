@@ -42,12 +42,19 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-java-client</artifactId>
+			<groupId>ccs.libs</groupId>
+			<artifactId>conclave-api-client</artifactId>
 			<version>1.0.0</version>
+			<scope>system</scope >
+			<systemPath>${project.basedir}/lib/conclave-api-client-1.0.0.jar</systemPath>
 		</dependency>
 	</dependencies>
-
+	<distributionManagement>
+		<repository>
+			<id>ccs</id>
+			<url>https://ccs.jfrog.io/artifactory</url>
+		</repository>
+	</distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
