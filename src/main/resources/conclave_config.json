@@ -1,0 +1,4 @@
+{
+  "modelPackage" : "uk.gov.ccs.swagger.sso.model",
+  "apiPackage" : "uk.gov.ccs.swagger.sso.api"
+}
