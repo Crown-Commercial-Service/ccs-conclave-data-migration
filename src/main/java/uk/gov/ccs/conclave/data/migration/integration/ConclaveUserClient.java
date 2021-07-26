@@ -1,13 +1,12 @@
 package uk.gov.ccs.conclave.data.migration.integration;
 
-import uk.gov.ccs.swagger.sso.ApiException;
-import uk.gov.ccs.swagger.sso.api.UserApi;
-import uk.gov.ccs.swagger.sso.model.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.ccs.swagger.sso.ApiException;
+import uk.gov.ccs.swagger.sso.api.UserApi;
+import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
+import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 
 @Component
 public class ConclaveUserClient {
