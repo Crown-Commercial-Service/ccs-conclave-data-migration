@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="janice.alvares (generated)" id="1627293825845-1">
+        <createSequence sequenceName="Report_id_seq"/>
+    </changeSet>
+    <changeSet author="janice.alvares (generated)" id="1627293825845-2">
+        <createTable tableName="Report">
+            <column name="contact_email" type="TEXT"/>
+            <column name="contact_fax" type="TEXT"/>
+            <column name="contact_mobile" type="TEXT"/>
+            <column name="contact_phone" type="TEXT"/>
+            <column name="contact_social" type="TEXT"/>
+            <column name="email" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="identifier_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="right_to_buy" type="BOOL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="scheme_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="TEXT"/>
+            <column name="error_code" type="BIGINT"/>
+            <column name="error_description" type="TEXT"/>
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="Report_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
