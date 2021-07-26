@@ -14,8 +14,11 @@ public class ConclaveUserClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConclaveUserClient.class);
 
-    @Autowired
-    UserApi userApi;
+    final UserApi userApi;
+
+    public ConclaveUserClient(UserApi userApi) {
+        this.userApi = userApi;
+    }
 
 
     public UserEditResponseInfo createUser(final UserProfileEditRequestInfo userDto) throws ApiException {
