@@ -9,9 +9,9 @@ import uk.gov.ccs.swagger.sso.api.UserApi;
 @Configuration
 public class ConclaveIntegrationConfig {
 
-    private String apiKey;
+    private final String apiKey;
 
-    private String origin;
+    private final String origin;
 
     public ConclaveIntegrationConfig(@Value("${conclave.api.key}") String apiKey, @Value("${conclave.host}") String origin) {
         this.apiKey = apiKey;
