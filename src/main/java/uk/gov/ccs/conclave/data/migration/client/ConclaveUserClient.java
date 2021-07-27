@@ -1,4 +1,4 @@
-package uk.gov.ccs.conclave.data.migration.integration;
+package uk.gov.ccs.conclave.data.migration.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
