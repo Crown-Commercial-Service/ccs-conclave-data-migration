@@ -13,7 +13,7 @@ import lombok.Setter;
 public class User {
 
     @CsvBindByName(column = "identifier-id", required = true)
-    private long identifierId;
+    private Long identifierId;
 
     @CsvBindByName(column = "scheme-id", required = true)
     private String schemeId;
