@@ -6,20 +6,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.core.env.Environment;
+import org.springframework.vault.core.VaultTemplate;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 
 @SpringBootApplication
 @EnableConfigurationProperties(MigrationProperties.class)
 public class MigrationApplication implements CommandLineRunner {
-    private final Environment env;
 
-    private final MigrationProperties properties;
+    private final VaultTemplate vaultTemplate;
 
-    public MigrationApplication(MigrationProperties properties, Environment environment) {
+    public MigrationApplication(VaultTemplate vaultTemplate) {
 
-        this.properties = properties;
-        this.env = environment;
+        this.vaultTemplate = vaultTemplate;
     }
 
     public static void main(String[] args) {
@@ -33,9 +31,8 @@ public class MigrationApplication implements CommandLineRunner {
 
         LOGGER.info("----------------------------------------");
         LOGGER.info("Configuration properties");
-        LOGGER.info("		dm.host is {}", properties.getCiiOrigin());
-        LOGGER.info("		dm.conclaveHost is {}", properties.getConclaveOrigin());
-        LOGGER.info("		dm.conclaveHost is {}", env.getProperty("ciiOrigin", MigrationProperties.class));
+        LOGGER.info("		dm.conclaveHost is {}", vaultTemplate.read("cf/5718307e-5904-4fcc-8660-f6d603ba81dd/secret/migration", MigrationProperties.class).getData().getCiiOrigin());
+        LOGGER.info("		dm.conclaveHost is {}", vaultTemplate.read("cf/5718307e-5904-4fcc-8660-f6d603ba81dd/secret/migration", MigrationProperties.class).getData().getCiiApiKey());
         LOGGER.info("----------------------------------------");
     }
 
