@@ -29,8 +29,8 @@ public class MigrationApplication implements CommandLineRunner {
 
 		LOGGER.info("----------------------------------------");
 		LOGGER.info("Configuration properties");
-		LOGGER.info("		dm.apiKey is {}", properties.getCiiApiKey());
 		LOGGER.info("		dm.host is {}", properties.getCiiOrigin());
+		LOGGER.info("		dm.conclaveHost is {}", properties.getConclaveOrigin());
 		LOGGER.info("----------------------------------------");
 	}
 

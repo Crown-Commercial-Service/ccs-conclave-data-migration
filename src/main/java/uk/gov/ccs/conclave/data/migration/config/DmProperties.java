@@ -13,12 +13,12 @@ public class DmProperties {
     @Value("$CII_API_KEY")
     private String ciiApiKey;
 
-    @Value("$CII_HOST")
+    @Value("$CII_ORIGIN")
     private String ciiOrigin;
 
     @Value("$CONCLAVE_API_KEY")
     private String conclaveApiKey;
 
-    @Value("$CONCLAVE_HOST")
+    @Value("$CONCLAVE_ORIGIN")
     private String conclaveOrigin;
 }
