@@ -12,7 +12,7 @@ import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 @SpringBootApplication
 @EnableConfigurationProperties(MigrationProperties.class)
 public class MigrationApplication implements CommandLineRunner {
-    Environment env;
+    private final Environment env;
 
     private final MigrationProperties properties;
 
