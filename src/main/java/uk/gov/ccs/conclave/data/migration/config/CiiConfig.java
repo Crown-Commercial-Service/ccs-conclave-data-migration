@@ -8,10 +8,10 @@ import uk.gov.ccs.swagger.cii.api.IdentitiesApi;
 @Configuration
 public class CiiConfig {
 
-    private final DmProperties dmProperties;
+    private final MigrationProperties migrationProperties;
 
-    public CiiConfig(DmProperties dmProperties) {
-        this.dmProperties = dmProperties;
+    public CiiConfig(MigrationProperties migrationProperties) {
+        this.migrationProperties = migrationProperties;
     }
 
     @Bean
@@ -22,7 +22,7 @@ public class CiiConfig {
     @Bean("ciiClient")
     public ApiClient apiClient() {
         return new ApiClient()
-                .addDefaultHeader("x-api-key", dmProperties.getCiiApiKey())
-                .setBasePath(dmProperties.getCiiOrigin());
+                .addDefaultHeader("x-api-key", migrationProperties.getCiiApiKey())
+                .setBasePath(migrationProperties.getCiiOrigin());
     }
 }

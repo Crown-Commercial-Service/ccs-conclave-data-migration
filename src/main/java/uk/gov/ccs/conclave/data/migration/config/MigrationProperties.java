@@ -5,20 +5,20 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("dm")
+@ConfigurationProperties("migration")
 @Getter
 @Setter
-public class DmProperties {
+public class MigrationProperties {
 
-    @Value("$CII_API_KEY")
+    @Value("$ciiApiKey")
     private String ciiApiKey;
 
-    @Value("$CII_ORIGIN")
+    @Value("$ciiOrigin")
     private String ciiOrigin;
 
-    @Value("$CONCLAVE_API_KEY")
+    @Value("$conclaveApiKey")
     private String conclaveApiKey;
 
-    @Value("$CONCLAVE_ORIGIN")
+    @Value("$conclaveOrigin")
     private String conclaveOrigin;
 }
