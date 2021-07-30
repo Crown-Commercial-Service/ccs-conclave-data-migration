@@ -52,6 +52,11 @@
             <version>3.0.3</version>
         </dependency>
         <dependency>
+            <groupId>io.pivotal.spring.cloud</groupId>
+            <artifactId>spring-cloud-vault-spring-connector</artifactId>
+            <version>2.1.0.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>4.4.2</version>

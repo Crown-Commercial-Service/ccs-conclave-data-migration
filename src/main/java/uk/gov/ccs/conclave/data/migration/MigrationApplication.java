@@ -5,22 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.vault.core.VaultTemplate;
-import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
+import uk.gov.ccs.conclave.data.migration.config.VaultReader;
 
 @SpringBootApplication
-@EnableConfigurationProperties(MigrationProperties.class)
 public class MigrationApplication implements CommandLineRunner {
 
-    private final VaultTemplate vaultTemplate;
+    private final VaultReader reader;
 
-    private final MigrationProperties migrationProperties;
-
-    public MigrationApplication(VaultTemplate vaultTemplate, MigrationProperties migrationProperties) {
-
-        this.vaultTemplate = vaultTemplate;
-        this.migrationProperties = migrationProperties;
+    public MigrationApplication(VaultReader reader) {
+        this.reader = reader;
     }
 
     public static void main(String[] args) {
@@ -34,7 +27,7 @@ public class MigrationApplication implements CommandLineRunner {
 
         LOGGER.info("----------------------------------------");
         LOGGER.info("Configuration properties");
-        LOGGER.info("		migration properties is {}", migrationProperties.getConclaveOrigin());
+        LOGGER.info("		migration properties is {}", reader.readSecrets().getConclaveOrigin());
        // LOGGER.info("		dm.conclaveHost is {}", vaultTemplate.read("cf/5718307e-5904-4fcc-8660-f6d603ba81dd/secret/migration", MigrationProperties.class).getData().getConclaveOrigin());
         LOGGER.info("----------------------------------------");
     }
