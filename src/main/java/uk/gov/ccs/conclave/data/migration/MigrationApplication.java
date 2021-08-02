@@ -5,14 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import uk.gov.ccs.conclave.data.migration.config.VaultConfiguration;
+import uk.gov.ccs.conclave.data.migration.config.VaultMigrationConfiguration;
 
 @SpringBootApplication
 public class MigrationApplication implements CommandLineRunner {
 
-    private final VaultConfiguration configuration;
+    private final VaultMigrationConfiguration configuration;
 
-    public MigrationApplication(VaultConfiguration configuration) {
+    public MigrationApplication(VaultMigrationConfiguration configuration) {
         this.configuration = configuration;
     }
 
