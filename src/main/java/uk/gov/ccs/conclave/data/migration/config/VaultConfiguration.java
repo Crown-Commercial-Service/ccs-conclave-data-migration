@@ -19,8 +19,6 @@ public class VaultConfiguration extends AbstractVaultConfiguration {
 
     private final VaultOperations operations;
 
-    private MigrationProperties properties;
-
     VaultServiceInfo vaultService = getVaultServiceInfo();
 
     VaultConfiguration(VaultOperations operations) {
@@ -35,11 +33,6 @@ public class VaultConfiguration extends AbstractVaultConfiguration {
     @Override
     public VaultEndpoint vaultEndpoint() {
         return VaultEndpoint.create(vaultService.getHost(), vaultService.getPort());
-    }
-
-    @Autowired
-    public void setProperties(MigrationProperties properties) {
-        this.properties = readSecrets();
     }
 
     public MigrationProperties readSecrets() {
