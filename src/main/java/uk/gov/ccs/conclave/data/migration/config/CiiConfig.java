@@ -8,11 +8,12 @@ import uk.gov.ccs.swagger.cii.api.IdentitiesApi;
 @Configuration
 public class CiiConfig {
 
-    private final MigrationProperties migrationProperties;
+    private final VaultMigrationConfiguration configuration;
 
-    public CiiConfig(MigrationProperties migrationProperties) {
-        this.migrationProperties = migrationProperties;
+    public CiiConfig(VaultMigrationConfiguration configuration) {
+        this.configuration = configuration;
     }
+
 
     @Bean
     IdentitiesApi identitiesApi() {
@@ -22,7 +23,7 @@ public class CiiConfig {
     @Bean("ciiClient")
     public ApiClient apiClient() {
         return new ApiClient()
-                .addDefaultHeader("x-api-key", migrationProperties.getCiiApiKey())
-                .setBasePath(migrationProperties.getCiiOrigin());
+                .addDefaultHeader("x-api-key", configuration.readSecrets().getCiiApiKey())
+                .setBasePath(configuration.readSecrets().getCiiOrigin());
     }
 }
