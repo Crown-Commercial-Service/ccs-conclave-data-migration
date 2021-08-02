@@ -1,7 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.config;
 
 import io.pivotal.spring.cloud.vault.service.common.VaultServiceInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;
 import org.springframework.context.annotation.Configuration;
@@ -15,13 +14,13 @@ import org.springframework.vault.support.VaultResponseSupport;
 
 @Configuration
 @Profile("cloud")
-public class VaultConfiguration extends AbstractVaultConfiguration {
+public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
 
     private final VaultOperations operations;
 
     VaultServiceInfo vaultService = getVaultServiceInfo();
 
-    VaultConfiguration(VaultOperations operations) {
+    VaultMigrationConfiguration(VaultOperations operations) {
         this.operations = operations;
     }
 
