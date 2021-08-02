@@ -38,6 +38,6 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
     private static VaultServiceInfo getVaultServiceInfo() {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
-        return (VaultServiceInfo) cloud.getServiceInfo("hashicorp-vault");
+        return (VaultServiceInfo) cloud.getServiceInfo("vault-service-data-migration-sandbox");
     }
 }
