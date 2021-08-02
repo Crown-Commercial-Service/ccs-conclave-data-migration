@@ -2,6 +2,7 @@ package uk.gov.ccs.conclave.data.migration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,11 +11,8 @@ import uk.gov.ccs.conclave.data.migration.config.VaultMigrationConfiguration;
 @SpringBootApplication
 public class MigrationApplication implements CommandLineRunner {
 
-    private final VaultMigrationConfiguration configuration;
-
-    public MigrationApplication(VaultMigrationConfiguration configuration) {
-        this.configuration = configuration;
-    }
+    @Autowired
+    VaultMigrationConfiguration configuration;
 
 
     public static void main(String[] args) {
