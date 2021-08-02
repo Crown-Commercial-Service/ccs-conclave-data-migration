@@ -10,23 +10,20 @@ import org.springframework.vault.authentication.ClientAuthentication;
 import org.springframework.vault.authentication.TokenAuthentication;
 import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
-import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.VaultResponseSupport;
 
 @Configuration
 @Profile("cloud")
 public class VaultConfiguration extends AbstractVaultConfiguration {
 
-    private final VaultTemplate vaultTemplate;
-
-    private MigrationProperties properties;
+    private final VaultOperations operations;
 
     VaultServiceInfo vaultService = getVaultServiceInfo();
 
-    public VaultConfiguration(VaultTemplate vaultTemplate) {
-        this.vaultTemplate = vaultTemplate;
+    VaultConfiguration(VaultOperations operations) {
+        this.operations = operations;
     }
-
 
     @Override
     public ClientAuthentication clientAuthentication() {
@@ -38,13 +35,8 @@ public class VaultConfiguration extends AbstractVaultConfiguration {
         return VaultEndpoint.create(vaultService.getHost(), vaultService.getPort());
     }
 
-    @Autowired
-    public void setProperties(MigrationProperties properties) {
-        this.properties = readSecrets();
-    }
-
     public MigrationProperties readSecrets() {
-        VaultResponseSupport<MigrationProperties> response = vaultTemplate.read(vaultService.getSharedBackends().get("space"), MigrationProperties.class);
+        VaultResponseSupport<MigrationProperties> response = operations.read(vaultService.getSharedBackends().get("space"), MigrationProperties.class);
         return response.getData();
     }
 
