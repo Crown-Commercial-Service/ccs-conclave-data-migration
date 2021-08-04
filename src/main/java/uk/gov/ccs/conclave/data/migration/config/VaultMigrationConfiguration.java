@@ -49,7 +49,7 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
     public static MigrationProperties readSecrets(VaultOperations operations) {
         String backendPath = cfCredentials.getString("backends_shared", "space");
         LOGGER.info("BACKENd path " + backendPath);
-        VaultResponseSupport<MigrationProperties> response = operations.read(backendPath, MigrationProperties.class);
+        VaultResponseSupport<MigrationProperties> response = operations.read(backendPath.concat("migration"), MigrationProperties.class);
         return Objects.requireNonNull(response).getData();
     }
 
