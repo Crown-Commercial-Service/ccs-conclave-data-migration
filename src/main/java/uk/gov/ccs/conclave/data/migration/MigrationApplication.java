@@ -28,7 +28,7 @@ public class MigrationApplication implements CommandLineRunner {
 
         LOGGER.info("----------------------------------------");
         LOGGER.info("Configuration properties");
-        LOGGER.info("		migration properties is {}", VaultMigrationConfiguration.readSecrets(operations).getConclaveOrigin());
+      //  LOGGER.info("		migration properties is {}", readSecrets(operations).getConclaveOrigin());
         //  LOGGER.info("		migration properties is {}", vaultConfiguration.readSecrets().getConclaveOrigin());
          LOGGER.info("		dm.conclaveHost using template is  {}", operations.read("cf/5718307e-5904-4fcc-8660-f6d603ba81dd/secret/migration", MigrationProperties.class).getData().getConclaveOrigin());
         LOGGER.info("----------------------------------------");

@@ -2,16 +2,15 @@ package uk.gov.ccs.conclave.data.migration.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.core.VaultOperations;
 import uk.gov.ccs.swagger.sso.ApiClient;
 import uk.gov.ccs.swagger.sso.api.UserApi;
 
 @Configuration
-public class ConclaveConfig {
-    private final VaultTemplate template;
+public class ConclaveConfig extends BaseConfig {
 
-    public ConclaveConfig(VaultTemplate template) {
-        this.template = template;
+    public ConclaveConfig(VaultOperations operations) {
+        super(operations);
     }
 
     @Bean
@@ -22,7 +21,7 @@ public class ConclaveConfig {
     @Bean("conclaveClient")
     public ApiClient apiClient() {
         return new ApiClient()
-                .addDefaultHeader("x-api-key", VaultMigrationConfiguration.readSecrets(template).getConclaveApiKey())
-                .setBasePath(VaultMigrationConfiguration.readSecrets(template).getConclaveOrigin());
+                .addDefaultHeader("x-api-key", readSecrets().getConclaveApiKey())
+                .setBasePath(readSecrets().getConclaveOrigin());
     }
 }
