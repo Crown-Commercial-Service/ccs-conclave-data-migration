@@ -2,6 +2,7 @@ package uk.gov.ccs.conclave.data.migration.config;
 
 import io.pivotal.cfenv.core.CfCredentials;
 import io.pivotal.cfenv.core.CfEnv;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -30,17 +31,18 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
         return new TokenAuthentication(cfCredentials.getString("auth", "token"));
     }
 
+    @SneakyThrows
     @Override
     public VaultEndpoint vaultEndpoint() {
-        return VaultEndpoint.from((URI) cfCredentials.getMap().get("address"));
+        return VaultEndpoint.from(URI.create(cfCredentials.getMap().get("address").toString()));
     }
 
     public static MigrationProperties readSecrets(VaultOperations operations) {
         Map<String, Object> backend = (Map<String, Object>) cfCredentials.getMap().get("backends_shared");
         LOGGER.info("BACKENd is " + backend);
-        String backendPath = backend.get("space").toString();
+        String backendPath = backend.get("space").toString().concat("migration");
         LOGGER.info("BACKENd path " + backend);
-        VaultResponseSupport<MigrationProperties> response = operations.read(backendPath.concat("migration"), MigrationProperties.class);
+        VaultResponseSupport<MigrationProperties> response = operations.read(backendPath, MigrationProperties.class);
         return Objects.requireNonNull(response).getData();
     }
 
