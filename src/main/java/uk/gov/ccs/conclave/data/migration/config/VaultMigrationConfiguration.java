@@ -2,7 +2,6 @@ package uk.gov.ccs.conclave.data.migration.config;
 
 import io.pivotal.cfenv.core.CfCredentials;
 import io.pivotal.cfenv.core.CfEnv;
-import liquibase.pro.packaged.M;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
