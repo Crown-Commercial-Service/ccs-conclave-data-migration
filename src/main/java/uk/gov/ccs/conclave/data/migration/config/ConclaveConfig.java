@@ -6,7 +6,7 @@ import org.springframework.vault.core.VaultTemplate;
 import uk.gov.ccs.swagger.sso.ApiClient;
 import uk.gov.ccs.swagger.sso.api.UserApi;
 
-//@Configuration
+@Configuration
 public class ConclaveConfig {
     private final VaultTemplate template;
 
