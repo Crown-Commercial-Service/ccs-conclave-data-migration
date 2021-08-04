@@ -42,7 +42,8 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
     private static VaultServiceInfo getVaultServiceInfo() {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
-        LOGGER.info("CLOUD INFO is : " + cloud.getServiceInfo("vault-service-data-migration-sandbox").toString());
-        return (VaultServiceInfo) cloud.getServiceInfo("vault-service-data-migration-sandbox");
+        VaultServiceInfo vaultServiceInfo = (io.pivotal.spring.cloud.vault.service.common.VaultServiceInfo) cloud.getServiceInfo("vault-service-data-migration-sandbox");
+        LOGGER.info("CLOUD INFO is : " + vaultServiceInfo.toString());
+        return vaultServiceInfo;
     }
 }
