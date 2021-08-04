@@ -24,11 +24,12 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VaultMigrationConfiguration.class);
 
-    private static CfCredentials cfCredentials = getVaultCredentials();
+    public static CfCredentials cfCredentials = getVaultCredentials();
 
     @Override
     public ClientAuthentication clientAuthentication() {
-        return new TokenAuthentication(cfCredentials.getString("auth", "token"));
+        Map<String, Object> auth = (Map<String, Object>) cfCredentials.getMap().get("auth");
+        return new TokenAuthentication(auth.get("token").toString());
     }
 
     @SneakyThrows
