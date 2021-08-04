@@ -6,7 +6,7 @@ import org.springframework.vault.core.VaultTemplate;
 import uk.gov.ccs.swagger.cii.ApiClient;
 import uk.gov.ccs.swagger.cii.api.IdentitiesApi;
 
-@Configuration
+//@Configuration
 public class CiiConfig {
 
     private final VaultTemplate template;
