@@ -2,17 +2,16 @@ package uk.gov.ccs.conclave.data.migration.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.core.VaultOperations;
 import uk.gov.ccs.swagger.cii.ApiClient;
 import uk.gov.ccs.swagger.cii.api.IdentitiesApi;
 
 @Configuration
-public class CiiConfig {
+public class CiiConfig extends BaseConfig {
 
-    private final VaultTemplate template;
 
-    public CiiConfig(VaultTemplate template) {
-        this.template = template;
+    public CiiConfig(VaultOperations operations) {
+        super(operations);
     }
 
     @Bean
@@ -23,7 +22,7 @@ public class CiiConfig {
     @Bean("ciiClient")
     public ApiClient apiClient() {
         return new ApiClient()
-                .addDefaultHeader("x-api-key", VaultMigrationConfiguration.readSecrets(template).getCiiApiKey())
-                .setBasePath(VaultMigrationConfiguration.readSecrets(template).getCiiOrigin());
+                .addDefaultHeader("x-api-key", readSecrets().getCiiApiKey())
+                .setBasePath(readSecrets().getCiiOrigin());
     }
 }
