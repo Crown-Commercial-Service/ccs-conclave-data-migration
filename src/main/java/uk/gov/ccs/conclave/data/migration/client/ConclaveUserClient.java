@@ -8,7 +8,7 @@ import uk.gov.ccs.swagger.sso.api.UserApi;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 
-//@Component
+@Component
 public class ConclaveUserClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConclaveUserClient.class);

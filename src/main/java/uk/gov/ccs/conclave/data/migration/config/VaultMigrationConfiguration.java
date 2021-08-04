@@ -13,6 +13,7 @@ import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.VaultResponseSupport;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
 
 @Configuration
@@ -29,8 +30,16 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
 
     @Override
     public VaultEndpoint vaultEndpoint() {
-        URI vaultUri = URI.create(cfCredentials.getString("address"));
-        return VaultEndpoint.create(vaultUri.getHost(), vaultUri.getPort());
+        VaultEndpoint endpoint = null;
+        try {
+            String address = cfCredentials.getString("address");
+            LOGGER.debug("Address from environment is " + address);
+
+            endpoint = VaultEndpoint.from(new URI(address));
+        } catch (URISyntaxException e) {
+            LOGGER.error("Error while creating vault URI " + e.getMessage());
+        }
+        return endpoint;
     }
 
     public static MigrationProperties readSecrets(VaultOperations operations) {
