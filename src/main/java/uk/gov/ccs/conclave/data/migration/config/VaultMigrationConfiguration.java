@@ -2,6 +2,7 @@ package uk.gov.ccs.conclave.data.migration.config;
 
 import io.pivotal.cfenv.core.CfCredentials;
 import io.pivotal.cfenv.core.CfEnv;
+import liquibase.pro.packaged.M;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +14,8 @@ import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.VaultResponseSupport;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.util.Map;
 import java.util.Objects;
 
 @Configuration
@@ -34,21 +33,14 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
 
     @Override
     public VaultEndpoint vaultEndpoint() {
-        VaultEndpoint endpoint = null;
-        try {
-            String address = cfCredentials.getString("address");
-            LOGGER.info("Address from environment is " + address);
-
-            endpoint = VaultEndpoint.from(new URI(address));
-        } catch (URISyntaxException e) {
-            LOGGER.error("Error while creating vault URI " + e.getMessage());
-        }
-        return endpoint;
+        return VaultEndpoint.from((URI) cfCredentials.getMap().get("address"));
     }
 
     public static MigrationProperties readSecrets(VaultOperations operations) {
-        String backendPath = cfCredentials.getString("backends_shared", "space");
-        LOGGER.info("BACKENd path " + backendPath);
+        Map<String, Object> backend = (Map<String, Object>) cfCredentials.getMap().get("backends_shared");
+        LOGGER.info("BACKENd is " + backend);
+        String backendPath = backend.get("space").toString();
+        LOGGER.info("BACKENd path " + backend);
         VaultResponseSupport<MigrationProperties> response = operations.read(backendPath.concat("migration"), MigrationProperties.class);
         return Objects.requireNonNull(response).getData();
     }
@@ -56,8 +48,6 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
     private static CfCredentials getVaultCredentials() {
         CfEnv cfEnv = new CfEnv();
         CfCredentials credentials = cfEnv.findCredentialsByName("vault-service-data-migration-sandbox");
-        LOGGER.info("reading credentials :: host" + credentials.getHost());
-        LOGGER.info("reading map :: host" + credentials.getMap().toString());
         return credentials;
     }
 }
