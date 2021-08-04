@@ -9,7 +9,7 @@ import uk.gov.ccs.swagger.cii.model.OrgMigration;
 
 import java.util.List;
 
-@Component
+//@Component
 public class CiiOrgClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(CiiOrgClient.class);
 
