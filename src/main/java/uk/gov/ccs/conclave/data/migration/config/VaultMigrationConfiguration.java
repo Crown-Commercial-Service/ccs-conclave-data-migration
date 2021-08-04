@@ -12,7 +12,6 @@ import org.springframework.vault.config.AbstractVaultConfiguration;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponseSupport;
 
-import java.net.URI;
 import java.util.Objects;
 
 @Configuration
@@ -29,7 +28,8 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
 
     @Override
     public VaultEndpoint vaultEndpoint() {
-        return VaultEndpoint.create(cfCredentials.getHost(), Integer.parseInt(cfCredentials.getPort()));
+        return new VaultEndpoint();
+        //return VaultEndpoint.create(cfCredentials.getHost(), Integer.parseInt(cfCredentials.getPort()));
     }
 
    public static MigrationProperties readSecrets(VaultTemplate template) {
