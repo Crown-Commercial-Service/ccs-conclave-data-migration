@@ -29,7 +29,7 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
 
     @Override
     public VaultEndpoint vaultEndpoint() {
-        return VaultEndpoint.from(URI.create(cfCredentials.getString("address")));
+        return VaultEndpoint.create(cfCredentials.getHost(), Integer.parseInt(cfCredentials.getPort()));
     }
 
    public static MigrationProperties readSecrets(VaultTemplate template) {
