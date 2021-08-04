@@ -9,7 +9,7 @@ import org.springframework.vault.authentication.ClientAuthentication;
 import org.springframework.vault.authentication.TokenAuthentication;
 import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
-import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.VaultResponseSupport;
 
 import java.net.URI;
@@ -33,8 +33,8 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
         return VaultEndpoint.create(vaultUri.getHost(), vaultUri.getPort());
     }
 
-    public static MigrationProperties readSecrets(VaultTemplate template) {
-        VaultResponseSupport<MigrationProperties> response = template.read(cfCredentials.getString("backends_shared", "space"), MigrationProperties.class);
+    public static MigrationProperties readSecrets(VaultOperations operations) {
+        VaultResponseSupport<MigrationProperties> response = operations.read(cfCredentials.getString("backends_shared", "space"), MigrationProperties.class);
         return Objects.requireNonNull(response).getData();
     }
 
