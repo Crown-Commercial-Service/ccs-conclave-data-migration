@@ -13,11 +13,8 @@ public class BaseConfig {
 
     protected final VaultOperations operations;
 
+    @lombok.Setter
     protected MigrationProperties properties;
-
-    public void setProperties(MigrationProperties properties) {
-        this.properties = properties;
-    }
 
     public BaseConfig(VaultOperations operations) {
         this.operations = operations;
