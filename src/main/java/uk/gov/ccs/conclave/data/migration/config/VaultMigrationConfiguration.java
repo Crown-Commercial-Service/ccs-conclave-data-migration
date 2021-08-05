@@ -35,4 +35,9 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
         CfEnv cfEnv = new CfEnv();
         return cfEnv.findCredentialsByName("vault-service-data-migration-sandbox");
     }
+
+    public static String getBackendPath() {
+        var backend = (Map<String, Object>) cfCredentials.getMap().get("backends_shared");
+        return backend.get("space").toString().concat("/migration");
+    }
 }
