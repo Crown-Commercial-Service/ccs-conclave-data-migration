@@ -21,7 +21,7 @@ public class ConclaveConfig extends BaseConfig {
     @Bean("conclaveClient")
     public ApiClient apiClient() {
         return new ApiClient()
-                .addDefaultHeader("x-api-key", readSecrets().getConclaveApiKey())
-                .setBasePath(readSecrets().getConclaveOrigin());
+                .addDefaultHeader("x-api-key", properties.getConclaveApiKey())
+                .setBasePath(properties.getConclaveOrigin());
     }
 }

@@ -21,7 +21,7 @@ public class CiiConfig extends BaseConfig {
     @Bean("ciiClient")
     public ApiClient apiClient() {
         return new ApiClient()
-                .addDefaultHeader("x-api-key", readSecrets().getCiiApiKey())
-                .setBasePath(readSecrets().getCiiOrigin());
+                .addDefaultHeader("x-api-key", properties.getCiiApiKey())
+                .setBasePath(properties.getCiiOrigin());
     }
 }
