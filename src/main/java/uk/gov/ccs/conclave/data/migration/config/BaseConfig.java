@@ -25,8 +25,6 @@ public class BaseConfig {
 
     private String getBackendPath() {
         var backend = (Map<String, Object>) cfCredentials.getMap().get("backends_shared");
-        StringBuilder backendPath = (StringBuilder) backend.get("space");
-        backendPath.append("/migration");
-        return backendPath.toString();
+        return backend.get("space").toString().concat("/migration");
     }
 }
