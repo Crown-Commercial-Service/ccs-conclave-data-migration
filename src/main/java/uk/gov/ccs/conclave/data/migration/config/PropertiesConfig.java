@@ -6,17 +6,17 @@ import org.springframework.vault.core.VaultOperations;
 import javax.annotation.PostConstruct;
 import java.util.Objects;
 
-import static uk.gov.ccs.conclave.data.migration.config.VaultMigrationConfiguration.getBackendPath;
+import static uk.gov.ccs.conclave.data.migration.config.VaultMigrationConfig.getBackendPath;
 
 @Configuration
-public class BaseConfig {
+public class PropertiesConfig {
 
     protected final VaultOperations operations;
 
     @lombok.Setter
-    protected MigrationProperties properties;
+    private MigrationProperties properties;
 
-    public BaseConfig(VaultOperations operations) {
+    public PropertiesConfig(VaultOperations operations) {
         this.operations = operations;
     }
 
