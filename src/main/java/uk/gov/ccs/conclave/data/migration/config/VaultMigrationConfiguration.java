@@ -33,7 +33,6 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
 
     private static CfCredentials getVaultCredentials() {
         CfEnv cfEnv = new CfEnv();
-        CfCredentials credentials = cfEnv.findCredentialsByName("vault-service-data-migration-sandbox");
-        return credentials;
+        return cfEnv.findCredentialsByName("vault-service-data-migration-sandbox");
     }
 }
