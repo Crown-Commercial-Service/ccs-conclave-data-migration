@@ -33,7 +33,7 @@ public class VaultMigrationConfiguration extends AbstractVaultConfiguration {
 
     private static CfCredentials getVaultCredentials() {
         CfEnv cfEnv = new CfEnv();
-        return cfEnv.findCredentialsByName("vault-service-data-migration-sandbox");
+        return cfEnv.findCredentialsByLabel("hashicorp-vault");
     }
 
     public static String getBackendPath() {
