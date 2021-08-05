@@ -9,7 +9,6 @@ import uk.gov.ccs.swagger.cii.api.IdentitiesApi;
 @Configuration
 public class CiiConfig extends BaseConfig {
 
-
     public CiiConfig(VaultOperations operations) {
         super(operations);
     }
