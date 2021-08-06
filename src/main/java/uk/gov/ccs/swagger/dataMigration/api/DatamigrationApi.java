@@ -16,8 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import uk.gov.ccs.conclave.data.migration.model.OrgUser;
-import uk.gov.ccs.conclave.data.migration.model.Summary;
+import uk.gov.ccs.swagger.dataMigration.model.OrgUser;
+import uk.gov.ccs.swagger.dataMigration.model.Summary;
 
 import java.util.List;
 
