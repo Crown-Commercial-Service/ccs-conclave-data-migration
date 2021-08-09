@@ -59,7 +59,7 @@ paths:
     get:
       tags:
       - identities
-      summary: Returns scheme (identity) data from the user selected external registry  (e.g. DUNS) and any additional schemes this external registry knows about
+      summary: Returns scheme (identity) data from the user selected external registry  (e.g. DUNS) and any additional schemes this external registry knows about. This method also checks if the identities have already been used by other organisations.
       operationId: app.getschemeidentifiers
       parameters:
       - name: scheme-id
@@ -464,7 +464,7 @@ paths:
       parameters:
       - name: scheme
         in: path
-        description: Search term
+        description: scheme code is the code to the identifier for e.g. GB-COH is Companies House and US-DUNS is Duns and Bradstreet
         required: true
         style: simple
         explode: false
@@ -472,7 +472,7 @@ paths:
           type: string
       - name: id
         in: path
-        description: scheme code e.g. GB-COH
+        description: scheme ID for scheme 05606089
         required: true
         style: simple
         explode: false
@@ -484,9 +484,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OrgMigration'
+                $ref: '#/components/schemas/OrgMigration'
         "400":
           description: Bad Request
         "401":
