@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.vault.core.VaultOperations;
 
@@ -14,7 +15,12 @@ public class PropertiesConfig {
     protected final VaultOperations operations;
 
     @lombok.Setter
-    private MigrationProperties properties;
+    private MigrationProperties migrationProperties;
+
+    @Bean
+    public MigrationProperties getMigrationProperties() {
+        return migrationProperties;
+    }
 
     public PropertiesConfig(VaultOperations operations) {
         this.operations = operations;
@@ -23,7 +29,7 @@ public class PropertiesConfig {
     @PostConstruct
     public void readSecrets() {
         var response = operations.read(getBackendPath(), MigrationProperties.class);
-        setProperties(Objects.requireNonNull(response).getData());
+        setMigrationProperties(Objects.requireNonNull(response).getData());
     }
 
 }

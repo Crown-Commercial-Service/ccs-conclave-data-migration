@@ -619,7 +619,7 @@ public class IdentitiesApi {
     }
 
     /**
-     * Returns scheme (identity) data from the user selected external registry  (e.g. DUNS) and any additional schemes this external registry knows about
+     * Returns scheme (identity) data from the user selected external registry  (e.g. DUNS) and any additional schemes this external registry knows about. This method also checks if the identities have already been used by other organisations.
      * 
      * @param schemeId scheme code e.g. GB-COH (required)
      * @param identifierId id e.g. 05606089 (required)
@@ -632,7 +632,7 @@ public class IdentitiesApi {
     }
 
     /**
-     * Returns scheme (identity) data from the user selected external registry  (e.g. DUNS) and any additional schemes this external registry knows about
+     * Returns scheme (identity) data from the user selected external registry  (e.g. DUNS) and any additional schemes this external registry knows about. This method also checks if the identities have already been used by other organisations.
      * 
      * @param schemeId scheme code e.g. GB-COH (required)
      * @param identifierId id e.g. 05606089 (required)
@@ -646,7 +646,7 @@ public class IdentitiesApi {
     }
 
     /**
-     * Returns scheme (identity) data from the user selected external registry  (e.g. DUNS) and any additional schemes this external registry knows about (asynchronously)
+     * Returns scheme (identity) data from the user selected external registry  (e.g. DUNS) and any additional schemes this external registry knows about. This method also checks if the identities have already been used by other organisations. (asynchronously)
      * 
      * @param schemeId scheme code e.g. GB-COH (required)
      * @param identifierId id e.g. 05606089 (required)
@@ -825,8 +825,8 @@ public class IdentitiesApi {
     }
     /**
      * Build call for appMigrateOrg
-     * @param scheme Search term (required)
-     * @param id scheme code e.g. GB-COH (required)
+     * @param scheme scheme code is the code to the identifier for e.g. GB-COH is Companies House and US-DUNS is Duns and Bradstreet (required)
+     * @param id scheme ID for scheme 05606089 (required)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
@@ -898,40 +898,40 @@ public class IdentitiesApi {
     /**
      * A generic endpoint for regisering organisations from data file supplied by individual CCS platforms and services.
      * 
-     * @param scheme Search term (required)
-     * @param id scheme code e.g. GB-COH (required)
-     * @return List&lt;OrgMigration&gt;
+     * @param scheme scheme code is the code to the identifier for e.g. GB-COH is Companies House and US-DUNS is Duns and Bradstreet (required)
+     * @param id scheme ID for scheme 05606089 (required)
+     * @return OrgMigration
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public List<OrgMigration> appMigrateOrg(String scheme, String id) throws ApiException {
-        ApiResponse<List<OrgMigration>> resp = appMigrateOrgWithHttpInfo(scheme, id);
+    public OrgMigration appMigrateOrg(String scheme, String id) throws ApiException {
+        ApiResponse<OrgMigration> resp = appMigrateOrgWithHttpInfo(scheme, id);
         return resp.getData();
     }
 
     /**
      * A generic endpoint for regisering organisations from data file supplied by individual CCS platforms and services.
      * 
-     * @param scheme Search term (required)
-     * @param id scheme code e.g. GB-COH (required)
-     * @return ApiResponse&lt;List&lt;OrgMigration&gt;&gt;
+     * @param scheme scheme code is the code to the identifier for e.g. GB-COH is Companies House and US-DUNS is Duns and Bradstreet (required)
+     * @param id scheme ID for scheme 05606089 (required)
+     * @return ApiResponse&lt;OrgMigration&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<List<OrgMigration>> appMigrateOrgWithHttpInfo(String scheme, String id) throws ApiException {
+    public ApiResponse<OrgMigration> appMigrateOrgWithHttpInfo(String scheme, String id) throws ApiException {
         com.squareup.okhttp.Call call = appMigrateOrgValidateBeforeCall(scheme, id, null, null);
-        Type localVarReturnType = new TypeToken<List<OrgMigration>>(){}.getType();
+        Type localVarReturnType = new TypeToken<OrgMigration>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * A generic endpoint for regisering organisations from data file supplied by individual CCS platforms and services. (asynchronously)
      * 
-     * @param scheme Search term (required)
-     * @param id scheme code e.g. GB-COH (required)
+     * @param scheme scheme code is the code to the identifier for e.g. GB-COH is Companies House and US-DUNS is Duns and Bradstreet (required)
+     * @param id scheme ID for scheme 05606089 (required)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call appMigrateOrgAsync(String scheme, String id, final ApiCallback<List<OrgMigration>> callback) throws ApiException {
+    public com.squareup.okhttp.Call appMigrateOrgAsync(String scheme, String id, final ApiCallback<OrgMigration> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -953,7 +953,7 @@ public class IdentitiesApi {
         }
 
         com.squareup.okhttp.Call call = appMigrateOrgValidateBeforeCall(scheme, id, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<List<OrgMigration>>(){}.getType();
+        Type localVarReturnType = new TypeToken<OrgMigration>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }

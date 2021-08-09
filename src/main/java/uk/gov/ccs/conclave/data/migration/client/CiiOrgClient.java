@@ -7,8 +7,6 @@ import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.cii.api.IdentitiesApi;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 
-import java.util.List;
-
 @Component
 public class CiiOrgClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(CiiOrgClient.class);
@@ -19,8 +17,8 @@ public class CiiOrgClient {
         this.identitiesApi = identitiesApi;
     }
 
-    public List<OrgMigration> createOrganisation(final String scheme, final String scheme_id) throws ApiException {
+    public OrgMigration createCiiOrganisation(final String scheme, final String id) throws ApiException {
         LOGGER.info("Creating a CII organisation.");
-        return identitiesApi.appMigrateOrg(scheme, scheme_id);
+        return identitiesApi.appMigrateOrg(scheme, id);
     }
 }

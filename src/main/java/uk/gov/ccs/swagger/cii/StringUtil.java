@@ -12,7 +12,7 @@
 
 package uk.gov.ccs.swagger.cii;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-07-27T12:42:34.957888+01:00[Europe/London]")public class StringUtil {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-09T17:09:08.467405+01:00[Europe/London]")public class StringUtil {
   /**
    * Check if the given array contains the given value (with case-insensitive comparison).
    *
