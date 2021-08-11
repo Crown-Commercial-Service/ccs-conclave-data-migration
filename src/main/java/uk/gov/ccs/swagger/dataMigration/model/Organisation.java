@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Summary
+ * Organisation
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 
 
-public class Summary   {
+public class Organisation   {
   @JsonProperty("identifier-id")
   private String identifierId = null;
 
@@ -32,13 +32,9 @@ public class Summary   {
 
   @JsonProperty("user")
   @Valid
-  private List<UserMin> user = null;
+  private List<User> user = null;
 
-  @JsonProperty("Status")
-  @Valid
-  private List<Status> status = null;
-
-  public Summary identifierId(String identifierId) {
+  public Organisation identifierId(String identifierId) {
     this.identifierId = identifierId;
     return this;
   }
@@ -57,7 +53,7 @@ public class Summary   {
     this.identifierId = identifierId;
   }
 
-  public Summary schemeId(String schemeId) {
+  public Organisation schemeId(String schemeId) {
     this.schemeId = schemeId;
     return this;
   }
@@ -76,7 +72,7 @@ public class Summary   {
     this.schemeId = schemeId;
   }
 
-  public Summary rightToBuy(Boolean rightToBuy) {
+  public Organisation rightToBuy(Boolean rightToBuy) {
     this.rightToBuy = rightToBuy;
     return this;
   }
@@ -95,12 +91,12 @@ public class Summary   {
     this.rightToBuy = rightToBuy;
   }
 
-  public Summary orgRoles(List<OrgRoles> orgRoles) {
+  public Organisation orgRoles(List<OrgRoles> orgRoles) {
     this.orgRoles = orgRoles;
     return this;
   }
 
-  public Summary addOrgRolesItem(OrgRoles orgRolesItem) {
+  public Organisation addOrgRolesItem(OrgRoles orgRolesItem) {
     if (this.orgRoles == null) {
       this.orgRoles = new ArrayList<OrgRoles>();
     }
@@ -122,14 +118,14 @@ public class Summary   {
     this.orgRoles = orgRoles;
   }
 
-  public Summary user(List<UserMin> user) {
+  public Organisation user(List<User> user) {
     this.user = user;
     return this;
   }
 
-  public Summary addUserItem(UserMin userItem) {
+  public Organisation addUserItem(User userItem) {
     if (this.user == null) {
-      this.user = new ArrayList<UserMin>();
+      this.user = new ArrayList<User>();
     }
     this.user.add(userItem);
     return this;
@@ -141,39 +137,12 @@ public class Summary   {
    **/
   @Schema(description = "")
       @Valid
-    public List<UserMin> getUser() {
+    public List<User> getUser() {
     return user;
   }
 
-  public void setUser(List<UserMin> user) {
+  public void setUser(List<User> user) {
     this.user = user;
-  }
-
-  public Summary status(List<Status> status) {
-    this.status = status;
-    return this;
-  }
-
-  public Summary addStatusItem(Status statusItem) {
-    if (this.status == null) {
-      this.status = new ArrayList<Status>();
-    }
-    this.status.add(statusItem);
-    return this;
-  }
-
-  /**
-   * Get status
-   * @return status
-   **/
-  @Schema(description = "")
-      @Valid
-    public List<Status> getStatus() {
-    return status;
-  }
-
-  public void setStatus(List<Status> status) {
-    this.status = status;
   }
 
 
@@ -185,31 +154,29 @@ public class Summary   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Summary summary = (Summary) o;
-    return Objects.equals(this.identifierId, summary.identifierId) &&
-        Objects.equals(this.schemeId, summary.schemeId) &&
-        Objects.equals(this.rightToBuy, summary.rightToBuy) &&
-        Objects.equals(this.orgRoles, summary.orgRoles) &&
-        Objects.equals(this.user, summary.user) &&
-        Objects.equals(this.status, summary.status);
+    Organisation organisation = (Organisation) o;
+    return Objects.equals(this.identifierId, organisation.identifierId) &&
+        Objects.equals(this.schemeId, organisation.schemeId) &&
+        Objects.equals(this.rightToBuy, organisation.rightToBuy) &&
+        Objects.equals(this.orgRoles, organisation.orgRoles) &&
+        Objects.equals(this.user, organisation.user);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifierId, schemeId, rightToBuy, orgRoles, user, status);
+    return Objects.hash(identifierId, schemeId, rightToBuy, orgRoles, user);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Summary {\n");
+    sb.append("class Organisation {\n");
     
     sb.append("    identifierId: ").append(toIndentedString(identifierId)).append("\n");
     sb.append("    schemeId: ").append(toIndentedString(schemeId)).append("\n");
     sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
     sb.append("    orgRoles: ").append(toIndentedString(orgRoles)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

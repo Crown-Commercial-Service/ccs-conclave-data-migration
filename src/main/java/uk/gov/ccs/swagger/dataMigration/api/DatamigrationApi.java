@@ -16,12 +16,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import uk.gov.ccs.swagger.dataMigration.model.OrgUser;
+import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.Summary;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-06T08:59:45.567Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 @Validated
 public interface DatamigrationApi {
 
@@ -58,7 +59,7 @@ public interface DatamigrationApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<List<Summary>> appMigrateOrg(@Parameter(in = ParameterIn.PATH, description = "File format - CSV/JSON", required=true, schema=@Schema()) @PathVariable("fileFormat") String fileFormat, @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema()) @Validated @RequestParam(value = "filePath", required = false) String filePath, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Validated @RequestBody List<OrgUser> body);
+    ResponseEntity<List<Summary>> appMigrateOrg(@Parameter(in = ParameterIn.PATH, description = "File format - CSV/JSON", required=true, schema=@Schema()) @PathVariable("fileFormat") String fileFormat, @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema()) @Valid @RequestParam(value = "docId", required = false) String docId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody List<Organisation> body);
 
 }
 
