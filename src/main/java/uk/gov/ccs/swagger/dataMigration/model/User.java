@@ -4,25 +4,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * OrgUser
+ * User
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-06T08:59:45.567Z[GMT]")
-public class OrgUser   {
-  @JsonProperty("identifier-id")
-  private String identifierId = null;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 
-  @JsonProperty("scheme-id")
-  private String schemeId = null;
 
-  @JsonProperty("rightToBuy")
-  private Boolean rightToBuy;
-
+public class User   {
   @JsonProperty("email")
   private String email = null;
 
@@ -50,70 +44,11 @@ public class OrgUser   {
   @JsonProperty("contactSocial")
   private String contactSocial = null;
 
-  @JsonProperty("orgRoles")
-  private List<OrgRoles> orgRoles = null;
-
   @JsonProperty("userRoles")
+  @Valid
   private List<UserRoles> userRoles = null;
 
-  public OrgUser identifierId(String identifierId) {
-    this.identifierId = identifierId;
-    return this;
-  }
-
-  /**
-   * Identifier ID
-   * @return identifierId
-   **/
-  @Schema(example = "100009655", description = "Identifier ID")
-
-    public String getIdentifierId() {
-    return identifierId;
-  }
-
-  public void setIdentifierId(String identifierId) {
-    this.identifierId = identifierId;
-  }
-
-  public OrgUser schemeId(String schemeId) {
-    this.schemeId = schemeId;
-    return this;
-  }
-
-  /**
-   * Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
-   * @return schemeId
-   **/
-  @Schema(example = "GB-COH", description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)")
-
-    public String getSchemeId() {
-    return schemeId;
-  }
-
-  public void setSchemeId(String schemeId) {
-    this.schemeId = schemeId;
-  }
-
-  public OrgUser rightToBuy(Boolean rightToBuy) {
-    this.rightToBuy = rightToBuy;
-    return this;
-  }
-
-  /**
-   * Buyer status
-   * @return rightToBuy
-   **/
-  @Schema(example = "true", description = "Buyer status")
-
-    public Boolean isRightToBuy() {
-    return rightToBuy;
-  }
-
-  public void setRightToBuy(Boolean rightToBuy) {
-    this.rightToBuy = rightToBuy;
-  }
-
-  public OrgUser email(String email) {
+  public User email(String email) {
     this.email = email;
     return this;
   }
@@ -123,7 +58,7 @@ public class OrgUser   {
    * @return email
    **/
   @Schema(example = "joe.bloggs@kier.com", description = "User Email")
-
+  
     public String getEmail() {
     return email;
   }
@@ -132,7 +67,7 @@ public class OrgUser   {
     this.email = email;
   }
 
-  public OrgUser title(String title) {
+  public User title(String title) {
     this.title = title;
     return this;
   }
@@ -142,7 +77,7 @@ public class OrgUser   {
    * @return title
    **/
   @Schema(example = "Mr", description = "User Title")
-
+  
     public String getTitle() {
     return title;
   }
@@ -151,7 +86,7 @@ public class OrgUser   {
     this.title = title;
   }
 
-  public OrgUser firstName(String firstName) {
+  public User firstName(String firstName) {
     this.firstName = firstName;
     return this;
   }
@@ -161,7 +96,7 @@ public class OrgUser   {
    * @return firstName
    **/
   @Schema(example = "Joe", description = "First Name")
-
+  
     public String getFirstName() {
     return firstName;
   }
@@ -170,7 +105,7 @@ public class OrgUser   {
     this.firstName = firstName;
   }
 
-  public OrgUser lastName(String lastName) {
+  public User lastName(String lastName) {
     this.lastName = lastName;
     return this;
   }
@@ -180,7 +115,7 @@ public class OrgUser   {
    * @return lastName
    **/
   @Schema(example = "Bloggs", description = "Last Name")
-
+  
     public String getLastName() {
     return lastName;
   }
@@ -189,7 +124,7 @@ public class OrgUser   {
     this.lastName = lastName;
   }
 
-  public OrgUser contactEmail(String contactEmail) {
+  public User contactEmail(String contactEmail) {
     this.contactEmail = contactEmail;
     return this;
   }
@@ -199,7 +134,7 @@ public class OrgUser   {
    * @return contactEmail
    **/
   @Schema(example = "abc@somewhere.org", description = "User Contact Email")
-
+  
     public String getContactEmail() {
     return contactEmail;
   }
@@ -208,7 +143,7 @@ public class OrgUser   {
     this.contactEmail = contactEmail;
   }
 
-  public OrgUser contactMobile(String contactMobile) {
+  public User contactMobile(String contactMobile) {
     this.contactMobile = contactMobile;
     return this;
   }
@@ -218,7 +153,7 @@ public class OrgUser   {
    * @return contactMobile
    **/
   @Schema(example = "07956111111", description = "User Contact Mobile")
-
+  
     public String getContactMobile() {
     return contactMobile;
   }
@@ -227,7 +162,7 @@ public class OrgUser   {
     this.contactMobile = contactMobile;
   }
 
-  public OrgUser contactPhone(String contactPhone) {
+  public User contactPhone(String contactPhone) {
     this.contactPhone = contactPhone;
     return this;
   }
@@ -237,7 +172,7 @@ public class OrgUser   {
    * @return contactPhone
    **/
   @Schema(example = "020 8555 0000", description = "User Contact Telephone")
-
+  
     public String getContactPhone() {
     return contactPhone;
   }
@@ -246,7 +181,7 @@ public class OrgUser   {
     this.contactPhone = contactPhone;
   }
 
-  public OrgUser contactFax(String contactFax) {
+  public User contactFax(String contactFax) {
     this.contactFax = contactFax;
     return this;
   }
@@ -256,7 +191,7 @@ public class OrgUser   {
    * @return contactFax
    **/
   @Schema(example = "020 8555 0001", description = "User Contact Fax")
-
+  
     public String getContactFax() {
     return contactFax;
   }
@@ -265,7 +200,7 @@ public class OrgUser   {
     this.contactFax = contactFax;
   }
 
-  public OrgUser contactSocial(String contactSocial) {
+  public User contactSocial(String contactSocial) {
     this.contactSocial = contactSocial;
     return this;
   }
@@ -275,7 +210,7 @@ public class OrgUser   {
    * @return contactSocial
    **/
   @Schema(example = "http://www.linkedin.com/", description = "User Contact Socila")
-
+  
     public String getContactSocial() {
     return contactSocial;
   }
@@ -284,38 +219,12 @@ public class OrgUser   {
     this.contactSocial = contactSocial;
   }
 
-  public OrgUser orgRoles(List<OrgRoles> orgRoles) {
-    this.orgRoles = orgRoles;
-    return this;
-  }
-
-  public OrgUser addOrgRolesItem(OrgRoles orgRolesItem) {
-    if (this.orgRoles == null) {
-      this.orgRoles = new ArrayList<OrgRoles>();
-    }
-    this.orgRoles.add(orgRolesItem);
-    return this;
-  }
-
-  /**
-   * Get orgRoles
-   * @return orgRoles
-   **/
-  @Schema(description = "")
-    public List<OrgRoles> getOrgRoles() {
-    return orgRoles;
-  }
-
-  public void setOrgRoles(List<OrgRoles> orgRoles) {
-    this.orgRoles = orgRoles;
-  }
-
-  public OrgUser userRoles(List<UserRoles> userRoles) {
+  public User userRoles(List<UserRoles> userRoles) {
     this.userRoles = userRoles;
     return this;
   }
 
-  public OrgUser addUserRolesItem(UserRoles userRolesItem) {
+  public User addUserRolesItem(UserRoles userRolesItem) {
     if (this.userRoles == null) {
       this.userRoles = new ArrayList<UserRoles>();
     }
@@ -328,6 +237,7 @@ public class OrgUser   {
    * @return userRoles
    **/
   @Schema(description = "")
+      @Valid
     public List<UserRoles> getUserRoles() {
     return userRoles;
   }
@@ -345,36 +255,29 @@ public class OrgUser   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrgUser orgUser = (OrgUser) o;
-    return Objects.equals(this.identifierId, orgUser.identifierId) &&
-        Objects.equals(this.schemeId, orgUser.schemeId) &&
-        Objects.equals(this.rightToBuy, orgUser.rightToBuy) &&
-        Objects.equals(this.email, orgUser.email) &&
-        Objects.equals(this.title, orgUser.title) &&
-        Objects.equals(this.firstName, orgUser.firstName) &&
-        Objects.equals(this.lastName, orgUser.lastName) &&
-        Objects.equals(this.contactEmail, orgUser.contactEmail) &&
-        Objects.equals(this.contactMobile, orgUser.contactMobile) &&
-        Objects.equals(this.contactPhone, orgUser.contactPhone) &&
-        Objects.equals(this.contactFax, orgUser.contactFax) &&
-        Objects.equals(this.contactSocial, orgUser.contactSocial) &&
-        Objects.equals(this.orgRoles, orgUser.orgRoles) &&
-        Objects.equals(this.userRoles, orgUser.userRoles);
+    User user = (User) o;
+    return Objects.equals(this.email, user.email) &&
+        Objects.equals(this.title, user.title) &&
+        Objects.equals(this.firstName, user.firstName) &&
+        Objects.equals(this.lastName, user.lastName) &&
+        Objects.equals(this.contactEmail, user.contactEmail) &&
+        Objects.equals(this.contactMobile, user.contactMobile) &&
+        Objects.equals(this.contactPhone, user.contactPhone) &&
+        Objects.equals(this.contactFax, user.contactFax) &&
+        Objects.equals(this.contactSocial, user.contactSocial) &&
+        Objects.equals(this.userRoles, user.userRoles);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifierId, schemeId, rightToBuy, email, title, firstName, lastName, contactEmail, contactMobile, contactPhone, contactFax, contactSocial, orgRoles, userRoles);
+    return Objects.hash(email, title, firstName, lastName, contactEmail, contactMobile, contactPhone, contactFax, contactSocial, userRoles);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OrgUser {\n");
+    sb.append("class User {\n");
     
-    sb.append("    identifierId: ").append(toIndentedString(identifierId)).append("\n");
-    sb.append("    schemeId: ").append(toIndentedString(schemeId)).append("\n");
-    sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
@@ -384,7 +287,6 @@ public class OrgUser   {
     sb.append("    contactPhone: ").append(toIndentedString(contactPhone)).append("\n");
     sb.append("    contactFax: ").append(toIndentedString(contactFax)).append("\n");
     sb.append("    contactSocial: ").append(toIndentedString(contactSocial)).append("\n");
-    sb.append("    orgRoles: ").append(toIndentedString(orgRoles)).append("\n");
     sb.append("    userRoles: ").append(toIndentedString(userRoles)).append("\n");
     sb.append("}");
     return sb.toString();
