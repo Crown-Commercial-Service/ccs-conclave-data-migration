@@ -3,8 +3,6 @@ package uk.gov.ccs.conclave.data.migration.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
-import uk.gov.ccs.conclave.data.migration.client.ConclaveUserClient;
 import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 
@@ -15,22 +13,33 @@ public class MigrationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MigrationService.class);
 
-    private final CiiOrgClient ciiOrgClient;
+    final OrganisationService organisationService;
+    final UserService userService;
 
-    private final ConclaveUserClient conclaveUserClient;
-
-    public MigrationService(CiiOrgClient ciiOrgClient, ConclaveUserClient conclaveUserClient) {
-        this.ciiOrgClient = ciiOrgClient;
-        this.conclaveUserClient = conclaveUserClient;
+    public MigrationService(OrganisationService organisationService, UserService userService) {
+        this.organisationService = organisationService;
+        this.userService = userService;
     }
+
 
     public void migrate(List<Organisation> organisations) {
-        organisations.forEach(org -> {
+        for (Organisation org : organisations) {
+            String organisationId;
             try {
-                ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
+
+                organisationId = organisationService.migrateOrganisation(org);
+
+                userService.migrateUsers(org.getUser(), organisationId);
+
             } catch (ApiException e) {
-                LOGGER.error("Error while creating CII organisation " + e.getMessage());
+                LOGGER.error("Error while creating CII org. Skipping to next organisation. " + e.getMessage());
+
+            } catch (uk.gov.ccs.swagger.sso.ApiException e) {
+                LOGGER.error("Error while creating User in conclave. " + e.getMessage());
             }
-        });
+
+        }
     }
 }
+
+

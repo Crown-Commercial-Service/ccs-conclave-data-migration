@@ -6,20 +6,24 @@ import org.springframework.stereotype.Component;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.api.OrganisationApi;
 import uk.gov.ccs.swagger.sso.api.UserApi;
+import uk.gov.ccs.swagger.sso.model.IdentityProviderDetail;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 
-@Component
-public class ConclaveUserClient {
+import java.util.List;
+import java.util.stream.IntStream;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConclaveUserClient.class);
+@Component
+public class ConclaveClient {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConclaveClient.class);
 
     final UserApi userApi;
 
     final OrganisationApi orgApi;
 
-    public ConclaveUserClient(UserApi userApi, OrganisationApi orgApi) {
+    public ConclaveClient(UserApi userApi, OrganisationApi orgApi) {
         this.userApi = userApi;
         this.orgApi = orgApi;
     }
@@ -33,6 +37,13 @@ public class ConclaveUserClient {
     public String createConclaveOrg(final OrganisationProfileInfo orgDto) throws ApiException {
         LOGGER.info("Creating a conclave organisation.");
         return orgApi.organisationsPost(orgDto);
+    }
+
+    public Integer getIdentityProviderId(final String organisationId) throws ApiException {
+        LOGGER.info("Getting organisation identity provider Id");
+        List<IdentityProviderDetail> identityProviders = orgApi.organisationsOrganisationIdIdentityProvidersGet(organisationId);
+        IntStream id = identityProviders.stream().filter(idp -> idp.getName().equalsIgnoreCase("User ID and password")).flatMapToInt(identity -> IntStream.of(identity.getId()));
+        return id.toArray()[0];
     }
 
 }
