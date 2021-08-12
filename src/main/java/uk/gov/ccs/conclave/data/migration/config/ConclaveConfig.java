@@ -25,7 +25,7 @@ public class ConclaveConfig {
         return new OrganisationApi(apiClient());
     }
 
-    @Bean("conclaveClient")
+    @Bean
     public ApiClient apiClient() {
         return new ApiClient()
                 .addDefaultHeader("x-api-key", properties.getConclaveApiKey())
