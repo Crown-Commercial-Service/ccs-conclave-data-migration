@@ -12,7 +12,7 @@ import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 @Component
 public class ConclaveClient {
@@ -42,8 +42,8 @@ public class ConclaveClient {
     public Integer getIdentityProviderId(final String organisationId) throws ApiException {
         LOGGER.info("Getting organisation identity provider Id");
         List<IdentityProviderDetail> identityProviders = orgApi.organisationsOrganisationIdIdentityProvidersGet(organisationId);
-        IntStream id = identityProviders.stream().filter(idp -> idp.getName().equalsIgnoreCase("User ID and password")).flatMapToInt(identity -> IntStream.of(identity.getId()));
-        return id.toArray()[0];
+        return identityProviders.stream().filter(idp -> idp.getName().equalsIgnoreCase("User ID and password")).collect(Collectors.toList()).get(0).getId();
+
     }
 
 }
