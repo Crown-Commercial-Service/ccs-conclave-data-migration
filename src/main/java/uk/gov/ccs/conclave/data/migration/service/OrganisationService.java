@@ -1,7 +1,5 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
@@ -21,8 +19,6 @@ public class OrganisationService {
     private final CiiOrgClient ciiOrgClient;
 
     private final ConclaveClient conclaveClient;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrganisationService.class);
 
     public OrganisationService(CiiOrgClient ciiOrgClient, ConclaveClient conclaveClient) {
         this.ciiOrgClient = ciiOrgClient;
