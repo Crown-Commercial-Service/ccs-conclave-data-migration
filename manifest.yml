@@ -11,7 +11,9 @@ applications:
     path: target/migration-0.0.1-SNAPSHOT.jar
     services:
     - conclave-data-migration-pg-service
+    - conclave-data-migration-vault-service
+    - logit-ssl-drain
     env:
       JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ }, memory_calculator: { stack_threads: 25 } }'
       JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
-      SERVER_ENV_NAME: develop
+      SPRING_PROFILES_ACTIVE: cloud
