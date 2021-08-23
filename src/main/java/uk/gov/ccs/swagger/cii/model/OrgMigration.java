@@ -25,21 +25,21 @@ import java.util.ArrayList;
 import java.util.List;
 import uk.gov.ccs.swagger.cii.model.Address;
 import uk.gov.ccs.swagger.cii.model.ContactPoint;
-import uk.gov.ccs.swagger.cii.model.Identifier;
+import uk.gov.ccs.swagger.cii.model.Identifier1;
 /**
  * OrgMigration
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-09T17:09:08.467405+01:00[Europe/London]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-23T17:33:47.049364+01:00[Europe/London]")
 public class OrgMigration {
   @SerializedName("organisationId")
   private String organisationId = null;
 
   @SerializedName("identifier")
-  private Identifier identifier = null;
+  private Identifier1 identifier = null;
 
   @SerializedName("additionalIdentifiers")
-  private List<Identifier> additionalIdentifiers = null;
+  private List<Identifier1> additionalIdentifiers = null;
 
   @SerializedName("address")
   private Address address = null;
@@ -65,7 +65,7 @@ public class OrgMigration {
     this.organisationId = organisationId;
   }
 
-  public OrgMigration identifier(Identifier identifier) {
+  public OrgMigration identifier(Identifier1 identifier) {
     this.identifier = identifier;
     return this;
   }
@@ -75,22 +75,22 @@ public class OrgMigration {
    * @return identifier
   **/
   @Schema(description = "")
-  public Identifier getIdentifier() {
+  public Identifier1 getIdentifier() {
     return identifier;
   }
 
-  public void setIdentifier(Identifier identifier) {
+  public void setIdentifier(Identifier1 identifier) {
     this.identifier = identifier;
   }
 
-  public OrgMigration additionalIdentifiers(List<Identifier> additionalIdentifiers) {
+  public OrgMigration additionalIdentifiers(List<Identifier1> additionalIdentifiers) {
     this.additionalIdentifiers = additionalIdentifiers;
     return this;
   }
 
-  public OrgMigration addAdditionalIdentifiersItem(Identifier additionalIdentifiersItem) {
+  public OrgMigration addAdditionalIdentifiersItem(Identifier1 additionalIdentifiersItem) {
     if (this.additionalIdentifiers == null) {
-      this.additionalIdentifiers = new ArrayList<Identifier>();
+      this.additionalIdentifiers = new ArrayList<Identifier1>();
     }
     this.additionalIdentifiers.add(additionalIdentifiersItem);
     return this;
@@ -101,11 +101,11 @@ public class OrgMigration {
    * @return additionalIdentifiers
   **/
   @Schema(description = "")
-  public List<Identifier> getAdditionalIdentifiers() {
+  public List<Identifier1> getAdditionalIdentifiers() {
     return additionalIdentifiers;
   }
 
-  public void setAdditionalIdentifiers(List<Identifier> additionalIdentifiers) {
+  public void setAdditionalIdentifiers(List<Identifier1> additionalIdentifiers) {
     this.additionalIdentifiers = additionalIdentifiers;
   }
 
