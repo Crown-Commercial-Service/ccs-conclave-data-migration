@@ -12,7 +12,7 @@
 
 package uk.gov.ccs.swagger.cii;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-09T17:09:08.467405+01:00[Europe/London]")public class Pair {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-24T11:35:16.182426+01:00[Europe/London]")public class Pair {
     private String name = "";
     private String value = "";
 
