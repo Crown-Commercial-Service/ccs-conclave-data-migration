@@ -263,6 +263,12 @@ paths:
           description: Not Found
         "409":
           description: Duplicate resource
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganisationId'
         "429":
           description: Too Many Requests
         "500":
@@ -719,15 +725,15 @@ components:
           example: supplier
     Identifier:
       title: Identifier
-      type: object
-      properties:
-        scheme:
-          $ref: '#/components/schemas/OrganizationScheme_1'
-        id:
-          example: abc1234
       description: A unique identifier for a party (organization).
       allOf:
       - $ref: '#/components/schemas/Identifier_1'
+      - type: object
+        properties:
+          scheme:
+            $ref: '#/components/schemas/OrganizationScheme_1'
+          id:
+            example: abc1234
     Identifier_1:
       title: Identifier
       type: object
