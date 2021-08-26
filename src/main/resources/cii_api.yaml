@@ -691,7 +691,7 @@ components:
       - faxNumber
       - name
       - telephone
-      - url
+      - uri
       type: object
       properties:
         name:
@@ -710,7 +710,7 @@ components:
           type: string
           description: The fax number of the contact point/person. This should include the international dialling code.
           example: 020 7777 7777
-        url:
+        uri:
           type: string
           description: A web address for the contact point/person.
           example: www.linkedin.com/in/.......
