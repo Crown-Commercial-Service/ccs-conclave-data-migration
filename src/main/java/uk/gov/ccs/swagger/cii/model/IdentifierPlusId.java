@@ -26,7 +26,7 @@ import uk.gov.ccs.swagger.cii.model.Identifier;
  * IdentifierPlusId
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-24T11:35:16.182426+01:00[Europe/London]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-26T12:47:55.811291+01:00[Europe/London]")
 public class IdentifierPlusId {
   @SerializedName("organisation-id")
   private String organisationId = null;
