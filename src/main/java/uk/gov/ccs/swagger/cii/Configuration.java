@@ -12,7 +12,7 @@
 
 package uk.gov.ccs.swagger.cii;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-26T12:47:55.811291+01:00[Europe/London]")public class Configuration {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-26T16:18:06.267066+01:00[Europe/London]")public class Configuration {
     private static ApiClient defaultApiClient = new ApiClient();
 
     /**
