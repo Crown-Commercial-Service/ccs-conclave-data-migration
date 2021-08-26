@@ -25,7 +25,7 @@ import java.io.IOException;
  * ContactPoint
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-26T12:47:55.811291+01:00[Europe/London]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-26T16:18:06.267066+01:00[Europe/London]")
 public class ContactPoint {
   @SerializedName("name")
   private String name = null;
