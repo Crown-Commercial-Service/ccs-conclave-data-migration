@@ -25,37 +25,13 @@ import java.io.IOException;
  * OrganisationIdentifier
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-07-23T13:17:13.002004+01:00[Europe/London]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-27T09:35:55.156031+01:00[Europe/London]")
 public class OrganisationIdentifier {
-  @SerializedName("id")
-  private String id = null;
-
   @SerializedName("legalName")
   private String legalName = null;
 
   @SerializedName("uri")
   private String uri = null;
-
-  @SerializedName("scheme")
-  private String scheme = null;
-
-  public OrganisationIdentifier id(String id) {
-    this.id = id;
-    return this;
-  }
-
-   /**
-   * Get id
-   * @return id
-  **/
-  @Schema(description = "")
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
 
   public OrganisationIdentifier legalName(String legalName) {
     this.legalName = legalName;
@@ -93,24 +69,6 @@ public class OrganisationIdentifier {
     this.uri = uri;
   }
 
-  public OrganisationIdentifier scheme(String scheme) {
-    this.scheme = scheme;
-    return this;
-  }
-
-   /**
-   * Get scheme
-   * @return scheme
-  **/
-  @Schema(description = "")
-  public String getScheme() {
-    return scheme;
-  }
-
-  public void setScheme(String scheme) {
-    this.scheme = scheme;
-  }
-
 
   @Override
   public boolean equals(Object o) {
@@ -121,15 +79,13 @@ public class OrganisationIdentifier {
       return false;
     }
     OrganisationIdentifier organisationIdentifier = (OrganisationIdentifier) o;
-    return Objects.equals(this.id, organisationIdentifier.id) &&
-        Objects.equals(this.legalName, organisationIdentifier.legalName) &&
-        Objects.equals(this.uri, organisationIdentifier.uri) &&
-        Objects.equals(this.scheme, organisationIdentifier.scheme);
+    return Objects.equals(this.legalName, organisationIdentifier.legalName) &&
+        Objects.equals(this.uri, organisationIdentifier.uri);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, legalName, uri, scheme);
+    return Objects.hash(legalName, uri);
   }
 
 
@@ -138,10 +94,8 @@ public class OrganisationIdentifier {
     StringBuilder sb = new StringBuilder();
     sb.append("class OrganisationIdentifier {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    legalName: ").append(toIndentedString(legalName)).append("\n");
     sb.append("    uri: ").append(toIndentedString(uri)).append("\n");
-    sb.append("    scheme: ").append(toIndentedString(scheme)).append("\n");
     sb.append("}");
     return sb.toString();
   }

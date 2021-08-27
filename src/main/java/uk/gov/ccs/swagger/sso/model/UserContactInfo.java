@@ -29,7 +29,7 @@ import uk.gov.ccs.swagger.sso.model.UserDetailInfo;
  * UserContactInfo
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-07-23T13:17:13.002004+01:00[Europe/London]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-27T09:35:55.156031+01:00[Europe/London]")
 public class UserContactInfo {
   @SerializedName("contactPointReason")
   private String contactPointReason = null;

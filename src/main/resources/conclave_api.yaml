@@ -1899,16 +1899,10 @@ components:
     OrganisationIdentifier:
       type: object
       properties:
-        id:
-          type: string
-          nullable: true
         legalName:
           type: string
           nullable: true
         uri:
-          type: string
-          nullable: true
-        scheme:
           type: string
           nullable: true
       additionalProperties: false
@@ -1937,22 +1931,7 @@ components:
         organisationId:
           type: string
           nullable: true
-        creationDate:
-          type: string
-          nullable: true
-        companyType:
-          type: string
-          nullable: true
-        supplierBuyerType:
-          type: integer
-          format: int32
-        isSme:
-          type: boolean
-        isVcse:
-          type: boolean
         rightToBuy:
-          type: boolean
-        isActive:
           type: boolean
       additionalProperties: false
     OrganisationProfileInfo:
