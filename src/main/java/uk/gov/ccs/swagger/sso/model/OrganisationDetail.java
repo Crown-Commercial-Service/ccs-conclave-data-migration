@@ -25,31 +25,13 @@ import java.io.IOException;
  * OrganisationDetail
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-07-23T13:17:13.002004+01:00[Europe/London]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-27T09:35:55.156031+01:00[Europe/London]")
 public class OrganisationDetail {
   @SerializedName("organisationId")
   private String organisationId = null;
 
-  @SerializedName("creationDate")
-  private String creationDate = null;
-
-  @SerializedName("companyType")
-  private String companyType = null;
-
-  @SerializedName("supplierBuyerType")
-  private Integer supplierBuyerType = null;
-
-  @SerializedName("isSme")
-  private Boolean isSme = null;
-
-  @SerializedName("isVcse")
-  private Boolean isVcse = null;
-
   @SerializedName("rightToBuy")
   private Boolean rightToBuy = null;
-
-  @SerializedName("isActive")
-  private Boolean isActive = null;
 
   public OrganisationDetail organisationId(String organisationId) {
     this.organisationId = organisationId;
@@ -67,96 +49,6 @@ public class OrganisationDetail {
 
   public void setOrganisationId(String organisationId) {
     this.organisationId = organisationId;
-  }
-
-  public OrganisationDetail creationDate(String creationDate) {
-    this.creationDate = creationDate;
-    return this;
-  }
-
-   /**
-   * Get creationDate
-   * @return creationDate
-  **/
-  @Schema(description = "")
-  public String getCreationDate() {
-    return creationDate;
-  }
-
-  public void setCreationDate(String creationDate) {
-    this.creationDate = creationDate;
-  }
-
-  public OrganisationDetail companyType(String companyType) {
-    this.companyType = companyType;
-    return this;
-  }
-
-   /**
-   * Get companyType
-   * @return companyType
-  **/
-  @Schema(description = "")
-  public String getCompanyType() {
-    return companyType;
-  }
-
-  public void setCompanyType(String companyType) {
-    this.companyType = companyType;
-  }
-
-  public OrganisationDetail supplierBuyerType(Integer supplierBuyerType) {
-    this.supplierBuyerType = supplierBuyerType;
-    return this;
-  }
-
-   /**
-   * Get supplierBuyerType
-   * @return supplierBuyerType
-  **/
-  @Schema(description = "")
-  public Integer getSupplierBuyerType() {
-    return supplierBuyerType;
-  }
-
-  public void setSupplierBuyerType(Integer supplierBuyerType) {
-    this.supplierBuyerType = supplierBuyerType;
-  }
-
-  public OrganisationDetail isSme(Boolean isSme) {
-    this.isSme = isSme;
-    return this;
-  }
-
-   /**
-   * Get isSme
-   * @return isSme
-  **/
-  @Schema(description = "")
-  public Boolean isIsSme() {
-    return isSme;
-  }
-
-  public void setIsSme(Boolean isSme) {
-    this.isSme = isSme;
-  }
-
-  public OrganisationDetail isVcse(Boolean isVcse) {
-    this.isVcse = isVcse;
-    return this;
-  }
-
-   /**
-   * Get isVcse
-   * @return isVcse
-  **/
-  @Schema(description = "")
-  public Boolean isIsVcse() {
-    return isVcse;
-  }
-
-  public void setIsVcse(Boolean isVcse) {
-    this.isVcse = isVcse;
   }
 
   public OrganisationDetail rightToBuy(Boolean rightToBuy) {
@@ -177,24 +69,6 @@ public class OrganisationDetail {
     this.rightToBuy = rightToBuy;
   }
 
-  public OrganisationDetail isActive(Boolean isActive) {
-    this.isActive = isActive;
-    return this;
-  }
-
-   /**
-   * Get isActive
-   * @return isActive
-  **/
-  @Schema(description = "")
-  public Boolean isIsActive() {
-    return isActive;
-  }
-
-  public void setIsActive(Boolean isActive) {
-    this.isActive = isActive;
-  }
-
 
   @Override
   public boolean equals(Object o) {
@@ -206,18 +80,12 @@ public class OrganisationDetail {
     }
     OrganisationDetail organisationDetail = (OrganisationDetail) o;
     return Objects.equals(this.organisationId, organisationDetail.organisationId) &&
-        Objects.equals(this.creationDate, organisationDetail.creationDate) &&
-        Objects.equals(this.companyType, organisationDetail.companyType) &&
-        Objects.equals(this.supplierBuyerType, organisationDetail.supplierBuyerType) &&
-        Objects.equals(this.isSme, organisationDetail.isSme) &&
-        Objects.equals(this.isVcse, organisationDetail.isVcse) &&
-        Objects.equals(this.rightToBuy, organisationDetail.rightToBuy) &&
-        Objects.equals(this.isActive, organisationDetail.isActive);
+        Objects.equals(this.rightToBuy, organisationDetail.rightToBuy);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(organisationId, creationDate, companyType, supplierBuyerType, isSme, isVcse, rightToBuy, isActive);
+    return Objects.hash(organisationId, rightToBuy);
   }
 
 
@@ -227,13 +95,7 @@ public class OrganisationDetail {
     sb.append("class OrganisationDetail {\n");
     
     sb.append("    organisationId: ").append(toIndentedString(organisationId)).append("\n");
-    sb.append("    creationDate: ").append(toIndentedString(creationDate)).append("\n");
-    sb.append("    companyType: ").append(toIndentedString(companyType)).append("\n");
-    sb.append("    supplierBuyerType: ").append(toIndentedString(supplierBuyerType)).append("\n");
-    sb.append("    isSme: ").append(toIndentedString(isSme)).append("\n");
-    sb.append("    isVcse: ").append(toIndentedString(isVcse)).append("\n");
     sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
-    sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
     sb.append("}");
     return sb.toString();
   }
