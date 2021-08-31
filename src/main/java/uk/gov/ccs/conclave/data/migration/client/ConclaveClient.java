@@ -6,10 +6,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.api.OrganisationApi;
 import uk.gov.ccs.swagger.sso.api.UserApi;
-import uk.gov.ccs.swagger.sso.model.IdentityProviderDetail;
-import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
-import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
-import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
+import uk.gov.ccs.swagger.sso.model.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +40,14 @@ public class ConclaveClient {
         LOGGER.info("Getting organisation identity provider Id");
         List<IdentityProviderDetail> identityProviders = orgApi.organisationsOrganisationIdIdentityProvidersGet(organisationId);
         return identityProviders.stream().filter(idp -> idp.getName().equalsIgnoreCase("User ID and password")).collect(Collectors.toList()).get(0).getId();
+
+    }
+
+    public Integer getOrganisationRoleId(final String organisationId, final String roleName) throws ApiException {
+        LOGGER.info("Getting roleId for the Organisation role.");
+        List<OrganisationRole> roles = orgApi.organisationsOrganisationIdRolesGet(organisationId);
+        int roleId = roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).collect(Collectors.toList()).get(0).getRoleId();
+        return roleId;
 
     }
 

@@ -21,54 +21,95 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.IOException;
-import uk.gov.ccs.swagger.cii.model.Identifier1;
-import uk.gov.ccs.swagger.cii.model.OrganizationScheme1;
+import uk.gov.ccs.swagger.cii.model.OrganizationScheme;
 /**
  * A unique identifier for a party (organization).
  */
 @Schema(description = "A unique identifier for a party (organization).")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-09T17:09:08.467405+01:00[Europe/London]")
-public class Identifier extends Identifier1 {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-26T16:18:06.267066+01:00[Europe/London]")
+public class Identifier {
   @SerializedName("scheme")
-  private OrganizationScheme1 identifierScheme = null;
+  private OrganizationScheme scheme = null;
 
   @SerializedName("id")
-  private Object identifierId = null;
+  private String id = null;
 
-  public Identifier identifierScheme(OrganizationScheme1 identifierScheme) {
-    this.identifierScheme = identifierScheme;
+  @SerializedName("legalName")
+  private String legalName = null;
+
+  @SerializedName("uri")
+  private String uri = null;
+
+  public Identifier scheme(OrganizationScheme scheme) {
+    this.scheme = scheme;
     return this;
   }
 
    /**
-   * Get identifierScheme
-   * @return identifierScheme
+   * Get scheme
+   * @return scheme
   **/
   @Schema(description = "")
-  public OrganizationScheme1 getIdentifierScheme() {
-    return identifierScheme;
+  public OrganizationScheme getScheme() {
+    return scheme;
   }
 
-  public void getIdentifierScheme(OrganizationScheme1 identifierScheme) {
-    this.identifierScheme = identifierScheme;
+  public void setScheme(OrganizationScheme scheme) {
+    this.scheme = scheme;
   }
 
-  public Identifier identifierId(Object identifierId) {
-    this.identifierId = identifierId;
+  public Identifier id(String id) {
+    this.id = id;
     return this;
   }
 
    /**
-   * Get identifierId
-   * @return identifierId
+   * The identifier of the organization in the selected scheme.
+   * @return id
   **/
-  @Schema(example = "abc1234", description = "")
-  public Object getIdentifierId() {
-    return identifierId;
+  @Schema(example = "abc12345", description = "The identifier of the organization in the selected scheme.")
+  public String getId() {
+    return id;
   }
 
-  public void getIdentifierId(Object identifierId) {
-    this.identifierId = identifierId;
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public Identifier legalName(String legalName) {
+    this.legalName = legalName;
+    return this;
+  }
+
+   /**
+   * The legally registered name of the organization.
+   * @return legalName
+  **/
+  @Schema(description = "The legally registered name of the organization.")
+  public String getLegalName() {
+    return legalName;
+  }
+
+  public void setLegalName(String legalName) {
+    this.legalName = legalName;
+  }
+
+  public Identifier uri(String uri) {
+    this.uri = uri;
+    return this;
+  }
+
+   /**
+   * A URI to identify the organization, such as those provided by [Open Corporates](http://www.opencorporates.com) or some other relevant URI provider. This is not for listing the website of the organization: that can be done through the URL field of the Organization contact point.
+   * @return uri
+  **/
+  @Schema(description = "A URI to identify the organization, such as those provided by [Open Corporates](http://www.opencorporates.com) or some other relevant URI provider. This is not for listing the website of the organization: that can be done through the URL field of the Organization contact point.")
+  public String getUri() {
+    return uri;
+  }
+
+  public void setUri(String uri) {
+    this.uri = uri;
   }
 
 
@@ -81,14 +122,15 @@ public class Identifier extends Identifier1 {
       return false;
     }
     Identifier identifier = (Identifier) o;
-    return Objects.equals(this.identifierScheme, identifier.identifierScheme) &&
-        Objects.equals(this.identifierId, identifier.identifierId) &&
-        super.equals(o);
+    return Objects.equals(this.scheme, identifier.scheme) &&
+        Objects.equals(this.id, identifier.id) &&
+        Objects.equals(this.legalName, identifier.legalName) &&
+        Objects.equals(this.uri, identifier.uri);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifierScheme, identifierId, super.hashCode());
+    return Objects.hash(scheme, id, legalName, uri);
   }
 
 
@@ -96,9 +138,11 @@ public class Identifier extends Identifier1 {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Identifier {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-    sb.append("    identifierScheme: ").append(toIndentedString(identifierScheme)).append("\n");
-    sb.append("    identifierId: ").append(toIndentedString(identifierId)).append("\n");
+    
+    sb.append("    scheme: ").append(toIndentedString(scheme)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    legalName: ").append(toIndentedString(legalName)).append("\n");
+    sb.append("    uri: ").append(toIndentedString(uri)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -61,7 +61,6 @@ public class OrganisationService {
     private OrganisationDetail populateOrgDetail(OrgMigration ciiResponse, Organisation org) {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
-        organisationDetail.isActive(true);
         organisationDetail.setRightToBuy(org.isRightToBuy());
         return organisationDetail;
     }
@@ -75,7 +74,6 @@ public class OrganisationService {
 
     private OrganisationAddress populateOrgAddress(Address ciiAddress) {
         OrganisationAddress organisationAddress = new OrganisationAddress();
-        organisationAddress.setCountryCode(ciiAddress.getCountryName());
         organisationAddress.setStreetAddress(ciiAddress.getStreetAddress());
         organisationAddress.setLocality(ciiAddress.getLocality());
         organisationAddress.setPostalCode(ciiAddress.getPostalCode());

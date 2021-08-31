@@ -25,7 +25,7 @@ import java.io.IOException;
  * ContactPoint
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-09T17:09:08.467405+01:00[Europe/London]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-26T16:18:06.267066+01:00[Europe/London]")
 public class ContactPoint {
   @SerializedName("name")
   private String name = null;
@@ -39,8 +39,8 @@ public class ContactPoint {
   @SerializedName("faxNumber")
   private String faxNumber = null;
 
-  @SerializedName("url")
-  private String url = null;
+  @SerializedName("uri")
+  private String uri = null;
 
   public ContactPoint name(String name) {
     this.name = name;
@@ -114,22 +114,22 @@ public class ContactPoint {
     this.faxNumber = faxNumber;
   }
 
-  public ContactPoint url(String url) {
-    this.url = url;
+  public ContactPoint uri(String uri) {
+    this.uri = uri;
     return this;
   }
 
    /**
    * A web address for the contact point/person.
-   * @return url
+   * @return uri
   **/
   @Schema(example = "www.linkedin.com/in/.......", required = true, description = "A web address for the contact point/person.")
-  public String getUrl() {
-    return url;
+  public String getUri() {
+    return uri;
   }
 
-  public void setUrl(String url) {
-    this.url = url;
+  public void setUri(String uri) {
+    this.uri = uri;
   }
 
 
@@ -146,12 +146,12 @@ public class ContactPoint {
         Objects.equals(this.email, contactPoint.email) &&
         Objects.equals(this.telephone, contactPoint.telephone) &&
         Objects.equals(this.faxNumber, contactPoint.faxNumber) &&
-        Objects.equals(this.url, contactPoint.url);
+        Objects.equals(this.uri, contactPoint.uri);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, email, telephone, faxNumber, url);
+    return Objects.hash(name, email, telephone, faxNumber, uri);
   }
 
 
@@ -164,7 +164,7 @@ public class ContactPoint {
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    telephone: ").append(toIndentedString(telephone)).append("\n");
     sb.append("    faxNumber: ").append(toIndentedString(faxNumber)).append("\n");
-    sb.append("    url: ").append(toIndentedString(url)).append("\n");
+    sb.append("    uri: ").append(toIndentedString(uri)).append("\n");
     sb.append("}");
     return sb.toString();
   }
