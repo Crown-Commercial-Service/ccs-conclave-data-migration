@@ -33,13 +33,11 @@ public class MigrationService {
 
             } catch (ApiException e) {
                 LOGGER.error("Error while creating CII organisation for organisation with identifier "
-                        + org.getIdentifierId()
                         + ". Skipping to next organisation. "
                         + e.getMessage());
 
             } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-                LOGGER.error("Error while creating Organisation in conclave with identifier " +
-                        org.getIdentifierId()
+                LOGGER.error("Error while creating Organisation in conclave with identifier "
                         + ". Skipping to next organisation. "
                         + e.getMessage());
             }
