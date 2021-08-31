@@ -1,5 +1,7 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.swagger.dataMigration.model.User;
@@ -9,8 +11,11 @@ import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
 import uk.gov.ccs.swagger.sso.model.UserTitle;
 
 import java.util.List;
+
 @Service
 public class UserService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final ConclaveClient conclaveUserClient;
 
@@ -32,12 +37,23 @@ public class UserService {
         return userDto;
     }
 
-    public void migrateUsers(List<User> users, String organisationId) throws ApiException {
-            Integer identityProviderId = conclaveUserClient.getIdentityProviderId(organisationId);
+    public void migrateUsers(List<User> users, String organisationId) {
+        Integer identityProviderId;
+        try {
+            identityProviderId = conclaveUserClient.getIdentityProviderId(organisationId);
             for (User user : users) {
                 UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, organisationId, identityProviderId);
-                conclaveUserClient.createUser(userDto);
+                try {
+                    conclaveUserClient.createUser(userDto);
+                } catch (ApiException e) {
+                    LOGGER.error("Error while migrating user with user Id: "
+                            + user.getFirstName()
+                            + " to conclave. Skipping to next user. " + e.getMessage());
+                }
             }
+        } catch (ApiException e) {
+            LOGGER.error("Error while getting Identity provider for the organisation. " + e.getMessage());
+        }
 
     }
 }
