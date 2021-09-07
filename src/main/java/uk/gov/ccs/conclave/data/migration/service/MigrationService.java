@@ -29,8 +29,6 @@ public class MigrationService {
 
                 organisationId = organisationService.migrateOrganisation(org);
 
-                userService.migrateUsers(org.getUser(), organisationId);
-
             } catch (ApiException e) {
                 LOGGER.error("Error while creating CII organisation for organisation with identifier "
                         + ". Skipping to next organisation. "
