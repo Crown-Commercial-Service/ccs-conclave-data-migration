@@ -29,8 +29,8 @@ public class OrganisationService {
 
     public String migrateOrganisation(Organisation org) throws ApiException, uk.gov.ccs.swagger.sso.ApiException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
-        String organisationId =  migrateOrgToConclave(ciiResponse, org);
-        conclaveClient.createOrganisationContact(organisationId,populateContact(ciiResponse));
+        String organisationId = migrateOrgToConclave(ciiResponse, org);
+        conclaveClient.createOrganisationContact(organisationId, populateContact(ciiResponse));
         return organisationId;
     }
 
@@ -47,12 +47,13 @@ public class OrganisationService {
         return contactRequestInfo;
     }
 
-    private ContactRequestDetail createContact(String name,String value){
+    private ContactRequestDetail createContact(String name, String value) {
         ContactRequestDetail contactRequestDetail = new ContactRequestDetail();
         contactRequestDetail.setContactType(name);
         contactRequestDetail.setContactValue(value);
         return contactRequestDetail;
     }
+
     private OrgMigration migrateOrgToCii(Organisation org) throws ApiException {
         return ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
     }
