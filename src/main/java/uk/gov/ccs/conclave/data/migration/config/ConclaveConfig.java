@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.ccs.swagger.sso.ApiClient;
 import uk.gov.ccs.swagger.sso.api.OrganisationApi;
+import uk.gov.ccs.swagger.sso.api.OrganisationContactApi;
 import uk.gov.ccs.swagger.sso.api.UserApi;
 
 @Configuration
@@ -23,6 +24,11 @@ public class ConclaveConfig {
     @Bean
     public OrganisationApi organisationApi() {
         return new OrganisationApi(apiClient());
+    }
+
+    @Bean
+    public OrganisationContactApi organisationContactApi() {
+        return new OrganisationContactApi(apiClient());
     }
 
     @Bean
