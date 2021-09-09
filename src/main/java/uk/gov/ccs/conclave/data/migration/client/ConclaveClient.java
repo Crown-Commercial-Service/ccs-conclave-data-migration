@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.api.OrganisationApi;
+import uk.gov.ccs.swagger.sso.api.OrganisationContactApi;
 import uk.gov.ccs.swagger.sso.api.UserApi;
 import uk.gov.ccs.swagger.sso.model.*;
 
@@ -16,13 +17,16 @@ public class ConclaveClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConclaveClient.class);
 
-    final UserApi userApi;
+    private final UserApi userApi;
 
-    final OrganisationApi orgApi;
+    private final OrganisationApi orgApi;
 
-    public ConclaveClient(UserApi userApi, OrganisationApi orgApi) {
+    private final OrganisationContactApi orgContactApi;
+
+    public ConclaveClient(UserApi userApi, OrganisationApi orgApi, OrganisationContactApi orgContactApi) {
         this.userApi = userApi;
         this.orgApi = orgApi;
+        this.orgContactApi = orgContactApi;
     }
 
 
@@ -49,6 +53,11 @@ public class ConclaveClient {
         int roleId = roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).collect(Collectors.toList()).get(0).getRoleId();
         return roleId;
 
+    }
+
+    public void createOrganisationContact(String organisationId, ContactRequestInfo contactRequestInfo) throws ApiException {
+        LOGGER.info("Creating a contact for organisation with id " + organisationId);
+        orgContactApi.organisationsOrganisationIdContactsPost(organisationId, contactRequestInfo);
     }
 
 }
