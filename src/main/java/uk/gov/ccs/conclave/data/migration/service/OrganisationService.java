@@ -5,13 +5,14 @@ import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.cii.model.Address;
+import uk.gov.ccs.swagger.cii.model.ContactPoint;
 import uk.gov.ccs.swagger.cii.model.Identifier;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
-import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
-import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
-import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
+import uk.gov.ccs.swagger.sso.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class OrganisationService {
@@ -28,9 +29,30 @@ public class OrganisationService {
 
     public String migrateOrganisation(Organisation org) throws ApiException, uk.gov.ccs.swagger.sso.ApiException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
-        return migrateOrgToConclave(ciiResponse, org);
+        String organisationId =  migrateOrgToConclave(ciiResponse, org);
+        conclaveClient.createOrganisationContact(organisationId,populateContact(ciiResponse));
+        return organisationId;
     }
 
+    private ContactRequestInfo populateContact(OrgMigration ciiResponse) {
+        ContactPoint contactPoint = ciiResponse.getContactPoint();
+        ContactRequestInfo contactRequestInfo = new ContactRequestInfo();
+        List<ContactRequestDetail> contacts = new ArrayList<>();
+        contacts.add(createContact("name", contactPoint.getName()));
+        contacts.add(createContact("email", contactPoint.getEmail()));
+        contacts.add(createContact("telephone", contactPoint.getTelephone()));
+        contacts.add(createContact("faxNumber", contactPoint.getFaxNumber()));
+        contacts.add(createContact("uri", contactPoint.getUri()));
+        contactRequestInfo.setContacts(contacts);
+        return contactRequestInfo;
+    }
+
+    private ContactRequestDetail createContact(String name,String value){
+        ContactRequestDetail contactRequestDetail = new ContactRequestDetail();
+        contactRequestDetail.setContactType(name);
+        contactRequestDetail.setContactValue(value);
+        return contactRequestDetail;
+    }
     private OrgMigration migrateOrgToCii(Organisation org) throws ApiException {
         return ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
     }
