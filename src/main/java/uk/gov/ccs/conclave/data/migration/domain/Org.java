@@ -7,17 +7,17 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "organisation")
+@Table(name = "org")
 @Getter
 @Setter
 public class Org {
 
     @Id
     @Column(name = "org_id", updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orgId;
 
-    private Long identifierId;
+    private String identifierId;
 
     private String schemeId;
 
@@ -27,7 +27,7 @@ public class Org {
 
     private String status;
 
-    @OneToMany(mappedBy="organisation")
+    @OneToMany(mappedBy="org")
     private Set<User> users;
 
 }

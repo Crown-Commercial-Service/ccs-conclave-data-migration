@@ -8,8 +8,8 @@ import uk.gov.ccs.swagger.dataMigration.model.Summary;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.ccs.conclave.data.migration.service.SummaryService.ciiOrgMessage;
-import static uk.gov.ccs.conclave.data.migration.service.SummaryService.ssoOrgMessage;
+import static uk.gov.ccs.conclave.data.migration.service.SummaryService.CII_ORG_ERROR_MESSAGE;
+import static uk.gov.ccs.conclave.data.migration.service.SummaryService.SSO_ORG_ERROR_MESSAGE;
 
 @Service
 public class MigrationService {
@@ -39,11 +39,11 @@ public class MigrationService {
                 }
 
             } catch (ApiException e) {
-                summaryService.logError(org, ciiOrgMessage, e);
+                summaryService.logError(org, CII_ORG_ERROR_MESSAGE, e);
                 summaries.add(summaryService.buildSummaryWithStatus(org, e.getCode()));
 
             } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-                summaryService.logError(org, ssoOrgMessage, e);
+                summaryService.logError(org, SSO_ORG_ERROR_MESSAGE, e);
                 summaries.add(summaryService.buildSummaryWithStatus(org, e.getCode()));
             }
 

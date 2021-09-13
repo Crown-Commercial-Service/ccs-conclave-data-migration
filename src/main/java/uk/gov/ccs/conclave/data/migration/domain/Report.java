@@ -13,7 +13,7 @@ public class Report {
 
     @Id
     @Column(name = "id", updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String errorDescription;

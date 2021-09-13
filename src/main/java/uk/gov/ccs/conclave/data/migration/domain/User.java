@@ -6,15 +6,15 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Getter
 @Setter
 public class User {
 
     @Id
-    @Column(name = "id", updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    @Column(name = "user_id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long userId;
 
     private String email;
 

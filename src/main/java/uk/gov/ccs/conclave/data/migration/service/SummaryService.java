@@ -15,8 +15,8 @@ public class SummaryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SummaryService.class);
 
-    public static StringBuilder ciiOrgMessage = new StringBuilder("Error while creating CII organisation. ");
-    public static StringBuilder ssoOrgMessage = new StringBuilder("Error while creating SSO Organisation. ");
+    public static final String CII_ORG_ERROR_MESSAGE = "Error while creating CII organisation. ";
+    public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
 
 
     private final OrganisationRepository organisationRepository;
@@ -25,17 +25,17 @@ public class SummaryService {
         this.organisationRepository = organisationRepository;
     }
 
-    public void logError(Organisation organisation, StringBuilder message, Exception exception) {
-        LOGGER.error(message.append(exception.getMessage()).toString());
+    public void logError(Organisation organisation, String message, Exception exception) {
+        LOGGER.error(message + exception.getMessage());
 
         Org org = new Org();
-        org.setIdentifierId(Long.valueOf(organisation.getIdentifierId()));
+        org.setIdentifierId(organisation.getIdentifierId());
         org.setSchemeId(organisation.getSchemeId());
         org.setRightToBuy(organisation.isRightToBuy());
         if (organisation.getOrgRoles() != null) {
             org.setOrgRoles(StringUtils.arrayToCommaDelimitedString(organisation.getOrgRoles().toArray()));
         }
-        org.setStatus(message.append(exception.getMessage()).toString());
+        org.setStatus(message + exception.getMessage());
         organisationRepository.save(org);
 
     }
