@@ -70,13 +70,13 @@ public class OrganisationService {
         OrganisationProfileInfo conclaveOrgProfile = new OrganisationProfileInfo();
 
         OrganisationAddress organisationAddress = populateOrgAddress(address);
-        conclaveOrgProfile.address(organisationAddress);
+        conclaveOrgProfile.setAddress(organisationAddress);
 
         OrganisationIdentifier organisationIdentifier = populateOrgIdentifier(identifier);
-        conclaveOrgProfile.identifier(organisationIdentifier);
+        conclaveOrgProfile.setIdentifier(organisationIdentifier);
 
         OrganisationDetail organisationDetail = populateOrgDetail(ciiResponse, org);
-        conclaveOrgProfile.detail(organisationDetail);
+        conclaveOrgProfile.setDetail(organisationDetail);
 
         return conclaveOrgProfile;
     }

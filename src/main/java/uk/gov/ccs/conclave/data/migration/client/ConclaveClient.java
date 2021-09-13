@@ -48,10 +48,9 @@ public class ConclaveClient {
     }
 
     public Integer getOrganisationRoleId(final String organisationId, final String roleName) throws ApiException {
-        LOGGER.info("Getting roleId for the Organisation role.");
+        LOGGER.info("Getting roleId for the Org role.");
         List<OrganisationRole> roles = orgApi.organisationsOrganisationIdRolesGet(organisationId);
-        int roleId = roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).collect(Collectors.toList()).get(0).getRoleId();
-        return roleId;
+        return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).collect(Collectors.toList()).get(0).getRoleId();
 
     }
 
