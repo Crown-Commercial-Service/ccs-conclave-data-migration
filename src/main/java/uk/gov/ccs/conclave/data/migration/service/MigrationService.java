@@ -30,13 +30,9 @@ public class MigrationService {
     public List<Summary> migrate(List<Organisation> organisations) {
         List<Summary> summaries = new ArrayList<>();
         for (Organisation org : organisations) {
-            String organisationId;
             try {
-
-                organisationId = organisationService.migrateOrganisation(org);
-                if (organisationId != null) {
-                    summaries.add(summaryService.buildSummaryWithStatus(org, 200));
-                }
+                organisationService.migrateOrganisation(org);
+                summaries.add(summaryService.buildSummaryWithStatus(org, 200));
 
             } catch (ApiException e) {
                 summaryService.logError(org, CII_ORG_ERROR_MESSAGE, e);
