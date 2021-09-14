@@ -30,21 +30,38 @@ public class OrganisationService {
     public String migrateOrganisation(Organisation org) throws ApiException, uk.gov.ccs.swagger.sso.ApiException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
         String organisationId = migrateOrgToConclave(ciiResponse, org);
-        conclaveClient.createOrganisationContact(organisationId, populateContact(ciiResponse));
+        migrateOrgContact(ciiResponse, organisationId);
         return organisationId;
     }
 
-    private ContactRequestInfo populateContact(OrgMigration ciiResponse) {
+    private void migrateOrgContact(OrgMigration ciiResponse, String organisationId) throws uk.gov.ccs.swagger.sso.ApiException {
         ContactPoint contactPoint = ciiResponse.getContactPoint();
+        if (isOrgContactDetailPresent(contactPoint)) {
+            conclaveClient.createOrganisationContact(organisationId, populateContact(contactPoint));
+        }
+    }
+
+    private boolean isOrgContactDetailPresent(ContactPoint contactPoint) {
+        return (!contactPoint.getName().isEmpty()
+                || !contactPoint.getEmail().isEmpty()
+                || !contactPoint.getTelephone().isEmpty()
+                || !contactPoint.getFaxNumber().isEmpty()
+                || !contactPoint.getUri().isEmpty());
+    }
+
+    private ContactRequestInfo populateContact(ContactPoint contactPoint) {
+
         ContactRequestInfo contactRequestInfo = new ContactRequestInfo();
+        contactRequestInfo.setContactPointName(contactPoint.getName());
         List<ContactRequestDetail> contacts = new ArrayList<>();
-        contacts.add(createContact("name", contactPoint.getName()));
-        contacts.add(createContact("email", contactPoint.getEmail()));
-        contacts.add(createContact("telephone", contactPoint.getTelephone()));
-        contacts.add(createContact("faxNumber", contactPoint.getFaxNumber()));
-        contacts.add(createContact("uri", contactPoint.getUri()));
+        contacts.add(createContact("EMAIL", contactPoint.getEmail()));
+        contacts.add(createContact("PHONE", contactPoint.getTelephone()));
+        contacts.add(createContact("FAX", contactPoint.getFaxNumber()));
+        contacts.add(createContact("WEB_ADDRESS", contactPoint.getUri()));
         contactRequestInfo.setContacts(contacts);
+
         return contactRequestInfo;
+
     }
 
     private ContactRequestDetail createContact(String name, String value) {
@@ -70,13 +87,13 @@ public class OrganisationService {
         OrganisationProfileInfo conclaveOrgProfile = new OrganisationProfileInfo();
 
         OrganisationAddress organisationAddress = populateOrgAddress(address);
-        conclaveOrgProfile.address(organisationAddress);
+        conclaveOrgProfile.setAddress(organisationAddress);
 
         OrganisationIdentifier organisationIdentifier = populateOrgIdentifier(identifier);
-        conclaveOrgProfile.identifier(organisationIdentifier);
+        conclaveOrgProfile.setIdentifier(organisationIdentifier);
 
         OrganisationDetail organisationDetail = populateOrgDetail(ciiResponse, org);
-        conclaveOrgProfile.detail(organisationDetail);
+        conclaveOrgProfile.setDetail(organisationDetail);
 
         return conclaveOrgProfile;
     }
