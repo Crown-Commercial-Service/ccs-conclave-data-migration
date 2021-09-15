@@ -25,7 +25,9 @@ public class Org {
 
     private String orgRoles;
 
-    private String status;
+    private Integer status;
+
+    private String statusDescription;
 
     @OneToMany(mappedBy="org")
     private Set<User> users;

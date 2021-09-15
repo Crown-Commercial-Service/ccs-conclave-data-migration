@@ -36,7 +36,9 @@ public class User {
 
     private String userRoles;
 
-    private String status;
+    private Integer status;
+
+    private String statusDescription;
 
     @ManyToOne
     @JoinColumn(name="org_id", nullable=false)

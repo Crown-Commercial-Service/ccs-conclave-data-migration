@@ -3,12 +3,19 @@ package uk.gov.ccs.conclave.data.migration.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
+import uk.gov.ccs.conclave.data.migration.domain.Report;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
+import uk.gov.ccs.conclave.data.migration.repository.ReportRepository;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.Status;
 import uk.gov.ccs.swagger.dataMigration.model.Summary;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SummaryService {
@@ -21,21 +28,31 @@ public class SummaryService {
 
     private final OrganisationRepository organisationRepository;
 
-    public SummaryService(OrganisationRepository organisationRepository) {
+    private final ReportRepository reportRepository;
+
+    public SummaryService(OrganisationRepository organisationRepository, ReportRepository reportRepository) {
         this.organisationRepository = organisationRepository;
+        this.reportRepository = reportRepository;
     }
 
-    public void logError(Organisation organisation, String message, Exception exception) {
-        LOGGER.error(message + exception.getMessage());
+    private static long userCount(Organisation o) {
+        return o.getUser() != null ? o.getUser().size() : 0;
+    }
+
+    public void logError(Organisation organisation, String message, Integer statusCode) {
+        LOGGER.error(message);
 
         Org org = new Org();
         org.setIdentifierId(organisation.getIdentifierId());
         org.setSchemeId(organisation.getSchemeId());
         org.setRightToBuy(organisation.isRightToBuy());
-        if (organisation.getOrgRoles() != null) {
-            org.setOrgRoles(StringUtils.arrayToCommaDelimitedString(organisation.getOrgRoles().toArray()));
+        var orgRoles = organisation.getOrgRoles();
+        if (null != orgRoles) {
+            var roles = orgRoles.stream().map(OrgRoles::getName).collect(Collectors.toList());
+            org.setOrgRoles(String.join(",", roles));
         }
-        org.setStatus(message + exception.getMessage());
+        org.setStatus(statusCode);
+        org.setStatusDescription(message);
         organisationRepository.save(org);
 
     }
@@ -93,5 +110,19 @@ public class SummaryService {
         }
         summary.addStatusItem(status);
         return summary;
+    }
+
+    public void generateReport(LocalDateTime startTime, LocalDateTime endTime, List<Organisation> organisations) {
+        Report report = new Report();
+        report.setStartTime(startTime);
+        report.setEndTime(endTime);
+        report.setDuration(ChronoUnit.MILLIS.between(startTime, endTime));
+        report.setTotalOrganisations(organisations.size());
+
+        long userCount = organisations.stream().mapToLong(SummaryService::userCount).sum();
+        report.setTotalUsers(userCount);
+        reportRepository.save(report);
+
+
     }
 }

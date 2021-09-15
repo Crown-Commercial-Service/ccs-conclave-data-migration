@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Report")
@@ -12,37 +13,24 @@ import javax.persistence.*;
 public class Report {
 
     @Id
-    @Column(name = "id", updatable = false)
+    @Column(name = "report_id", updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long reportId;
 
-    private String errorDescription;
+    private long totalOrganisations;
 
-    private long errorCode;
+    private long totalUsers;
 
-    private String title;
+    private LocalDateTime startTime;
 
-    private long schemeId;
+    private LocalDateTime endTime;
 
-    private Boolean rightToBuy;
+    private double duration;
 
-    private String lastName;
+    private String status;
 
-    private long identifierId;
+    private long processedUsers;
 
-    private String firstName;
-
-    private String email;
-
-    private String contactSocial;
-
-    private String contactPhone;
-
-    private String contactMobile;
-
-    private String contactFax;
-
-    private String contactEmail;
-
+    private long failedUsers;
 
 }
