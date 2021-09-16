@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.domain.Report;
 import uk.gov.ccs.conclave.data.migration.repository.ReportRepository;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
+import uk.gov.ccs.swagger.dataMigration.model.Status;
+import uk.gov.ccs.swagger.dataMigration.model.Summary;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -33,6 +35,17 @@ public class ReportService {
         report.setTotalUsers(userCount);
         reportRepository.save(report);
 
+    }
 
+    public Summary buildSummary(Organisation org, Status status) {
+        Summary summary = new Summary();
+        summary.setIdentifierId(org.getIdentifierId());
+        summary.setSchemeId(org.getSchemeId());
+        summary.setRightToBuy(org.isRightToBuy());
+        if (null != org.getOrgRoles()) {
+            summary.setOrgRoles(org.getOrgRoles());
+        }
+        summary.addStatusItem(status);
+        return summary;
     }
 }

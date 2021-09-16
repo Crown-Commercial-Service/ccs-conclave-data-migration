@@ -32,7 +32,6 @@ public class ErrorService {
 
     public void logError(Organisation organisation, String message, Integer statusCode) {
         LOGGER.error(message);
-
         //saveError(organisation, message, statusCode);
 
     }
@@ -51,61 +50,5 @@ public class ErrorService {
         org.setStatusDescription(message);
         organisationRepository.save(org);
     }
-
-    public Summary buildSummaryWithStatus(Organisation org, int statusCode) {
-        Summary summary;
-        switch (statusCode) {
-            case 200:
-                summary = buildSummary(org, Status._200_OK);
-                break;
-            case 201:
-                summary = buildSummary(org, Status._201_CREATED);
-                break;
-            case 400:
-                summary = buildSummary(org, Status._400_BAD_REQUEST);
-                break;
-            case 401:
-                summary = buildSummary(org, Status._401_UNATHORIZED);
-                break;
-            case 403:
-                summary = buildSummary(org, Status._403_FORBIDDEN);
-                break;
-            case 404:
-                summary = buildSummary(org, Status._404_NOT_FOUND);
-                break;
-            case 409:
-                summary = buildSummary(org, Status._409_DUPLICATE_RESOURCE);
-                break;
-            case 429:
-                summary = buildSummary(org, Status._429_TOO_MANY_REQUESTS);
-                break;
-            case 500:
-                summary = buildSummary(org, Status._500_INTERNAL_SERVER_ERROR);
-                break;
-            case 503:
-                summary = buildSummary(org, Status._503_SERVICE_UNAVAILABLE_LIMIT_EXCEEDED);
-                break;
-            case 504:
-                summary = buildSummary(org, Status._504_GATEWAY_TIMEOUT);
-                break;
-            default:
-                summary = buildSummary(org, Status._505_HTTP_VERSION_NOT_SUPPORTED);
-                break;
-        }
-        return summary;
-    }
-
-    private Summary buildSummary(Organisation org, Status status) {
-        Summary summary = new Summary();
-        summary.setIdentifierId(org.getIdentifierId());
-        summary.setSchemeId(org.getSchemeId());
-        summary.setRightToBuy(org.isRightToBuy());
-        if (null != org.getOrgRoles()) {
-            summary.setOrgRoles(org.getOrgRoles());
-        }
-        summary.addStatusItem(status);
-        return summary;
-    }
-
 
 }
