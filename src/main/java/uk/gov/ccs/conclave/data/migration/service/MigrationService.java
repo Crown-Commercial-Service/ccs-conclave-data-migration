@@ -27,16 +27,9 @@ public class MigrationService {
 
     public void migrate(List<Organisation> organisations) {
         LocalDateTime startTime = LocalDateTime.now();
-        try {
-            for (Organisation org : organisations) {
-                organisationService.migrateOrganisation(org);
-            }
-            LocalDateTime endTime = LocalDateTime.now();
-            //reportService.generateReport(startTime, endTime, organisations);
-
-        } catch (Exception e) {
-
-        }
+        organisations.forEach(organisationService::migrateOrganisation);
+        LocalDateTime endTime = LocalDateTime.now();
+        reportService.generateReport(startTime, endTime, organisations);
 
     }
 }

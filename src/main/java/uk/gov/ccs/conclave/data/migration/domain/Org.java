@@ -29,7 +29,7 @@ public class Org {
 
     private String statusDescription;
 
-    @OneToMany(mappedBy="org")
+    @OneToMany(mappedBy = "org", cascade = CascadeType.ALL)
     private Set<User> users;
 
 }

@@ -4,12 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
+import uk.gov.ccs.conclave.data.migration.domain.User;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
-import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.dataMigration.model.Status;
-import uk.gov.ccs.swagger.dataMigration.model.Summary;
+import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
+import uk.gov.ccs.swagger.dataMigration.model.*;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,19 +26,60 @@ public class ErrorService {
 
     private final OrganisationRepository organisationRepository;
 
+    private final UserRepository userRepository;
 
-    public ErrorService(OrganisationRepository organisationRepository) {
+
+    public ErrorService(OrganisationRepository organisationRepository, UserRepository userRepository) {
         this.organisationRepository = organisationRepository;
+        this.userRepository = userRepository;
     }
 
 
     public void logError(Organisation organisation, String message, Integer statusCode) {
         LOGGER.error(message);
-        //saveError(organisation, message, statusCode);
+        saveError(organisation, message, statusCode);
 
     }
 
     private void saveError(Organisation organisation, String message, Integer statusCode) {
+        Org org = populateOrganisationWithStatus(organisation, message, statusCode);
+        Org savedOrg = organisationRepository.save(org);
+        List<uk.gov.ccs.swagger.dataMigration.model.User> usersDto = organisation.getUser();
+        if (null != usersDto) {
+            Set<User> usersSet = populateUsersWithStatus(message, statusCode, usersDto, savedOrg);
+            userRepository.saveAll(usersSet);
+        }
+    }
+
+    private Set<User> populateUsersWithStatus(String message, Integer statusCode, List<uk.gov.ccs.swagger.dataMigration.model.User> usersDto, Org org) {
+        Set<User> userList = new HashSet<>();
+        usersDto.forEach(u -> {
+            User user = new User();
+            user.setFirstName(u.getFirstName());
+            user.setLastName(u.getLastName());
+            user.setTitle(u.getTitle());
+            user.setEmail(u.getEmail());
+            var userRoles = u.getUserRoles();
+            if (null != userRoles) {
+                var roles = userRoles.stream().map(UserRoles::getName).collect(Collectors.toList());
+                user.setUserRoles(String.join(",", roles));
+            }
+            user.setContactEmail(u.getContactEmail());
+            user.setContactMobile(u.getContactMobile());
+            user.setContactPhone(u.getContactPhone());
+            user.setContactFax(u.getContactFax());
+            user.setContactSocial(u.getContactSocial());
+            user.setStatus(statusCode);
+            user.setStatusDescription(message);
+            user.setOrg(org);
+            userList.add(user);
+
+        });
+        return userList;
+
+    }
+
+    private Org populateOrganisationWithStatus(Organisation organisation, String message, Integer statusCode) {
         Org org = new Org();
         org.setIdentifierId(organisation.getIdentifierId());
         org.setSchemeId(organisation.getSchemeId());
@@ -48,7 +91,7 @@ public class ErrorService {
         }
         org.setStatus(statusCode);
         org.setStatusDescription(message);
-        organisationRepository.save(org);
+        return org;
     }
 
 }
