@@ -14,7 +14,7 @@ import uk.gov.ccs.swagger.sso.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.ccs.conclave.data.migration.service.SummaryService.*;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
 @Service
 public class OrganisationService {
@@ -23,19 +23,26 @@ public class OrganisationService {
 
     private final ConclaveClient conclaveClient;
 
-    final SummaryService summaryService;
+    final ErrorService errorService;
 
-    public OrganisationService(CiiOrgClient ciiOrgClient, ConclaveClient conclaveClient, SummaryService summaryService) {
+    public OrganisationService(CiiOrgClient ciiOrgClient, ConclaveClient conclaveClient, ErrorService errorService) {
         this.ciiOrgClient = ciiOrgClient;
         this.conclaveClient = conclaveClient;
-        this.summaryService = summaryService;
+        this.errorService = errorService;
     }
 
 
     public String migrateOrganisation(Organisation org) {
         OrgMigration ciiResponse = migrateOrgToCii(org);
-        String organisationId = migrateOrgToConclave(ciiResponse, org);
-        migrateOrgContact(org, ciiResponse, organisationId);
+        String organisationId = null;
+        if (null != ciiResponse) {
+            organisationId = migrateOrgToConclave(ciiResponse, org);
+
+            if (organisationId != null) {
+                migrateOrgContact(org, ciiResponse, organisationId);
+            }
+        }
+
         return organisationId;
     }
 
@@ -45,7 +52,7 @@ public class OrganisationService {
             try {
                 conclaveClient.createOrganisationContact(organisationId, populateContact(contactPoint));
             } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-                summaryService.logError(org, SSO_ORG_CONTACT_ERROR_MESSAGE + e.getMessage(), e.getCode());
+                errorService.logError(org, SSO_ORG_CONTACT_ERROR_MESSAGE + e.getMessage(), e.getCode());
             }
         }
     }
@@ -86,7 +93,7 @@ public class OrganisationService {
             ciiOrganisation = ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
 
         } catch (ApiException e) {
-            summaryService.logError(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
+            errorService.logError(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
 
         }
         return ciiOrganisation;
@@ -99,7 +106,7 @@ public class OrganisationService {
             conclaveOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-            summaryService.logError(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
+            errorService.logError(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
         }
         return conclaveOrgId;
     }

@@ -4,23 +4,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
-import uk.gov.ccs.conclave.data.migration.domain.Report;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
-import uk.gov.ccs.conclave.data.migration.repository.ReportRepository;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.Status;
 import uk.gov.ccs.swagger.dataMigration.model.Summary;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SummaryService {
+public class ErrorService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SummaryService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorService.class);
 
     public static final String CII_ORG_ERROR_MESSAGE = "Error while creating CII organisation. ";
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
@@ -29,20 +24,20 @@ public class SummaryService {
 
     private final OrganisationRepository organisationRepository;
 
-    private final ReportRepository reportRepository;
 
-    public SummaryService(OrganisationRepository organisationRepository, ReportRepository reportRepository) {
+    public ErrorService(OrganisationRepository organisationRepository) {
         this.organisationRepository = organisationRepository;
-        this.reportRepository = reportRepository;
     }
 
-    private static long userCount(Organisation o) {
-        return o.getUser() != null ? o.getUser().size() : 0;
-    }
 
     public void logError(Organisation organisation, String message, Integer statusCode) {
         LOGGER.error(message);
 
+        //saveError(organisation, message, statusCode);
+
+    }
+
+    private void saveError(Organisation organisation, String message, Integer statusCode) {
         Org org = new Org();
         org.setIdentifierId(organisation.getIdentifierId());
         org.setSchemeId(organisation.getSchemeId());
@@ -55,7 +50,6 @@ public class SummaryService {
         org.setStatus(statusCode);
         org.setStatusDescription(message);
         organisationRepository.save(org);
-
     }
 
     public Summary buildSummaryWithStatus(Organisation org, int statusCode) {
@@ -113,17 +107,5 @@ public class SummaryService {
         return summary;
     }
 
-    public void generateReport(LocalDateTime startTime, LocalDateTime endTime, List<Organisation> organisations) {
-        Report report = new Report();
-        report.setStartTime(startTime);
-        report.setEndTime(endTime);
-        report.setDuration(ChronoUnit.MILLIS.between(startTime, endTime));
-        report.setTotalOrganisations(organisations.size());
 
-        long userCount = organisations.stream().mapToLong(SummaryService::userCount).sum();
-        report.setTotalUsers(userCount);
-        reportRepository.save(report);
-
-
-    }
 }
