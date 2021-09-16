@@ -28,27 +28,13 @@ public class MigrationService {
     }
 
 
-    public List<Summary> migrate(List<Organisation> organisations) {
+    public void migrate(List<Organisation> organisations) {
         LocalDateTime startTime = LocalDateTime.now();
-        List<Summary> summaries = new ArrayList<>();
         for (Organisation org : organisations) {
-            try {
-                organisationService.migrateOrganisation(org);
-                summaries.add(summaryService.buildSummaryWithStatus(org, 200));
-
-            } catch (ApiException e) {
-                summaryService.logError(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
-                summaries.add(summaryService.buildSummaryWithStatus(org, e.getCode()));
-
-            } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-                summaryService.logError(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
-                summaries.add(summaryService.buildSummaryWithStatus(org, e.getCode()));
-            }
-
+            organisationService.migrateOrganisation(org);
         }
         LocalDateTime endTime = LocalDateTime.now();
         summaryService.generateReport(startTime, endTime, organisations);
-        return summaries;
     }
 
 

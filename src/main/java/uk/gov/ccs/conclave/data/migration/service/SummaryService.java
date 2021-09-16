@@ -24,6 +24,7 @@ public class SummaryService {
 
     public static final String CII_ORG_ERROR_MESSAGE = "Error while creating CII organisation. ";
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
+    public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
 
 
     private final OrganisationRepository organisationRepository;
