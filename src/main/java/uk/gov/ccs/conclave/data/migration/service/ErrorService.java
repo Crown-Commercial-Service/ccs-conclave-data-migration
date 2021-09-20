@@ -61,8 +61,7 @@ public class ErrorService {
             user.setEmail(u.getEmail());
             var userRoles = u.getUserRoles();
             if (null != userRoles) {
-                var roles = userRoles.stream().map(UserRoles::getName).collect(Collectors.toList());
-                user.setUserRoles(String.join(",", roles));
+                user.setUserRoles(userRolesAsString(userRoles));
             }
             user.setContactEmail(u.getContactEmail());
             user.setContactMobile(u.getContactMobile());
@@ -86,12 +85,22 @@ public class ErrorService {
         org.setRightToBuy(organisation.isRightToBuy());
         var orgRoles = organisation.getOrgRoles();
         if (null != orgRoles) {
-            var roles = orgRoles.stream().map(OrgRoles::getName).collect(Collectors.toList());
-            org.setOrgRoles(String.join(",", roles));
+            org.setOrgRoles(orgRolesAsString(orgRoles));
         }
         org.setStatus(statusCode);
         org.setStatusDescription(message);
         return org;
     }
+
+    private String orgRolesAsString(List<OrgRoles> roles) {
+        List<String> rolesList = roles.stream().map(OrgRoles::getName).collect(Collectors.toList());
+        return String.join(",", rolesList);
+    }
+
+    private String userRolesAsString(List<UserRoles> userRoles) {
+        var rolesList = userRoles.stream().map(UserRoles::getName).collect(Collectors.toList());
+        return String.join(",", rolesList);
+    }
+
 
 }
