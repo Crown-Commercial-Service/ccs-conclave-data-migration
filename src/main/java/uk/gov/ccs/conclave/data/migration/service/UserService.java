@@ -43,27 +43,40 @@ public class UserService {
 
     public void migrateUsers(Organisation organisation, String organisationId) {
         List<User> users = organisation.getUser();
-        Integer identityProviderId;
         Org org = null;
-        try {
-            identityProviderId = conclaveUserClient.getIdentityProviderId(organisationId);
+        if (users != null) {
+
+            Integer identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, organisation);
+
             for (User user : users) {
                 UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, organisationId, identityProviderId);
                 try {
                     conclaveUserClient.createUser(userDto);
                 } catch (ApiException e) {
-                    if (org == null) {
-                        org = errorService.saveOrgDetailsWithStatusCode(organisation, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode());
-                    }
-                    errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), org);
+                    org = handleUserMigrationFailure(organisation, org, user, e);
                 }
             }
 
-            errorService.saveOrgDetailsWithStatusCode(organisation, "Success", 200);
+            errorService.logWithStatus(organisation, "Success", 200);
+        }
+    }
 
+    private Org handleUserMigrationFailure(Organisation organisation, Org org, User user, ApiException e) {
+        if (org == null) {
+            org = errorService.saveOrgDetailsWithStatusCode(organisation, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode());
+        }
+        errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), org);
+        return org;
+    }
+
+    private Integer getIdentityProviderIdOfOrganisation(String organisationId, Organisation organisation) {
+        Integer identityProviderId = null;
+        try {
+            identityProviderId = conclaveUserClient.getIdentityProviderId(organisationId);
         } catch (ApiException e) {
             errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE + e.getMessage(), e.getCode());
-        }
 
+        }
+        return identityProviderId;
     }
 }
