@@ -44,21 +44,22 @@ public class UserService {
     public void migrateUsers(Organisation organisation, String organisationId) {
         List<User> users = organisation.getUser();
         Org org = null;
-        if (users != null) {
-
-            Integer identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, organisation);
-
-            for (User user : users) {
-                UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, organisationId, identityProviderId);
-                try {
-                    conclaveUserClient.createUser(userDto);
-                } catch (ApiException e) {
-                    org = handleUserMigrationFailure(organisation, org, user, e);
-                }
-            }
-
-            errorService.logWithStatus(organisation, "Success", 200);
+        if (users == null) {
+            return;
         }
+
+        Integer identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, organisation);
+
+        for (User user : users) {
+            UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, organisationId, identityProviderId);
+            try {
+                conclaveUserClient.createUser(userDto);
+            } catch (ApiException e) {
+                org = handleUserMigrationFailure(organisation, org, user, e);
+            }
+        }
+
+        errorService.logWithStatus(organisation, "Success", 200);
     }
 
     private Org handleUserMigrationFailure(Organisation organisation, Org org, User user, ApiException e) {
