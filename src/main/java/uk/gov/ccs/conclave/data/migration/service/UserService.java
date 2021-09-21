@@ -1,9 +1,9 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.domain.Org;
+import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
@@ -12,15 +12,19 @@ import uk.gov.ccs.swagger.sso.model.UserTitle;
 
 import java.util.List;
 
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_IDENTITY_PROVIDER_ERROR_MESSAGE;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
+
 @Service
 public class UserService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-
     private final ConclaveClient conclaveUserClient;
 
-    public UserService(ConclaveClient conclaveUserClient) {
+    private final ErrorService errorService;
+
+    public UserService(ConclaveClient conclaveUserClient, ErrorService errorService) {
         this.conclaveUserClient = conclaveUserClient;
+        this.errorService = errorService;
     }
 
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId) {
@@ -37,8 +41,10 @@ public class UserService {
         return userDto;
     }
 
-    public void migrateUsers(List<User> users, String organisationId) {
+    public void migrateUsers(Organisation organisation, String organisationId) {
+        List<User> users = organisation.getUser();
         Integer identityProviderId;
+        Org org = null;
         try {
             identityProviderId = conclaveUserClient.getIdentityProviderId(organisationId);
             for (User user : users) {
@@ -46,13 +52,17 @@ public class UserService {
                 try {
                     conclaveUserClient.createUser(userDto);
                 } catch (ApiException e) {
-                    LOGGER.error("Error while migrating user with user Id: "
-                            + user.getFirstName()
-                            + " to conclave. Skipping to next user. " + e.getMessage());
+                    if (org == null) {
+                        org = errorService.saveOrgDetailsWithStatusCode(organisation, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode());
+                    }
+                    errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), org);
                 }
             }
+
+            errorService.saveOrgDetailsWithStatusCode(organisation, "Success", 200);
+
         } catch (ApiException e) {
-            LOGGER.error("Error while getting Identity provider for the organisation. " + e.getMessage());
+            errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE + e.getMessage(), e.getCode());
         }
 
     }

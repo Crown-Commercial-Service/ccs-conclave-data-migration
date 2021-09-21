@@ -52,7 +52,7 @@ public class OrganisationService {
             try {
                 conclaveClient.createOrganisationContact(organisationId, populateContact(contactPoint));
             } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-                errorService.logError(org, SSO_ORG_CONTACT_ERROR_MESSAGE + e.getMessage(), e.getCode());
+                errorService.logWithStatus(org, SSO_ORG_CONTACT_ERROR_MESSAGE + e.getMessage(), e.getCode());
             }
         }
     }
@@ -93,7 +93,7 @@ public class OrganisationService {
             ciiOrganisation = ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
 
         } catch (ApiException e) {
-            errorService.logError(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
+            errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
 
         }
         return ciiOrganisation;
@@ -106,7 +106,7 @@ public class OrganisationService {
             conclaveOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-            errorService.logError(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
+            errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
         }
         return conclaveOrgId;
     }
