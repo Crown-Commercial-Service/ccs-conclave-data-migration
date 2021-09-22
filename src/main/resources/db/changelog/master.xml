@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="janice.alvares (generated)" id="1632300211382-1">
+        <createSequence sequenceName="org_org_id_seq"/>
+    </changeSet>
+    <changeSet author="janice.alvares (generated)" id="1632300211382-2">
+        <createSequence sequenceName="report_report_id_seq"/>
+    </changeSet>
+    <changeSet author="janice.alvares (generated)" id="1632300211382-3">
+        <createSequence sequenceName="users_user_id_seq"/>
+    </changeSet>
+    <changeSet author="janice.alvares (generated)" id="1632300211382-4">
+        <createTable tableName="org">
+            <column autoIncrement="true" name="org_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="org_pkey"/>
+            </column>
+            <column name="identifier_id" type="VARCHAR(255)"/>
+            <column name="org_roles" type="VARCHAR(255)"/>
+            <column name="right_to_buy" type="BOOL"/>
+            <column name="scheme_id" type="VARCHAR(255)"/>
+            <column name="status" type="INT"/>
+            <column name="status_description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="janice.alvares (generated)" id="1632300211382-5">
+        <createTable tableName="report">
+            <column autoIncrement="true" name="report_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="report_pkey"/>
+            </column>
+            <column name="duration" type="FLOAT8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="failed_users" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processed_users" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="total_organisations" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_users" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="janice.alvares (generated)" id="1632300211382-6">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="user_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="contact_email" type="VARCHAR(255)"/>
+            <column name="contact_fax" type="VARCHAR(255)"/>
+            <column name="contact_mobile" type="VARCHAR(255)"/>
+            <column name="contact_phone" type="VARCHAR(255)"/>
+            <column name="contact_social" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="status" type="INT"/>
+            <column name="status_description" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="user_roles" type="VARCHAR(255)"/>
+            <column name="org_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="janice.alvares (generated)" id="1632300211382-7">
+        <addForeignKeyConstraint baseColumnNames="org_id" baseTableName="users" constraintName="fkhvruj9y6lvjrje2lvgbftekbw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="org_id" referencedTableName="org"/>
+    </changeSet>
+</databaseChangeLog>
