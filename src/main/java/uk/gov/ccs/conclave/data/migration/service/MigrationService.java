@@ -1,46 +1,36 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class MigrationService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MigrationService.class);
-
     final OrganisationService organisationService;
+
     final UserService userService;
 
-    public MigrationService(OrganisationService organisationService, UserService userService) {
+    final ErrorService errorService;
+
+    final ReportService reportService;
+
+    public MigrationService(OrganisationService organisationService, UserService userService, ErrorService errorService, ReportService reportService) {
         this.organisationService = organisationService;
         this.userService = userService;
+        this.errorService = errorService;
+        this.reportService = reportService;
     }
 
 
     public void migrate(List<Organisation> organisations) {
-        for (Organisation org : organisations) {
-            String organisationId;
-            try {
+        LocalDateTime startTime = LocalDateTime.now();
+        organisations.forEach(organisationService::migrateOrganisation);
+        LocalDateTime endTime = LocalDateTime.now();
+        reportService.generateReport(startTime, endTime, organisations);
 
-                organisationId = organisationService.migrateOrganisation(org);
-
-            } catch (ApiException e) {
-                LOGGER.error("Error while creating CII organisation for organisation with identifier "
-                        + ". Skipping to next organisation. "
-                        + e.getMessage());
-
-            } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-                LOGGER.error("Error while creating Organisation in conclave with identifier "
-                        + ". Skipping to next organisation. "
-                        + e.getMessage());
-            }
-
-        }
     }
 }
 

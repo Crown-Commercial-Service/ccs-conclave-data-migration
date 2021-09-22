@@ -26,9 +26,6 @@ class CsvHelperTest {
     }
 
     private void validateFields(User u) {
-        assertNotNull(u.getIdentifierId());
-        assertNotNull(u.getSchemeId());
-        assertNotNull(u.getRightToBuy());
         assertNotNull(u.getTitle());
         assertNotNull(u.getFirstName());
         assertNotNull(u.getLastName());

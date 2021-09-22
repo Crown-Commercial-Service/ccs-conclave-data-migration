@@ -1,9 +1,9 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.domain.Org;
+import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
@@ -12,15 +12,19 @@ import uk.gov.ccs.swagger.sso.model.UserTitle;
 
 import java.util.List;
 
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_IDENTITY_PROVIDER_ERROR_MESSAGE;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
+
 @Service
 public class UserService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-
     private final ConclaveClient conclaveUserClient;
 
-    public UserService(ConclaveClient conclaveUserClient) {
+    private final ErrorService errorService;
+
+    public UserService(ConclaveClient conclaveUserClient, ErrorService errorService) {
         this.conclaveUserClient = conclaveUserClient;
+        this.errorService = errorService;
     }
 
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId) {
@@ -37,23 +41,43 @@ public class UserService {
         return userDto;
     }
 
-    public void migrateUsers(List<User> users, String organisationId) {
-        Integer identityProviderId;
-        try {
-            identityProviderId = conclaveUserClient.getIdentityProviderId(organisationId);
-            for (User user : users) {
-                UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, organisationId, identityProviderId);
-                try {
-                    conclaveUserClient.createUser(userDto);
-                } catch (ApiException e) {
-                    LOGGER.error("Error while migrating user with user Id: "
-                            + user.getFirstName()
-                            + " to conclave. Skipping to next user. " + e.getMessage());
-                }
-            }
-        } catch (ApiException e) {
-            LOGGER.error("Error while getting Identity provider for the organisation. " + e.getMessage());
+    public void migrateUsers(Organisation organisation, String organisationId) {
+        List<User> users = organisation.getUser();
+        Org org = null;
+        if (users == null) {
+            return;
         }
 
+        Integer identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, organisation);
+
+        for (User user : users) {
+            UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, organisationId, identityProviderId);
+            try {
+                conclaveUserClient.createUser(userDto);
+            } catch (ApiException e) {
+                org = handleUserMigrationFailure(organisation, org, user, e);
+            }
+        }
+
+        errorService.logWithStatus(organisation, "Success", 200);
+    }
+
+    private Org handleUserMigrationFailure(Organisation organisation, Org org, User user, ApiException e) {
+        if (org == null) {
+            org = errorService.saveOrgDetailsWithStatusCode(organisation, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode());
+        }
+        errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), org);
+        return org;
+    }
+
+    private Integer getIdentityProviderIdOfOrganisation(String organisationId, Organisation organisation) {
+        Integer identityProviderId = null;
+        try {
+            identityProviderId = conclaveUserClient.getIdentityProviderId(organisationId);
+        } catch (ApiException e) {
+            errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE + e.getMessage(), e.getCode());
+
+        }
+        return identityProviderId;
     }
 }
