@@ -9,25 +9,26 @@ import java.util.List;
 @Service
 public class MigrationService {
 
-    final OrganisationService organisationService;
+    private final OrganisationService organisationService;
 
-    final UserService userService;
+    private final UserService userService;
 
-    final ErrorService errorService;
+    private final ReportService reportService;
 
-    final ReportService reportService;
-
-    public MigrationService(OrganisationService organisationService, UserService userService, ErrorService errorService, ReportService reportService) {
+    public MigrationService(OrganisationService organisationService, UserService userService, ReportService reportService) {
         this.organisationService = organisationService;
         this.userService = userService;
-        this.errorService = errorService;
         this.reportService = reportService;
     }
 
 
     public void migrate(List<Organisation> organisations) {
         LocalDateTime startTime = LocalDateTime.now();
-        organisations.forEach(organisationService::migrateOrganisation);
+        for (Organisation organisation : organisations) {
+            String organisationId = organisationService.migrateOrganisation(organisation);
+
+            userService.migrateUsers(organisation, organisationId);
+        }
         LocalDateTime endTime = LocalDateTime.now();
         reportService.generateReport(startTime, endTime, organisations);
 
