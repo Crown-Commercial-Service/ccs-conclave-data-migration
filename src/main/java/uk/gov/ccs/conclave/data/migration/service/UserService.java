@@ -30,7 +30,7 @@ public class UserService {
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
-        userDto.setTitle(UserTitle.valueOf(user.getTitle()));
+        userDto.setTitle(UserTitle.fromValue(user.getTitle()));
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
