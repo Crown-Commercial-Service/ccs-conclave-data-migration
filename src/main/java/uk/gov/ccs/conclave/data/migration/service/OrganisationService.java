@@ -3,12 +3,16 @@ package uk.gov.ccs.conclave.data.migration.service;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.cii.model.Address;
 import uk.gov.ccs.swagger.cii.model.Identifier;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.sso.model.*;
+import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
+import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
+import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
+import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
@@ -31,18 +35,26 @@ public class OrganisationService {
     }
 
 
-    public String migrateOrganisation(Organisation org) {
+    public OrgMigrationResponse migrateOrganisation(Organisation org) {
         OrgMigration ciiResponse = migrateOrgToCii(org);
-        String organisationId = null;
-        if (null != ciiResponse) {
-            organisationId = migrateOrgToConclave(ciiResponse, org);
+        String ssoOrgId;
+        Integer identityProviderId;
+        OrgMigrationResponse response = null;
+        if (null != ciiResponse && ciiResponse.getOrganisationId() != null && ciiResponse.getIdentifier() != null) {
+            ssoOrgId = migrateOrgToConclave(ciiResponse, org);
 
-            if (organisationId != null) {
-                contactService.migrateOrgContact(org, ciiResponse, organisationId);
+            if (ssoOrgId != null) {
+                contactService.migrateOrgContact(org, ciiResponse, ssoOrgId);
+            }
+            identityProviderId = getIdentityProviderIdOfOrganisation(ssoOrgId, org);
+
+            if (identityProviderId != null) {
+                Org migratedOrg = errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200);
+                response = new OrgMigrationResponse(ssoOrgId, identityProviderId, migratedOrg);
             }
         }
 
-        return organisationId;
+        return response;
     }
 
 
@@ -111,5 +123,15 @@ public class OrganisationService {
         return organisationAddress;
     }
 
+    private Integer getIdentityProviderIdOfOrganisation(String organisationId, Organisation organisation) {
+        Integer identityProviderId = null;
+        try {
+            identityProviderId = conclaveClient.getIdentityProviderId(organisationId);
+        } catch (uk.gov.ccs.swagger.sso.ApiException e) {
+            errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE + e.getMessage(), e.getCode());
+
+        }
+        return identityProviderId;
+    }
 
 }

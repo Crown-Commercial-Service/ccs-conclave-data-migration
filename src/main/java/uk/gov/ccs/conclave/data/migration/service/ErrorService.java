@@ -25,7 +25,10 @@ public class ErrorService {
     public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
     public static final String SSO_USER_ERROR_MESSAGE = "Error while creating SSO user. ";
     public static final String SSO_IDENTITY_PROVIDER_ERROR_MESSAGE = "Error while retrieving identity provider of the SSO organisation. ";
-
+    public static final String ORG_MIGRATION_SUCCESS = "Organisation migrated successfully. ";
+    public static final String USER_MIGRATION_SUCCESS = "User migrated successfully. ";
+    public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
+    public static final String MIGRATION_STATUS_COMPLETE = "Completed with no errors. ";
 
     private final OrganisationRepository organisationRepository;
 

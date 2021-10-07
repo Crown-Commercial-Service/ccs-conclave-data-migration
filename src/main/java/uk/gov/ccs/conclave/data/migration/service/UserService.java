@@ -2,8 +2,6 @@ package uk.gov.ccs.conclave.data.migration.service;
 
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
-import uk.gov.ccs.conclave.data.migration.domain.Org;
-import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
@@ -12,8 +10,8 @@ import uk.gov.ccs.swagger.sso.model.UserTitle;
 
 import java.util.List;
 
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_IDENTITY_PROVIDER_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRATION_SUCCESS;
 
 @Service
 public class UserService {
@@ -41,43 +39,21 @@ public class UserService {
         return userDto;
     }
 
-    public void migrateUsers(Organisation organisation, String organisationId) {
-        List<User> users = organisation.getUser();
-        Org org = null;
-        if (users == null) {
-            return;
-        }
-
-        Integer identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, organisation);
-
+    public boolean migrateUsers(List<User> users, OrgMigrationResponse response) {
+        boolean status = true;
         for (User user : users) {
-            UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, organisationId, identityProviderId);
+            UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, response.getOrganisationId(), response.getIdentityProviderId());
             try {
                 conclaveUserClient.createUser(userDto);
+                errorService.saveUserDetailWithStatusCode(user, USER_MIGRATION_SUCCESS, 200, response.getOrganisation());
+
             } catch (ApiException e) {
-                org = handleUserMigrationFailure(organisation, org, user, e);
+                status = false;
+                errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
             }
         }
-
-        errorService.logWithStatus(organisation, "Success", 200);
+        return status;
     }
 
-    private Org handleUserMigrationFailure(Organisation organisation, Org org, User user, ApiException e) {
-        if (org == null) {
-            org = errorService.saveOrgDetailsWithStatusCode(organisation, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode());
-        }
-        errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), org);
-        return org;
-    }
 
-    private Integer getIdentityProviderIdOfOrganisation(String organisationId, Organisation organisation) {
-        Integer identityProviderId = null;
-        try {
-            identityProviderId = conclaveUserClient.getIdentityProviderId(organisationId);
-        } catch (ApiException e) {
-            errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE + e.getMessage(), e.getCode());
-
-        }
-        return identityProviderId;
-    }
 }
