@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_COMPLETE;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_PARTIAL;
+
 @Service
 public class ReportService {
 
@@ -24,12 +27,18 @@ public class ReportService {
         return o.getUser() != null ? o.getUser().size() : 0;
     }
 
-    public void generateReport(LocalDateTime startTime, LocalDateTime endTime, List<Organisation> organisations) {
+    public void generateReport(LocalDateTime startTime, LocalDateTime endTime, List<Organisation> organisations, boolean status) {
         Report report = new Report();
         report.setStartTime(startTime);
         report.setEndTime(endTime);
         report.setDuration(ChronoUnit.MILLIS.between(startTime, endTime));
         report.setTotalOrganisations(organisations.size());
+        if (status) {
+            report.setStatus(MIGRATION_STATUS_COMPLETE);
+        } else {
+            report.setStatus(MIGRATION_STATUS_PARTIAL);
+        }
+
 
         long userCount = organisations.stream().mapToLong(ReportService::userCount).sum();
         report.setTotalUsers(userCount);

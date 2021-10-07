@@ -3,12 +3,16 @@ package uk.gov.ccs.conclave.data.migration.service;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.cii.model.Address;
 import uk.gov.ccs.swagger.cii.model.Identifier;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.sso.model.*;
+import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
+import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
+import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
+import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
@@ -31,18 +35,22 @@ public class OrganisationService {
     }
 
 
-    public String migrateOrganisation(Organisation org) {
+    public OrgMigrationResponse migrateOrganisation(Organisation org) {
         OrgMigration ciiResponse = migrateOrgToCii(org);
-        String organisationId = null;
-        if (null != ciiResponse) {
-            organisationId = migrateOrgToConclave(ciiResponse, org);
-
-            if (organisationId != null) {
-                contactService.migrateOrgContact(org, ciiResponse, organisationId);
-            }
+        OrgMigrationResponse response = null;
+        if (null != ciiResponse && ciiResponse.getOrganisationId() != null && ciiResponse.getIdentifier() != null) {
+            response = migrateOrgToConclave(ciiResponse, org);
         }
+        return response;
+    }
 
-        return organisationId;
+    private OrgMigrationResponse generateOrgMigrationResponseAndSaveSuccess(Organisation org, String ssoOrgId, Integer idp) {
+        OrgMigrationResponse response = null;
+        if (idp != null) {
+            Org migratedOrg = errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200);
+            response = new OrgMigrationResponse(ssoOrgId, idp, migratedOrg);
+        }
+        return response;
     }
 
 
@@ -58,16 +66,22 @@ public class OrganisationService {
         return ciiOrganisation;
     }
 
-    private String migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) {
+    private OrgMigrationResponse migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) {
         OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
-        String conclaveOrgId = null;
+        String ssoOrgId;
+        OrgMigrationResponse response = null;
         try {
-            conclaveOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
+            ssoOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
+            if (ssoOrgId != null) {
+                contactService.migrateOrgContact(org, ciiResponse, ssoOrgId);
+                Integer identityProviderId = getIdentityProviderIdOfOrganisation(ssoOrgId, org);
+                response = generateOrgMigrationResponseAndSaveSuccess(org, ssoOrgId, identityProviderId);
+            }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
             errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
         }
-        return conclaveOrgId;
+        return response;
     }
 
     private OrganisationProfileInfo buildOrgProfileRequest(OrgMigration ciiResponse, Organisation org) {
@@ -111,5 +125,15 @@ public class OrganisationService {
         return organisationAddress;
     }
 
+    private Integer getIdentityProviderIdOfOrganisation(String organisationId, Organisation organisation) {
+        Integer identityProviderId = null;
+        try {
+            identityProviderId = conclaveClient.getIdentityProviderId(organisationId);
+        } catch (uk.gov.ccs.swagger.sso.ApiException e) {
+            errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE + e.getMessage(), e.getCode());
+
+        }
+        return identityProviderId;
+    }
 
 }

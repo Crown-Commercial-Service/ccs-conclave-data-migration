@@ -24,13 +24,17 @@ public class MigrationService {
 
     public void migrate(List<Organisation> organisations) {
         LocalDateTime startTime = LocalDateTime.now();
-        for (Organisation organisation : organisations) {
-            String organisationId = organisationService.migrateOrganisation(organisation);
+        boolean migrationStatus = false;
 
-            userService.migrateUsers(organisation, organisationId);
+        for (Organisation organisation : organisations) {
+            var orgMigrationResponse = organisationService.migrateOrganisation(organisation);
+            var users = organisation.getUser();
+            if (orgMigrationResponse != null && users != null && !users.isEmpty()) {
+                migrationStatus = userService.migrateUsers(users, orgMigrationResponse);
+            }
         }
         LocalDateTime endTime = LocalDateTime.now();
-        reportService.generateReport(startTime, endTime, organisations);
+        reportService.generateReport(startTime, endTime, organisations, migrationStatus);
 
     }
 }
