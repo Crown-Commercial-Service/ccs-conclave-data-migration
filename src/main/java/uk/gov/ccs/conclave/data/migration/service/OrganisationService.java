@@ -37,28 +37,18 @@ public class OrganisationService {
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) {
         OrgMigration ciiResponse = migrateOrgToCii(org);
-        String ssoOrgId;
         OrgMigrationResponse response = null;
         if (null != ciiResponse && ciiResponse.getOrganisationId() != null && ciiResponse.getIdentifier() != null) {
-            ssoOrgId = migrateOrgToConclave(ciiResponse, org);
-            if (ssoOrgId != null) {
-                contactService.migrateOrgContact(org, ciiResponse, ssoOrgId);
-                response = generateOrgMigrationResponse(org, ssoOrgId);
-            }
-
+            response = migrateOrgToConclave(ciiResponse, org);
         }
-
         return response;
     }
 
-    private OrgMigrationResponse generateOrgMigrationResponse(Organisation org, String ssoOrgId) {
-        Integer identityProviderId;
+    private OrgMigrationResponse generateOrgMigrationResponseAndSaveSuccess(Organisation org, String ssoOrgId, Integer idp) {
         OrgMigrationResponse response = null;
-        identityProviderId = getIdentityProviderIdOfOrganisation(ssoOrgId, org);
-
-        if (identityProviderId != null) {
+        if (idp != null) {
             Org migratedOrg = errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200);
-            response = new OrgMigrationResponse(ssoOrgId, identityProviderId, migratedOrg);
+            response = new OrgMigrationResponse(ssoOrgId, idp, migratedOrg);
         }
         return response;
     }
@@ -76,16 +66,22 @@ public class OrganisationService {
         return ciiOrganisation;
     }
 
-    private String migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) {
+    private OrgMigrationResponse migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) {
         OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
-        String conclaveOrgId = null;
+        String ssoOrgId;
+        OrgMigrationResponse response = null;
         try {
-            conclaveOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
+            ssoOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
+            if (ssoOrgId != null) {
+                contactService.migrateOrgContact(org, ciiResponse, ssoOrgId);
+                Integer identityProviderId = getIdentityProviderIdOfOrganisation(ssoOrgId, org);
+                response = generateOrgMigrationResponseAndSaveSuccess(org, ssoOrgId, identityProviderId);
+            }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
             errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
         }
-        return conclaveOrgId;
+        return response;
     }
 
     private OrganisationProfileInfo buildOrgProfileRequest(OrgMigration ciiResponse, Organisation org) {
