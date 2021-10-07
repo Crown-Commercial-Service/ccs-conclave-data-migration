@@ -38,22 +38,28 @@ public class OrganisationService {
     public OrgMigrationResponse migrateOrganisation(Organisation org) {
         OrgMigration ciiResponse = migrateOrgToCii(org);
         String ssoOrgId;
-        Integer identityProviderId;
         OrgMigrationResponse response = null;
         if (null != ciiResponse && ciiResponse.getOrganisationId() != null && ciiResponse.getIdentifier() != null) {
             ssoOrgId = migrateOrgToConclave(ciiResponse, org);
-
             if (ssoOrgId != null) {
                 contactService.migrateOrgContact(org, ciiResponse, ssoOrgId);
+                response = generateOrgMigrationResponse(org, ssoOrgId);
             }
-            identityProviderId = getIdentityProviderIdOfOrganisation(ssoOrgId, org);
 
-            if (identityProviderId != null) {
-                Org migratedOrg = errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200);
-                response = new OrgMigrationResponse(ssoOrgId, identityProviderId, migratedOrg);
-            }
         }
 
+        return response;
+    }
+
+    private OrgMigrationResponse generateOrgMigrationResponse(Organisation org, String ssoOrgId) {
+        Integer identityProviderId;
+        OrgMigrationResponse response = null;
+        identityProviderId = getIdentityProviderIdOfOrganisation(ssoOrgId, org);
+
+        if (identityProviderId != null) {
+            Org migratedOrg = errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200);
+            response = new OrgMigrationResponse(ssoOrgId, identityProviderId, migratedOrg);
+        }
         return response;
     }
 
