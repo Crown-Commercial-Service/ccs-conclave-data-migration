@@ -24,17 +24,22 @@ public class MigrationService {
 
     public void migrate(List<Organisation> organisations) {
         LocalDateTime startTime = LocalDateTime.now();
+        long failedUserCount = 0;
+        long processedUserCount = 0;
         boolean migrationStatus = false;
 
         for (Organisation organisation : organisations) {
             var orgMigrationResponse = organisationService.migrateOrganisation(organisation);
             var users = organisation.getUser();
             if (orgMigrationResponse != null && users != null && !users.isEmpty()) {
-                migrationStatus = userService.migrateUsers(users, orgMigrationResponse);
+                failedUserCount += userService.migrateUsers(users, orgMigrationResponse);
+                processedUserCount += users.size();
+                migrationStatus = failedUserCount == 0;
             }
+
         }
         LocalDateTime endTime = LocalDateTime.now();
-        reportService.generateReport(startTime, endTime, organisations, migrationStatus);
+        reportService.generateReport(startTime, endTime, organisations, failedUserCount, processedUserCount, migrationStatus);
 
     }
 }

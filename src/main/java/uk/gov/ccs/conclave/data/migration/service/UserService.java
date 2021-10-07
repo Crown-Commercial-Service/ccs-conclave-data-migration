@@ -39,8 +39,8 @@ public class UserService {
         return userDto;
     }
 
-    public boolean migrateUsers(List<User> users, OrgMigrationResponse response) {
-        boolean status = true;
+    public long migrateUsers(List<User> users, OrgMigrationResponse response) {
+        long userFailureCount = 0;
         for (User user : users) {
             UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, response.getOrganisationId(), response.getIdentityProviderId());
             try {
@@ -48,11 +48,11 @@ public class UserService {
                 errorService.saveUserDetailWithStatusCode(user, USER_MIGRATION_SUCCESS, 200, response.getOrganisation());
 
             } catch (ApiException e) {
-                status = false;
+                userFailureCount ++;
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
             }
         }
-        return status;
+        return userFailureCount;
     }
 
 
