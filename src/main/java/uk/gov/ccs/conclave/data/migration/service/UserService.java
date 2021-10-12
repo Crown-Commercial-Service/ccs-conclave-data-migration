@@ -6,12 +6,12 @@ import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
-import uk.gov.ccs.swagger.sso.model.UserTitle;
 
 import java.util.List;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRATION_SUCCESS;
+import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
 
 @Service
 public class UserService {
@@ -28,7 +28,7 @@ public class UserService {
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
-        userDto.setTitle(UserTitle.fromValue(user.getTitle()));
+        userDto.setTitle(fromValue(user.getTitle()));
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
