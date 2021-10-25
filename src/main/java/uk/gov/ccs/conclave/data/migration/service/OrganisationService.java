@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
+import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
@@ -66,8 +67,11 @@ public class OrganisationService {
             ciiOrganisation = ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
 
         } catch (ApiException e) {
-            errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
-
+            if (e.getCode() == 409) {
+                ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
+            } else {
+                errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
+            }
         }
         return ciiOrganisation;
     }

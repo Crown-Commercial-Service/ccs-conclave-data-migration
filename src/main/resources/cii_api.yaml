@@ -63,9 +63,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
                 items:
-                  $ref: '#/components/schemas/OrganisationId'
+                  $ref: '#/components/schemas/OrgMigration'
         "429":
           description: Too Many Requests
         "500":
@@ -82,15 +81,6 @@ paths:
           description: HTTP Version Not Supported
 components:
   schemas:
-    OrganisationId:
-      required:
-      - organisationId
-      type: object
-      properties:
-        organisationId:
-          type: string
-          description: CCS Organisation ID
-          example: 19700101T000000Z
     OrgMigration:
       type: object
       properties:

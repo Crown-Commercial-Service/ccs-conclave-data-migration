@@ -27,7 +27,6 @@ import java.io.IOException;
 
 
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
-import uk.gov.ccs.swagger.cii.model.OrganisationId;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

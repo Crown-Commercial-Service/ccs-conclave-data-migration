@@ -26,7 +26,7 @@ import uk.gov.ccs.swagger.cii.model.OrganizationScheme;
  * A unique identifier for a party (organization).
  */
 @Schema(description = "A unique identifier for a party (organization).")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-08-26T16:18:06.267066+01:00[Europe/London]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-10-25T10:32:06.874824+01:00[Europe/London]")
 public class Identifier {
   @SerializedName("scheme")
   private OrganizationScheme scheme = null;
