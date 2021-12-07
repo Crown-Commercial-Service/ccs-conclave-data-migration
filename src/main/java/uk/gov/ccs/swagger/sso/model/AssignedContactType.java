@@ -22,16 +22,17 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 /**
- * Gets or Sets RoleEligibleSubscriptionType
+ * Gets or Sets AssignedContactType
  */
-@JsonAdapter(RoleEligibleSubscriptionType.Adapter.class)
-public enum RoleEligibleSubscriptionType {
+@JsonAdapter(AssignedContactType.Adapter.class)
+public enum AssignedContactType {
   NUMBER_0(0),
-  NUMBER_1(1);
+  NUMBER_1(1),
+  NUMBER_2(2);
 
   private Integer value;
 
-  RoleEligibleSubscriptionType(Integer value) {
+  AssignedContactType(Integer value) {
     this.value = value;
   }
 
@@ -44,8 +45,8 @@ public enum RoleEligibleSubscriptionType {
     return String.valueOf(value);
   }
 
-  public static RoleEligibleSubscriptionType fromValue(String text) {
-    for (RoleEligibleSubscriptionType b : RoleEligibleSubscriptionType.values()) {
+  public static AssignedContactType fromValue(String text) {
+    for (AssignedContactType b : AssignedContactType.values()) {
       if (String.valueOf(b.value).equals(text)) {
         return b;
       }
@@ -53,16 +54,16 @@ public enum RoleEligibleSubscriptionType {
     return null;
   }
 
-  public static class Adapter extends TypeAdapter<RoleEligibleSubscriptionType> {
+  public static class Adapter extends TypeAdapter<AssignedContactType> {
     @Override
-    public void write(final JsonWriter jsonWriter, final RoleEligibleSubscriptionType enumeration) throws IOException {
+    public void write(final JsonWriter jsonWriter, final AssignedContactType enumeration) throws IOException {
       jsonWriter.value(enumeration.getValue());
     }
 
     @Override
-    public RoleEligibleSubscriptionType read(final JsonReader jsonReader) throws IOException {
+    public AssignedContactType read(final JsonReader jsonReader) throws IOException {
       Object value = jsonReader.nextInt();
-      return RoleEligibleSubscriptionType.fromValue(String.valueOf(value));
+      return AssignedContactType.fromValue(String.valueOf(value));
     }
   }
 }

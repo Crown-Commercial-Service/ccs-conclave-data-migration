@@ -22,18 +22,27 @@ import com.google.gson.stream.JsonWriter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.IOException;
 /**
- * GroupRole
+ * CcsServiceInfo
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-12-07T09:38:21.309374Z[Europe/London]")
-public class GroupRole {
+public class CcsServiceInfo {
   @SerializedName("id")
   private Integer id = null;
 
   @SerializedName("name")
   private String name = null;
 
-  public GroupRole id(Integer id) {
+  @SerializedName("description")
+  private String description = null;
+
+  @SerializedName("code")
+  private String code = null;
+
+  @SerializedName("url")
+  private String url = null;
+
+  public CcsServiceInfo id(Integer id) {
     this.id = id;
     return this;
   }
@@ -51,7 +60,7 @@ public class GroupRole {
     this.id = id;
   }
 
-  public GroupRole name(String name) {
+  public CcsServiceInfo name(String name) {
     this.name = name;
     return this;
   }
@@ -69,6 +78,60 @@ public class GroupRole {
     this.name = name;
   }
 
+  public CcsServiceInfo description(String description) {
+    this.description = description;
+    return this;
+  }
+
+   /**
+   * Get description
+   * @return description
+  **/
+  @Schema(description = "")
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public CcsServiceInfo code(String code) {
+    this.code = code;
+    return this;
+  }
+
+   /**
+   * Get code
+   * @return code
+  **/
+  @Schema(description = "")
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public CcsServiceInfo url(String url) {
+    this.url = url;
+    return this;
+  }
+
+   /**
+   * Get url
+   * @return url
+  **/
+  @Schema(description = "")
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -78,24 +141,30 @@ public class GroupRole {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GroupRole groupRole = (GroupRole) o;
-    return Objects.equals(this.id, groupRole.id) &&
-        Objects.equals(this.name, groupRole.name);
+    CcsServiceInfo ccsServiceInfo = (CcsServiceInfo) o;
+    return Objects.equals(this.id, ccsServiceInfo.id) &&
+        Objects.equals(this.name, ccsServiceInfo.name) &&
+        Objects.equals(this.description, ccsServiceInfo.description) &&
+        Objects.equals(this.code, ccsServiceInfo.code) &&
+        Objects.equals(this.url, ccsServiceInfo.url);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name);
+    return Objects.hash(id, name, description, code, url);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class GroupRole {\n");
+    sb.append("class CcsServiceInfo {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    code: ").append(toIndentedString(code)).append("\n");
+    sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("}");
     return sb.toString();
   }

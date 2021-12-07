@@ -22,24 +22,24 @@ import com.google.gson.stream.JsonWriter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.IOException;
 /**
- * OrganisationIdentifier
+ * OrgIdentityProvider
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-12-07T09:38:21.309374Z[Europe/London]")
-public class OrganisationIdentifier {
+public class OrgIdentityProvider {
   @SerializedName("id")
-  private String id = null;
+  private Integer id = null;
 
-  @SerializedName("legalName")
-  private String legalName = null;
+  @SerializedName("connectionName")
+  private String connectionName = null;
 
-  @SerializedName("uri")
-  private String uri = null;
+  @SerializedName("name")
+  private String name = null;
 
-  @SerializedName("scheme")
-  private String scheme = null;
+  @SerializedName("enabled")
+  private Boolean enabled = null;
 
-  public OrganisationIdentifier id(String id) {
+  public OrgIdentityProvider id(Integer id) {
     this.id = id;
     return this;
   }
@@ -49,66 +49,66 @@ public class OrganisationIdentifier {
    * @return id
   **/
   @Schema(description = "")
-  public String getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
-  public OrganisationIdentifier legalName(String legalName) {
-    this.legalName = legalName;
+  public OrgIdentityProvider connectionName(String connectionName) {
+    this.connectionName = connectionName;
     return this;
   }
 
    /**
-   * Get legalName
-   * @return legalName
+   * Get connectionName
+   * @return connectionName
   **/
   @Schema(description = "")
-  public String getLegalName() {
-    return legalName;
+  public String getConnectionName() {
+    return connectionName;
   }
 
-  public void setLegalName(String legalName) {
-    this.legalName = legalName;
+  public void setConnectionName(String connectionName) {
+    this.connectionName = connectionName;
   }
 
-  public OrganisationIdentifier uri(String uri) {
-    this.uri = uri;
+  public OrgIdentityProvider name(String name) {
+    this.name = name;
     return this;
   }
 
    /**
-   * Get uri
-   * @return uri
+   * Get name
+   * @return name
   **/
   @Schema(description = "")
-  public String getUri() {
-    return uri;
+  public String getName() {
+    return name;
   }
 
-  public void setUri(String uri) {
-    this.uri = uri;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public OrganisationIdentifier scheme(String scheme) {
-    this.scheme = scheme;
+  public OrgIdentityProvider enabled(Boolean enabled) {
+    this.enabled = enabled;
     return this;
   }
 
    /**
-   * Get scheme
-   * @return scheme
+   * Get enabled
+   * @return enabled
   **/
   @Schema(description = "")
-  public String getScheme() {
-    return scheme;
+  public Boolean isEnabled() {
+    return enabled;
   }
 
-  public void setScheme(String scheme) {
-    this.scheme = scheme;
+  public void setEnabled(Boolean enabled) {
+    this.enabled = enabled;
   }
 
 
@@ -120,28 +120,28 @@ public class OrganisationIdentifier {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrganisationIdentifier organisationIdentifier = (OrganisationIdentifier) o;
-    return Objects.equals(this.id, organisationIdentifier.id) &&
-        Objects.equals(this.legalName, organisationIdentifier.legalName) &&
-        Objects.equals(this.uri, organisationIdentifier.uri) &&
-        Objects.equals(this.scheme, organisationIdentifier.scheme);
+    OrgIdentityProvider orgIdentityProvider = (OrgIdentityProvider) o;
+    return Objects.equals(this.id, orgIdentityProvider.id) &&
+        Objects.equals(this.connectionName, orgIdentityProvider.connectionName) &&
+        Objects.equals(this.name, orgIdentityProvider.name) &&
+        Objects.equals(this.enabled, orgIdentityProvider.enabled);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, legalName, uri, scheme);
+    return Objects.hash(id, connectionName, name, enabled);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OrganisationIdentifier {\n");
+    sb.append("class OrgIdentityProvider {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    legalName: ").append(toIndentedString(legalName)).append("\n");
-    sb.append("    uri: ").append(toIndentedString(uri)).append("\n");
-    sb.append("    scheme: ").append(toIndentedString(scheme)).append("\n");
+    sb.append("    connectionName: ").append(toIndentedString(connectionName)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
     sb.append("}");
     return sb.toString();
   }
