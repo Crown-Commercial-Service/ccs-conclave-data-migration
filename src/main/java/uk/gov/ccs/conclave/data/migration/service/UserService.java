@@ -7,6 +7,7 @@ import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
 
+import java.util.Collections;
 import java.util.List;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
@@ -33,8 +34,9 @@ public class UserService {
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
         userDto.setOrganisationId(organisationId);
+        userDto.sendUserRegistrationEmail(false);
         UserRequestDetail detail = new UserRequestDetail();
-        detail.setIdentityProviderId(identityProvideId);
+        detail.setIdentityProviderIds(Collections.singletonList(identityProvideId));
         userDto.setDetail(detail);
         return userDto;
     }

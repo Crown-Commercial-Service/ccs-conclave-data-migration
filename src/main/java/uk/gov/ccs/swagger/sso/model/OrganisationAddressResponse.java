@@ -22,11 +22,11 @@ import com.google.gson.stream.JsonWriter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.IOException;
 /**
- * OrganisationAddress
+ * OrganisationAddressResponse
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-12-07T09:38:21.309374Z[Europe/London]")
-public class OrganisationAddress {
+public class OrganisationAddressResponse {
   @SerializedName("streetAddress")
   private String streetAddress = null;
 
@@ -42,7 +42,10 @@ public class OrganisationAddress {
   @SerializedName("countryCode")
   private String countryCode = null;
 
-  public OrganisationAddress streetAddress(String streetAddress) {
+  @SerializedName("countryName")
+  private String countryName = null;
+
+  public OrganisationAddressResponse streetAddress(String streetAddress) {
     this.streetAddress = streetAddress;
     return this;
   }
@@ -60,7 +63,7 @@ public class OrganisationAddress {
     this.streetAddress = streetAddress;
   }
 
-  public OrganisationAddress locality(String locality) {
+  public OrganisationAddressResponse locality(String locality) {
     this.locality = locality;
     return this;
   }
@@ -78,7 +81,7 @@ public class OrganisationAddress {
     this.locality = locality;
   }
 
-  public OrganisationAddress region(String region) {
+  public OrganisationAddressResponse region(String region) {
     this.region = region;
     return this;
   }
@@ -96,7 +99,7 @@ public class OrganisationAddress {
     this.region = region;
   }
 
-  public OrganisationAddress postalCode(String postalCode) {
+  public OrganisationAddressResponse postalCode(String postalCode) {
     this.postalCode = postalCode;
     return this;
   }
@@ -114,7 +117,7 @@ public class OrganisationAddress {
     this.postalCode = postalCode;
   }
 
-  public OrganisationAddress countryCode(String countryCode) {
+  public OrganisationAddressResponse countryCode(String countryCode) {
     this.countryCode = countryCode;
     return this;
   }
@@ -132,6 +135,24 @@ public class OrganisationAddress {
     this.countryCode = countryCode;
   }
 
+  public OrganisationAddressResponse countryName(String countryName) {
+    this.countryName = countryName;
+    return this;
+  }
+
+   /**
+   * Get countryName
+   * @return countryName
+  **/
+  @Schema(description = "")
+  public String getCountryName() {
+    return countryName;
+  }
+
+  public void setCountryName(String countryName) {
+    this.countryName = countryName;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -141,30 +162,32 @@ public class OrganisationAddress {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrganisationAddress organisationAddress = (OrganisationAddress) o;
-    return Objects.equals(this.streetAddress, organisationAddress.streetAddress) &&
-        Objects.equals(this.locality, organisationAddress.locality) &&
-        Objects.equals(this.region, organisationAddress.region) &&
-        Objects.equals(this.postalCode, organisationAddress.postalCode) &&
-        Objects.equals(this.countryCode, organisationAddress.countryCode);
+    OrganisationAddressResponse organisationAddressResponse = (OrganisationAddressResponse) o;
+    return Objects.equals(this.streetAddress, organisationAddressResponse.streetAddress) &&
+        Objects.equals(this.locality, organisationAddressResponse.locality) &&
+        Objects.equals(this.region, organisationAddressResponse.region) &&
+        Objects.equals(this.postalCode, organisationAddressResponse.postalCode) &&
+        Objects.equals(this.countryCode, organisationAddressResponse.countryCode) &&
+        Objects.equals(this.countryName, organisationAddressResponse.countryName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(streetAddress, locality, region, postalCode, countryCode);
+    return Objects.hash(streetAddress, locality, region, postalCode, countryCode, countryName);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OrganisationAddress {\n");
+    sb.append("class OrganisationAddressResponse {\n");
     
     sb.append("    streetAddress: ").append(toIndentedString(streetAddress)).append("\n");
     sb.append("    locality: ").append(toIndentedString(locality)).append("\n");
     sb.append("    region: ").append(toIndentedString(region)).append("\n");
     sb.append("    postalCode: ").append(toIndentedString(postalCode)).append("\n");
     sb.append("    countryCode: ").append(toIndentedString(countryCode)).append("\n");
+    sb.append("    countryName: ").append(toIndentedString(countryName)).append("\n");
     sb.append("}");
     return sb.toString();
   }
