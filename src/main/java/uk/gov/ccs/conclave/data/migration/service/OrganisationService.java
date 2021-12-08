@@ -83,6 +83,7 @@ public class OrganisationService {
             ssoOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
             if (ssoOrgId != null) {
                 contactService.migrateOrgContact(org, ciiResponse, ssoOrgId);
+                conclaveClient.applyOrganisationRole(ssoOrgId, org.getOrgRoles());
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {

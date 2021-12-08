@@ -3,12 +3,14 @@ package uk.gov.ccs.conclave.data.migration.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.api.OrganisationApi;
 import uk.gov.ccs.swagger.sso.api.OrganisationContactApi;
 import uk.gov.ccs.swagger.sso.api.UserApi;
 import uk.gov.ccs.swagger.sso.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,10 +49,28 @@ public class ConclaveClient {
 
     }
 
-    public Integer getOrganisationRoleId(final String organisationId, final String roleName) throws ApiException {
-        LOGGER.info("Getting roleId for the Org role.");
+    private OrganisationRole filterOrganisationRoleByName(final List<OrganisationRole> allOrgRoles, final String roleName) throws ApiException {
+        return allOrgRoles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).findFirst().orElseThrow(() -> new ApiException("Invalid role specified."));
+
+    }
+
+    private void updateOrganisationRole(final String organisationId, final OrganisationRoleUpdate roleUpdate) throws ApiException {
+        LOGGER.info("Updating Organisation role(s).");
+        orgApi.organisationsOrganisationIdRolesPut(organisationId, roleUpdate);
+    }
+
+    public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException {
+        LOGGER.info("Applying specified role(s) to the Organisation.");
+
         List<OrganisationRole> roles = orgApi.organisationsOrganisationIdRolesGet(organisationId);
-        return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).collect(Collectors.toList()).get(0).getRoleId();
+        var rolesToAdd = new ArrayList<OrganisationRole>();
+        for (OrgRoles orgRole : orgRolesList) {
+            rolesToAdd.add(filterOrganisationRoleByName(roles, orgRole.getName()));
+        }
+        OrganisationRoleUpdate roleUpdate = new OrganisationRoleUpdate();
+        roleUpdate.setRolesToAdd(rolesToAdd);
+        updateOrganisationRole(organisationId, roleUpdate);
+
 
     }
 
