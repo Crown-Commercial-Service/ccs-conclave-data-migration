@@ -14,4 +14,9 @@ public class MigrationProperties {
     private String conclaveApiKey;
 
     private String conclaveOrigin;
+
+    private boolean sendUserRegistrationEmail;
+
+    private boolean accountVerified;
+
 }

@@ -2,6 +2,7 @@ package uk.gov.ccs.conclave.data.migration.service;
 
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
@@ -21,9 +22,12 @@ public class UserService {
 
     private final ErrorService errorService;
 
-    public UserService(ConclaveClient conclaveUserClient, ErrorService errorService) {
+    private final MigrationProperties properties;
+
+    public UserService(ConclaveClient conclaveUserClient, ErrorService errorService, MigrationProperties properties) {
         this.conclaveUserClient = conclaveUserClient;
         this.errorService = errorService;
+        this.properties = properties;
     }
 
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId) {
@@ -34,7 +38,8 @@ public class UserService {
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
         userDto.setOrganisationId(organisationId);
-        userDto.sendUserRegistrationEmail(false);
+        userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
+        userDto.setAccountVerified(properties.isAccountVerified());
         UserRequestDetail detail = new UserRequestDetail();
         detail.setIdentityProviderIds(Collections.singletonList(identityProvideId));
         userDto.setDetail(detail);
