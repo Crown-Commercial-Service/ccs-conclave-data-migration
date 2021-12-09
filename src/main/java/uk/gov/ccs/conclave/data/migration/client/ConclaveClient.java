@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
+import uk.gov.ccs.swagger.sso.api.ConfigurationApi;
 import uk.gov.ccs.swagger.sso.api.OrganisationApi;
 import uk.gov.ccs.swagger.sso.api.OrganisationContactApi;
 import uk.gov.ccs.swagger.sso.api.UserApi;
@@ -23,11 +24,14 @@ public class ConclaveClient {
 
     private final OrganisationApi orgApi;
 
+    private final ConfigurationApi configurationApi;
+
     private final OrganisationContactApi orgContactApi;
 
-    public ConclaveClient(UserApi userApi, OrganisationApi orgApi, OrganisationContactApi orgContactApi) {
+    public ConclaveClient(UserApi userApi, OrganisationApi orgApi, ConfigurationApi configurationApi, OrganisationContactApi orgContactApi) {
         this.userApi = userApi;
         this.orgApi = orgApi;
+        this.configurationApi = configurationApi;
         this.orgContactApi = orgContactApi;
     }
 
@@ -61,11 +65,11 @@ public class ConclaveClient {
 
     public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException {
         LOGGER.info("Applying specified role(s) to the Organisation.");
-
-        List<OrganisationRole> roles = orgApi.organisationsOrganisationIdRolesGet(organisationId);
+        List<OrganisationRole> allSsoRoles = configurationApi.configurationsRolesGet();
+        //List<OrganisationRole> roles = orgApi.organisationsOrganisationIdRolesGet(organisationId);
         var rolesToAdd = new ArrayList<OrganisationRole>();
         for (OrgRoles orgRole : orgRolesList) {
-            rolesToAdd.add(filterOrganisationRoleByName(roles, orgRole.getName()));
+            rolesToAdd.add(filterOrganisationRoleByName(allSsoRoles, orgRole.getName()));
         }
         OrganisationRoleUpdate roleUpdate = new OrganisationRoleUpdate();
         roleUpdate.setRolesToAdd(rolesToAdd);
