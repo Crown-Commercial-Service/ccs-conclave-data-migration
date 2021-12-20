@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.domain.Report;
 import uk.gov.ccs.conclave.data.migration.repository.ReportRepository;
@@ -15,13 +16,10 @@ import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_PARTIAL;
 
 @Service
+@RequiredArgsConstructor
 public class ReportService {
 
     private final ReportRepository reportRepository;
-
-    public ReportService(ReportRepository reportRepository) {
-        this.reportRepository = reportRepository;
-    }
 
     private static long userCount(Organisation o) {
         return o.getUser() != null ? o.getUser().size() : 0;

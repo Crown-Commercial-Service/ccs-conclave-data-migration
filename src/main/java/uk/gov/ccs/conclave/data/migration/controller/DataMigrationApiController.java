@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,15 +14,12 @@ import uk.gov.ccs.swagger.dataMigration.model.Summary;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class DataMigrationApiController implements DatamigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
     private final MigrationService migrationService;
-
-    public DataMigrationApiController(MigrationService migrationService) {
-        this.migrationService = migrationService;
-    }
 
     @Override
     public ResponseEntity<List<Summary>> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {

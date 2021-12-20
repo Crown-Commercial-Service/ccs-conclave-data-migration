@@ -1,11 +1,13 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class OrgMigrationResponse {
 
     private String organisationId;
@@ -14,9 +16,4 @@ public class OrgMigrationResponse {
 
     private Org organisation;
 
-    public OrgMigrationResponse(String organisationId, Integer identityProviderId, Org organisation) {
-        this.organisationId = organisationId;
-        this.identityProviderId = identityProviderId;
-        this.organisation = organisation;
-    }
 }
