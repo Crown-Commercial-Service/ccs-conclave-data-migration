@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ErrorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorService.class);
@@ -33,12 +35,6 @@ public class ErrorService {
     private final OrganisationRepository organisationRepository;
 
     private final UserRepository userRepository;
-
-
-    public ErrorService(OrganisationRepository organisationRepository, UserRepository userRepository) {
-        this.organisationRepository = organisationRepository;
-        this.userRepository = userRepository;
-    }
 
 
     public void logWithStatus(Organisation organisation, String message, Integer statusCode) {

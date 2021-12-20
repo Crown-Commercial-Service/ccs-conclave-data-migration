@@ -1,18 +1,16 @@
 package uk.gov.ccs.conclave.data.migration.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.ccs.swagger.cii.ApiClient;
 import uk.gov.ccs.swagger.cii.api.IdentitiesApi;
 
 @Configuration
+@RequiredArgsConstructor
 public class CiiConfig {
 
     private final MigrationProperties properties;
-
-    public CiiConfig(MigrationProperties properties) {
-        this.properties = properties;
-    }
 
     @Bean
     IdentitiesApi identitiesApi() {

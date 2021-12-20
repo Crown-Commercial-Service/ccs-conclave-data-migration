@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.client;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class ConclaveClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConclaveClient.class);
@@ -22,12 +24,6 @@ public class ConclaveClient {
     private final OrganisationApi orgApi;
 
     private final OrganisationContactApi orgContactApi;
-
-    public ConclaveClient(UserApi userApi, OrganisationApi orgApi, OrganisationContactApi orgContactApi) {
-        this.userApi = userApi;
-        this.orgApi = orgApi;
-        this.orgContactApi = orgContactApi;
-    }
 
 
     public UserEditResponseInfo createUser(final UserProfileEditRequestInfo userDto) throws ApiException {

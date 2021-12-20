@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
@@ -16,6 +17,7 @@ import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRA
 import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final ConclaveClient conclaveUserClient;
@@ -23,12 +25,6 @@ public class UserService {
     private final ErrorService errorService;
 
     private final MigrationProperties properties;
-
-    public UserService(ConclaveClient conclaveUserClient, ErrorService errorService, MigrationProperties properties) {
-        this.conclaveUserClient = conclaveUserClient;
-        this.errorService = errorService;
-        this.properties = properties;
-    }
 
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId) {
 

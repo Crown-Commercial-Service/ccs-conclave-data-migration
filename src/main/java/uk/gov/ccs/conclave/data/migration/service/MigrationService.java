@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MigrationService {
 
     private final OrganisationService organisationService;
@@ -14,12 +16,6 @@ public class MigrationService {
     private final UserService userService;
 
     private final ReportService reportService;
-
-    public MigrationService(OrganisationService organisationService, UserService userService, ReportService reportService) {
-        this.organisationService = organisationService;
-        this.userService = userService;
-        this.reportService = reportService;
-    }
 
 
     public void migrate(List<Organisation> organisations) {
