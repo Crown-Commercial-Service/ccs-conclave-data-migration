@@ -1,6 +1,7 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
 import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
@@ -18,6 +19,7 @@ import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
 @Service
+@RequiredArgsConstructor
 public class OrganisationService {
 
     private final CiiOrgClient ciiOrgClient;
@@ -27,13 +29,6 @@ public class OrganisationService {
     private final ErrorService errorService;
 
     private final ContactService contactService;
-
-    public OrganisationService(CiiOrgClient ciiOrgClient, ConclaveClient conclaveClient, ErrorService errorService, ContactService contactService) {
-        this.ciiOrgClient = ciiOrgClient;
-        this.conclaveClient = conclaveClient;
-        this.errorService = errorService;
-        this.contactService = contactService;
-    }
 
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) {

@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.ccs.swagger.sso.ApiClient;
@@ -9,13 +10,10 @@ import uk.gov.ccs.swagger.sso.api.OrganisationContactApi;
 import uk.gov.ccs.swagger.sso.api.UserApi;
 
 @Configuration
+@RequiredArgsConstructor
 public class ConclaveConfig {
 
     private final MigrationProperties properties;
-
-    public ConclaveConfig(MigrationProperties properties) {
-        this.properties = properties;
-    }
 
     @Bean
     public UserApi userApi() {

@@ -1,5 +1,6 @@
 package uk.gov.ccs.conclave.data.migration.client;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class ConclaveClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConclaveClient.class);
