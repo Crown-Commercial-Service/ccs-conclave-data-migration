@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.ccs.swagger.sso.ApiClient;
+import uk.gov.ccs.swagger.sso.api.ConfigurationApi;
 import uk.gov.ccs.swagger.sso.api.OrganisationApi;
 import uk.gov.ccs.swagger.sso.api.OrganisationContactApi;
 import uk.gov.ccs.swagger.sso.api.UserApi;
@@ -28,6 +29,12 @@ public class ConclaveConfig {
     public OrganisationContactApi organisationContactApi() {
         return new OrganisationContactApi(apiClient());
     }
+
+    @Bean
+    public ConfigurationApi configurationApi() {
+        return new ConfigurationApi(apiClient());
+    }
+
 
     @Bean
     public ApiClient apiClient() {
