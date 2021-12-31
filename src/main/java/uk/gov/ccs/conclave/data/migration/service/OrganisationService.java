@@ -35,20 +35,21 @@ public class OrganisationService {
         OrgMigration ciiResponse = migrateOrgToCii(org);
         String organisationId = null;
         Integer identityProviderId = null;
+        boolean migrationStatus = false;
         if (null != ciiResponse) {
             if (ciiResponse.getIdentifier() != null) {
-                migrateOrgToConclave(ciiResponse, org);
+                migrationStatus = migrateOrgToConclave(ciiResponse, org);
             }
             organisationId = ciiResponse.getOrganisationId();
             identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
         }
 
-        return generateOrgMigrationResponseAndSaveSuccess(org, organisationId, identityProviderId);
+        return generateOrgMigrationResponseAndSaveSuccess(org, organisationId, identityProviderId, migrationStatus);
     }
 
-    private OrgMigrationResponse generateOrgMigrationResponseAndSaveSuccess(Organisation org, String orgId, Integer idp) {
+    private OrgMigrationResponse generateOrgMigrationResponseAndSaveSuccess(Organisation org, String orgId, Integer idp, boolean migrationStatus) {
         OrgMigrationResponse response = null;
-        if (idp != null && orgId != null) {
+        if (idp != null && orgId != null && migrationStatus) {
             Org migratedOrg = errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200);
             response = new OrgMigrationResponse(orgId, idp, migratedOrg);
         }
@@ -71,9 +72,10 @@ public class OrganisationService {
         return ciiOrganisation;
     }
 
-    private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) {
+    private boolean migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) {
         OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
         String ssoOrgId;
+        boolean orgMigrationStatus = true;
         try {
             ssoOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
             if (ssoOrgId != null) {
@@ -82,8 +84,10 @@ public class OrganisationService {
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
+            orgMigrationStatus = false;
             errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
         }
+        return orgMigrationStatus;
     }
 
     private OrganisationProfileInfo buildOrgProfileRequest(OrgMigration ciiResponse, Organisation org) {
