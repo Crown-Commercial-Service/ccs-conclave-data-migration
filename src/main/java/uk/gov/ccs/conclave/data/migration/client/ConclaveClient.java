@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
+import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.api.ConfigurationApi;
 import uk.gov.ccs.swagger.sso.api.OrganisationApi;
@@ -50,8 +51,8 @@ public class ConclaveClient {
 
     }
 
-    private OrganisationRole filterOrganisationRoleByName(final List<OrganisationRole> allOrgRoles, final String roleName) throws ApiException {
-        return allOrgRoles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).findFirst().orElseThrow(() -> new ApiException(SSO_ROLE_ERROR_MESSAGE));
+    private OrganisationRole filterOrganisationRoleByName(final List<OrganisationRole> roles, final String roleName) throws ApiException {
+        return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).findFirst().orElseThrow(() -> new ApiException(SSO_ROLE_ERROR_MESSAGE));
 
     }
 
@@ -61,22 +62,30 @@ public class ConclaveClient {
     }
 
     public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException {
-        LOGGER.info("Applying specified role(s) to the Organisation with organisationId:" + organisationId);
-        List<OrganisationRole> allSsoRoles = configurationApi.configurationsRolesGet();
-        var rolesToAdd = new ArrayList<OrganisationRole>();
-        for (OrgRoles orgRole : orgRolesList) {
-            rolesToAdd.add(filterOrganisationRoleByName(allSsoRoles, orgRole.getName()));
+        if (orgRolesList != null && !orgRolesList.isEmpty()) {
+            LOGGER.info("Applying specified role(s) to the Organisation with organisationId:" + organisationId);
+            List<OrganisationRole> configuredRoles = configurationApi.configurationsRolesGet();
+            var rolesToAdd = new ArrayList<OrganisationRole>();
+            for (OrgRoles orgRole : orgRolesList) {
+                rolesToAdd.add(filterOrganisationRoleByName(configuredRoles, orgRole.getName()));
+            }
+            OrganisationRoleUpdate roleUpdate = new OrganisationRoleUpdate();
+            roleUpdate.setRolesToAdd(rolesToAdd);
+            updateOrganisationRole(organisationId, roleUpdate);
         }
-        OrganisationRoleUpdate roleUpdate = new OrganisationRoleUpdate();
-        roleUpdate.setRolesToAdd(rolesToAdd);
-        updateOrganisationRole(organisationId, roleUpdate);
     }
 
-    public Integer getOrganisationRoleId(final String organisationId, final String roleName) throws ApiException {
-        LOGGER.info("Getting roleId for the Org role");
-        List<OrganisationRole> roles = orgApi.organisationsOrganisationIdRolesGet(organisationId);
-        return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).collect(toList()).get(0).getRoleId();
-
+    public List<Integer> getUserRoleIdsFromRoleNames(final String organisationId, final List<UserRoles> roleNames) throws ApiException {
+        if (roleNames == null || roleNames.isEmpty()) {
+            return null;
+        }
+        LOGGER.info("Getting user roleIds. ");
+        List<OrganisationRole> orgRoles = orgApi.organisationsOrganisationIdRolesGet(organisationId);
+        var roleIds = new ArrayList<Integer>();
+        for (UserRoles userRole : roleNames) {
+            roleIds.add(filterOrganisationRoleByName(orgRoles, userRole.getName()).getRoleId());
+        }
+        return roleIds;
     }
 
     public void createOrganisationContact(String organisationId, ContactRequestInfo contactRequestInfo) throws ApiException {

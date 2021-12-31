@@ -9,9 +9,9 @@ import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
 
-import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRATION_SUCCESS;
 import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
@@ -26,7 +26,7 @@ public class UserService {
 
     private final MigrationProperties properties;
 
-    private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId) {
+    private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
         userDto.setTitle(fromValue(user.getTitle()));
@@ -37,7 +37,10 @@ public class UserService {
         userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
         userDto.setAccountVerified(properties.isAccountVerified());
         UserRequestDetail detail = new UserRequestDetail();
-        detail.setIdentityProviderIds(Collections.singletonList(identityProvideId));
+        detail.setIdentityProviderIds(singletonList(identityProvideId));
+        if (roleIds != null) {
+            detail.setRoleIds(roleIds);
+        }
         userDto.setDetail(detail);
         return userDto;
     }
@@ -45,8 +48,10 @@ public class UserService {
     public long migrateUsers(List<User> users, OrgMigrationResponse response) {
         long userFailureCount = 0;
         for (User user : users) {
-            UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, response.getOrganisationId(), response.getIdentityProviderId());
             try {
+                var roleIds = conclaveUserClient.getUserRoleIdsFromRoleNames(response.getOrganisationId(), user.getUserRoles());
+                UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, response.getOrganisationId(), response.getIdentityProviderId(), roleIds);
+
                 conclaveUserClient.createUser(userDto);
                 errorService.saveUserDetailWithStatusCode(user, USER_MIGRATION_SUCCESS, 200, response.getOrganisation());
 
