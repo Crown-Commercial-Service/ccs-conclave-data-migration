@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_ROLE_ERROR_MESSAGE;
 
 @Component
 @RequiredArgsConstructor
@@ -52,7 +51,7 @@ public class ConclaveClient {
     }
 
     private OrganisationRole filterOrganisationRoleByName(final List<OrganisationRole> roles, final String roleName) throws ApiException {
-        return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).findFirst().orElseThrow(() -> new ApiException(SSO_ROLE_ERROR_MESSAGE));
+        return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).findFirst().orElseThrow(ApiException::new);
 
     }
 
