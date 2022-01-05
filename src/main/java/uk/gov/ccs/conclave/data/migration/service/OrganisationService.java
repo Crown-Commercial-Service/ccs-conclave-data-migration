@@ -42,8 +42,16 @@ public class OrganisationService {
             organisationId = ciiResponse.getOrganisationId();
             identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
         }
-
+        addOrUpdateOrgRole(org, organisationId);
         return generateOrgMigrationResponseAndSaveSuccess(org, organisationId, identityProviderId);
+    }
+
+    private void addOrUpdateOrgRole(Organisation org, String organisationId) {
+        try {
+            conclaveClient.applyOrganisationRole(organisationId, org.getOrgRoles());
+        } catch (uk.gov.ccs.swagger.sso.ApiException e) {
+            errorService.logWithStatus(org, SSO_ROLE_ERROR_MESSAGE, e.getCode());
+        }
     }
 
     private OrgMigrationResponse generateOrgMigrationResponseAndSaveSuccess(Organisation org, String orgId, Integer idp) {
@@ -78,7 +86,6 @@ public class OrganisationService {
             ssoOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
             if (ssoOrgId != null) {
                 contactService.migrateOrgContact(org, ciiResponse, ssoOrgId);
-                conclaveClient.applyOrganisationRole(ssoOrgId, org.getOrgRoles());
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
