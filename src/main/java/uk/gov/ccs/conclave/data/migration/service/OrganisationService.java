@@ -36,23 +36,14 @@ public class OrganisationService {
         String organisationId = null;
         Integer identityProviderId = null;
         if (null != ciiResponse) {
-            if (ciiResponse.getIdentifier() != null) {
-                migrateOrgToConclave(ciiResponse, org);
-            }
+            migrateOrgToConclave(ciiResponse, org);
             organisationId = ciiResponse.getOrganisationId();
             identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
-            addOrUpdateOrgRole(org, organisationId);
         }
+
         return generateOrgMigrationResponseAndSaveSuccess(org, organisationId, identityProviderId);
     }
 
-    private void addOrUpdateOrgRole(Organisation org, String organisationId) {
-        try {
-            conclaveClient.applyOrganisationRole(organisationId, org.getOrgRoles());
-        } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-            errorService.logWithStatus(org, SSO_ORG_ROLE_ERROR + e.getMessage(), e.getCode());
-        }
-    }
 
     private OrgMigrationResponse generateOrgMigrationResponseAndSaveSuccess(Organisation org, String orgId, Integer idp) {
         OrgMigrationResponse response = null;
@@ -80,17 +71,23 @@ public class OrganisationService {
     }
 
     private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) {
-        OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
-        String ssoOrgId;
         try {
-            ssoOrgId = conclaveClient.createConclaveOrg(conclaveOrgProfile);
-            if (ssoOrgId != null) {
-                contactService.migrateOrgContact(org, ciiResponse, ssoOrgId);
+            String organisationId = ciiResponse.getOrganisationId();
+            if (isNewOrg(ciiResponse)) {
+                OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
+                conclaveClient.createConclaveOrg(conclaveOrgProfile);
+                contactService.migrateOrgContact(org, ciiResponse, organisationId);
+            } else {
+                conclaveClient.applyOrganisationRole(organisationId, org.getOrgRoles());
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
             errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
         }
+    }
+
+    private boolean isNewOrg(OrgMigration ciiResponse) {
+        return ciiResponse.getIdentifier() != null;
     }
 
     private OrganisationProfileInfo buildOrgProfileRequest(OrgMigration ciiResponse, Organisation org) {
