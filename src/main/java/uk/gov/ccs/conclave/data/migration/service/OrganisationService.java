@@ -77,6 +77,7 @@ public class OrganisationService {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
                 contactService.migrateOrgContact(org, ciiResponse, organisationId);
+                conclaveClient.applyOrganisationRole(organisationId, org.getOrgRoles());
             } else {
                 conclaveClient.applyOrganisationRole(organisationId, org.getOrgRoles());
             }
