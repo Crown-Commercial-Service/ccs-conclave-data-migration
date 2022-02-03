@@ -6,6 +6,7 @@ import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.sso.ApiException;
+import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
 
@@ -25,6 +26,8 @@ public class UserService {
     private final ErrorService errorService;
 
     private final MigrationProperties properties;
+
+    private final ContactService contactService;
 
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
@@ -52,11 +55,12 @@ public class UserService {
                 var roleIds = conclaveUserClient.getUserRoleIdsFromRoleNames(response.getOrganisationId(), user.getUserRoles());
                 UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, response.getOrganisationId(), response.getIdentityProviderId(), roleIds);
 
-                conclaveUserClient.createUser(userDto);
+                UserEditResponseInfo userInfo = conclaveUserClient.createUser(userDto);
+                contactService.migrateUserContact(user, userInfo.getUserId(), response.getOrganisation());
                 errorService.saveUserDetailWithStatusCode(user, USER_MIGRATION_SUCCESS, 200, response.getOrganisation());
 
             } catch (ApiException e) {
-                userFailureCount ++;
+                userFailureCount++;
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
             }
         }

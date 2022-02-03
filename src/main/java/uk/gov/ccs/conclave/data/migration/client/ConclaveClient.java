@@ -7,10 +7,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
-import uk.gov.ccs.swagger.sso.api.ConfigurationApi;
-import uk.gov.ccs.swagger.sso.api.OrganisationApi;
-import uk.gov.ccs.swagger.sso.api.OrganisationContactApi;
-import uk.gov.ccs.swagger.sso.api.UserApi;
+import uk.gov.ccs.swagger.sso.api.*;
 import uk.gov.ccs.swagger.sso.model.*;
 
 import java.util.ArrayList;
@@ -32,6 +29,8 @@ public class ConclaveClient {
     private final ConfigurationApi configurationApi;
 
     private final OrganisationContactApi orgContactApi;
+
+    private final UserContactApi userContactApi;
 
 
     public UserEditResponseInfo createUser(final UserProfileEditRequestInfo userDto) throws ApiException {
@@ -91,6 +90,11 @@ public class ConclaveClient {
     public void createOrganisationContact(String organisationId, ContactRequestInfo contactRequestInfo) throws ApiException {
         LOGGER.info("Creating a contact for organisation.");
         orgContactApi.organisationsOrganisationIdContactsPost(organisationId, contactRequestInfo);
+    }
+
+    public void createUserContact(String userId, ContactRequestInfo contactRequestInfo) throws ApiException {
+        LOGGER.info("Creating a user contact.");
+        userContactApi.usersContactsPost(contactRequestInfo, userId);
     }
 
 }
