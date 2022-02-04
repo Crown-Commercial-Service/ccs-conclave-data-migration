@@ -27,6 +27,7 @@ public class ContactService {
 
     void migrateUserContact(User user, String userId, Org organisation) {
         ContactPoint userContactPoint = new ContactPoint();
+        userContactPoint.setName("");
         userContactPoint.setEmail(user.getContactEmail());
         userContactPoint.setFaxNumber(user.getContactFax());
         userContactPoint.setTelephone((user.getContactPhone() != null) ? user.getContactPhone() : user.getContactMobile());
