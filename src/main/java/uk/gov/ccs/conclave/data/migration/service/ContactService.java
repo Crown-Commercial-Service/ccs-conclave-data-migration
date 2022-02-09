@@ -14,7 +14,7 @@ import uk.gov.ccs.swagger.sso.model.ContactRequestInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.*;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_ORG_CONTACT_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_ERROR_MESSAGE;
 
@@ -28,10 +28,10 @@ public class ContactService {
 
     void migrateUserContact(User user, String userId, Org organisation) {
         ContactPoint userContactPoint = new ContactPoint();
-        userContactPoint.setEmail(user.getContactEmail());
-        userContactPoint.setFaxNumber(user.getContactFax());
-        userContactPoint.setTelephone((user.getContactPhone() != null) ? user.getContactPhone() : user.getContactMobile());
-        userContactPoint.setUri(user.getContactSocial());
+        userContactPoint.setEmail(stripToEmpty(user.getContactEmail()));
+        userContactPoint.setFaxNumber(stripToEmpty(user.getContactFax()));
+        userContactPoint.setTelephone(stripToEmpty(isEmpty(user.getContactPhone()) ? user.getContactMobile() : user.getContactPhone()));
+        userContactPoint.setUri(stripToEmpty(user.getContactSocial()));
         if (isContactDetailPresent(userContactPoint)) {
             try {
                 conclaveClient.createUserContact(userId, buildContactRequestInfo(userContactPoint));
