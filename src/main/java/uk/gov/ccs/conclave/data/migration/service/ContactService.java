@@ -14,6 +14,7 @@ import uk.gov.ccs.swagger.sso.model.ContactRequestInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_ORG_CONTACT_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_ERROR_MESSAGE;
 
@@ -27,7 +28,6 @@ public class ContactService {
 
     void migrateUserContact(User user, String userId, Org organisation) {
         ContactPoint userContactPoint = new ContactPoint();
-        userContactPoint.setName("");
         userContactPoint.setEmail(user.getContactEmail());
         userContactPoint.setFaxNumber(user.getContactFax());
         userContactPoint.setTelephone((user.getContactPhone() != null) ? user.getContactPhone() : user.getContactMobile());
@@ -53,11 +53,11 @@ public class ContactService {
     }
 
     private boolean isContactDetailPresent(ContactPoint contactPoint) {
-        return (!contactPoint.getName().isEmpty()
-                || !contactPoint.getEmail().isEmpty()
-                || !contactPoint.getTelephone().isEmpty()
-                || !contactPoint.getFaxNumber().isEmpty()
-                || !contactPoint.getUri().isEmpty());
+        return (isNotEmpty(contactPoint.getName()))
+                || isNotEmpty(contactPoint.getEmail())
+                || isNotEmpty(contactPoint.getTelephone())
+                || isNotEmpty(contactPoint.getFaxNumber())
+                || isNotEmpty(contactPoint.getUri());
     }
 
     private ContactRequestInfo buildContactRequestInfo(ContactPoint contactPoint) {
