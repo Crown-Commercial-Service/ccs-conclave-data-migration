@@ -15,8 +15,11 @@ import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import static java.lang.String.join;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.ArrayUtils.contains;
 import static org.springframework.http.HttpStatus.valueOf;
 
@@ -79,7 +82,7 @@ public class ErrorService {
 
 
     private Set<User> populateAllUsersWithStatus(String message, Integer statusCode, List<uk.gov.ccs.swagger.dataMigration.model.User> usersDto, Org org) {
-        return usersDto.stream().map(u -> populateUserWithStatus(message, statusCode, org, u)).collect(Collectors.toSet());
+        return usersDto.stream().map(u -> populateUserWithStatus(message, statusCode, org, u)).collect(toSet());
 
     }
 
@@ -90,7 +93,7 @@ public class ErrorService {
         user.setTitle(u.getTitle());
         user.setEmail(u.getEmail());
         var userRoles = u.getUserRoles();
-        if (null != userRoles) {
+        if (isNotEmpty(userRoles)) {
             user.setUserRoles(userRolesAsString(userRoles));
         }
         user.setContactEmail(u.getContactEmail());
@@ -110,7 +113,7 @@ public class ErrorService {
         org.setSchemeId(organisation.getSchemeId());
         org.setRightToBuy(organisation.isRightToBuy());
         var orgRoles = organisation.getOrgRoles();
-        if (null != orgRoles) {
+        if (isNotEmpty(orgRoles)) {
             org.setOrgRoles(orgRolesAsString(orgRoles));
         }
         org.setStatus(statusCode);
@@ -119,13 +122,13 @@ public class ErrorService {
     }
 
     private String orgRolesAsString(List<OrgRoles> roles) {
-        List<String> rolesList = roles.stream().map(OrgRoles::getName).collect(Collectors.toList());
-        return String.join(",", rolesList);
+        List<String> rolesList = roles.stream().map(OrgRoles::getName).collect(toList());
+        return join(",", rolesList);
     }
 
     private String userRolesAsString(List<UserRoles> userRoles) {
-        var rolesList = userRoles.stream().map(UserRoles::getName).collect(Collectors.toList());
-        return String.join(",", rolesList);
+        var rolesList = userRoles.stream().map(UserRoles::getName).collect(toList());
+        return join(",", rolesList);
     }
 
 

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_COMPLETE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_PARTIAL;
 
@@ -22,7 +23,7 @@ public class ReportService {
     private final ReportRepository reportRepository;
 
     private static long userCount(Organisation o) {
-        return o.getUser() != null ? o.getUser().size() : 0;
+        return isNotEmpty(o.getUser()) ? o.getUser().size() : 0;
     }
 
     public void generateReport(LocalDateTime startTime, LocalDateTime endTime, List<Organisation> organisations, long failedUserCount, long processesUserCount, boolean migrationStatus) {

@@ -7,6 +7,8 @@ import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+
 @Service
 @RequiredArgsConstructor
 public class MigrationService {
@@ -27,7 +29,7 @@ public class MigrationService {
         for (Organisation organisation : organisations) {
             var orgMigrationResponse = organisationService.migrateOrganisation(organisation);
             var users = organisation.getUser();
-            if (orgMigrationResponse != null && users != null && !users.isEmpty()) {
+            if (orgMigrationResponse != null && isNotEmpty(users)) {
                 failedUserCount += userService.migrateUsers(users, orgMigrationResponse);
                 processedUserCount += users.size();
                 migrationStatus = failedUserCount == 0;
