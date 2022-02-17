@@ -13,6 +13,7 @@ import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRATION_SUCCESS;
 import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
@@ -41,7 +42,7 @@ public class UserService {
         userDto.setAccountVerified(properties.isAccountVerified());
         UserRequestDetail detail = new UserRequestDetail();
         detail.setIdentityProviderIds(singletonList(identityProvideId));
-        if (roleIds != null) {
+        if (isNotEmpty(roleIds)) {
             detail.setRoleIds(roleIds);
         }
         userDto.setDetail(detail);

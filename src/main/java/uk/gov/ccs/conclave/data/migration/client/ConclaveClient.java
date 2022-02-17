@@ -13,7 +13,9 @@ import uk.gov.ccs.swagger.sso.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.EMPTY_LIST;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_ROLE_NOT_FOUND;
 
 @Component
@@ -75,8 +77,8 @@ public class ConclaveClient {
     }
 
     public List<Integer> getUserRoleIdsFromRoleNames(final String organisationId, final List<UserRoles> roleNames) throws ApiException {
-        if (roleNames == null || roleNames.isEmpty()) {
-            return null;
+        if (isEmpty(roleNames)) {
+            return EMPTY_LIST;
         }
         LOGGER.info("Getting user roleIds. ");
         List<OrganisationRole> orgRoles = orgApi.organisationsOrganisationIdRolesGet(organisationId);

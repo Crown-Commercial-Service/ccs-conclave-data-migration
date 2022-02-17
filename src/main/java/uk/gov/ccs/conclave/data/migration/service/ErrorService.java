@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.domain.User;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
@@ -15,6 +16,9 @@ import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.ArrayUtils.contains;
+import static org.springframework.http.HttpStatus.valueOf;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +37,7 @@ public class ErrorService {
     public static final String USER_MIGRATION_SUCCESS = "User migrated successfully. ";
     public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
     public static final String MIGRATION_STATUS_COMPLETE = "Completed with no errors. ";
+    static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 
     private final OrganisationRepository organisationRepository;
 
@@ -43,7 +48,13 @@ public class ErrorService {
         LOGGER.error(message);
         Org savedOrg = saveOrgDetailsWithStatusCode(organisation, message, statusCode);
         saveAllUserDetailsWithStatusCode(organisation, message, statusCode, savedOrg);
+        handleFailure(message, statusCode);
+    }
 
+    private void handleFailure(String message, Integer statusCode) {
+        if (contains(FATAL_ERROR_CODES, statusCode)) {
+            throw new ResponseStatusException(valueOf(statusCode), message);
+        }
     }
 
     public Org saveOrgDetailsWithStatusCode(Organisation organisation, String message, Integer statusCode) {
@@ -63,6 +74,7 @@ public class ErrorService {
     public void saveUserDetailWithStatusCode(uk.gov.ccs.swagger.dataMigration.model.User user, String message, Integer statusCode, Org savedOrg) {
         User usersSet = populateUserWithStatus(message, statusCode, savedOrg, user);
         userRepository.save(usersSet);
+        handleFailure(message, statusCode);
     }
 
 

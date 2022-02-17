@@ -30,7 +30,7 @@ public class ContactService {
         ContactPoint userContactPoint = new ContactPoint();
         userContactPoint.setEmail(stripToEmpty(user.getContactEmail()));
         userContactPoint.setFaxNumber(stripToEmpty(user.getContactFax()));
-        userContactPoint.setTelephone(stripToEmpty(isEmpty(user.getContactPhone()) ? user.getContactMobile() : user.getContactPhone()));
+        userContactPoint.setTelephone(strip(isEmpty(user.getContactPhone()) ? user.getContactMobile() : user.getContactPhone(), "-"));
         userContactPoint.setUri(stripToEmpty(user.getContactSocial()));
         if (isContactDetailPresent(userContactPoint)) {
             try {
