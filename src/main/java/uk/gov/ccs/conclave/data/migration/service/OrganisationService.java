@@ -30,6 +30,8 @@ public class OrganisationService {
 
     private final ContactService contactService;
 
+    private final RoleService roleService;
+
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) {
         OrgMigration ciiResponse = migrateOrgToCii(org);
@@ -77,9 +79,9 @@ public class OrganisationService {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
                 contactService.migrateOrgContact(org, ciiResponse, organisationId);
-                conclaveClient.applyOrganisationRole(organisationId, org.getOrgRoles());
+                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
             } else {
-                conclaveClient.applyOrganisationRole(organisationId, org.getOrgRoles());
+                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {

@@ -30,6 +30,8 @@ public class UserService {
 
     private final ContactService contactService;
 
+    private final RoleService roleService;
+
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
@@ -53,7 +55,7 @@ public class UserService {
         long userFailureCount = 0;
         for (User user : users) {
             try {
-                var roleIds = conclaveUserClient.getUserRoleIdsFromRoleNames(response.getOrganisationId(), user.getUserRoles());
+                var roleIds = roleService.getUserRoleIdsFromRoleNames(response.getOrganisationId(), user.getUserRoles());
                 UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, response.getOrganisationId(), response.getIdentityProviderId(), roleIds);
 
                 UserEditResponseInfo userInfo = conclaveUserClient.createUser(userDto);
