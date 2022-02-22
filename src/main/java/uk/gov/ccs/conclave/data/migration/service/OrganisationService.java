@@ -3,6 +3,7 @@ package uk.gov.ccs.conclave.data.migration.service;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
@@ -33,7 +34,7 @@ public class OrganisationService {
     private final RoleService roleService;
 
 
-    public OrgMigrationResponse migrateOrganisation(Organisation org) {
+    public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
         String organisationId = null;
         Integer identityProviderId = null;
@@ -57,7 +58,7 @@ public class OrganisationService {
     }
 
 
-    private OrgMigration migrateOrgToCii(Organisation org) {
+    private OrgMigration migrateOrgToCii(Organisation org) throws DataMigrationException {
         OrgMigration ciiOrganisation = null;
         try {
             ciiOrganisation = ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
@@ -72,7 +73,7 @@ public class OrganisationService {
         return ciiOrganisation;
     }
 
-    private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) {
+    private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
         try {
             String organisationId = ciiResponse.getOrganisationId();
             if (isNewOrg(ciiResponse)) {
@@ -134,7 +135,7 @@ public class OrganisationService {
         return organisationAddress;
     }
 
-    private Integer getIdentityProviderIdOfOrganisation(String organisationId, Organisation organisation) {
+    private Integer getIdentityProviderIdOfOrganisation(String organisationId, Organisation organisation) throws DataMigrationException {
         Integer identityProviderId = null;
         try {
             identityProviderId = conclaveClient.getIdentityProviderId(organisationId);

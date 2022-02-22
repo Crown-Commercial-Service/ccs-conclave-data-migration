@@ -2,6 +2,7 @@ package uk.gov.ccs.conclave.data.migration.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.swagger.cii.model.ContactPoint;
@@ -26,7 +27,7 @@ public class ContactService {
 
     private final ErrorService errorService;
 
-    void migrateUserContact(User user, String userId, Org organisation) {
+    void migrateUserContact(User user, String userId, Org organisation) throws DataMigrationException {
         ContactPoint userContactPoint = new ContactPoint();
         userContactPoint.setEmail(stripToEmpty(user.getContactEmail()));
         userContactPoint.setFaxNumber(stripToEmpty(user.getContactFax()));
@@ -41,7 +42,7 @@ public class ContactService {
         }
     }
 
-    void migrateOrgContact(Organisation org, OrgMigration ciiResponse, String organisationId) {
+    void migrateOrgContact(Organisation org, OrgMigration ciiResponse, String organisationId) throws DataMigrationException {
         ContactPoint contactPoint = ciiResponse.getContactPoint();
         if (isContactDetailPresent(contactPoint)) {
             try {

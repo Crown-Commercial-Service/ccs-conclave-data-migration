@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
-import uk.gov.ccs.conclave.data.migration.domain.Report;
 import uk.gov.ccs.conclave.data.migration.domain.User;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
-import uk.gov.ccs.conclave.data.migration.repository.ReportRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
@@ -19,12 +17,10 @@ import java.util.List;
 import java.util.Set;
 
 import static java.lang.String.join;
-import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.ArrayUtils.contains;
-import static org.springframework.http.HttpStatus.valueOf;
 
 @Service
 @RequiredArgsConstructor
@@ -50,23 +46,17 @@ public class ErrorService {
 
     private final UserRepository userRepository;
 
-    private final ReportRepository reportRepository;
-
-
-    public void logWithStatus(Organisation organisation, String message, Integer statusCode) {
+    public void logWithStatus(Organisation organisation, String message, Integer statusCode) throws DataMigrationException {
         LOGGER.error(message);
         Org savedOrg = saveOrgDetailsWithStatusCode(organisation, message, statusCode);
         saveAllUserDetailsWithStatusCode(organisation, message, statusCode, savedOrg);
         handleFailure(message, statusCode);
     }
 
-    private void handleFailure(String message, Integer statusCode) {
+    private void handleFailure(String message, Integer statusCode) throws DataMigrationException {
         if (contains(FATAL_ERROR_CODES, statusCode)) {
-            Report report = new Report();
-            report.setStatus(MIGRATION_STATUS_ABORTED + statusCode + message);
-            report.setEndTime(now());
-            reportRepository.save(report);
-            throw new ResponseStatusException(valueOf(statusCode), message);
+            LOGGER.error("Process aborted. " + message);
+            throw new DataMigrationException(message, statusCode);
         }
     }
 
@@ -84,7 +74,7 @@ public class ErrorService {
         }
     }
 
-    public void saveUserDetailWithStatusCode(uk.gov.ccs.swagger.dataMigration.model.User user, String message, Integer statusCode, Org savedOrg) {
+    public void saveUserDetailWithStatusCode(uk.gov.ccs.swagger.dataMigration.model.User user, String message, Integer statusCode, Org savedOrg) throws DataMigrationException {
         User usersSet = populateUserWithStatus(message, statusCode, savedOrg, user);
         userRepository.save(usersSet);
         handleFailure(message, statusCode);

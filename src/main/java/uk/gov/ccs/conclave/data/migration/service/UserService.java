@@ -2,6 +2,7 @@ package uk.gov.ccs.conclave.data.migration.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 import uk.gov.ccs.swagger.dataMigration.model.User;
@@ -51,7 +52,7 @@ public class UserService {
         return userDto;
     }
 
-    public long migrateUsers(List<User> users, OrgMigrationResponse response) {
+    public long migrateUsers(List<User> users, OrgMigrationResponse response) throws DataMigrationException {
         long userFailureCount = 0;
         for (User user : users) {
             try {
