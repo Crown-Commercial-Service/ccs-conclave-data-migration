@@ -6,8 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
+import uk.gov.ccs.conclave.data.migration.domain.Report;
 import uk.gov.ccs.conclave.data.migration.domain.User;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
+import uk.gov.ccs.conclave.data.migration.repository.ReportRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import static java.lang.String.join;
+import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
@@ -40,11 +43,14 @@ public class ErrorService {
     public static final String USER_MIGRATION_SUCCESS = "User migrated successfully. ";
     public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
     public static final String MIGRATION_STATUS_COMPLETE = "Completed with no errors. ";
+    public static final String MIGRATION_STATUS_ABORTED = "Migration aborted. ";
     static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 
     private final OrganisationRepository organisationRepository;
 
     private final UserRepository userRepository;
+
+    private final ReportRepository reportRepository;
 
 
     public void logWithStatus(Organisation organisation, String message, Integer statusCode) {
@@ -56,6 +62,10 @@ public class ErrorService {
 
     private void handleFailure(String message, Integer statusCode) {
         if (contains(FATAL_ERROR_CODES, statusCode)) {
+            Report report = new Report();
+            report.setStatus(MIGRATION_STATUS_ABORTED + statusCode + message);
+            report.setEndTime(now());
+            reportRepository.save(report);
             throw new ResponseStatusException(valueOf(statusCode), message);
         }
     }
