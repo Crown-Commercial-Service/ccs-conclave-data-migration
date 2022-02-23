@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_COMPLETE;
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_PARTIAL;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 @Service
 @RequiredArgsConstructor
@@ -22,20 +21,16 @@ public class ReportService {
     private final ReportRepository reportRepository;
 
     private static long userCount(Organisation o) {
-        return o.getUser() != null ? o.getUser().size() : 0;
+        return isNotEmpty(o.getUser()) ? o.getUser().size() : 0;
     }
 
-    public void generateReport(LocalDateTime startTime, LocalDateTime endTime, List<Organisation> organisations, long failedUserCount, long processesUserCount, boolean migrationStatus) {
+    public void generateReport(LocalDateTime startTime, LocalDateTime endTime, List<Organisation> organisations, long failedUserCount, long processesUserCount, String migrationStatus) {
         Report report = new Report();
         report.setStartTime(startTime);
         report.setEndTime(endTime);
         report.setDuration(ChronoUnit.MILLIS.between(startTime, endTime));
         report.setTotalOrganisations(organisations.size());
-        if (migrationStatus) {
-            report.setStatus(MIGRATION_STATUS_COMPLETE);
-        } else {
-            report.setStatus(MIGRATION_STATUS_PARTIAL);
-        }
+        report.setStatus(migrationStatus);
         long userCount = organisations.stream().mapToLong(ReportService::userCount).sum();
         report.setTotalUsers(userCount);
         report.setProcessedUsers(processesUserCount);

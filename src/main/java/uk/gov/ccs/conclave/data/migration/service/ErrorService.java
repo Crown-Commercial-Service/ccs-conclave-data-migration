@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.domain.User;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
@@ -14,7 +15,12 @@ import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static java.lang.String.join;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+import static org.apache.commons.lang3.ArrayUtils.contains;
 
 @Service
 @RequiredArgsConstructor
@@ -33,17 +39,25 @@ public class ErrorService {
     public static final String USER_MIGRATION_SUCCESS = "User migrated successfully. ";
     public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
     public static final String MIGRATION_STATUS_COMPLETE = "Completed with no errors. ";
+    public static final String MIGRATION_STATUS_ABORTED = "Migration aborted. ";
+    static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 
     private final OrganisationRepository organisationRepository;
 
     private final UserRepository userRepository;
 
-
-    public void logWithStatus(Organisation organisation, String message, Integer statusCode) {
+    public void logWithStatus(Organisation organisation, String message, Integer statusCode) throws DataMigrationException {
         LOGGER.error(message);
         Org savedOrg = saveOrgDetailsWithStatusCode(organisation, message, statusCode);
         saveAllUserDetailsWithStatusCode(organisation, message, statusCode, savedOrg);
+        handleFailure(message, statusCode);
+    }
 
+    private void handleFailure(String message, Integer statusCode) throws DataMigrationException {
+        if (contains(FATAL_ERROR_CODES, statusCode)) {
+            LOGGER.error("Process aborted. " + message);
+            throw new DataMigrationException(message, statusCode);
+        }
     }
 
     public Org saveOrgDetailsWithStatusCode(Organisation organisation, String message, Integer statusCode) {
@@ -60,14 +74,15 @@ public class ErrorService {
         }
     }
 
-    public void saveUserDetailWithStatusCode(uk.gov.ccs.swagger.dataMigration.model.User user, String message, Integer statusCode, Org savedOrg) {
+    public void saveUserDetailWithStatusCode(uk.gov.ccs.swagger.dataMigration.model.User user, String message, Integer statusCode, Org savedOrg) throws DataMigrationException {
         User usersSet = populateUserWithStatus(message, statusCode, savedOrg, user);
         userRepository.save(usersSet);
+        handleFailure(message, statusCode);
     }
 
 
     private Set<User> populateAllUsersWithStatus(String message, Integer statusCode, List<uk.gov.ccs.swagger.dataMigration.model.User> usersDto, Org org) {
-        return usersDto.stream().map(u -> populateUserWithStatus(message, statusCode, org, u)).collect(Collectors.toSet());
+        return usersDto.stream().map(u -> populateUserWithStatus(message, statusCode, org, u)).collect(toSet());
 
     }
 
@@ -78,7 +93,7 @@ public class ErrorService {
         user.setTitle(u.getTitle());
         user.setEmail(u.getEmail());
         var userRoles = u.getUserRoles();
-        if (null != userRoles) {
+        if (isNotEmpty(userRoles)) {
             user.setUserRoles(userRolesAsString(userRoles));
         }
         user.setContactEmail(u.getContactEmail());
@@ -98,7 +113,7 @@ public class ErrorService {
         org.setSchemeId(organisation.getSchemeId());
         org.setRightToBuy(organisation.isRightToBuy());
         var orgRoles = organisation.getOrgRoles();
-        if (null != orgRoles) {
+        if (isNotEmpty(orgRoles)) {
             org.setOrgRoles(orgRolesAsString(orgRoles));
         }
         org.setStatus(statusCode);
@@ -107,13 +122,13 @@ public class ErrorService {
     }
 
     private String orgRolesAsString(List<OrgRoles> roles) {
-        List<String> rolesList = roles.stream().map(OrgRoles::getName).collect(Collectors.toList());
-        return String.join(",", rolesList);
+        List<String> rolesList = roles.stream().map(OrgRoles::getName).collect(toList());
+        return join(",", rolesList);
     }
 
     private String userRolesAsString(List<UserRoles> userRoles) {
-        var rolesList = userRoles.stream().map(UserRoles::getName).collect(Collectors.toList());
-        return String.join(",", rolesList);
+        var rolesList = userRoles.stream().map(UserRoles::getName).collect(toList());
+        return join(",", rolesList);
     }
 
 

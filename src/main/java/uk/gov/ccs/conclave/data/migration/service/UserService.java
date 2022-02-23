@@ -2,6 +2,7 @@ package uk.gov.ccs.conclave.data.migration.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 import uk.gov.ccs.swagger.dataMigration.model.User;
@@ -13,6 +14,7 @@ import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRATION_SUCCESS;
 import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
@@ -29,6 +31,8 @@ public class UserService {
 
     private final ContactService contactService;
 
+    private final RoleService roleService;
+
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
@@ -41,18 +45,18 @@ public class UserService {
         userDto.setAccountVerified(properties.isAccountVerified());
         UserRequestDetail detail = new UserRequestDetail();
         detail.setIdentityProviderIds(singletonList(identityProvideId));
-        if (roleIds != null) {
+        if (isNotEmpty(roleIds)) {
             detail.setRoleIds(roleIds);
         }
         userDto.setDetail(detail);
         return userDto;
     }
 
-    public long migrateUsers(List<User> users, OrgMigrationResponse response) {
+    public long migrateUsers(List<User> users, OrgMigrationResponse response) throws DataMigrationException {
         long userFailureCount = 0;
         for (User user : users) {
             try {
-                var roleIds = conclaveUserClient.getUserRoleIdsFromRoleNames(response.getOrganisationId(), user.getUserRoles());
+                var roleIds = roleService.getUserRoleIdsFromRoleNames(response.getOrganisationId(), user.getUserRoles());
                 UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, response.getOrganisationId(), response.getIdentityProviderId(), roleIds);
 
                 UserEditResponseInfo userInfo = conclaveUserClient.createUser(userDto);
