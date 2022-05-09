@@ -49,6 +49,12 @@ public class UserService {
             detail.setRoleIds(roleIds);
         }
         userDto.setDetail(detail);
+
+
+        if (user.isRoleAdmin(roleIds)) {
+            userDto.setMfaEnabled(true);
+        }
+
         return userDto;
     }
 

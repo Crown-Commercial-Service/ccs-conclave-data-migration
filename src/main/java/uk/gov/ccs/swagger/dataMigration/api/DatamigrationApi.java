@@ -55,7 +55,7 @@ public interface DatamigrationApi {
         @ApiResponse(responseCode = "504", description = "Gateway Timeout"),
         
         @ApiResponse(responseCode = "505", description = "HTTP Version Not Supported") })
-    @RequestMapping(value = "/datamigration/migrate/format/{fileFormat}",
+    @RequestMapping(value = "/data-migration/migrate/format/{fileFormat}",
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.POST)

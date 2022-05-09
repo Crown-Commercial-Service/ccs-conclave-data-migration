@@ -36,6 +36,9 @@ public class ContactPoint {
   @SerializedName("telephone")
   private String telephone = null;
 
+  @SerializedName("mobile")
+  private String mobile = null;
+
   @SerializedName("faxNumber")
   private String faxNumber = null;
 
@@ -96,6 +99,24 @@ public class ContactPoint {
     this.telephone = telephone;
   }
 
+  public ContactPoint mobile(String mobile) {
+    this.mobile = mobile;
+    return this;
+  }
+
+   /**
+   * The mobile number of the contact point/person. This should include the international dialling code.
+   * @return mobile
+  **/
+  @Schema(example = "+44 7777 7777", required = true, description = "The mobile number of the contact point/person. This should include the international dialling code.")
+  public String getMobile() {
+    return mobile;
+  }
+
+  public void setMobile(String mobile) {
+    this.mobile = mobile;
+  }
+
   public ContactPoint faxNumber(String faxNumber) {
     this.faxNumber = faxNumber;
     return this;
@@ -145,13 +166,14 @@ public class ContactPoint {
     return Objects.equals(this.name, contactPoint.name) &&
         Objects.equals(this.email, contactPoint.email) &&
         Objects.equals(this.telephone, contactPoint.telephone) &&
+        Objects.equals(this.mobile, contactPoint.mobile) &&
         Objects.equals(this.faxNumber, contactPoint.faxNumber) &&
         Objects.equals(this.uri, contactPoint.uri);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, email, telephone, faxNumber, uri);
+    return Objects.hash(name, email, telephone, mobile, faxNumber, uri);
   }
 
 
@@ -163,6 +185,7 @@ public class ContactPoint {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    telephone: ").append(toIndentedString(telephone)).append("\n");
+    sb.append("    mobile: ").append(toIndentedString(mobile)).append("\n");
     sb.append("    faxNumber: ").append(toIndentedString(faxNumber)).append("\n");
     sb.append("    uri: ").append(toIndentedString(uri)).append("\n");
     sb.append("}");
