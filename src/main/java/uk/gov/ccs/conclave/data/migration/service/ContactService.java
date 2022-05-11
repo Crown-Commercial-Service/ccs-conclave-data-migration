@@ -30,8 +30,9 @@ public class ContactService {
     void migrateUserContact(User user, String userId, Org organisation) throws DataMigrationException {
         ContactPoint userContactPoint = new ContactPoint();
         userContactPoint.setEmail(stripToEmpty(user.getContactEmail()));
-        userContactPoint.setFaxNumber(stripToEmpty(user.getContactFax()));
-        userContactPoint.setTelephone(strip(isEmpty(user.getContactPhone()) ? user.getContactMobile() : user.getContactPhone(), "-"));
+        userContactPoint.setFaxNumber(user.getContactFax().replaceAll("(-| |\\(|\\))", ""));
+        userContactPoint.setTelephone(user.getContactPhone().replaceAll("(-| |\\(|\\))", ""));
+        userContactPoint.setMobile(user.getContactMobile().replaceAll("(-| |\\(|\\))", ""));
         userContactPoint.setUri(stripToEmpty(user.getContactSocial()));
         if (isContactDetailPresent(userContactPoint)) {
             try {
@@ -57,6 +58,7 @@ public class ContactService {
         return (isNotEmpty(contactPoint.getName()))
                 || isNotEmpty(contactPoint.getEmail())
                 || isNotEmpty(contactPoint.getTelephone())
+                || isNotEmpty(contactPoint.getMobile())
                 || isNotEmpty(contactPoint.getFaxNumber())
                 || isNotEmpty(contactPoint.getUri());
     }
@@ -68,6 +70,7 @@ public class ContactService {
         List<ContactRequestDetail> contacts = new ArrayList<>();
         contacts.add(buildContactRequestDetail("EMAIL", contactPoint.getEmail()));
         contacts.add(buildContactRequestDetail("PHONE", contactPoint.getTelephone()));
+        contacts.add(buildContactRequestDetail("MOBILE", contactPoint.getMobile()));
         contacts.add(buildContactRequestDetail("FAX", contactPoint.getFaxNumber()));
         contacts.add(buildContactRequestDetail("WEB_ADDRESS", contactPoint.getUri()));
         contactRequestInfo.setContacts(contacts);

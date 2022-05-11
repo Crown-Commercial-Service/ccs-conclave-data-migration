@@ -247,6 +247,10 @@ public class User   {
   }
 
 
+  public boolean isRoleAdmin(List<Integer> roleIds) {
+    return roleIds.contains(2);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
