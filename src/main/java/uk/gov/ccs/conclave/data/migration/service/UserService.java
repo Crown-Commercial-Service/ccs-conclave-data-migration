@@ -43,17 +43,16 @@ public class UserService {
         userDto.setOrganisationId(organisationId);
         userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
         userDto.setAccountVerified(properties.isAccountVerified());
+        if (user.isRoleAdmin(user.getUserRoles())) {
+            userDto.setMfaEnabled(true);
+        }
+
         UserRequestDetail detail = new UserRequestDetail();
         detail.setIdentityProviderIds(singletonList(identityProvideId));
         if (isNotEmpty(roleIds)) {
             detail.setRoleIds(roleIds);
         }
         userDto.setDetail(detail);
-
-
-        if (user.isRoleAdmin(roleIds)) {
-            userDto.setMfaEnabled(true);
-        }
 
         return userDto;
     }
