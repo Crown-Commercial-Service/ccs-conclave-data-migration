@@ -44,7 +44,6 @@ public class UserService {
         userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
         userDto.setAccountVerified(properties.isAccountVerified());
         if (user.isRoleAdmin(user.getUserRoles())) {
-            System.out.println("WZ310");
             userDto.setMfaEnabled(true);
         }
 
