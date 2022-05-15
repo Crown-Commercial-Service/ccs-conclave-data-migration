@@ -246,11 +246,8 @@ public class User   {
     this.userRoles = userRoles;
   }
 
-
-  public boolean isRoleAdmin(List<Integer> roleIds) {
-    System.out.println("YB501");
-    System.out.println(roleIds);
-    return roleIds.contains(33555);
+  public boolean isRoleAdmin(List<UserRoles> roles) {
+    return roles.stream().anyMatch(role -> role.getName().equals("Organisation Administrator"));
   }
 
   @Override

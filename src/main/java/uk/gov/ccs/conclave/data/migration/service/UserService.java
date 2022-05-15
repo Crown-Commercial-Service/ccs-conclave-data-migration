@@ -43,22 +43,17 @@ public class UserService {
         userDto.setOrganisationId(organisationId);
         userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
         userDto.setAccountVerified(properties.isAccountVerified());
+        if (user.isRoleAdmin(user.getUserRoles())) {
+            System.out.println("WZ310");
+            userDto.setMfaEnabled(true);
+        }
+
         UserRequestDetail detail = new UserRequestDetail();
         detail.setIdentityProviderIds(singletonList(identityProvideId));
         if (isNotEmpty(roleIds)) {
             detail.setRoleIds(roleIds);
         }
         userDto.setDetail(detail);
-
-        System.out.println("XC127");
-        System.out.println(user.getUserRoles());
-        System.out.println(user.getUserRoles().stream().anyMatch(p -> p.getName().equals("Organisation Administrator")));
-        System.out.println("XC128");
-
-        if (user.isRoleAdmin(roleIds)) {
-            System.out.println("WZ310");
-            userDto.setMfaEnabled(true);
-        }
 
         return userDto;
     }
