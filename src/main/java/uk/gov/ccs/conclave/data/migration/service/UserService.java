@@ -52,7 +52,7 @@ public class UserService {
 
         System.out.println("XC127");
         System.out.println(user.getUserRoles());
-        System.out.println(user.getUserRoles().contains("Organisation Administrator"));
+        System.out.println(user.getUserRoles().stream().anyMatch(p -> p.getName().equals("Organisation Administrator")));
         System.out.println("XC128");
 
         if (user.isRoleAdmin(roleIds)) {
