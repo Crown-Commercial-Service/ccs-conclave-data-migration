@@ -51,6 +51,8 @@ public class UserService {
         userDto.setDetail(detail);
 
         System.out.println("XC127");
+        System.out.println(user.getUserRoles());
+        System.out.println("XC128");
 
         if (user.isRoleAdmin(roleIds)) {
             System.out.println("WZ310");
