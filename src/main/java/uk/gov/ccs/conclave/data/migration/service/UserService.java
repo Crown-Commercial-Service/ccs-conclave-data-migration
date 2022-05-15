@@ -50,8 +50,10 @@ public class UserService {
         }
         userDto.setDetail(detail);
 
+        System.out.println("XC127");
 
         if (user.isRoleAdmin(roleIds)) {
+            System.out.println("WZ310");
             userDto.setMfaEnabled(true);
         }
 
