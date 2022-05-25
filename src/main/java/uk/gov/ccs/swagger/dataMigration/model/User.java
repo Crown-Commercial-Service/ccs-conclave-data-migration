@@ -247,7 +247,11 @@ public class User   {
   }
 
   public boolean isRoleAdmin(List<UserRoles> roles) {
-    return roles.stream().anyMatch(role -> role.getName().equals("Organisation Administrator"));
+    if (roles == null) {
+      return false;
+    } else {
+      return roles.stream().anyMatch(role -> role.getName().equals("Organisation Administrator"));
+    }
   }
 
   @Override
