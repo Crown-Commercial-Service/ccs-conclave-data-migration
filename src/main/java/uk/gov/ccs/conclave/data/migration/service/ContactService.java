@@ -55,7 +55,7 @@ public class ContactService {
     }
 
     private boolean isContactDetailPresent(ContactPoint contactPoint) {
-        return  isNotEmpty(contactPoint.getName())
+        return (isNotEmpty(contactPoint.getName()))
                 || isNotEmpty(contactPoint.getEmail())
                 || isNotEmpty(contactPoint.getTelephone())
                 || isNotEmpty(contactPoint.getMobile())
