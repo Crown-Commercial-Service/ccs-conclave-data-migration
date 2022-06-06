@@ -247,8 +247,6 @@ public class User   {
   }
 
   public boolean isRoleAdmin(List<UserRoles> roles) {
-    System.out.println("HERE --> 1");
-    System.out.println(roles);
     return roles.stream().anyMatch(role -> role.getName().equals("Organisation Administrator"));
   }
 
