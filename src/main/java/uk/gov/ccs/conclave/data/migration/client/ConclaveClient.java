@@ -46,6 +46,7 @@ public class ConclaveClient {
 
     }
     public List<OrganisationRole> getAllConfiguredRoles() throws ApiException {
+        System.out.println("HERE --> 1");
         LOGGER.info("Getting all configured Roles. ");
         return configurationApi.configurationsRolesGet();
     }
