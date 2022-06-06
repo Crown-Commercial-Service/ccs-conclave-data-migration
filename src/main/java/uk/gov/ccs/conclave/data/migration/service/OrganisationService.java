@@ -33,6 +33,8 @@ public class OrganisationService {
 
     private final RoleService roleService;
 
+    public boolean orgAlreadyExists = false;
+
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
@@ -66,7 +68,8 @@ public class OrganisationService {
 
         } catch (ApiException e) {
             if (e.getCode() == 409) {
-                System.out.println(String.format("HERE -> 7 (e.getCode()):  %s", e.getCode()));
+                orgAlreadyExists = true;
+                System.out.println(String.format("HERE -> 7 (e.getCode() AND orgAlreadyExists):  %s AND %s", e.getCode(), orgAlreadyExists));
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
                 errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
