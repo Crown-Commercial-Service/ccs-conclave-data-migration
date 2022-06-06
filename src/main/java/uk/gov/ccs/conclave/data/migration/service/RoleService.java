@@ -57,8 +57,16 @@ public class RoleService {
         return roleIds;
     }
 
-    public static boolean isNotNull(final List<OrgRoles> orgRolesList) {
-        return orgRolesList.stream().anyMatch(orgRole -> orgRole.getName().equals(null));
+    public void isNotNull(final List<OrgRoles> orgRolesList) {
+        System.out.println("---->>>START================");
+        System.out.println(orgRolesList.stream());
+        orgRolesList.forEach(orgRole -> System.out.println(orgRole.getName()));
+        System.out.println(orgRolesList.stream().anyMatch(orgRole -> orgRole.isOrgRoleAdmin()));
+        System.out.println("---->>>FINISH===============");
+    }
+
+    public boolean checkForAdminOnNewOrg(final List<OrgRoles> orgRolesList) {
+        return orgRolesList.stream().anyMatch(orgRole -> orgRole.isOrgRoleAdmin());
     }
 
 }

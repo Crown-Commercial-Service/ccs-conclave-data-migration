@@ -36,6 +36,10 @@ public class OrgRoles   {
     this.name = name;
   }
 
+  public boolean isOrgRoleAdmin() {
+    return this.name == "Organisation Administrator";
+  }
+
 
   @Override
   public boolean equals(Object o) {
