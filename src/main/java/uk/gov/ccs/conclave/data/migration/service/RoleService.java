@@ -29,8 +29,7 @@ public class RoleService {
     }
 
     public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList, final boolean orgAlreadyExists) throws ApiException {
-        isNotNull(orgRolesList);
-        if (isNotEmpty(orgRolesList)) {
+        if (isNotEmpty(orgRolesList) && isNotNull(orgRolesList)) {
             System.out.println(String.format("HERE -> 9 (orgAlreadyExists):  %s", orgAlreadyExists));
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
             System.out.println(String.format("HERE -> 3 (configuredRoles):  %s", configuredRoles));
@@ -58,12 +57,14 @@ public class RoleService {
         return roleIds;
     }
 
-    public void isNotNull(final List<OrgRoles> orgRolesList) {
-        System.out.println("---->>>START================");
-        System.out.println(orgRolesList.stream());
-        orgRolesList.forEach(orgRole -> System.out.println(orgRole.getName()));
-        System.out.println(orgRolesList.stream().anyMatch(orgRole -> orgRole.isOrgRoleAdmin()));
-        System.out.println("---->>>FINISH===============");
+    public boolean isNotNull(final List<OrgRoles> orgRolesList) {
+        for (OrgRoles orgRole : orgRolesList) {
+            System.out.println(orgRole.getName());
+            if (orgRole.getName() == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean checkForAdminOnNewOrg(final List<OrgRoles> orgRolesList) {
