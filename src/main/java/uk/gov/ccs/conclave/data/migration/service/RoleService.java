@@ -29,8 +29,8 @@ public class RoleService {
     }
 
     public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList, final boolean orgAlreadyExists) throws ApiException {
-        if (isNotEmpty(orgRolesList)) {
-            System.out.println(String.format("HERE -> 9 (configuredRoles):  %s", orgAlreadyExists));
+        if (isNotEmpty(orgRolesList) && !orgRolesList.contains(null)) {
+            System.out.println(String.format("HERE -> 9 (orgAlreadyExists):  %s", orgAlreadyExists));
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
             System.out.println(String.format("HERE -> 3 (configuredRoles):  %s", configuredRoles));
             System.out.println(String.format("HERE -> 4 (orgRolesList):  %s", orgRolesList));
