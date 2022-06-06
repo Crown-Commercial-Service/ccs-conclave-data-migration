@@ -31,6 +31,7 @@ public class RoleService {
     public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException {
         if (isNotEmpty(orgRolesList)) {
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
+            System.out.println(configuredRoles);
             var rolesToAdd = new ArrayList<OrganisationRole>();
             for (OrgRoles orgRole : orgRolesList) {
                 rolesToAdd.add(filterOrganisationRoleByName(configuredRoles, orgRole.getName()));
