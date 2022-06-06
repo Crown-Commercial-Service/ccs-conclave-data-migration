@@ -19,4 +19,9 @@ public class CiiOrgClient {
         LOGGER.info("Creating a CII organisation.");
         return identitiesApi.appMigrateOrg(scheme, id);
     }
+
+    public OrgMigration deleteCiiOrganisation(final String ccsOrgId) throws ApiException {
+        LOGGER.info("Deleting a CII organisation.");
+        return identitiesApi.appDeleteOrg(ccsOrgId);
+    }
 }

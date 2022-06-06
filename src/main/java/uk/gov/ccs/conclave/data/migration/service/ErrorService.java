@@ -9,6 +9,7 @@ import uk.gov.ccs.conclave.data.migration.domain.User;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
+import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
@@ -29,6 +30,7 @@ public class ErrorService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorService.class);
 
     public static final String CII_ORG_ERROR_MESSAGE = "Error while creating CII organisation. ";
+    public static final String CII_DEL_ORG_ERROR_MESSAGE = "Error while deleting CII organisation. ";
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
     public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
     public static final String SSO_USER_CONTACT_ERROR_MESSAGE = "Error while creating SSO User Contact. ";
@@ -46,10 +48,15 @@ public class ErrorService {
 
     private final UserRepository userRepository;
 
-    public void logWithStatus(Organisation organisation, String message, Integer statusCode) throws DataMigrationException {
+    public void logWithStatus(Organisation org, String message, Integer statusCode) throws DataMigrationException {
         LOGGER.error(message);
-        Org savedOrg = saveOrgDetailsWithStatusCode(organisation, message, statusCode);
-        saveAllUserDetailsWithStatusCode(organisation, message, statusCode, savedOrg);
+        Org savedOrg = saveOrgDetailsWithStatusCode(org, message, statusCode);
+        saveAllUserDetailsWithStatusCode(org, message, statusCode, savedOrg);
+        handleFailure(message, statusCode);
+    }
+
+    public void logWithStatusString(String ccsOrgId, String message, Integer statusCode) throws DataMigrationException {
+        LOGGER.error(message);
         handleFailure(message, statusCode);
     }
 
