@@ -39,6 +39,7 @@ public class OrganisationService {
         String organisationId = null;
         Integer identityProviderId = null;
         if (null != ciiResponse) {
+            System.out.println(String.format("HERE -> 6 (ciiResponse):  %s", ciiResponse));
             migrateOrgToConclave(ciiResponse, org);
             organisationId = ciiResponse.getOrganisationId();
             identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
@@ -65,6 +66,7 @@ public class OrganisationService {
 
         } catch (ApiException e) {
             if (e.getCode() == 409) {
+                System.out.println(String.format("HERE -> 7 (e.getCode()):  %s", e.getCode()));
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
                 errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
