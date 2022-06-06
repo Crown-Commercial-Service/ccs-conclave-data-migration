@@ -33,7 +33,7 @@ public class OrganisationService {
 
     private final RoleService roleService;
 
-    public boolean orgAlreadyExists = false;
+    public boolean orgAlreadyExists;
 
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
@@ -63,6 +63,7 @@ public class OrganisationService {
 
     private OrgMigration migrateOrgToCii(Organisation org) throws DataMigrationException {
         OrgMigration ciiOrganisation = null;
+        orgAlreadyExists = false;
         try {
             ciiOrganisation = ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
 
@@ -85,9 +86,9 @@ public class OrganisationService {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
                 contactService.migrateOrgContact(org, ciiResponse, organisationId);
-                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
+                roleService.applyOrganisationRole(organisationId, org.getOrgRoles(), orgAlreadyExists);
             } else {
-                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
+                roleService.applyOrganisationRole(organisationId, org.getOrgRoles(), orgAlreadyExists);
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
