@@ -20,8 +20,8 @@ public class CiiOrgClient {
         return identitiesApi.appMigrateOrg(scheme, id);
     }
 
-    public OrgMigration deleteCiiOrganisation(final String ccsOrgId) throws ApiException {
+    public OrgMigration deleteCiiOrganisation(final String organisationId) throws ApiException {
         LOGGER.info("Deleting a CII organisation.");
-        return identitiesApi.appDeleteOrg(ccsOrgId);
+        return identitiesApi.appDeleteOrg(organisationId);
     }
 }

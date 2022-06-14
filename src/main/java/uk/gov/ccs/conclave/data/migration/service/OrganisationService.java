@@ -99,8 +99,8 @@ public class OrganisationService {
     }
 
 
-    public int deleteOrganisation(String ccsOrgId) throws DataMigrationException {
-        OrgMigration ciiResponse = deleteOrgFromCii(ccsOrgId);
+    public int deleteOrganisation(String organisationId) throws DataMigrationException {
+        OrgMigration ciiResponse = deleteOrgFromCii(organisationId);
         if (null != ciiResponse) {
             System.out.println(String.format("HERE -> 6.2 (ciiResponse):  %s", ciiResponse));
             return 200;
@@ -109,13 +109,13 @@ public class OrganisationService {
     }
 
 
-    private OrgMigration deleteOrgFromCii(String ccsOrgId) throws DataMigrationException {
+    private OrgMigration deleteOrgFromCii(String organisationId) throws DataMigrationException {
         OrgMigration ciiOrganisation = null;
         try {
-            ciiOrganisation = ciiOrgClient.deleteCiiOrganisation(ccsOrgId);
+            ciiOrganisation = ciiOrgClient.deleteCiiOrganisation(organisationId);
 
         } catch (ApiException e) {
-            errorService.logWithStatusString(ccsOrgId, CII_DEL_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());   
+            errorService.logWithStatusString(organisationId, CII_DEL_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());   
         }
         return ciiOrganisation;
     }

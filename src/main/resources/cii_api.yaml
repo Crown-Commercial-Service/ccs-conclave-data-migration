@@ -79,16 +79,16 @@ paths:
           description: Gateway Timeout
         "505":
           description: HTTP Version Not Supported
-  /identities/organisations/{ccsOrgId}:
+  /identities/organisations/{organisationId}:
     delete:
       tags:
       - identities
       summary: A generic endpoint for deleting organisations from data file supplied by individual CCS platforms and services.
       operationId: app.deleteOrg
       parameters:
-      - name: ccsOrgId
+      - name: organisationId
         in: path
-        description: ccsOrgId is the organisation's unique id, that is used to identify them
+        description: organisationId is the organisation's unique id, that is used to identify them
         required: true
         style: simple
         explode: false

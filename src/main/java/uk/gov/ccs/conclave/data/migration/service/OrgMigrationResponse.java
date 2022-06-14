@@ -16,6 +16,4 @@ public class OrgMigrationResponse {
 
     private Org organisation;
 
-    private String ccsOrgId;
-
 }

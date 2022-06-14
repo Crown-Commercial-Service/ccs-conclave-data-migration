@@ -107,18 +107,18 @@ public class IdentitiesApi {
 
     /**
      * Build call for appDeleteOrg
-     * @param ccsOrgId ccsOrgId is the organisation's unique id, that is used to identify them
+     * @param organisationId organisationId is the organisation's unique id, that is used to identify them
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call appDeleteOrgCall(String ccsOrgId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call appDeleteOrgCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/identities/organisations/{ccsOrgId}"
-            .replaceAll("\\{" + "ccsOrgId" + "\\}", apiClient.escapeString(ccsOrgId.toString()));
+        String localVarPath = "/identities/organisations/{organisationId}"
+            .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -176,13 +176,13 @@ public class IdentitiesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call appDeleteOrgValidateBeforeCall(String ccsOrgId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        // verify the required parameter 'ccsOrgId' is set
-        if (ccsOrgId == null) {
-            throw new ApiException("Missing the required parameter 'ccsOrgId' when calling appDeleteOrg(Async)");
+    private com.squareup.okhttp.Call appDeleteOrgValidateBeforeCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        // verify the required parameter 'organisationId' is set
+        if (organisationId == null) {
+            throw new ApiException("Missing the required parameter 'organisationId' when calling appDeleteOrg(Async)");
         }
         
-        com.squareup.okhttp.Call call = appDeleteOrgCall(ccsOrgId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = appDeleteOrgCall(organisationId, progressListener, progressRequestListener);
         return call;
 
         
@@ -207,12 +207,12 @@ public class IdentitiesApi {
     /**
      * A generic endpoint for deleting organisations from data file supplied by individual CCS platforms and services.
      * 
-     * @param ccsOrgId ccsOrgId is the organisation's unique id, that is used to identify them
+     * @param organisationId organisationId is the organisation's unique id, that is used to identify them
      * @return OrgDelete
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public OrgMigration appDeleteOrg(String ccsOrgId) throws ApiException {
-        ApiResponse<OrgMigration> resp = appDeleteOrgWithHttpInfo(ccsOrgId);
+    public OrgMigration appDeleteOrg(String organisationId) throws ApiException {
+        ApiResponse<OrgMigration> resp = appDeleteOrgWithHttpInfo(organisationId);
         return resp.getData();
     }
 
@@ -233,12 +233,12 @@ public class IdentitiesApi {
     /**
      * A generic endpoint for deleting organisations from data file supplied by individual CCS platforms and services.
      * 
-     * @param ccsOrgId ccsOrgId is the organisation's unique id, that is used to identify them
+     * @param organisationId organisationId is the organisation's unique id, that is used to identify them
      * @return ApiResponse&lt;OrgDelete&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<OrgMigration> appDeleteOrgWithHttpInfo(String ccsOrgId) throws ApiException {
-        com.squareup.okhttp.Call call = appDeleteOrgValidateBeforeCall(ccsOrgId, null, null);
+    public ApiResponse<OrgMigration> appDeleteOrgWithHttpInfo(String organisationId) throws ApiException {
+        com.squareup.okhttp.Call call = appDeleteOrgValidateBeforeCall(organisationId, null, null);
         Type localVarReturnType = new TypeToken<OrgMigration>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -282,12 +282,12 @@ public class IdentitiesApi {
     /**
      * A generic endpoint for deleting organisations from data file supplied by individual CCS platforms and services. (asynchronously)
      * 
-     * @param ccsOrgId ccsOrgId is the organisation's unique id, that is used to identify them
+     * @param organisationId organisationId is the organisation's unique id, that is used to identify them
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call appDeleteOrgAsync(String ccsOrgId, final ApiCallback<OrgMigration> callback) throws ApiException {
+    public com.squareup.okhttp.Call appDeleteOrgAsync(String organisationId, final ApiCallback<OrgMigration> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -308,7 +308,7 @@ public class IdentitiesApi {
             };
         }
 
-        com.squareup.okhttp.Call call = appDeleteOrgValidateBeforeCall(ccsOrgId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = appDeleteOrgValidateBeforeCall(organisationId, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<OrgMigration>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;

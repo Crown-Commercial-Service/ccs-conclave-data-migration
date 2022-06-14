@@ -55,7 +55,7 @@ public class ErrorService {
         handleFailure(message, statusCode);
     }
 
-    public void logWithStatusString(String ccsOrgId, String message, Integer statusCode) throws DataMigrationException {
+    public void logWithStatusString(String organisationId, String message, Integer statusCode) throws DataMigrationException {
         LOGGER.error(message);
         handleFailure(message, statusCode);
     }
