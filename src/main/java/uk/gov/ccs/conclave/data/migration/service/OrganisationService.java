@@ -89,10 +89,11 @@ public class OrganisationService {
 
         System.out.println(String.format("HERE -> 11 (duplicateOrg):  %s", duplicateOrg));
         System.out.println(String.format("HERE -> 12 (checkForAdminOnNewOrg(orgRolesList)):  %s", checkForAdminOnNewOrg(org.getOrgRoles())));
+        System.out.println(String.format("HERE -> 13 (isNewOrg(ciiResponse)):  %s", isNewOrg(ciiResponse)));
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
-            if (duplicateOrg && checkForAdminOnNewOrg(org.getOrgRoles()) == false) {
+            if (duplicateOrg == false && checkForAdminOnNewOrg(org.getOrgRoles()) == false) {
                 deleteOrganisation(organisationId);
             } else if (isNewOrg(ciiResponse)) {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
