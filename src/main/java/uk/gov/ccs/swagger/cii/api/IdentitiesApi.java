@@ -116,13 +116,16 @@ public class IdentitiesApi {
     public com.squareup.okhttp.Call appDeleteOrgCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
+        // create path and map variables
         String localVarPath = "/identities/organisations/{organisationId}"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
         final String[] localVarAccepts = {
             "application/json"
         };

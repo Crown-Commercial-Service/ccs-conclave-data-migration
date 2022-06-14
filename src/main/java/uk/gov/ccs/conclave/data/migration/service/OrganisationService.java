@@ -16,6 +16,10 @@ import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
 import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
 import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
@@ -33,7 +37,7 @@ public class OrganisationService {
 
     private final RoleService roleService;
 
-    public boolean orgAlreadyExists;
+    public boolean duplicateOrg;
 
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
@@ -64,14 +68,14 @@ public class OrganisationService {
 
     private OrgMigration migrateOrgToCii(Organisation org) throws DataMigrationException {
         OrgMigration ciiOrganisation = null;
-        orgAlreadyExists = false;
+        duplicateOrg = false;
         try {
             ciiOrganisation = ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
 
         } catch (ApiException e) {
             if (e.getCode() == 409) {
-                orgAlreadyExists = true;
-                System.out.println(String.format("HERE -> 7 (e.getCode() AND orgAlreadyExists):  %s AND %s", e.getCode(), orgAlreadyExists));
+                duplicateOrg = true;
+                System.out.println(String.format("HERE -> 7 (e.getCode() AND duplicateOrg):  %s AND %s", e.getCode(), duplicateOrg));
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
                 errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
@@ -82,15 +86,21 @@ public class OrganisationService {
 
 
     private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
+
+        System.out.println(String.format("HERE -> 11 (duplicateOrg):  %s", duplicateOrg));
+        System.out.println(String.format("HERE -> 12 (checkForAdminOnNewOrg(orgRolesList)):  %s", checkForAdminOnNewOrg(org.getOrgRoles())));
+
         try {
             String organisationId = ciiResponse.getOrganisationId();
-            if (isNewOrg(ciiResponse)) {
+            if (duplicateOrg && checkForAdminOnNewOrg(org.getOrgRoles()) == false) {
+                deleteOrganisation(organisationId);
+            } else if (isNewOrg(ciiResponse)) {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
                 contactService.migrateOrgContact(org, ciiResponse, organisationId);
-                roleService.applyOrganisationRole(organisationId, org.getOrgRoles(), orgAlreadyExists);
+                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
             } else {
-                roleService.applyOrganisationRole(organisationId, org.getOrgRoles(), orgAlreadyExists);
+                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
@@ -99,7 +109,7 @@ public class OrganisationService {
     }
 
 
-    public int deleteOrganisation(String organisationId) throws DataMigrationException {
+    private int deleteOrganisation(String organisationId) throws DataMigrationException {
         OrgMigration ciiResponse = deleteOrgFromCii(organisationId);
         if (null != ciiResponse) {
             System.out.println(String.format("HERE -> 6.2 (ciiResponse):  %s", ciiResponse));
@@ -175,6 +185,10 @@ public class OrganisationService {
 
         }
         return identityProviderId;
+    }
+
+    private boolean checkForAdminOnNewOrg(final List<OrgRoles> orgRolesList) {
+        return orgRolesList.stream().anyMatch(orgRole -> orgRole.isOrgRoleAdmin());
     }
 
 }
