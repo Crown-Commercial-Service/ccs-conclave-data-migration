@@ -24,8 +24,6 @@ public class RoleService {
 
     private final ConclaveClient conclaveClient;
 
-    private final OrganisationService organisationService;
-
     private OrganisationRole filterOrganisationRoleByName(final List<OrganisationRole> roles, final String roleName) throws ApiException {
         return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).findFirst().orElseThrow(() -> new ApiException(404, roleName + SSO_ROLE_NOT_FOUND));
 
