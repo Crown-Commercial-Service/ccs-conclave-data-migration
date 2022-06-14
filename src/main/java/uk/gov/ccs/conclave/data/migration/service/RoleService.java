@@ -3,6 +3,7 @@ package uk.gov.ccs.conclave.data.migration.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
@@ -23,17 +24,23 @@ public class RoleService {
 
     private final ConclaveClient conclaveClient;
 
+    private final OrganisationService organisationService;
+
     private OrganisationRole filterOrganisationRoleByName(final List<OrganisationRole> roles, final String roleName) throws ApiException {
         return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).findFirst().orElseThrow(() -> new ApiException(404, roleName + SSO_ROLE_NOT_FOUND));
 
     }
 
-    public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList, final boolean orgAlreadyExists) throws ApiException {
+    public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList, final boolean orgAlreadyExists) throws ApiException, DataMigrationException {
         if (isNotEmpty(orgRolesList) && isNotNull(orgRolesList)) {
-            System.out.println(String.format("HERE -> 9 (orgAlreadyExists):  %s", orgAlreadyExists));
+            System.out.println(String.format("HERE -> 10 (orgRolesList):  %s", orgRolesList));
+            System.out.println(String.format("HERE -> 11 (orgAlreadyExists):  %s", orgAlreadyExists));
+            System.out.println(String.format("HERE -> 12 (checkForAdminOnNewOrg(orgRolesList)):  %s", checkForAdminOnNewOrg(orgRolesList)));
+            if (orgAlreadyExists == false && checkForAdminOnNewOrg(orgRolesList) == false) {
+               organisationService.deleteOrganisation(organisationId);
+               return;
+            }
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
-            System.out.println(String.format("HERE -> 3 (configuredRoles):  %s", configuredRoles));
-            System.out.println(String.format("HERE -> 4 (orgRolesList):  %s", orgRolesList));
             var rolesToAdd = new ArrayList<OrganisationRole>();
             for (OrgRoles orgRole : orgRolesList) {
                 System.out.println(String.format("HERE -> 5 (orgRole.getName()):  %s", orgRole.getName()));

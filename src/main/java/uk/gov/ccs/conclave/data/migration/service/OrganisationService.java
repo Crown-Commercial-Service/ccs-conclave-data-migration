@@ -41,8 +41,9 @@ public class OrganisationService {
         String organisationId = null;
         Integer identityProviderId = null;
         if (null != ciiResponse) {
-            System.out.println(String.format("HERE -> 6 (ciiResponse):  %s", ciiResponse));
+            System.out.println(String.format("HERE -> 6.1 (ciiResponse):  %s", ciiResponse));
             migrateOrgToConclave(ciiResponse, org);
+            System.out.println("SUCCESS XV34");
             organisationId = ciiResponse.getOrganisationId();
             identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
         }
@@ -79,6 +80,7 @@ public class OrganisationService {
         return ciiOrganisation;
     }
 
+
     private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
         try {
             String organisationId = ciiResponse.getOrganisationId();
@@ -95,6 +97,29 @@ public class OrganisationService {
             errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
         }
     }
+
+
+    public int deleteOrganisation(String organisationId) throws DataMigrationException {
+        OrgMigration ciiResponse = deleteOrgFromCii(organisationId);
+        if (null != ciiResponse) {
+            System.out.println(String.format("HERE -> 6.2 (ciiResponse):  %s", ciiResponse));
+            return 200;
+        }
+        return 400;
+    }
+
+
+    private OrgMigration deleteOrgFromCii(String organisationId) throws DataMigrationException {
+        OrgMigration ciiOrganisation = null;
+        try {
+            ciiOrganisation = ciiOrgClient.deleteCiiOrganisation(organisationId);
+
+        } catch (ApiException e) {
+            errorService.logWithStatusString(organisationId, CII_DEL_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());   
+        }
+        return ciiOrganisation;
+    }
+
 
     private boolean isNewOrg(OrgMigration ciiResponse) {
         return ciiResponse.getIdentifier() != null;
