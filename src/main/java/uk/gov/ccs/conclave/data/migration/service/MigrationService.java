@@ -37,7 +37,6 @@ public class MigrationService {
                 var orgMigrationResponse = orgService.migrateOrganisation(organisation);
                 var users = organisation.getUser();
                 if (orgMigrationResponse != null && isNotEmpty(users)) {
-                    System.out.println(String.format("HERE -> 8 (orgService.orgAlreadyExists):  %s", orgService.orgAlreadyExists));
                     failedUserCount += userService.migrateUsers(users, orgMigrationResponse);
                     processedUserCount += users.size();
                     migrationStatus = failedUserCount == 0;
