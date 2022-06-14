@@ -31,15 +31,10 @@ public class RoleService {
 
     }
 
-    public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList, final boolean orgAlreadyExists) throws ApiException, DataMigrationException {
+    public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException, DataMigrationException {
         if (isNotEmpty(orgRolesList) && isNotNull(orgRolesList)) {
             System.out.println(String.format("HERE -> 10 (orgRolesList):  %s", orgRolesList));
-            System.out.println(String.format("HERE -> 11 (orgAlreadyExists):  %s", orgAlreadyExists));
-            System.out.println(String.format("HERE -> 12 (checkForAdminOnNewOrg(orgRolesList)):  %s", checkForAdminOnNewOrg(orgRolesList)));
-            if (orgAlreadyExists == false && checkForAdminOnNewOrg(orgRolesList) == false) {
-               organisationService.deleteOrganisation(organisationId);
-               return;
-            }
+
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
             var rolesToAdd = new ArrayList<OrganisationRole>();
             for (OrgRoles orgRole : orgRolesList) {
@@ -72,10 +67,6 @@ public class RoleService {
             }
         }
         return true;
-    }
-
-    public boolean checkForAdminOnNewOrg(final List<OrgRoles> orgRolesList) {
-        return orgRolesList.stream().anyMatch(orgRole -> orgRole.isOrgRoleAdmin());
     }
 
 }
