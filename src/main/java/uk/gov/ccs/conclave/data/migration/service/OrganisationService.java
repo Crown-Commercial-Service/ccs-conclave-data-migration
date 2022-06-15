@@ -89,7 +89,7 @@ public class OrganisationService {
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
-            if (isNewOrg(ciiResponse) && checkForAdminOnNewOrg(org)) {
+            if (isNewOrg(ciiResponse) && checkForAdminOnNewOrg(org) == false) {
                 deleteOrganisation(organisationId);
             } else if (isNewOrg(ciiResponse)) {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
