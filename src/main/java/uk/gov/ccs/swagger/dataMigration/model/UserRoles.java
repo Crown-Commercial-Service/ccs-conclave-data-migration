@@ -36,6 +36,10 @@ public class UserRoles   {
     this.name = name;
   }
 
+  public boolean isUserRoleAdmin() {
+    return this.name == "Organisation Administrator";
+  }
+
 
   @Override
   public boolean equals(Object o) {

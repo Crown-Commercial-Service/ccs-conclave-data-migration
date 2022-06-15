@@ -31,12 +31,10 @@ public class RoleService {
 
     public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException, DataMigrationException {
         if (isNotEmpty(orgRolesList) && isNotNull(orgRolesList)) {
-            System.out.println(String.format("HERE -> 10 (orgRolesList):  %s", orgRolesList));
 
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
             var rolesToAdd = new ArrayList<OrganisationRole>();
             for (OrgRoles orgRole : orgRolesList) {
-                System.out.println(String.format("HERE -> 5 (orgRole.getName()):  %s", orgRole.getName()));
                 rolesToAdd.add(filterOrganisationRoleByName(configuredRoles, orgRole.getName()));
             }
             OrganisationRoleUpdate roleUpdate = new OrganisationRoleUpdate();
@@ -59,7 +57,6 @@ public class RoleService {
 
     public boolean isNotNull(final List<OrgRoles> orgRolesList) {
         for (OrgRoles orgRole : orgRolesList) {
-            System.out.println(orgRole.getName());
             if (orgRole.getName() == null) {
                 return false;
             }

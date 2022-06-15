@@ -12,6 +12,8 @@ import uk.gov.ccs.swagger.cii.model.Address;
 import uk.gov.ccs.swagger.cii.model.Identifier;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
+import uk.gov.ccs.swagger.dataMigration.model.User;
+import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
 import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
 import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
@@ -43,9 +45,7 @@ public class OrganisationService {
         String organisationId = null;
         Integer identityProviderId = null;
         if (null != ciiResponse) {
-            System.out.println(String.format("HERE -> 6.1 (ciiResponse):  %s", ciiResponse));
             migrateOrgToConclave(ciiResponse, org);
-            System.out.println("SUCCESS XV38");
             organisationId = ciiResponse.getOrganisationId();
             identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
         }
@@ -82,13 +82,14 @@ public class OrganisationService {
 
     private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
 
-        System.out.println(String.format("HERE -> 11 (checkForAdminOnNewOrg(orgRolesList)):  %s", checkForAdminOnNewOrg(org.getOrgRoles())));
+        System.out.println(String.format("HERE -> 11 (checkForAdminOnNewOrg(org)):  %s", checkForAdminOnNewOrg(org)));
         System.out.println(String.format("HERE -> 12 (isNewOrg(ciiResponse)):  %s", isNewOrg(ciiResponse)));
-        System.out.println(String.format("HERE -> 13 (org):  %s", org));
+        System.out.println(String.format("HERE -> 13 (org.getUser()):  %s", org.getUser()));
+        System.out.println(String.format("HERE -> 14 (org):  %s", org));
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
-            if (isNewOrg(ciiResponse) && checkForAdminOnNewOrg(org.getOrgRoles()) == false) {
+            if (isNewOrg(ciiResponse) && checkForAdminOnNewOrg(org)) {
                 deleteOrganisation(organisationId);
             } else if (isNewOrg(ciiResponse)) {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
@@ -108,7 +109,7 @@ public class OrganisationService {
     private int deleteOrganisation(String organisationId) throws DataMigrationException {
         OrgMigration ciiResponse = deleteOrgFromCii(organisationId);
         if (null != ciiResponse) {
-            System.out.println(String.format("HERE -> 6.2 (ciiResponse):  %s", ciiResponse));
+            System.out.println(String.format("HERE -> 10 (ciiResponse):  %s", ciiResponse));
             return 200;
         }
         return 400;
@@ -183,8 +184,14 @@ public class OrganisationService {
         return identityProviderId;
     }
 
-    private boolean checkForAdminOnNewOrg(final List<OrgRoles> orgRolesList) {
-        return orgRolesList.stream().anyMatch(orgRole -> orgRole.isOrgRoleAdmin());
+    private Boolean checkForAdminOnNewOrg(final Organisation organisation) {
+
+        for (User user : organisation.getUser()) {
+            if (user.getUserRoles().stream().anyMatch(userRole -> userRole.isUserRoleAdmin())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

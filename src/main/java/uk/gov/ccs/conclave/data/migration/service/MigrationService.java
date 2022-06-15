@@ -26,7 +26,6 @@ public class MigrationService {
 
 
     public void migrate(List<Organisation> organisations) {
-        System.out.println(String.format("HERE -> 20 (organisations):  %s", organisations));
         LocalDateTime startTime = now();
         long failedUserCount = 0;
         long processedUserCount = 0;
