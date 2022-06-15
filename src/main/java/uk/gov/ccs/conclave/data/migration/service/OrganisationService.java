@@ -39,14 +39,11 @@ public class OrganisationService {
 
     private final RoleService roleService;
 
-    private Boolean orgValid = false;
-
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
         String organisationId = null;
         Integer identityProviderId = null;
-        this.orgValid = false;
 
         if (null != ciiResponse) {
             migrateOrgToConclave(ciiResponse, org);
@@ -85,16 +82,16 @@ public class OrganisationService {
 
 
     private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
-
+        System.out.println(String.format("HERE -> 10 (org):  %s", org));
         System.out.println(String.format("HERE -> 11 (checkForAdminOnNewOrg(org)):  %s", checkForAdminOnNewOrg(org)));
         System.out.println(String.format("HERE -> 12 (isNewOrg(ciiResponse)):  %s", isNewOrg(ciiResponse)));
         System.out.println(String.format("HERE -> 13 (org.getUser()):  %s", org.getUser()));
-        System.out.println(String.format("HERE -> 14 (org):  %s", org));
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
             if (isNewOrg(ciiResponse) && checkForAdminOnNewOrg(org) == false) {
                 deleteOrganisation(organisationId);
+                System.out.println(String.format("HERE -> 14 DELETING ORG"));
             } else if (isNewOrg(ciiResponse)) {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
@@ -113,7 +110,6 @@ public class OrganisationService {
     private int deleteOrganisation(String organisationId) throws DataMigrationException {
         OrgMigration ciiResponse = deleteOrgFromCii(organisationId);
         if (null != ciiResponse) {
-            System.out.println(String.format("HERE -> 10 (ciiResponse):  %s", ciiResponse));
             return 200;
         }
         return 400;
@@ -189,9 +185,6 @@ public class OrganisationService {
     }
 
     private Boolean checkForAdminOnNewOrg(final Organisation organisation) {
-        if (this.orgValid) {
-            return true;
-        }
 
         for (User users : organisation.getUser()) {
             System.out.println(String.format("HERE -> A (user):  %s", users));
@@ -201,7 +194,7 @@ public class OrganisationService {
                 System.out.println(String.format("HERE -> D (userRole.getName().equals(Organisation Administrator)):  %s", userRole.getName().equals("Organisation Administrator")));
                 System.out.println(String.format("HERE -> E (userRole.isUserRoleAdmin()):  %s", userRole.isUserRoleAdmin()));
                 if (userRole.getName().equals("Organisation Administrator")) {
-                    return this.orgValid = true;
+                    return true;
                 }
             }
         }
