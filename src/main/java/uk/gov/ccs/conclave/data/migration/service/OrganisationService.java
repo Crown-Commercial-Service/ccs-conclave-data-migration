@@ -190,7 +190,7 @@ public class OrganisationService {
             for (UserRoles userRole : user.getUserRoles()) {
                 System.out.println(String.format("HERE -> B (userRole):  %s", userRole));
                 System.out.println(String.format("HERE -> C (userRole.getName()):  %s", userRole.getName()));
-                System.out.println(String.format("HERE -> D (userRole.getName() == Organisation Administrator):  %s", (userRole.getName() == "Organisation Administrator")));
+                System.out.println(String.format("HERE -> D (userRole.getName() == Organisation Administrator):  %s", (userRole.getName().toString() == "Organisation Administrator")));
                 System.out.println(String.format("HERE -> E (userRole.isUserRoleAdmin()):  %s", userRole.isUserRoleAdmin()));
                 if (userRole.getName() == "Organisation Administrator") {
                     return true;
@@ -199,6 +199,10 @@ public class OrganisationService {
         }
         System.out.println(String.format("HERE -> X (FALSE):  %s", false));
         return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(String.format("HERE -> ZZZ (userRole.getName() == Organisation Administrator):  %s", ("Organisation Administrator" == "Organisation Administrator")));
     }
 
 }
