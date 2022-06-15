@@ -9,6 +9,8 @@ public class MigrationProperties {
 
     private String ciiApiKey;
 
+    private String ciiDeleteToken;
+
     private String ciiOrigin;
 
     private String conclaveApiKey;
