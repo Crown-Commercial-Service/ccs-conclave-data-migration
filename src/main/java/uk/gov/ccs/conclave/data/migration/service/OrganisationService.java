@@ -39,11 +39,15 @@ public class OrganisationService {
 
     private final RoleService roleService;
 
+    private Boolean orgValid = false;
+
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
         String organisationId = null;
         Integer identityProviderId = null;
+        this.orgValid = false;
+
         if (null != ciiResponse) {
             migrateOrgToConclave(ciiResponse, org);
             organisationId = ciiResponse.getOrganisationId();
@@ -185,24 +189,24 @@ public class OrganisationService {
     }
 
     private Boolean checkForAdminOnNewOrg(final Organisation organisation) {
+        if (this.orgValid) {
+            return true;
+        }
+
         for (User users : organisation.getUser()) {
             System.out.println(String.format("HERE -> A (user):  %s", users));
             for (UserRoles userRole : users.getUserRoles()) {
                 System.out.println(String.format("HERE -> B (userRole):  %s", userRole));
                 System.out.println(String.format("HERE -> C (userRole.getName()):  %s", userRole.getName()));
-                System.out.println(String.format("HERE -> D (userRole.getName() == Organisation Administrator):  %s", userRole.getName().equals("Organisation Administrator")));
+                System.out.println(String.format("HERE -> D (userRole.getName().equals(Organisation Administrator)):  %s", userRole.getName().equals("Organisation Administrator")));
                 System.out.println(String.format("HERE -> E (userRole.isUserRoleAdmin()):  %s", userRole.isUserRoleAdmin()));
-                if (userRole.getName() == "Organisation Administrator") {
-                    return true;
+                if (userRole.getName().equals("Organisation Administrator")) {
+                    return this.orgValid = true;
                 }
             }
         }
         System.out.println(String.format("HERE -> X (FALSE):  %s", false));
         return false;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(String.format("HERE -> ZZZ (userRole.getName() == Organisation Administrator):  %s", ("Organisation Administrator" == "Organisation Administrator")));
     }
 
 }
