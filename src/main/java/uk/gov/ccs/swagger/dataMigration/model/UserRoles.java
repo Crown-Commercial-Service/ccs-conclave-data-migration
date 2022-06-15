@@ -28,7 +28,7 @@ public class UserRoles   {
    **/
   @Schema(example = "RMI User", description = "User Roles")
   
-    public String getName() {
+  public String getName() {
     return name;
   }
 
