@@ -185,12 +185,17 @@ public class OrganisationService {
     }
 
     private Boolean checkForAdminOnNewOrg(final Organisation organisation) {
-
         for (User user : organisation.getUser()) {
-            if (user.getUserRoles().stream().anyMatch(userRole -> userRole.isUserRoleAdmin())) {
-                return true;
+            System.out.println(String.format("HERE -> A (user):  %s", user));
+            for (UserRoles userRole : user.getUserRoles()) {
+                System.out.println(String.format("HERE -> B (userRole):  %s", userRole));
+                System.out.println(String.format("HERE -> C (userRole.isUserRoleAdmin()):  %s", userRole.isUserRoleAdmin()));
+                if (userRole.isUserRoleAdmin()) {
+                    return true;
+                }
             }
         }
+        System.out.println(String.format("HERE -> X (FALSE):  %s", false));
         return false;
     }
 
