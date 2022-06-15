@@ -8,3 +8,7 @@ A generic migration application for both buyers and suppliers. This application 
 
 # Specification
 This application provides an implementation of the [REST API](https://app.swaggerhub.com/apis/miahnanu/datamigration/1.0.0-oas3#/datamigration/app.migrateOrg) that will be used to post user data into conclave.
+
+# Developing
+
+This project uses Java 11 and Maven. To run the tests, ensure that `JAVA_HOME` is set, then run `./mvnw test`.

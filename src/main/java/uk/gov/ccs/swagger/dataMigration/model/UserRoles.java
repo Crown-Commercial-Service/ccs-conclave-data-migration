@@ -28,12 +28,16 @@ public class UserRoles   {
    **/
   @Schema(example = "RMI User", description = "User Roles")
   
-    public String getName() {
+  public String getName() {
     return name;
   }
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public boolean isUserRoleAdmin() {
+    return this.name.equals("Organisation Administrator");
   }
 
 
