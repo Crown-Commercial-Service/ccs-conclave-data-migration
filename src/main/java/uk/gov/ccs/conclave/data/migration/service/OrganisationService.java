@@ -84,6 +84,7 @@ public class OrganisationService {
 
         System.out.println(String.format("HERE -> 11 (checkForAdminOnNewOrg(orgRolesList)):  %s", checkForAdminOnNewOrg(org.getOrgRoles())));
         System.out.println(String.format("HERE -> 12 (isNewOrg(ciiResponse)):  %s", isNewOrg(ciiResponse)));
+        System.out.println(String.format("HERE -> 13 (org):  %s", org));
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
