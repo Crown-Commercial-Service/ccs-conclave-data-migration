@@ -21,6 +21,7 @@ public class CiiConfig {
     public ApiClient apiClient() {
         return new ApiClient()
                 .addDefaultHeader("x-api-key", properties.getCiiApiKey())
+                .addDefaultHeader("x-api-key-delete", properties.getCiiDeleteToken())
                 .setBasePath(properties.getCiiOrigin());
     }
 }
