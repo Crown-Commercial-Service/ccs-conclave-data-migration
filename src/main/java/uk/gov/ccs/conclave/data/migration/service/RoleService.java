@@ -3,6 +3,7 @@ package uk.gov.ccs.conclave.data.migration.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
@@ -28,11 +29,14 @@ public class RoleService {
 
     }
 
-    public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException {
-        if (isNotEmpty(orgRolesList)) {
+    public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException, DataMigrationException {
+        if (isNotEmpty(orgRolesList) && isNotNull(orgRolesList)) {
+            System.out.println(String.format("HERE -> 10 (orgRolesList):  %s", orgRolesList));
+
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
             var rolesToAdd = new ArrayList<OrganisationRole>();
             for (OrgRoles orgRole : orgRolesList) {
+                System.out.println(String.format("HERE -> 5 (orgRole.getName()):  %s", orgRole.getName()));
                 rolesToAdd.add(filterOrganisationRoleByName(configuredRoles, orgRole.getName()));
             }
             OrganisationRoleUpdate roleUpdate = new OrganisationRoleUpdate();
@@ -53,6 +57,14 @@ public class RoleService {
         return roleIds;
     }
 
-
+    public boolean isNotNull(final List<OrgRoles> orgRolesList) {
+        for (OrgRoles orgRole : orgRolesList) {
+            System.out.println(orgRole.getName());
+            if (orgRole.getName() == null) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

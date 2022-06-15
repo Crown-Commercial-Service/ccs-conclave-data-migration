@@ -33,7 +33,8 @@ public class MigrationService {
         boolean migrationStatus = false;
         try {
             for (Organisation organisation : organisations) {
-                var orgMigrationResponse = organisationService.migrateOrganisation(organisation);
+                var orgService = organisationService;
+                var orgMigrationResponse = orgService.migrateOrganisation(organisation);
                 var users = organisation.getUser();
                 if (orgMigrationResponse != null && isNotEmpty(users)) {
                     failedUserCount += userService.migrateUsers(users, orgMigrationResponse);

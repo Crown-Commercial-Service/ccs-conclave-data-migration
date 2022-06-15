@@ -79,6 +79,46 @@ paths:
           description: Gateway Timeout
         "505":
           description: HTTP Version Not Supported
+  /identities/organisations/{organisationId}:
+    delete:
+      tags:
+      - identities
+      summary: A generic endpoint for deleting organisations from data file supplied by individual CCS platforms and services.
+      operationId: app.deleteOrg
+      parameters:
+      - name: organisationId
+        in: path
+        description: organisationId is the organisation's unique id, that is used to identify them
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+        "501":
+          description: Not Implemented
+        "502":
+          description: Bad Gateway
+        "503":
+          description: Service Unavailable/Limit Exceeded
+        "504":
+          description: Gateway Timeout
+        "505":
+          description: HTTP Version Not Supported
 components:
   schemas:
     OrgMigration:
