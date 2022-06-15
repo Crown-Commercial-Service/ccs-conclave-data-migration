@@ -37,8 +37,6 @@ public class OrganisationService {
 
     private final RoleService roleService;
 
-    public boolean duplicateOrg;
-
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
@@ -68,14 +66,11 @@ public class OrganisationService {
 
     private OrgMigration migrateOrgToCii(Organisation org) throws DataMigrationException {
         OrgMigration ciiOrganisation = null;
-        duplicateOrg = false;
         try {
             ciiOrganisation = ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
 
         } catch (ApiException e) {
             if (e.getCode() == 409) {
-                duplicateOrg = true;
-                System.out.println(String.format("HERE -> 7 (e.getCode() AND duplicateOrg):  %s AND %s", e.getCode(), duplicateOrg));
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
                 errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
@@ -87,13 +82,12 @@ public class OrganisationService {
 
     private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
 
-        System.out.println(String.format("HERE -> 11 (duplicateOrg):  %s", duplicateOrg));
-        System.out.println(String.format("HERE -> 12 (checkForAdminOnNewOrg(orgRolesList)):  %s", checkForAdminOnNewOrg(org.getOrgRoles())));
-        System.out.println(String.format("HERE -> 13 (isNewOrg(ciiResponse)):  %s", isNewOrg(ciiResponse)));
+        System.out.println(String.format("HERE -> 11 (checkForAdminOnNewOrg(orgRolesList)):  %s", checkForAdminOnNewOrg(org.getOrgRoles())));
+        System.out.println(String.format("HERE -> 12 (isNewOrg(ciiResponse)):  %s", isNewOrg(ciiResponse)));
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
-            if (duplicateOrg == false && checkForAdminOnNewOrg(org.getOrgRoles()) == false) {
+            if (isNewOrg(ciiResponse) && checkForAdminOnNewOrg(org.getOrgRoles()) == false) {
                 deleteOrganisation(organisationId);
             } else if (isNewOrg(ciiResponse)) {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
