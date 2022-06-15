@@ -37,7 +37,7 @@ public class UserRoles   {
   }
 
   public boolean isUserRoleAdmin() {
-    return this.name == "Organisation Administrator";
+    return this.name.equals("Organisation Administrator");
   }
 
 
