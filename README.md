@@ -4,7 +4,10 @@ Conclave Data Migration project.
 [![Build Status](https://app.travis-ci.com/Crown-Commercial-Service/ccs-conclave-data-migration.svg?branch=develop)](https://app.travis-ci.com/Crown-Commercial-Service/ccs-conclave-data-migration)
 
 # Description
-A generic migration application for both buyers and suppliers. This application will create organisations and users in Conclave(A single sign-on platform) using buyer and supplier data supplied by CCS platforms and services. 
+
+The Public Procurement Gateway (PPG; previously known as Conclave) is a new single sign-on platform for users of CCS services. Some CCS services will soon start using PPG. To avoid users needing to re-enter all their information, we want to migrate their existing information from the various different services to PPG.
+
+Data Migration is an application that the various services will use to migrate buyer and supplier data for both organisations and users to PPG.
 
 # Specification
 This application provides an implementation of the [REST API](https://app.swaggerhub.com/apis/miahnanu/datamigration/1.0.0-oas3#/datamigration/app.migrateOrg) that will be used to post user data into conclave.
@@ -12,3 +15,5 @@ This application provides an implementation of the [REST API](https://app.swagge
 # Developing
 
 This project uses Java 11 and Maven. To run the tests, ensure that `JAVA_HOME` is set, then run `./mvnw test`.
+
+CCS people can view [the internal quickstart guide](https://crowncommercialservice.atlassian.net/wiki/spaces/CON/pages/3373465612) that lists all the access and permissions you should ask for.
