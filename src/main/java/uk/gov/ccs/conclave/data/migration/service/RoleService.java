@@ -3,8 +3,8 @@ package uk.gov.ccs.conclave.data.migration.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
-import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
+import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.OrganisationRole;
@@ -29,17 +29,18 @@ public class RoleService {
 
     }
 
-    public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException, DataMigrationException {
+    public void applyOrganisationRole(final String organisationId, final Organisation organisation) throws ApiException {
+        var orgRolesList = organisation.getOrgRoles();
         if (isNotEmpty(orgRolesList) && isNotNull(orgRolesList)) {
-
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
             var rolesToAdd = new ArrayList<OrganisationRole>();
             for (OrgRoles orgRole : orgRolesList) {
                 rolesToAdd.add(filterOrganisationRoleByName(configuredRoles, orgRole.getName()));
             }
-            OrganisationRoleUpdate roleUpdate = new OrganisationRoleUpdate();
-            roleUpdate.setRolesToAdd(rolesToAdd);
-            conclaveClient.updateOrganisationRole(organisationId, roleUpdate);
+            conclaveClient.updateOrganisationRole(
+                    organisationId,
+                    new OrganisationRoleUpdate().rolesToAdd(rolesToAdd).isBuyer(organisation.isRightToBuy())
+            );
         }
     }
 
