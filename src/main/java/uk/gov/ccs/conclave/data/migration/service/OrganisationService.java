@@ -96,9 +96,9 @@ public class OrganisationService {
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
                 contactService.migrateOrgContact(org, ciiResponse, organisationId);
-                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
+                roleService.applyOrganisationRole(organisationId, org);
             } else {
-                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
+                roleService.applyOrganisationRole(organisationId, org);
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
