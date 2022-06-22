@@ -18,13 +18,14 @@ This project uses Java 11 and Maven. To run the tests, ensure that `JAVA_HOME` i
 
 CCS people can view [the internal quickstart guide](https://crowncommercialservice.atlassian.net/wiki/spaces/CON/pages/3373465612) that lists all the access and permissions you should ask for.
 
-## Generating API clients
+## Generating server stub and API clients
 
-The CII and SSO clients are generated using [swagger-codegen](https://github.com/swagger-api/swagger-codegen) from [OpenAPI specs](src/main/resources). 
+The server interface and CII and SSO clients are generated using [swagger-codegen](https://github.com/swagger-api/swagger-codegen) from [OpenAPI specs](src/main/resources). 
 
 To update, run:
 
 ```
-swagger-codegen generate --output . --config src/main/resources/cii_config.json --input-spec src/main/resources/cii_api.yaml --lang java -DapiTests=false -DmodelTests=false -DapiDocs=false -DmodelDocs=false -DhideGenerationTimestamp=true
-swagger-codegen generate --output . --config src/main/resources/conclave_config.json --input-spec src/main/resources/conclave_api.yaml --lang java -DapiTests=false -DmodelTests=false -DapiDocs=false -DmodelDocs=false -DhideGenerationTimestamp=true
+swagger-codegen generate --output . --config src/main/resources/cii_config.json --input-spec src/main/resources/cii_api.yaml --lang java
+swagger-codegen generate --output . --config src/main/resources/conclave_config.json --input-spec src/main/resources/conclave_api.yaml --lang java
+swagger-codegen generate --output . --config src/main/resources/dm_config.json --input-spec src/main/resources/dm_api.yaml --lang spring
 ```
