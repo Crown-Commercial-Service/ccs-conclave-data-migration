@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.ccs.conclave.data.migration.service.MigrationService;
-import uk.gov.ccs.swagger.dataMigration.api.DatamigrationApi;
+import uk.gov.ccs.swagger.dataMigration.api.DataMigrationApi;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.Summary;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class DataMigrationApiController implements DatamigrationApi {
+public class DataMigrationApiController implements DataMigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
