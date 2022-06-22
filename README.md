@@ -25,6 +25,6 @@ The CII and SSO clients are generated using [swagger-codegen](https://github.com
 To update, run:
 
 ```
-swagger-codegen generate --output . --config src/main/resources/cii_config.json --input-spec src/main/resources/cii_api.yaml --lang java -DapiTests=false -DmodelTests=false -DapiDocs=false -DmodelDocs=false
-swagger-codegen generate --output . --config src/main/resources/conclave_config.json --input-spec src/main/resources/conclave_api.yaml --lang java -DapiTests=false -DmodelTests=false -DapiDocs=false -DmodelDocs=false
+swagger-codegen generate --output . --config src/main/resources/cii_config.json --input-spec src/main/resources/cii_api.yaml --lang java -DapiTests=false -DmodelTests=false -DapiDocs=false -DmodelDocs=false -DhideGenerationTimestamp=true
+swagger-codegen generate --output . --config src/main/resources/conclave_config.json --input-spec src/main/resources/conclave_api.yaml --lang java -DapiTests=false -DmodelTests=false -DapiDocs=false -DmodelDocs=false -DhideGenerationTimestamp=true
 ```
