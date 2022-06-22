@@ -17,7 +17,7 @@ tags:
       url: 'http://apis.crowncommercial.gov.uk'
 paths:
 
-  /datamigration/migrate/format/{fileFormat}:
+  /data-migration/migrate/format/{fileFormat}:
     post:
       tags:
         - datamigration

@@ -5,5 +5,5 @@
   "modelTests": false,
   "apiDocs": false,
   "modelDocs": false,
-  "hideGenerationTimestamp": false
+  "hideGenerationTimestamp": true
 }
