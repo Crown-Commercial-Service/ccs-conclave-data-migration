@@ -1,16 +1,17 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.Objects;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * OrgRoles
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 
 
 public class OrgRoles   {
@@ -36,13 +37,9 @@ public class OrgRoles   {
     this.name = name;
   }
 
-  public boolean isOrgRoleAdmin() {
-    return this.name == "Organisation Administrator";
-  }
-
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -72,7 +69,7 @@ public class OrgRoles   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
