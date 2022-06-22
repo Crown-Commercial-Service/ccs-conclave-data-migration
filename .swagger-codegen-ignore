@@ -8,3 +8,6 @@ git_push.sh
 gradle/**/*
 src/test/**/*
 **/*.xml
+pom.xml
+README.md
+src/main/java/io/**
