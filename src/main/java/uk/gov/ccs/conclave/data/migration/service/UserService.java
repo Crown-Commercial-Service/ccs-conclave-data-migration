@@ -6,6 +6,7 @@ import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 import uk.gov.ccs.swagger.dataMigration.model.User;
+import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
@@ -43,7 +44,7 @@ public class UserService {
         userDto.setOrganisationId(organisationId);
         userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
         userDto.setAccountVerified(properties.isAccountVerified());
-        if (user.isRoleAdmin(user.getUserRoles())) {
+        if (user.getUserRoles().stream().anyMatch(role -> role.getName().equals("Organisation Administrator"))) {
             userDto.setMfaEnabled(true);
         }
 
