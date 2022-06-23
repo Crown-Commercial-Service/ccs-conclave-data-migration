@@ -74,7 +74,7 @@ public class OrganisationService {
             if (e.getCode() == 409) {
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
-                errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
+                errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE, e, e.getCode());
             }
         }
         return ciiOrganisation;
@@ -102,7 +102,7 @@ public class OrganisationService {
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-            errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
+            errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE, e, e.getCode());
         }
     }
 
@@ -122,7 +122,7 @@ public class OrganisationService {
             ciiOrganisation = ciiOrgClient.deleteCiiOrganisation(organisationId);
 
         } catch (ApiException e) {
-            errorService.logWithStatusString(organisationId, CII_DEL_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());   
+            errorService.logWithStatusString(CII_DEL_ORG_ERROR_MESSAGE, e, e.getCode());
         }
         return ciiOrganisation;
     }
@@ -178,7 +178,7 @@ public class OrganisationService {
         try {
             identityProviderId = conclaveClient.getIdentityProviderId(organisationId);
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-            errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE + e.getMessage(), e.getCode());
+            errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE, e, e.getCode());
 
         }
         return identityProviderId;
@@ -192,7 +192,6 @@ public class OrganisationService {
                 System.out.println(String.format("HERE -> B (userRole):  %s", userRole));
                 System.out.println(String.format("HERE -> C (userRole.getName()):  %s", userRole.getName()));
                 System.out.println(String.format("HERE -> D (userRole.getName().equals(Organisation Administrator)):  %s", userRole.getName().equals("Organisation Administrator")));
-                System.out.println(String.format("HERE -> E (userRole.isUserRoleAdmin()):  %s", userRole.isUserRoleAdmin()));
                 if (userRole.getName().equals("Organisation Administrator")) {
                     return true;
                 }
