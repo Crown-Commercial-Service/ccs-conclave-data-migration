@@ -1,49 +1,55 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
-import org.springframework.validation.annotation.Validated;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * User
  */
-@Validated
 
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+public class User {
 
-public class User   {
   @JsonProperty("email")
-  private String email = null;
+  private String email;
 
   @JsonProperty("title")
-  private String title = null;
+  private String title;
 
   @JsonProperty("firstName")
-  private String firstName = null;
+  private String firstName;
 
   @JsonProperty("lastName")
-  private String lastName = null;
+  private String lastName;
 
   @JsonProperty("contactEmail")
-  private String contactEmail = null;
+  private String contactEmail;
 
   @JsonProperty("contactMobile")
-  private String contactMobile = null;
+  private String contactMobile;
 
   @JsonProperty("contactPhone")
-  private String contactPhone = null;
+  private String contactPhone;
 
   @JsonProperty("contactFax")
-  private String contactFax = null;
+  private String contactFax;
 
   @JsonProperty("contactSocial")
-  private String contactSocial = null;
+  private String contactSocial;
 
   @JsonProperty("userRoles")
   @Valid
@@ -57,10 +63,10 @@ public class User   {
   /**
    * User Email
    * @return email
-   **/
-  @Schema(example = "joe.bloggs@kier.com", description = "User Email")
+  */
   
-    public String getEmail() {
+  @Schema(name = "email", example = "joe.bloggs@kier.com", description = "User Email", required = false)
+  public String getEmail() {
     return email;
   }
 
@@ -76,10 +82,10 @@ public class User   {
   /**
    * User Title
    * @return title
-   **/
-  @Schema(example = "Mr", description = "User Title")
+  */
   
-    public String getTitle() {
+  @Schema(name = "title", example = "Mr", description = "User Title", required = false)
+  public String getTitle() {
     return title;
   }
 
@@ -95,10 +101,10 @@ public class User   {
   /**
    * First Name
    * @return firstName
-   **/
-  @Schema(example = "Joe", description = "First Name")
+  */
   
-    public String getFirstName() {
+  @Schema(name = "firstName", example = "Joe", description = "First Name", required = false)
+  public String getFirstName() {
     return firstName;
   }
 
@@ -114,10 +120,10 @@ public class User   {
   /**
    * Last Name
    * @return lastName
-   **/
-  @Schema(example = "Bloggs", description = "Last Name")
+  */
   
-    public String getLastName() {
+  @Schema(name = "lastName", example = "Bloggs", description = "Last Name", required = false)
+  public String getLastName() {
     return lastName;
   }
 
@@ -133,10 +139,10 @@ public class User   {
   /**
    * User Contact Email
    * @return contactEmail
-   **/
-  @Schema(example = "abc@somewhere.org", description = "User Contact Email")
+  */
   
-    public String getContactEmail() {
+  @Schema(name = "contactEmail", example = "abc@somewhere.org", description = "User Contact Email", required = false)
+  public String getContactEmail() {
     return contactEmail;
   }
 
@@ -152,10 +158,10 @@ public class User   {
   /**
    * User Contact Mobile
    * @return contactMobile
-   **/
-  @Schema(example = "07956111111", description = "User Contact Mobile")
+  */
   
-    public String getContactMobile() {
+  @Schema(name = "contactMobile", example = "7956111111", description = "User Contact Mobile", required = false)
+  public String getContactMobile() {
     return contactMobile;
   }
 
@@ -171,10 +177,10 @@ public class User   {
   /**
    * User Contact Telephone
    * @return contactPhone
-   **/
-  @Schema(example = "020 8555 0000", description = "User Contact Telephone")
+  */
   
-    public String getContactPhone() {
+  @Schema(name = "contactPhone", example = "020 8555 0000", description = "User Contact Telephone", required = false)
+  public String getContactPhone() {
     return contactPhone;
   }
 
@@ -190,10 +196,10 @@ public class User   {
   /**
    * User Contact Fax
    * @return contactFax
-   **/
-  @Schema(example = "020 8555 0001", description = "User Contact Fax")
+  */
   
-    public String getContactFax() {
+  @Schema(name = "contactFax", example = "020 8555 0001", description = "User Contact Fax", required = false)
+  public String getContactFax() {
     return contactFax;
   }
 
@@ -209,10 +215,10 @@ public class User   {
   /**
    * User Contact Socila
    * @return contactSocial
-   **/
-  @Schema(example = "http://www.linkedin.com/", description = "User Contact Socila")
+  */
   
-    public String getContactSocial() {
+  @Schema(name = "contactSocial", example = "http://www.linkedin.com/", description = "User Contact Socila", required = false)
+  public String getContactSocial() {
     return contactSocial;
   }
 
@@ -227,7 +233,7 @@ public class User   {
 
   public User addUserRolesItem(UserRoles userRolesItem) {
     if (this.userRoles == null) {
-      this.userRoles = new ArrayList<UserRoles>();
+      this.userRoles = new ArrayList<>();
     }
     this.userRoles.add(userRolesItem);
     return this;
@@ -236,10 +242,10 @@ public class User   {
   /**
    * Get userRoles
    * @return userRoles
-   **/
-  @Schema(description = "")
-      @Valid
-    public List<UserRoles> getUserRoles() {
+  */
+  @Valid 
+  @Schema(name = "userRoles", required = false)
+  public List<UserRoles> getUserRoles() {
     return userRoles;
   }
 
@@ -247,9 +253,8 @@ public class User   {
     this.userRoles = userRoles;
   }
 
-
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -278,7 +283,6 @@ public class User   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class User {\n");
-    
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
@@ -297,10 +301,11 @@ public class User   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 }
+

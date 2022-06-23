@@ -1,33 +1,39 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.Status;
 import uk.gov.ccs.swagger.dataMigration.model.UserMin;
-import org.springframework.validation.annotation.Validated;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * Summary
  */
-@Validated
 
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+public class Summary {
 
-public class Summary   {
   @JsonProperty("identifier-id")
-  private String identifierId = null;
+  private String identifierId;
 
   @JsonProperty("scheme-id")
-  private String schemeId = null;
+  private String schemeId;
 
   @JsonProperty("rightToBuy")
-  private Boolean rightToBuy = null;
+  private Boolean rightToBuy;
 
   @JsonProperty("orgRoles")
   @Valid
@@ -49,10 +55,10 @@ public class Summary   {
   /**
    * Identifier ID
    * @return identifierId
-   **/
-  @Schema(example = "100009655", description = "Identifier ID")
+  */
   
-    public String getIdentifierId() {
+  @Schema(name = "identifier-id", example = "100009655", description = "Identifier ID", required = false)
+  public String getIdentifierId() {
     return identifierId;
   }
 
@@ -68,10 +74,10 @@ public class Summary   {
   /**
    * Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
    * @return schemeId
-   **/
-  @Schema(example = "GB-COH", description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)")
+  */
   
-    public String getSchemeId() {
+  @Schema(name = "scheme-id", example = "GB-COH", description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)", required = false)
+  public String getSchemeId() {
     return schemeId;
   }
 
@@ -87,10 +93,10 @@ public class Summary   {
   /**
    * Buyer status
    * @return rightToBuy
-   **/
-  @Schema(example = "true", description = "Buyer status")
+  */
   
-    public Boolean isRightToBuy() {
+  @Schema(name = "rightToBuy", example = "true", description = "Buyer status", required = false)
+  public Boolean getRightToBuy() {
     return rightToBuy;
   }
 
@@ -105,7 +111,7 @@ public class Summary   {
 
   public Summary addOrgRolesItem(OrgRoles orgRolesItem) {
     if (this.orgRoles == null) {
-      this.orgRoles = new ArrayList<OrgRoles>();
+      this.orgRoles = new ArrayList<>();
     }
     this.orgRoles.add(orgRolesItem);
     return this;
@@ -114,10 +120,10 @@ public class Summary   {
   /**
    * Get orgRoles
    * @return orgRoles
-   **/
-  @Schema(description = "")
-      @Valid
-    public List<OrgRoles> getOrgRoles() {
+  */
+  @Valid 
+  @Schema(name = "orgRoles", required = false)
+  public List<OrgRoles> getOrgRoles() {
     return orgRoles;
   }
 
@@ -132,7 +138,7 @@ public class Summary   {
 
   public Summary addUserItem(UserMin userItem) {
     if (this.user == null) {
-      this.user = new ArrayList<UserMin>();
+      this.user = new ArrayList<>();
     }
     this.user.add(userItem);
     return this;
@@ -141,10 +147,10 @@ public class Summary   {
   /**
    * Get user
    * @return user
-   **/
-  @Schema(description = "")
-      @Valid
-    public List<UserMin> getUser() {
+  */
+  @Valid 
+  @Schema(name = "user", required = false)
+  public List<UserMin> getUser() {
     return user;
   }
 
@@ -159,7 +165,7 @@ public class Summary   {
 
   public Summary addStatusItem(Status statusItem) {
     if (this.status == null) {
-      this.status = new ArrayList<Status>();
+      this.status = new ArrayList<>();
     }
     this.status.add(statusItem);
     return this;
@@ -168,10 +174,10 @@ public class Summary   {
   /**
    * Get status
    * @return status
-   **/
-  @Schema(description = "")
-      @Valid
-    public List<Status> getStatus() {
+  */
+  @Valid 
+  @Schema(name = "Status", required = false)
+  public List<Status> getStatus() {
     return status;
   }
 
@@ -179,9 +185,8 @@ public class Summary   {
     this.status = status;
   }
 
-
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -206,7 +211,6 @@ public class Summary   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Summary {\n");
-    
     sb.append("    identifierId: ").append(toIndentedString(identifierId)).append("\n");
     sb.append("    schemeId: ").append(toIndentedString(schemeId)).append("\n");
     sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
@@ -221,10 +225,11 @@ public class Summary   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 }
+

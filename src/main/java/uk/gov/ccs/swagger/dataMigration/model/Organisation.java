@@ -1,32 +1,38 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.User;
-import org.springframework.validation.annotation.Validated;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * Organisation
  */
-@Validated
 
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+public class Organisation {
 
-public class Organisation   {
   @JsonProperty("identifier-id")
-  private String identifierId = null;
+  private String identifierId;
 
   @JsonProperty("scheme-id")
-  private String schemeId = null;
+  private String schemeId;
 
   @JsonProperty("rightToBuy")
-  private Boolean rightToBuy = null;
+  private Boolean rightToBuy;
 
   @JsonProperty("orgRoles")
   @Valid
@@ -44,10 +50,10 @@ public class Organisation   {
   /**
    * Identifier ID
    * @return identifierId
-   **/
-  @Schema(example = "100009655", description = "Identifier ID")
+  */
   
-    public String getIdentifierId() {
+  @Schema(name = "identifier-id", example = "100009655", description = "Identifier ID", required = false)
+  public String getIdentifierId() {
     return identifierId;
   }
 
@@ -63,10 +69,10 @@ public class Organisation   {
   /**
    * Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
    * @return schemeId
-   **/
-  @Schema(example = "GB-COH", description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)")
+  */
   
-    public String getSchemeId() {
+  @Schema(name = "scheme-id", example = "GB-COH", description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)", required = false)
+  public String getSchemeId() {
     return schemeId;
   }
 
@@ -82,10 +88,10 @@ public class Organisation   {
   /**
    * Buyer status
    * @return rightToBuy
-   **/
-  @Schema(example = "true", description = "Buyer status")
+  */
   
-    public Boolean isRightToBuy() {
+  @Schema(name = "rightToBuy", example = "true", description = "Buyer status", required = false)
+  public Boolean getRightToBuy() {
     return rightToBuy;
   }
 
@@ -100,7 +106,7 @@ public class Organisation   {
 
   public Organisation addOrgRolesItem(OrgRoles orgRolesItem) {
     if (this.orgRoles == null) {
-      this.orgRoles = new ArrayList<OrgRoles>();
+      this.orgRoles = new ArrayList<>();
     }
     this.orgRoles.add(orgRolesItem);
     return this;
@@ -109,10 +115,10 @@ public class Organisation   {
   /**
    * Get orgRoles
    * @return orgRoles
-   **/
-  @Schema(description = "")
-      @Valid
-    public List<OrgRoles> getOrgRoles() {
+  */
+  @Valid 
+  @Schema(name = "orgRoles", required = false)
+  public List<OrgRoles> getOrgRoles() {
     return orgRoles;
   }
 
@@ -127,7 +133,7 @@ public class Organisation   {
 
   public Organisation addUserItem(User userItem) {
     if (this.user == null) {
-      this.user = new ArrayList<User>();
+      this.user = new ArrayList<>();
     }
     this.user.add(userItem);
     return this;
@@ -136,10 +142,10 @@ public class Organisation   {
   /**
    * Get user
    * @return user
-   **/
-  @Schema(description = "")
-      @Valid
-    public List<User> getUser() {
+  */
+  @Valid 
+  @Schema(name = "user", required = false)
+  public List<User> getUser() {
     return user;
   }
 
@@ -147,9 +153,8 @@ public class Organisation   {
     this.user = user;
   }
 
-
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -173,7 +178,6 @@ public class Organisation   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Organisation {\n");
-    
     sb.append("    identifierId: ").append(toIndentedString(identifierId)).append("\n");
     sb.append("    schemeId: ").append(toIndentedString(schemeId)).append("\n");
     sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
@@ -187,10 +191,11 @@ public class Organisation   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 }
+

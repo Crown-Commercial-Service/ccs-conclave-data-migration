@@ -1,38 +1,44 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import uk.gov.ccs.swagger.dataMigration.model.Status;
 import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
-import org.springframework.validation.annotation.Validated;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * UserMin
  */
-@Validated
 
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+public class UserMin {
 
-public class UserMin   {
   @JsonProperty("email")
-  private String email = null;
+  private String email;
 
   @JsonProperty("title")
-  private String title = null;
+  private String title;
 
   @JsonProperty("firstName")
-  private String firstName = null;
+  private String firstName;
 
   @JsonProperty("lastName")
-  private String lastName = null;
+  private String lastName;
 
   @JsonProperty("contactEmail")
-  private String contactEmail = null;
+  private String contactEmail;
 
   @JsonProperty("userRoles")
   @Valid
@@ -50,10 +56,10 @@ public class UserMin   {
   /**
    * User Email
    * @return email
-   **/
-  @Schema(example = "joe.bloggs@kier.com", description = "User Email")
+  */
   
-    public String getEmail() {
+  @Schema(name = "email", example = "joe.bloggs@kier.com", description = "User Email", required = false)
+  public String getEmail() {
     return email;
   }
 
@@ -69,10 +75,10 @@ public class UserMin   {
   /**
    * User Title
    * @return title
-   **/
-  @Schema(example = "Mr", description = "User Title")
+  */
   
-    public String getTitle() {
+  @Schema(name = "title", example = "Mr", description = "User Title", required = false)
+  public String getTitle() {
     return title;
   }
 
@@ -88,10 +94,10 @@ public class UserMin   {
   /**
    * First Name
    * @return firstName
-   **/
-  @Schema(example = "Joe", description = "First Name")
+  */
   
-    public String getFirstName() {
+  @Schema(name = "firstName", example = "Joe", description = "First Name", required = false)
+  public String getFirstName() {
     return firstName;
   }
 
@@ -107,10 +113,10 @@ public class UserMin   {
   /**
    * Last Name
    * @return lastName
-   **/
-  @Schema(example = "Bloggs", description = "Last Name")
+  */
   
-    public String getLastName() {
+  @Schema(name = "lastName", example = "Bloggs", description = "Last Name", required = false)
+  public String getLastName() {
     return lastName;
   }
 
@@ -126,10 +132,10 @@ public class UserMin   {
   /**
    * User Contact Email
    * @return contactEmail
-   **/
-  @Schema(example = "abc@somewhere.org", description = "User Contact Email")
+  */
   
-    public String getContactEmail() {
+  @Schema(name = "contactEmail", example = "abc@somewhere.org", description = "User Contact Email", required = false)
+  public String getContactEmail() {
     return contactEmail;
   }
 
@@ -144,7 +150,7 @@ public class UserMin   {
 
   public UserMin addUserRolesItem(UserRoles userRolesItem) {
     if (this.userRoles == null) {
-      this.userRoles = new ArrayList<UserRoles>();
+      this.userRoles = new ArrayList<>();
     }
     this.userRoles.add(userRolesItem);
     return this;
@@ -153,10 +159,10 @@ public class UserMin   {
   /**
    * Get userRoles
    * @return userRoles
-   **/
-  @Schema(description = "")
-      @Valid
-    public List<UserRoles> getUserRoles() {
+  */
+  @Valid 
+  @Schema(name = "userRoles", required = false)
+  public List<UserRoles> getUserRoles() {
     return userRoles;
   }
 
@@ -171,7 +177,7 @@ public class UserMin   {
 
   public UserMin addStatusItem(Status statusItem) {
     if (this.status == null) {
-      this.status = new ArrayList<Status>();
+      this.status = new ArrayList<>();
     }
     this.status.add(statusItem);
     return this;
@@ -180,10 +186,10 @@ public class UserMin   {
   /**
    * Get status
    * @return status
-   **/
-  @Schema(description = "")
-      @Valid
-    public List<Status> getStatus() {
+  */
+  @Valid 
+  @Schema(name = "status", required = false)
+  public List<Status> getStatus() {
     return status;
   }
 
@@ -191,9 +197,8 @@ public class UserMin   {
     this.status = status;
   }
 
-
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -219,7 +224,6 @@ public class UserMin   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserMin {\n");
-    
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
@@ -235,10 +239,11 @@ public class UserMin   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
 }
+
