@@ -49,7 +49,7 @@ public class ContactService {
             try {
                 conclaveClient.createOrganisationContact(organisationId, buildContactRequestInfo(contactPoint));
             } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-                errorService.logWithStatus(org, SSO_ORG_CONTACT_ERROR_MESSAGE + e.getMessage(), e.getCode());
+                errorService.logWithStatus(org, SSO_ORG_CONTACT_ERROR_MESSAGE, e, e.getCode());
             }
         }
     }
