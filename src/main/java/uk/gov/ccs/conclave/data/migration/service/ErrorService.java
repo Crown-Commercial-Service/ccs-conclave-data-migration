@@ -48,15 +48,15 @@ public class ErrorService {
 
     private final UserRepository userRepository;
 
-    public void logWithStatus(Organisation org, String message, Integer statusCode) throws DataMigrationException {
-        LOGGER.error(message);
+    public void logWithStatus(Organisation org, String message, Exception exception, Integer statusCode) throws DataMigrationException {
+        LOGGER.error(message + exception.getMessage(), exception);
         Org savedOrg = saveOrgDetailsWithStatusCode(org, message, statusCode);
         saveAllUserDetailsWithStatusCode(org, message, statusCode, savedOrg);
         handleFailure(message, statusCode);
     }
 
-    public void logWithStatusString(String organisationId, String message, Integer statusCode) throws DataMigrationException {
-        LOGGER.error(message);
+    public void logWithStatusString(String message, Exception exception, Integer statusCode) throws DataMigrationException {
+        LOGGER.error(message + exception.getMessage(), exception);
         handleFailure(message, statusCode);
     }
 
