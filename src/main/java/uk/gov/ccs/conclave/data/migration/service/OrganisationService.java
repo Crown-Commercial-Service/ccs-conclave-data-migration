@@ -192,7 +192,6 @@ public class OrganisationService {
                 System.out.println(String.format("HERE -> B (userRole):  %s", userRole));
                 System.out.println(String.format("HERE -> C (userRole.getName()):  %s", userRole.getName()));
                 System.out.println(String.format("HERE -> D (userRole.getName().equals(Organisation Administrator)):  %s", userRole.getName().equals("Organisation Administrator")));
-                System.out.println(String.format("HERE -> E (userRole.isUserRoleAdmin()):  %s", userRole.isUserRoleAdmin()));
                 if (userRole.getName().equals("Organisation Administrator")) {
                     return true;
                 }

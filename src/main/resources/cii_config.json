@@ -1,4 +1,9 @@
 {
   "modelPackage" : "uk.gov.ccs.swagger.cii.model",
-  "apiPackage" : "uk.gov.ccs.swagger.cii.api"
+  "apiPackage" : "uk.gov.ccs.swagger.cii.api",
+  "apiTests": false,
+  "modelTests": false,
+  "apiDocs": false,
+  "modelDocs": false,
+  "hideGenerationTimestamp": true
 }
