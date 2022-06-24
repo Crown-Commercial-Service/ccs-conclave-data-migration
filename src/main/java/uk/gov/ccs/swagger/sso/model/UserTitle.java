@@ -48,9 +48,9 @@ public enum UserTitle {
     return String.valueOf(value);
   }
 
-  public static UserTitle fromValue(String text) {
+  public static UserTitle fromValue(Integer input) {
     for (UserTitle b : UserTitle.values()) {
-      if (String.valueOf(b.value).equals(text)) {
+      if (b.value.equals(input)) {
         return b;
       }
     }
@@ -60,13 +60,13 @@ public enum UserTitle {
   public static class Adapter extends TypeAdapter<UserTitle> {
     @Override
     public void write(final JsonWriter jsonWriter, final UserTitle enumeration) throws IOException {
-      jsonWriter.value(enumeration.getValue());
+      jsonWriter.value(String.valueOf(enumeration.getValue()));
     }
 
     @Override
     public UserTitle read(final JsonReader jsonReader) throws IOException {
       Object value = jsonReader.nextInt();
-      return UserTitle.fromValue(String.valueOf(value));
+      return UserTitle.fromValue((Integer)(value));
     }
   }
 }
