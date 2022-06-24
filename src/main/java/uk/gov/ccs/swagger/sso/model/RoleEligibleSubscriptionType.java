@@ -44,9 +44,9 @@ public enum RoleEligibleSubscriptionType {
     return String.valueOf(value);
   }
 
-  public static RoleEligibleSubscriptionType fromValue(Integer input) {
+  public static RoleEligibleSubscriptionType fromValue(String text) {
     for (RoleEligibleSubscriptionType b : RoleEligibleSubscriptionType.values()) {
-      if (b.value.equals(input)) {
+      if (String.valueOf(b.value).equals(text)) {
         return b;
       }
     }
@@ -56,13 +56,13 @@ public enum RoleEligibleSubscriptionType {
   public static class Adapter extends TypeAdapter<RoleEligibleSubscriptionType> {
     @Override
     public void write(final JsonWriter jsonWriter, final RoleEligibleSubscriptionType enumeration) throws IOException {
-      jsonWriter.value(String.valueOf(enumeration.getValue()));
+      jsonWriter.value(enumeration.getValue());
     }
 
     @Override
     public RoleEligibleSubscriptionType read(final JsonReader jsonReader) throws IOException {
       Object value = jsonReader.nextInt();
-      return RoleEligibleSubscriptionType.fromValue((Integer)(value));
+      return RoleEligibleSubscriptionType.fromValue(String.valueOf(value));
     }
   }
 }

@@ -45,9 +45,9 @@ public enum RoleEligibleOrgType {
     return String.valueOf(value);
   }
 
-  public static RoleEligibleOrgType fromValue(Integer input) {
+  public static RoleEligibleOrgType fromValue(String text) {
     for (RoleEligibleOrgType b : RoleEligibleOrgType.values()) {
-      if (b.value.equals(input)) {
+      if (String.valueOf(b.value).equals(text)) {
         return b;
       }
     }
@@ -57,13 +57,13 @@ public enum RoleEligibleOrgType {
   public static class Adapter extends TypeAdapter<RoleEligibleOrgType> {
     @Override
     public void write(final JsonWriter jsonWriter, final RoleEligibleOrgType enumeration) throws IOException {
-      jsonWriter.value(String.valueOf(enumeration.getValue()));
+      jsonWriter.value(enumeration.getValue());
     }
 
     @Override
     public RoleEligibleOrgType read(final JsonReader jsonReader) throws IOException {
       Object value = jsonReader.nextInt();
-      return RoleEligibleOrgType.fromValue((Integer)(value));
+      return RoleEligibleOrgType.fromValue(String.valueOf(value));
     }
   }
 }
