@@ -45,9 +45,9 @@ public enum RoleEligibleTradeType {
     return String.valueOf(value);
   }
 
-  public static RoleEligibleTradeType fromValue(Integer input) {
+  public static RoleEligibleTradeType fromValue(String text) {
     for (RoleEligibleTradeType b : RoleEligibleTradeType.values()) {
-      if (b.value.equals(input)) {
+      if (String.valueOf(b.value).equals(text)) {
         return b;
       }
     }
@@ -57,13 +57,13 @@ public enum RoleEligibleTradeType {
   public static class Adapter extends TypeAdapter<RoleEligibleTradeType> {
     @Override
     public void write(final JsonWriter jsonWriter, final RoleEligibleTradeType enumeration) throws IOException {
-      jsonWriter.value(String.valueOf(enumeration.getValue()));
+      jsonWriter.value(enumeration.getValue());
     }
 
     @Override
     public RoleEligibleTradeType read(final JsonReader jsonReader) throws IOException {
       Object value = jsonReader.nextInt();
-      return RoleEligibleTradeType.fromValue((Integer)(value));
+      return RoleEligibleTradeType.fromValue(String.valueOf(value));
     }
   }
 }

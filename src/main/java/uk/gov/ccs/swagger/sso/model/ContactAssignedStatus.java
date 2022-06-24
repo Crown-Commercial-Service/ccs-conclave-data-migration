@@ -45,9 +45,9 @@ public enum ContactAssignedStatus {
     return String.valueOf(value);
   }
 
-  public static ContactAssignedStatus fromValue(Integer input) {
+  public static ContactAssignedStatus fromValue(String text) {
     for (ContactAssignedStatus b : ContactAssignedStatus.values()) {
-      if (b.value.equals(input)) {
+      if (String.valueOf(b.value).equals(text)) {
         return b;
       }
     }
@@ -57,13 +57,13 @@ public enum ContactAssignedStatus {
   public static class Adapter extends TypeAdapter<ContactAssignedStatus> {
     @Override
     public void write(final JsonWriter jsonWriter, final ContactAssignedStatus enumeration) throws IOException {
-      jsonWriter.value(String.valueOf(enumeration.getValue()));
+      jsonWriter.value(enumeration.getValue());
     }
 
     @Override
     public ContactAssignedStatus read(final JsonReader jsonReader) throws IOException {
       Object value = jsonReader.nextInt();
-      return ContactAssignedStatus.fromValue((Integer)(value));
+      return ContactAssignedStatus.fromValue(String.valueOf(value));
     }
   }
 }
