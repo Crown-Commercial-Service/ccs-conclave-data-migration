@@ -53,9 +53,9 @@ public enum OrganizationScheme {
     return String.valueOf(value);
   }
 
-  public static OrganizationScheme fromValue(String input) {
+  public static OrganizationScheme fromValue(String text) {
     for (OrganizationScheme b : OrganizationScheme.values()) {
-      if (b.value.equals(input)) {
+      if (String.valueOf(b.value).equals(text)) {
         return b;
       }
     }
@@ -65,13 +65,13 @@ public enum OrganizationScheme {
   public static class Adapter extends TypeAdapter<OrganizationScheme> {
     @Override
     public void write(final JsonWriter jsonWriter, final OrganizationScheme enumeration) throws IOException {
-      jsonWriter.value(String.valueOf(enumeration.getValue()));
+      jsonWriter.value(enumeration.getValue());
     }
 
     @Override
     public OrganizationScheme read(final JsonReader jsonReader) throws IOException {
       Object value = jsonReader.nextString();
-      return OrganizationScheme.fromValue((String)(value));
+      return OrganizationScheme.fromValue(String.valueOf(value));
     }
   }
 }
