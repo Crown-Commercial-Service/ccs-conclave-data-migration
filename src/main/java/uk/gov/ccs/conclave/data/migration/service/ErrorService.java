@@ -9,7 +9,6 @@ import uk.gov.ccs.conclave.data.migration.domain.User;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
-import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
@@ -47,6 +46,13 @@ public class ErrorService {
     private final OrganisationRepository organisationRepository;
 
     private final UserRepository userRepository;
+
+    public void logWithStatus(Organisation org, String message, uk.gov.ccs.swagger.sso.ApiException exception, Integer statusCode) throws DataMigrationException {
+        LOGGER.error("{}{}: {}", message, exception.getMessage(), exception.getResponseBody(), exception);
+        Org savedOrg = saveOrgDetailsWithStatusCode(org, message, statusCode);
+        saveAllUserDetailsWithStatusCode(org, message, statusCode, savedOrg);
+        handleFailure(message, statusCode);
+    }
 
     public void logWithStatus(Organisation org, String message, Exception exception, Integer statusCode) throws DataMigrationException {
         LOGGER.error(message + exception.getMessage(), exception);
