@@ -37,7 +37,9 @@ public class UserService {
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
-        userDto.setTitle(fromValue(Integer.valueOf(user.getTitle())));
+        try {
+            userDto.setTitle(fromValue(Integer.valueOf(user.getTitle())));
+        } catch (NumberFormatException ignored) {}
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
