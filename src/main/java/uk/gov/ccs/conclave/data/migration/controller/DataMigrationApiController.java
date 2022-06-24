@@ -15,17 +15,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class DataMigrationApiController implements DataMigrationApi {
+public class DataMigrationApiController extends DataMigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
     private final MigrationService migrationService;
 
     @Override
-    public ResponseEntity<List<Summary>> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {
+    public List<Summary> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {
         log.info(" API for data migration invoked for file format " + fileFormat);
         System.out.println(String.format("\n\n HERE -> 0 (requestbody):  %s \n\n", body));
         migrationService.migrate(body);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return List.of();
     }
 }

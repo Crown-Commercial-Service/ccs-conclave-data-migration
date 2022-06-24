@@ -153,14 +153,14 @@ public class OrganisationService {
     private OrganisationDetail buildOrgDetail(OrgMigration ciiResponse, Organisation org) {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
-        organisationDetail.setRightToBuy(org.isRightToBuy());
+        organisationDetail.setRightToBuy(org.getRightToBuy());
         return organisationDetail;
     }
 
     private OrganisationIdentifier buildOrgIdentifier(Identifier ciiIdentifier) {
         OrganisationIdentifier organisationIdentifier = new OrganisationIdentifier();
         organisationIdentifier.setLegalName(ciiIdentifier.getLegalName());
-        organisationIdentifier.setUri(ciiIdentifier.getUri());
+        organisationIdentifier.setUri(String.valueOf(ciiIdentifier.getUri()));
         return organisationIdentifier;
     }
 

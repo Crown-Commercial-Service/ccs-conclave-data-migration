@@ -67,7 +67,7 @@ public class ConclaveClient {
 
     public void createUserContact(String userId, ContactRequestInfo contactRequestInfo) throws ApiException {
         LOGGER.info("Creating a user contact.");
-        userContactApi.usersContactsPost(contactRequestInfo, userId);
+        userContactApi.usersContactsPost(userId, contactRequestInfo);
     }
 
 }
