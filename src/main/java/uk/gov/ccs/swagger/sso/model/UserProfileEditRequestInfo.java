@@ -22,7 +22,6 @@ import com.google.gson.stream.JsonWriter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.IOException;
 import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
-import uk.gov.ccs.swagger.sso.model.UserTitle;
 /**
  * UserProfileEditRequestInfo
  */
@@ -42,7 +41,7 @@ public class UserProfileEditRequestInfo {
   private String lastName = null;
 
   @SerializedName("title")
-  private UserTitle title = null;
+  private String title = null;
 
   @SerializedName("mfaEnabled")
   private Boolean mfaEnabled = null;
@@ -131,7 +130,7 @@ public class UserProfileEditRequestInfo {
     this.lastName = lastName;
   }
 
-  public UserProfileEditRequestInfo title(UserTitle title) {
+  public UserProfileEditRequestInfo title(String title) {
     this.title = title;
     return this;
   }
@@ -141,11 +140,11 @@ public class UserProfileEditRequestInfo {
    * @return title
   **/
   @Schema(description = "")
-  public UserTitle getTitle() {
+  public String getTitle() {
     return title;
   }
 
-  public void setTitle(UserTitle title) {
+  public void setTitle(String title) {
     this.title = title;
   }
 
