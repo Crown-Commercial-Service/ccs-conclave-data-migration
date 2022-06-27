@@ -20,12 +20,14 @@ CCS people can view [the internal quickstart guide](https://crowncommercialservi
 
 ## Generating server stub and API clients
 
-The server interface and CII and SSO clients are generated using [swagger-codegen](https://github.com/swagger-api/swagger-codegen) from [OpenAPI specs](src/main/resources). 
+The server interface and CII and SSO clients are generated using [swagger-codegen](https://github.com/swagger-api/swagger-codegen) from [OpenAPI specs](src/main/resources).
+
+We use v3.0.27 to avoid [a bug in more recent versions](https://github.com/swagger-api/swagger-codegen/issues/11317). Download it from <https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.27/swagger-codegen-cli-3.0.27.jar> and copy it to `swagger-codegen-cli.jar`.
 
 To update, run:
 
 ```
-swagger-codegen generate --output . --config src/main/resources/cii_config.json --input-spec src/main/resources/cii_api.yaml --lang java
-swagger-codegen generate --output . --config src/main/resources/conclave_config.json --input-spec src/main/resources/conclave_api.yaml --lang java
-swagger-codegen generate --output . --config src/main/resources/dm_config.json --input-spec src/main/resources/dm_api.yaml --lang spring
+java -jar swagger-codegen-cli.jar generate --output . --config src/main/resources/cii_config.json --input-spec src/main/resources/cii_api.yaml --lang java
+java -jar swagger-codegen-cli.jar generate --output . --config src/main/resources/conclave_config.json --input-spec src/main/resources/conclave_api.yaml --lang java
+java -jar swagger-codegen-cli.jar generate --output . --config src/main/resources/dm_config.json --input-spec src/main/resources/dm_api.yaml --lang spring
 ```
