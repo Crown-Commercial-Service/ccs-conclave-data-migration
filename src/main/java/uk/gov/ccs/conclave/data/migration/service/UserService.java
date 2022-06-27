@@ -6,7 +6,6 @@ import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 import uk.gov.ccs.swagger.dataMigration.model.User;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
@@ -18,7 +17,6 @@ import static java.util.Collections.singletonList;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRATION_SUCCESS;
-import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +35,7 @@ public class UserService {
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
-        userDto.setTitle(fromValue(user.getTitle()));
+        userDto.setTitle(user.getTitle());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());

@@ -4093,7 +4093,7 @@
             "nullable": true
           },
           "title": {
-            "$ref": "#/components/schemas/UserTitle"
+            "type": "string"
           },
           "mfaEnabled": {
             "type": "boolean"
@@ -4134,7 +4134,7 @@
             "nullable": true
           },
           "title": {
-            "$ref": "#/components/schemas/UserTitle"
+            "type": "string"
           },
           "mfaEnabled": {
             "type": "boolean"
@@ -4222,18 +4222,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "UserTitle": {
-        "enum": [
-            0,
-            1,
-            2,
-            3,
-            4,
-            5
-        ],
-        "type": "integer",
-        "format": "int32"
       }
     },
     "securitySchemes": {

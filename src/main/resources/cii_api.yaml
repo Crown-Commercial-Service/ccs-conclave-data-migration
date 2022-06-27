@@ -97,6 +97,10 @@ paths:
       responses:
         "200":
           description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgMigration'
         "400":
           description: Bad Request
         "401":
@@ -173,6 +177,7 @@ components:
       - faxNumber
       - name
       - telephone
+      - mobile
       - uri
       type: object
       properties:
@@ -188,6 +193,10 @@ components:
           type: string
           description: The telephone number of the contact point/person. This should include the international dialling code.
           example: 020 7777 7777
+        mobile:
+          type: string
+          description: The mobile number of the contact point/person. This should include the international dialling code.
+          example: +44 7777 7777
         faxNumber:
           type: string
           description: The fax number of the contact point/person. This should include the international dialling code.

@@ -153,7 +153,7 @@ public class User   {
    * User Contact Mobile
    * @return contactMobile
    **/
-  @Schema(example = "07956111111", description = "User Contact Mobile")
+  @Schema(example = "7956111111", description = "User Contact Mobile")
   
     public String getContactMobile() {
     return contactMobile;
