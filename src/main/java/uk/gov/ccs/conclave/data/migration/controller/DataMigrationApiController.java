@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.ccs.conclave.data.migration.service.MigrationService;
 import uk.gov.ccs.swagger.dataMigration.api.DataMigrationApi;
@@ -27,5 +29,10 @@ public class DataMigrationApiController implements DataMigrationApi {
         System.out.println(String.format("\n\n HERE -> 0 (requestbody):  %s \n\n", body));
         migrationService.migrate(body);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Validation failed for request")
+    @ExceptionHandler({javax.validation.ConstraintViolationException.class})
+    public void constraintViolation() {
     }
 }
