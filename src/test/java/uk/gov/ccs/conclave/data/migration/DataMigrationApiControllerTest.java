@@ -33,4 +33,11 @@ public class DataMigrationApiControllerTest {
 
         this.mockMvc.perform(post("/data-migration/migrate/format/json").contentType(MediaType.APPLICATION_JSON).content(organisations)).andExpect(status().isOk());
     }
+
+    @Test
+    public void shouldRejectInvalidOrganisation() throws Exception {
+        String organisations = new ObjectMapper().writeValueAsString(List.of(new Organisation()));
+
+        this.mockMvc.perform(post("/data-migration/migrate/format/json").contentType(MediaType.APPLICATION_JSON).content(organisations)).andExpect(status().isBadRequest());
+    }
 }
