@@ -1,6 +1,8 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
@@ -31,6 +33,8 @@ public class UserService {
     private final ContactService contactService;
 
     private final RoleService roleService;
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
@@ -69,6 +73,7 @@ public class UserService {
 
             } catch (ApiException e) {
                 userFailureCount++;
+                log.error("{}{}: {}", SSO_USER_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
             }
         }

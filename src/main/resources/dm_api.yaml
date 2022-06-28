@@ -105,11 +105,15 @@ components:
         orgRoles:
           type: array
           items:
-            $ref: '#/components/schemas/OrgRoles'
+            $ref: '#/components/schemas/OrgRole'
         user:
           type: array
           items:
             $ref: '#/components/schemas/User'
+      required:
+        - identifier-id
+        - scheme-id
+        - rightToBuy
     User:
       properties:
         email:
@@ -151,7 +155,11 @@ components:
         userRoles:
           type: array
           items:
-            $ref: '#/components/schemas/UserRoles'
+            $ref: '#/components/schemas/UserRole'
+      required:
+        - email
+        - firstName
+        - lastName
 
     UserMin:
       properties:
@@ -178,7 +186,7 @@ components:
         userRoles:
           type: array
           items:
-            $ref: '#/components/schemas/UserRoles'
+            $ref: '#/components/schemas/UserRole'
         status:
           type: array
           items:
@@ -201,7 +209,7 @@ components:
         orgRoles:
           type: array
           items:
-            $ref: '#/components/schemas/OrgRoles'
+            $ref: '#/components/schemas/OrgRole'
         user:
           type: array
           items:
@@ -236,20 +244,20 @@ components:
         - Unable to process record - see http response code
         - Record processed
     #
-    OrgRoles:
+    OrgRole:
       type: object
       required:
-        - Roles
+        - name
       properties:
         name:
           type: string
           description: Organisation Roles
           example: RMI
     #
-    UserRoles:
+    UserRole:
       type: object
       required:
-        - Roles
+        - name
       properties:
         name:
           type: string

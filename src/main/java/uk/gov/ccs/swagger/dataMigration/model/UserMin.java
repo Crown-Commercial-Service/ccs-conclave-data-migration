@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import uk.gov.ccs.swagger.dataMigration.model.Status;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -36,7 +36,7 @@ public class UserMin   {
 
   @JsonProperty("userRoles")
   @Valid
-  private List<UserRoles> userRoles = null;
+  private List<UserRole> userRoles = null;
 
   @JsonProperty("status")
   @Valid
@@ -137,14 +137,14 @@ public class UserMin   {
     this.contactEmail = contactEmail;
   }
 
-  public UserMin userRoles(List<UserRoles> userRoles) {
+  public UserMin userRoles(List<UserRole> userRoles) {
     this.userRoles = userRoles;
     return this;
   }
 
-  public UserMin addUserRolesItem(UserRoles userRolesItem) {
+  public UserMin addUserRolesItem(UserRole userRolesItem) {
     if (this.userRoles == null) {
-      this.userRoles = new ArrayList<UserRoles>();
+      this.userRoles = new ArrayList<UserRole>();
     }
     this.userRoles.add(userRolesItem);
     return this;
@@ -156,11 +156,11 @@ public class UserMin   {
    **/
   @Schema(description = "")
       @Valid
-    public List<UserRoles> getUserRoles() {
+    public List<UserRole> getUserRoles() {
     return userRoles;
   }
 
-  public void setUserRoles(List<UserRoles> userRoles) {
+  public void setUserRoles(List<UserRole> userRoles) {
     this.userRoles = userRoles;
   }
 

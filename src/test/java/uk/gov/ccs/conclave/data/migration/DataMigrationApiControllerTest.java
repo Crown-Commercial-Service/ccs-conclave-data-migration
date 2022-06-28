@@ -29,8 +29,15 @@ public class DataMigrationApiControllerTest {
 
     @Test
     public void shouldBeSuccessful() throws Exception {
-        String organisations = new ObjectMapper().writeValueAsString(List.of(new Organisation()));
+        String organisations = new ObjectMapper().writeValueAsString(List.of(new Organisation().identifierId("identifier").schemeId("scheme").rightToBuy(false)));
 
         this.mockMvc.perform(post("/data-migration/migrate/format/json").contentType(MediaType.APPLICATION_JSON).content(organisations)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldRejectInvalidOrganisation() throws Exception {
+        String organisations = new ObjectMapper().writeValueAsString(List.of(new Organisation()));
+
+        this.mockMvc.perform(post("/data-migration/migrate/format/json").contentType(MediaType.APPLICATION_JSON).content(organisations)).andExpect(status().isBadRequest());
     }
 }

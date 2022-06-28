@@ -9,9 +9,9 @@ import uk.gov.ccs.conclave.data.migration.domain.User;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 
 import java.util.List;
 import java.util.Set;
@@ -134,13 +134,13 @@ public class ErrorService {
         return org;
     }
 
-    private String orgRolesAsString(List<OrgRoles> roles) {
-        List<String> rolesList = roles.stream().map(OrgRoles::getName).collect(toList());
+    private String orgRolesAsString(List<OrgRole> roles) {
+        List<String> rolesList = roles.stream().map(OrgRole::getName).collect(toList());
         return join(",", rolesList);
     }
 
-    private String userRolesAsString(List<UserRoles> userRoles) {
-        var rolesList = userRoles.stream().map(UserRoles::getName).collect(toList());
+    private String userRolesAsString(List<UserRole> userRoles) {
+        var rolesList = userRoles.stream().map(UserRole::getName).collect(toList());
         return join(",", rolesList);
     }
 

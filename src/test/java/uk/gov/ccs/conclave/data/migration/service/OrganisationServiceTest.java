@@ -13,13 +13,14 @@ import uk.gov.ccs.swagger.cii.model.Identifier;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -44,7 +45,7 @@ public class OrganisationServiceTest {
     private OrganisationService organisationService;
 
     private Organisation getTestOrganisation() {
-        var admin_user = new User().userRoles(List.of(new UserRoles().name("Organisation Administrator")));
+        var admin_user = new User().userRoles(List.of(new UserRole().name("Organisation Administrator")));
         return new Organisation().user(List.of(admin_user));
     }
 
@@ -75,5 +76,15 @@ public class OrganisationServiceTest {
         ArgumentCaptor<OrganisationProfileInfo> argumentCaptor = ArgumentCaptor.forClass(OrganisationProfileInfo.class);
         verify(conclaveClient).createConclaveOrg(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getDetail().isRightToBuy()).isEqualTo(false);
+    }
+
+    @Test
+    public void shouldDeleteOrganisationIfNoAdmin() throws Exception {
+        given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()).organisationId("org_id"));
+        given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
+
+        organisationService.migrateOrganisation(new Organisation().user(List.of()));
+
+        verify(ciiOrgClient).deleteCiiOrganisation(eq("org_id"));
     }
 }

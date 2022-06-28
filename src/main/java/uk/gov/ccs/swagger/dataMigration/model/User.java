@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -47,7 +47,7 @@ public class User   {
 
   @JsonProperty("userRoles")
   @Valid
-  private List<UserRoles> userRoles = null;
+  private List<UserRole> userRoles = null;
 
   public User email(String email) {
     this.email = email;
@@ -58,8 +58,9 @@ public class User   {
    * User Email
    * @return email
    **/
-  @Schema(example = "joe.bloggs@kier.com", description = "User Email")
-  
+  @Schema(example = "joe.bloggs@kier.com", required = true, description = "User Email")
+      @NotNull
+
     public String getEmail() {
     return email;
   }
@@ -96,8 +97,9 @@ public class User   {
    * First Name
    * @return firstName
    **/
-  @Schema(example = "Joe", description = "First Name")
-  
+  @Schema(example = "Joe", required = true, description = "First Name")
+      @NotNull
+
     public String getFirstName() {
     return firstName;
   }
@@ -115,8 +117,9 @@ public class User   {
    * Last Name
    * @return lastName
    **/
-  @Schema(example = "Bloggs", description = "Last Name")
-  
+  @Schema(example = "Bloggs", required = true, description = "Last Name")
+      @NotNull
+
     public String getLastName() {
     return lastName;
   }
@@ -220,14 +223,14 @@ public class User   {
     this.contactSocial = contactSocial;
   }
 
-  public User userRoles(List<UserRoles> userRoles) {
+  public User userRoles(List<UserRole> userRoles) {
     this.userRoles = userRoles;
     return this;
   }
 
-  public User addUserRolesItem(UserRoles userRolesItem) {
+  public User addUserRolesItem(UserRole userRolesItem) {
     if (this.userRoles == null) {
-      this.userRoles = new ArrayList<UserRoles>();
+      this.userRoles = new ArrayList<UserRole>();
     }
     this.userRoles.add(userRolesItem);
     return this;
@@ -239,11 +242,11 @@ public class User   {
    **/
   @Schema(description = "")
       @Valid
-    public List<UserRoles> getUserRoles() {
+    public List<UserRole> getUserRoles() {
     return userRoles;
   }
 
-  public void setUserRoles(List<UserRoles> userRoles) {
+  public void setUserRoles(List<UserRole> userRoles) {
     this.userRoles = userRoles;
   }
 

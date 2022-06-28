@@ -9,16 +9,16 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * OrgRoles
+ * OrgRole
  */
 @Validated
 
 
-public class OrgRoles   {
+public class OrgRole   {
   @JsonProperty("name")
   private String name = null;
 
-  public OrgRoles name(String name) {
+  public OrgRole name(String name) {
     this.name = name;
     return this;
   }
@@ -27,8 +27,9 @@ public class OrgRoles   {
    * Organisation Roles
    * @return name
    **/
-  @Schema(example = "RMI", description = "Organisation Roles")
-  
+  @Schema(example = "RMI", required = true, description = "Organisation Roles")
+      @NotNull
+
     public String getName() {
     return name;
   }
@@ -46,8 +47,8 @@ public class OrgRoles   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrgRoles orgRoles = (OrgRoles) o;
-    return Objects.equals(this.name, orgRoles.name);
+    OrgRole orgRole = (OrgRole) o;
+    return Objects.equals(this.name, orgRole.name);
   }
 
   @Override
@@ -58,7 +59,7 @@ public class OrgRoles   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OrgRoles {\n");
+    sb.append("class OrgRole {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
