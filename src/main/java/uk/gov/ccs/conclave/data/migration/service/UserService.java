@@ -41,14 +41,16 @@ public class UserService {
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
-        userDto.setTitle(fromValue(user.getTitle().toString()));
+        if (user.getTitle() != null) {
+            userDto.setTitle(fromValue(user.getTitle().toString()));
+        }
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
         userDto.setOrganisationId(organisationId);
         userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
         userDto.setAccountVerified(properties.isAccountVerified());
-        if (user.getUserRoles().stream().anyMatch(role -> role.getName().equals("Organisation Administrator"))) {
+        if (user.getUserRoles() != null && user.getUserRoles().stream().anyMatch(role -> role.getName().equals("Organisation Administrator"))) {
             userDto.setMfaEnabled(true);
         }
 
