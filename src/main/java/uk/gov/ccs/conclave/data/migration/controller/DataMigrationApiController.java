@@ -31,7 +31,7 @@ public class DataMigrationApiController implements DataMigrationApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Validation failed for request")
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
     @ExceptionHandler({javax.validation.ConstraintViolationException.class})
     public void constraintViolation() {
     }
