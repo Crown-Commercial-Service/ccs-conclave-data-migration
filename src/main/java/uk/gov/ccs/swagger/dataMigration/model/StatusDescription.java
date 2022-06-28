@@ -35,6 +35,6 @@ public enum StatusDescription {
         return b;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'StatusDescription' enum.");
   }
 }

@@ -51,7 +51,7 @@ public enum RoleEligibleOrgType {
         return b;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'RoleEligibleOrgType' enum.");
   }
 
   public static class Adapter extends TypeAdapter<RoleEligibleOrgType> {

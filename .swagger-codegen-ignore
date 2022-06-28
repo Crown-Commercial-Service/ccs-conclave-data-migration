@@ -11,3 +11,4 @@ src/test/**/*
 pom.xml
 README.md
 src/main/java/io/**
+src/main/resources/application.properties

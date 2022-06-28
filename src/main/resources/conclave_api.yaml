@@ -4093,7 +4093,7 @@
             "nullable": true
           },
           "title": {
-            "type": "string"
+            "$ref": "#/components/schemas/UserTitle"
           },
           "mfaEnabled": {
             "type": "boolean"
@@ -4134,7 +4134,7 @@
             "nullable": true
           },
           "title": {
-            "type": "string"
+            "$ref": "#/components/schemas/UserTitle"
           },
           "mfaEnabled": {
             "type": "boolean"
@@ -4222,6 +4222,18 @@
           }
         },
         "additionalProperties": false
+      },
+      "UserTitle": {
+        "enum": [
+          "Mr",
+          "Mrs",
+          "Miss",
+          "Ms",
+          "Doctor",
+          "Unspecified"
+        ],
+        "default": "Unspecified",
+        "type": "string"
       }
     },
     "securitySchemes": {
