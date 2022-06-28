@@ -13,6 +13,7 @@ import uk.gov.ccs.swagger.dataMigration.api.DataMigrationApi;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.Summary;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -31,8 +32,10 @@ public class DataMigrationApiController implements DataMigrationApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({javax.validation.ConstraintViolationException.class})
-    public void constraintViolation() {
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> constraintViolation(ConstraintViolationException exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(exception.getMessage());
     }
 }
