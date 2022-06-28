@@ -13,7 +13,7 @@ import uk.gov.ccs.swagger.cii.model.Identifier;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class OrganisationServiceTest {
     private OrganisationService organisationService;
 
     private Organisation getTestOrganisation() {
-        var admin_user = new User().userRoles(List.of(new UserRoles().name("Organisation Administrator")));
+        var admin_user = new User().userRoles(List.of(new UserRole().name("Organisation Administrator")));
         return new Organisation().user(List.of(admin_user));
     }
 

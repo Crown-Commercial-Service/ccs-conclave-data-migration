@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.OrganisationRole;
@@ -50,7 +50,7 @@ public class RoleServiceTest {
 
     @Test
     public void shouldNotAddMalformedRoles() throws Exception {
-        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRoles())));
+        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole())));
 
         verify(conclaveClient, times(0)).updateOrganisationRole(any(), any());
     }
@@ -58,7 +58,7 @@ public class RoleServiceTest {
     @Test
     public void shouldErrorIfRoleDoesNotExist() {
         assertThrows(ApiException.class, () ->
-                roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRoles().name("Org Role")))));
+                roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole().name("Org Role")))));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class RoleServiceTest {
         var roleName = "Org Role";
         given(conclaveClient.getAllConfiguredRoles()).willReturn(List.of(new OrganisationRole().roleName(roleName)));
 
-        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRoles().name(roleName))));
+        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole().name(roleName))));
 
         ArgumentCaptor<OrganisationRoleUpdate> argumentCaptor = ArgumentCaptor.forClass(OrganisationRoleUpdate.class);
         verify(conclaveClient).updateOrganisationRole(eq(ORGANISATION_ID), argumentCaptor.capture());
@@ -78,7 +78,7 @@ public class RoleServiceTest {
         var roleName = "Org Role";
         given(conclaveClient.getAllConfiguredRoles()).willReturn(List.of(new OrganisationRole().roleName(roleName)));
 
-        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRoles().name(roleName))).rightToBuy(true));
+        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole().name(roleName))).rightToBuy(true));
 
         ArgumentCaptor<OrganisationRoleUpdate> argumentCaptor = ArgumentCaptor.forClass(OrganisationRoleUpdate.class);
         verify(conclaveClient).updateOrganisationRole(eq(ORGANISATION_ID), argumentCaptor.capture());

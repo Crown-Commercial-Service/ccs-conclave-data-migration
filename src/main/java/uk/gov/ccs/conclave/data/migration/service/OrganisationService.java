@@ -13,12 +13,12 @@ import uk.gov.ccs.swagger.cii.model.Identifier;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
 import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
 import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,7 +188,7 @@ public class OrganisationService {
 
         for (User users : organisation.getUser()) {
             System.out.println(String.format("HERE -> A (user):  %s", users));
-            for (UserRoles userRole : users.getUserRoles()) {
+            for (UserRole userRole : users.getUserRoles()) {
                 System.out.println(String.format("HERE -> B (userRole):  %s", userRole));
                 System.out.println(String.format("HERE -> C (userRole.getName()):  %s", userRole.getName()));
                 System.out.println(String.format("HERE -> D (userRole.getName().equals(Organisation Administrator)):  %s", userRole.getName().equals("Organisation Administrator")));
