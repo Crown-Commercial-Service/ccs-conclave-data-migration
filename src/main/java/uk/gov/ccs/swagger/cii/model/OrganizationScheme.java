@@ -59,7 +59,7 @@ public enum OrganizationScheme {
         return b;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'OrganizationScheme' enum.");
   }
 
   public static class Adapter extends TypeAdapter<OrganizationScheme> {

@@ -54,7 +54,7 @@ public enum UserTitle {
         return b;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'UserTitle' enum.");
   }
 
   public static class Adapter extends TypeAdapter<UserTitle> {
