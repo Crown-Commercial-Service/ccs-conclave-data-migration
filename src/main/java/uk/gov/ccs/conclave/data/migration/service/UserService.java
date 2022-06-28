@@ -8,7 +8,6 @@ import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 import uk.gov.ccs.swagger.dataMigration.model.User;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
