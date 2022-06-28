@@ -247,7 +247,7 @@ components:
     OrgRole:
       type: object
       required:
-        - Roles
+        - name
       properties:
         name:
           type: string
@@ -257,7 +257,7 @@ components:
     UserRole:
       type: object
       required:
-        - Roles
+        - name
       properties:
         name:
           type: string

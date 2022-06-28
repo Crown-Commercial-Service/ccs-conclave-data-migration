@@ -27,8 +27,9 @@ public class OrgRole   {
    * Organisation Roles
    * @return name
    **/
-  @Schema(example = "RMI", description = "Organisation Roles")
-  
+  @Schema(example = "RMI", required = true, description = "Organisation Roles")
+      @NotNull
+
     public String getName() {
     return name;
   }

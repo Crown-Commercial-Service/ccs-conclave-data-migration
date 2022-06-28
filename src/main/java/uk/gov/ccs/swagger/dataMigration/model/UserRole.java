@@ -27,8 +27,9 @@ public class UserRole   {
    * User Roles
    * @return name
    **/
-  @Schema(example = "RMI User", description = "User Roles")
-  
+  @Schema(example = "RMI User", required = true, description = "User Roles")
+      @NotNull
+
     public String getName() {
     return name;
   }
