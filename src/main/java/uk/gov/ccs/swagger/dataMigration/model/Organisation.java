@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
@@ -30,7 +30,7 @@ public class Organisation   {
 
   @JsonProperty("orgRoles")
   @Valid
-  private List<OrgRoles> orgRoles = null;
+  private List<OrgRole> orgRoles = null;
 
   @JsonProperty("user")
   @Valid
@@ -96,14 +96,14 @@ public class Organisation   {
     this.rightToBuy = rightToBuy;
   }
 
-  public Organisation orgRoles(List<OrgRoles> orgRoles) {
+  public Organisation orgRoles(List<OrgRole> orgRoles) {
     this.orgRoles = orgRoles;
     return this;
   }
 
-  public Organisation addOrgRolesItem(OrgRoles orgRolesItem) {
+  public Organisation addOrgRolesItem(OrgRole orgRolesItem) {
     if (this.orgRoles == null) {
-      this.orgRoles = new ArrayList<OrgRoles>();
+      this.orgRoles = new ArrayList<OrgRole>();
     }
     this.orgRoles.add(orgRolesItem);
     return this;
@@ -115,11 +115,11 @@ public class Organisation   {
    **/
   @Schema(description = "")
       @Valid
-    public List<OrgRoles> getOrgRoles() {
+    public List<OrgRole> getOrgRoles() {
     return orgRoles;
   }
 
-  public void setOrgRoles(List<OrgRoles> orgRoles) {
+  public void setOrgRoles(List<OrgRole> orgRoles) {
     this.orgRoles = orgRoles;
   }
 

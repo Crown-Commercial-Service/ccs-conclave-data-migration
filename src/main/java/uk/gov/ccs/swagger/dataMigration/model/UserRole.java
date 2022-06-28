@@ -9,16 +9,16 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * UserRoles
+ * UserRole
  */
 @Validated
 
 
-public class UserRoles   {
+public class UserRole   {
   @JsonProperty("name")
   private String name = null;
 
-  public UserRoles name(String name) {
+  public UserRole name(String name) {
     this.name = name;
     return this;
   }
@@ -46,8 +46,8 @@ public class UserRoles   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UserRoles userRoles = (UserRoles) o;
-    return Objects.equals(this.name, userRoles.name);
+    UserRole userRole = (UserRole) o;
+    return Objects.equals(this.name, userRole.name);
   }
 
   @Override
@@ -58,7 +58,7 @@ public class UserRoles   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserRoles {\n");
+    sb.append("class UserRole {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
