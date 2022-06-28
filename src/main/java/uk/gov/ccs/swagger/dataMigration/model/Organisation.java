@@ -45,8 +45,9 @@ public class Organisation   {
    * Identifier ID
    * @return identifierId
    **/
-  @Schema(example = "100009655", description = "Identifier ID")
-  
+  @Schema(example = "100009655", required = true, description = "Identifier ID")
+      @NotNull
+
     public String getIdentifierId() {
     return identifierId;
   }
@@ -64,8 +65,9 @@ public class Organisation   {
    * Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
    * @return schemeId
    **/
-  @Schema(example = "GB-COH", description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)")
-  
+  @Schema(example = "GB-COH", required = true, description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)")
+      @NotNull
+
     public String getSchemeId() {
     return schemeId;
   }
@@ -83,8 +85,9 @@ public class Organisation   {
    * Buyer status
    * @return rightToBuy
    **/
-  @Schema(example = "true", description = "Buyer status")
-  
+  @Schema(example = "true", required = true, description = "Buyer status")
+      @NotNull
+
     public Boolean isRightToBuy() {
     return rightToBuy;
   }

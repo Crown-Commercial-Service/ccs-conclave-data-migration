@@ -58,8 +58,9 @@ public class User   {
    * User Email
    * @return email
    **/
-  @Schema(example = "joe.bloggs@kier.com", description = "User Email")
-  
+  @Schema(example = "joe.bloggs@kier.com", required = true, description = "User Email")
+      @NotNull
+
     public String getEmail() {
     return email;
   }
@@ -96,8 +97,9 @@ public class User   {
    * First Name
    * @return firstName
    **/
-  @Schema(example = "Joe", description = "First Name")
-  
+  @Schema(example = "Joe", required = true, description = "First Name")
+      @NotNull
+
     public String getFirstName() {
     return firstName;
   }
@@ -115,8 +117,9 @@ public class User   {
    * Last Name
    * @return lastName
    **/
-  @Schema(example = "Bloggs", description = "Last Name")
-  
+  @Schema(example = "Bloggs", required = true, description = "Last Name")
+      @NotNull
+
     public String getLastName() {
     return lastName;
   }

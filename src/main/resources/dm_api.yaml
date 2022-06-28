@@ -110,6 +110,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
+      required:
+        - identifier-id
+        - scheme-id
+        - rightToBuy
     User:
       properties:
         email:
@@ -152,6 +156,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserRoles'
+      required:
+        - email
+        - firstName
+        - lastName
 
     UserMin:
       properties:
