@@ -136,10 +136,10 @@ public class User   {
   }
 
   /**
-   * User Contact Email
+   * User Contact Email. Only applied for new users. Blank treated as null.
    * @return contactEmail
    **/
-  @Schema(example = "abc@somewhere.org", description = "User Contact Email")
+  @Schema(example = "abc@somewhere.org", description = "User Contact Email. Only applied for new users. Blank treated as null.")
   
     public String getContactEmail() {
     return contactEmail;
@@ -155,10 +155,10 @@ public class User   {
   }
 
   /**
-   * User Contact Mobile
+   * User Contact Mobile. Only applied for new users. Blank treated as null.
    * @return contactMobile
    **/
-  @Schema(example = "7956111111", description = "User Contact Mobile")
+  @Schema(example = "7956111111", description = "User Contact Mobile. Only applied for new users. Blank treated as null.")
   
     public String getContactMobile() {
     return contactMobile;
@@ -174,10 +174,10 @@ public class User   {
   }
 
   /**
-   * User Contact Telephone
+   * User Contact Telephone. Only applied for new users. Blank treated as null.
    * @return contactPhone
    **/
-  @Schema(example = "020 8555 0000", description = "User Contact Telephone")
+  @Schema(example = "020 8555 0000", description = "User Contact Telephone. Only applied for new users. Blank treated as null.")
   
     public String getContactPhone() {
     return contactPhone;
@@ -193,10 +193,10 @@ public class User   {
   }
 
   /**
-   * User Contact Fax
+   * User Contact Fax. Only applied for new users. Blank treated as null.
    * @return contactFax
    **/
-  @Schema(example = "020 8555 0001", description = "User Contact Fax")
+  @Schema(example = "020 8555 0001", description = "User Contact Fax. Only applied for new users. Blank treated as null.")
   
     public String getContactFax() {
     return contactFax;
@@ -212,10 +212,10 @@ public class User   {
   }
 
   /**
-   * User Contact Socila
+   * User Contact Social. Only applied for new users. Blank treated as null.
    * @return contactSocial
    **/
-  @Schema(example = "http://www.linkedin.com/", description = "User Contact Socila")
+  @Schema(example = "http://www.linkedin.com/", description = "User Contact Social. Only applied for new users. Blank treated as null.")
   
     public String getContactSocial() {
     return contactSocial;

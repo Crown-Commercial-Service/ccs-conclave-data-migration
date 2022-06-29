@@ -132,23 +132,23 @@ components:
           example: Bloggs
         contactEmail:
           type: string
-          description: User Contact Email
+          description: User Contact Email. Only applied for new users. Blank treated as null.
           example: abc@somewhere.org
         contactMobile:
           type: string
-          description: User Contact Mobile
+          description: User Contact Mobile. Only applied for new users. Blank treated as null.
           example: 07956111111
         contactPhone:
           type: string
-          description: User Contact Telephone
+          description: User Contact Telephone. Only applied for new users. Blank treated as null.
           example: 020 8555 0000
         contactFax:
           type: string
-          description: User Contact Fax
+          description: User Contact Fax. Only applied for new users. Blank treated as null.
           example: 020 8555 0001
         contactSocial:
           type: string
-          description: User Contact Socila
+          description: User Contact Social. Only applied for new users. Blank treated as null.
           example: http://www.linkedin.com/
         userRoles:
           type: array
@@ -222,7 +222,7 @@ components:
         - 200 OK
         - 201 Created
         - 400 Bad request
-        - 401 Unathorized
+        - 401 Unauthorized
         - 403 Forbidden
         - 404 Not found
         - 409 Duplicate resource
