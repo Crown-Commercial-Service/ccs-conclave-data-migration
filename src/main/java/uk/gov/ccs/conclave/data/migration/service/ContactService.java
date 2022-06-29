@@ -31,15 +31,17 @@ public class ContactService {
     private static final Logger log = LoggerFactory.getLogger(ContactService.class);
 
     void migrateUserContact(User user, String userId, Org organisation) throws DataMigrationException {
-        ContactPoint userContactPoint = new ContactPoint();
-        userContactPoint.setEmail(stripToEmpty(user.getContactEmail()));
-        userContactPoint.setFaxNumber(stripToEmpty(user.getContactFax()).replaceAll("(-| |\\(|\\))", ""));
-        userContactPoint.setTelephone(stripToEmpty(user.getContactPhone()).replaceAll("(-| |\\(|\\))", ""));
-        userContactPoint.setMobile(stripToEmpty(user.getContactMobile()).replaceAll("(-| |\\(|\\))", ""));
-        userContactPoint.setUri(stripToEmpty(user.getContactSocial()));
-        if (isContactDetailPresent(userContactPoint)) {
+        ContactPoint ciiUserContactPoint = new ContactPoint()
+                .name(user.getContactName())
+                .email(stripToEmpty(user.getContactEmail()))
+                .faxNumber(stripToEmpty(user.getContactFax()).replaceAll("(-| |\\(|\\))", ""))
+                .telephone(stripToEmpty(user.getContactPhone()).replaceAll("(-| |\\(|\\))", ""))
+                .mobile(stripToEmpty(user.getContactMobile()).replaceAll("(-| |\\(|\\))", ""))
+                .uri(stripToEmpty(user.getContactSocial()));
+
+        if (isContactDetailPresent(ciiUserContactPoint)) {
             try {
-                conclaveClient.createUserContact(userId, buildContactRequestInfo(userContactPoint));
+                conclaveClient.createUserContact(userId, buildContactRequestInfo(ciiUserContactPoint));
             } catch (uk.gov.ccs.swagger.sso.ApiException e) {
                 log.error("{}{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_CONTACT_ERROR_MESSAGE + e.getMessage(), e.getCode(), organisation);
