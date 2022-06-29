@@ -50,7 +50,7 @@ public enum RoleEligibleSubscriptionType {
         return b;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'RoleEligibleSubscriptionType' enum.");
   }
 
   public static class Adapter extends TypeAdapter<RoleEligibleSubscriptionType> {

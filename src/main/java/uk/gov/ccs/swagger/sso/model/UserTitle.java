@@ -22,21 +22,24 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 /**
- * Gets or Sets AssignedContactType
+ * Gets or Sets UserTitle
  */
-@JsonAdapter(AssignedContactType.Adapter.class)
-public enum AssignedContactType {
-  NUMBER_0(0),
-  NUMBER_1(1),
-  NUMBER_2(2);
+@JsonAdapter(UserTitle.Adapter.class)
+public enum UserTitle {
+  MR("Mr"),
+  MRS("Mrs"),
+  MISS("Miss"),
+  MS("Ms"),
+  DOCTOR("Doctor"),
+  UNSPECIFIED("Unspecified");
 
-  private Integer value;
+  private String value;
 
-  AssignedContactType(Integer value) {
+  UserTitle(String value) {
     this.value = value;
   }
 
-  public Integer getValue() {
+  public String getValue() {
     return value;
   }
 
@@ -45,25 +48,25 @@ public enum AssignedContactType {
     return String.valueOf(value);
   }
 
-  public static AssignedContactType fromValue(String text) {
-    for (AssignedContactType b : AssignedContactType.values()) {
+  public static UserTitle fromValue(String text) {
+    for (UserTitle b : UserTitle.values()) {
       if (String.valueOf(b.value).equals(text)) {
         return b;
       }
     }
-    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'AssignedContactType' enum.");
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'UserTitle' enum.");
   }
 
-  public static class Adapter extends TypeAdapter<AssignedContactType> {
+  public static class Adapter extends TypeAdapter<UserTitle> {
     @Override
-    public void write(final JsonWriter jsonWriter, final AssignedContactType enumeration) throws IOException {
+    public void write(final JsonWriter jsonWriter, final UserTitle enumeration) throws IOException {
       jsonWriter.value(enumeration.getValue());
     }
 
     @Override
-    public AssignedContactType read(final JsonReader jsonReader) throws IOException {
-      Object value = jsonReader.nextInt();
-      return AssignedContactType.fromValue(String.valueOf(value));
+    public UserTitle read(final JsonReader jsonReader) throws IOException {
+      Object value = jsonReader.nextString();
+      return UserTitle.fromValue(String.valueOf(value));
     }
   }
 }

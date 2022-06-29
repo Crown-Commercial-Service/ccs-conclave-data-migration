@@ -51,7 +51,7 @@ public enum RoleEligibleTradeType {
         return b;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'RoleEligibleTradeType' enum.");
   }
 
   public static class Adapter extends TypeAdapter<RoleEligibleTradeType> {
