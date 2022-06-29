@@ -21,7 +21,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.IOException;
-import uk.gov.ccs.swagger.cii.model.OrganizationScheme;
 /**
  * A unique identifier for a party (organization).
  */
@@ -29,7 +28,7 @@ import uk.gov.ccs.swagger.cii.model.OrganizationScheme;
 
 public class Identifier {
   @SerializedName("scheme")
-  private OrganizationScheme scheme = null;
+  private String scheme = null;
 
   @SerializedName("id")
   private String id = null;
@@ -40,7 +39,7 @@ public class Identifier {
   @SerializedName("uri")
   private String uri = null;
 
-  public Identifier scheme(OrganizationScheme scheme) {
+  public Identifier scheme(String scheme) {
     this.scheme = scheme;
     return this;
   }
@@ -50,11 +49,11 @@ public class Identifier {
    * @return scheme
   **/
   @Schema(description = "")
-  public OrganizationScheme getScheme() {
+  public String getScheme() {
     return scheme;
   }
 
-  public void setScheme(OrganizationScheme scheme) {
+  public void setScheme(String scheme) {
     this.scheme = scheme;
   }
 
