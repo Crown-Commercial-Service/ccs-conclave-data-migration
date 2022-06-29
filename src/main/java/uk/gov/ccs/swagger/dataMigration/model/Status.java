@@ -15,7 +15,7 @@ public enum Status {
   _200_OK("200 OK"),
     _201_CREATED("201 Created"),
     _400_BAD_REQUEST("400 Bad request"),
-    _401_UNATHORIZED("401 Unathorized"),
+    _401_UNAUTHORIZED("401 Unauthorized"),
     _403_FORBIDDEN("403 Forbidden"),
     _404_NOT_FOUND("404 Not found"),
     _409_DUPLICATE_RESOURCE("409 Duplicate resource"),
