@@ -130,6 +130,11 @@ components:
           type: string
           description: Last Name
           example: Bloggs
+        contactName:
+          type: string
+          description: User Contact Email. Only applied for new users. Blank treated as null. Must be present and non-empty if any other contact fields are.
+          example: Joe Bloggs
+          nullable: true
         contactEmail:
           type: string
           description: User Contact Email. Only applied for new users. Blank treated as null.
