@@ -33,9 +33,9 @@ public class ContactService {
     void migrateUserContact(User user, String userId, Org organisation) throws DataMigrationException {
         ContactPoint userContactPoint = new ContactPoint();
         userContactPoint.setEmail(stripToEmpty(user.getContactEmail()));
-        userContactPoint.setFaxNumber(user.getContactFax().replaceAll("(-| |\\(|\\))", ""));
-        userContactPoint.setTelephone(user.getContactPhone().replaceAll("(-| |\\(|\\))", ""));
-        userContactPoint.setMobile(user.getContactMobile().replaceAll("(-| |\\(|\\))", ""));
+        userContactPoint.setFaxNumber(stripToEmpty(user.getContactFax()).replaceAll("(-| |\\(|\\))", ""));
+        userContactPoint.setTelephone(stripToEmpty(user.getContactPhone()).replaceAll("(-| |\\(|\\))", ""));
+        userContactPoint.setMobile(stripToEmpty(user.getContactMobile()).replaceAll("(-| |\\(|\\))", ""));
         userContactPoint.setUri(stripToEmpty(user.getContactSocial()));
         if (isContactDetailPresent(userContactPoint)) {
             try {
