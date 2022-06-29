@@ -9,9 +9,9 @@ import uk.gov.ccs.conclave.data.migration.domain.User;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 
 import java.util.List;
 import java.util.Set;
@@ -29,6 +29,7 @@ public class ErrorService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorService.class);
 
     public static final String CII_ORG_ERROR_MESSAGE = "Error while creating CII organisation. ";
+    public static final String CII_DEL_ORG_ERROR_MESSAGE = "Error while deleting CII organisation. ";
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
     public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
     public static final String SSO_USER_CONTACT_ERROR_MESSAGE = "Error while creating SSO User Contact. ";
@@ -46,10 +47,22 @@ public class ErrorService {
 
     private final UserRepository userRepository;
 
-    public void logWithStatus(Organisation organisation, String message, Integer statusCode) throws DataMigrationException {
-        LOGGER.error(message);
-        Org savedOrg = saveOrgDetailsWithStatusCode(organisation, message, statusCode);
-        saveAllUserDetailsWithStatusCode(organisation, message, statusCode, savedOrg);
+    public void logWithStatus(Organisation org, String message, uk.gov.ccs.swagger.sso.ApiException exception, Integer statusCode) throws DataMigrationException {
+        LOGGER.error("{}{}: {}", message, exception.getMessage(), exception.getResponseBody(), exception);
+        Org savedOrg = saveOrgDetailsWithStatusCode(org, message, statusCode);
+        saveAllUserDetailsWithStatusCode(org, message, statusCode, savedOrg);
+        handleFailure(message, statusCode);
+    }
+
+    public void logWithStatus(Organisation org, String message, Exception exception, Integer statusCode) throws DataMigrationException {
+        LOGGER.error(message + exception.getMessage(), exception);
+        Org savedOrg = saveOrgDetailsWithStatusCode(org, message, statusCode);
+        saveAllUserDetailsWithStatusCode(org, message, statusCode, savedOrg);
+        handleFailure(message, statusCode);
+    }
+
+    public void logWithStatusString(String message, Exception exception, Integer statusCode) throws DataMigrationException {
+        LOGGER.error(message + exception.getMessage(), exception);
         handleFailure(message, statusCode);
     }
 
@@ -121,13 +134,13 @@ public class ErrorService {
         return org;
     }
 
-    private String orgRolesAsString(List<OrgRoles> roles) {
-        List<String> rolesList = roles.stream().map(OrgRoles::getName).collect(toList());
+    private String orgRolesAsString(List<OrgRole> roles) {
+        List<String> rolesList = roles.stream().map(OrgRole::getName).collect(toList());
         return join(",", rolesList);
     }
 
-    private String userRolesAsString(List<UserRoles> userRoles) {
-        var rolesList = userRoles.stream().map(UserRoles::getName).collect(toList());
+    private String userRolesAsString(List<UserRole> userRoles) {
+        var rolesList = userRoles.stream().map(UserRole::getName).collect(toList());
         return join(",", rolesList);
     }
 

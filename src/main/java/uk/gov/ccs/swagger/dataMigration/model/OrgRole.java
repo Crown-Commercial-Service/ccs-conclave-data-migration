@@ -1,23 +1,24 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.Objects;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
- * OrgRoles
+ * OrgRole
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 
 
-public class OrgRoles   {
+public class OrgRole   {
   @JsonProperty("name")
   private String name = null;
 
-  public OrgRoles name(String name) {
+  public OrgRole name(String name) {
     this.name = name;
     return this;
   }
@@ -26,8 +27,9 @@ public class OrgRoles   {
    * Organisation Roles
    * @return name
    **/
-  @Schema(example = "RMI", description = "Organisation Roles")
-  
+  @Schema(example = "RMI", required = true, description = "Organisation Roles")
+      @NotNull
+
     public String getName() {
     return name;
   }
@@ -38,15 +40,15 @@ public class OrgRoles   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrgRoles orgRoles = (OrgRoles) o;
-    return Objects.equals(this.name, orgRoles.name);
+    OrgRole orgRole = (OrgRole) o;
+    return Objects.equals(this.name, orgRole.name);
   }
 
   @Override
@@ -57,7 +59,7 @@ public class OrgRoles   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OrgRoles {\n");
+    sb.append("class OrgRole {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
@@ -68,7 +70,7 @@ public class OrgRoles   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

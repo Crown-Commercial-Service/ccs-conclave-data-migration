@@ -1,0 +1,13 @@
+# Ignore files that swagger-codegen would create that we don't want
+.gitignore
+.travis.yml
+build.*
+**/*.md
+git_push.sh
+*gradle*
+gradle/**/*
+src/test/**/*
+**/*.xml
+pom.xml
+README.md
+src/main/java/io/**

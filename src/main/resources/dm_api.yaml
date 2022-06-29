@@ -1,0 +1,265 @@
+openapi: 3.0.0
+info:
+  description: This is an example Data Migration Service API.
+  version: 1.0.0-oas3
+  title: Data Migration Service API (DM)
+  termsOfService: 'http://api.crowncommercial.gov.uk/terms/'
+  contact:
+    email: apiteam@crowncommercial.gov.uk
+  license:
+    name: Open Government Licence 3.0
+    url: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/'
+tags:
+  - name: Data Migration
+    description: Everything about Data Migration
+    externalDocs:
+      description: Find out more
+      url: 'http://apis.crowncommercial.gov.uk'
+paths:
+
+  /data-migration/migrate/format/{fileFormat}:
+    post:
+      tags:
+        - datamigration
+      summary: >-
+        A generic endpoint for regisering organisations and users
+      operationId: app.migrateOrg
+      parameters:
+        #        - in: path
+        #          name: inputType
+        #          schema:
+        #            type: string
+        #          required: true
+        #          description: File or Payload
+        - in: path
+          name: fileFormat
+          schema:
+            type: string
+          required: true
+          description: File format - CSV/JSON
+        - in: query
+          name: docId
+          schema:
+            type: string
+          required: false
+          description:  file location e.g. /path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Organisation'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Summary'
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Duplicate resource
+        '429':
+          description: Too Many Requests
+        '500':
+          description: Internal Server Error
+        '501':
+          description: Not Implemented
+        '502':
+          description: Bad Gateway
+        '503':
+          description: Service Unavailable/Limit Exceeded
+        '504':
+          description: Gateway Timeout
+        '505':
+          description: HTTP Version Not Supported
+
+components:
+  schemas:
+    Organisation:
+      properties:
+        identifier-id:
+          type: string
+          description: Identifier ID
+          example: 100009655
+        scheme-id:
+          type: string
+          description: Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
+          example: GB-COH
+        rightToBuy:
+          type: boolean
+          description: Buyer status
+          example: True
+        orgRoles:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgRole'
+        user:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+      required:
+        - identifier-id
+        - scheme-id
+        - rightToBuy
+    User:
+      properties:
+        email:
+          type: string
+          description: User Email
+          example: joe.bloggs@kier.com
+        title:
+          type: string
+          description: User Title
+          example: Mr
+        firstName:
+          type: string
+          description: First Name
+          example: Joe
+        lastName:
+          type: string
+          description: Last Name
+          example: Bloggs
+        contactEmail:
+          type: string
+          description: User Contact Email
+          example: abc@somewhere.org
+        contactMobile:
+          type: string
+          description: User Contact Mobile
+          example: 07956111111
+        contactPhone:
+          type: string
+          description: User Contact Telephone
+          example: 020 8555 0000
+        contactFax:
+          type: string
+          description: User Contact Fax
+          example: 020 8555 0001
+        contactSocial:
+          type: string
+          description: User Contact Socila
+          example: http://www.linkedin.com/
+        userRoles:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRole'
+      required:
+        - email
+        - firstName
+        - lastName
+
+    UserMin:
+      properties:
+        email:
+          type: string
+          description: User Email
+          example: joe.bloggs@kier.com
+        title:
+          type: string
+          description: User Title
+          example: Mr
+        firstName:
+          type: string
+          description: First Name
+          example: Joe
+        lastName:
+          type: string
+          description: Last Name
+          example: Bloggs
+        contactEmail:
+          type: string
+          description: User Contact Email
+          example: abc@somewhere.org
+        userRoles:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRole'
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/Status'
+
+    Summary:
+      properties:
+        identifier-id:
+          type: string
+          description: Identifier ID
+          example: 100009655
+        scheme-id:
+          type: string
+          description: Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
+          example: GB-COH
+        rightToBuy:
+          type: boolean
+          description: Buyer status
+          example: True
+        orgRoles:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgRole'
+        user:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserMin'
+        Status:
+          type: array
+          items:
+            $ref: '#/components/schemas/Status'
+
+    Status:
+      type: string
+      nullable: true
+      enum:
+        - 200 OK
+        - 201 Created
+        - 400 Bad request
+        - 401 Unathorized
+        - 403 Forbidden
+        - 404 Not found
+        - 409 Duplicate resource
+        - 429 Too Many Requests
+        - 500 Internal Server Error
+        - 502 Bad Gateway
+        - 503 Service Unavailable/Limit Exceeded
+        - 504 Gateway Timeout
+        - 505 HTTP Version Not Supported
+    StatusDescription:
+      type: string
+      nullable: true
+      enum:
+        - Organisation requires a minimum of 1 Admin user
+        - Unable to process record - see http response code
+        - Record processed
+    #
+    OrgRole:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Organisation Roles
+          example: RMI
+    #
+    UserRole:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: User Roles
+          example: RMI User

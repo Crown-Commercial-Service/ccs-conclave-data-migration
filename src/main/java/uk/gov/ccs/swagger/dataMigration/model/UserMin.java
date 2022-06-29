@@ -1,19 +1,21 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import uk.gov.ccs.swagger.dataMigration.model.Status;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * UserMin
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 
 
 public class UserMin   {
@@ -34,7 +36,7 @@ public class UserMin   {
 
   @JsonProperty("userRoles")
   @Valid
-  private List<UserRoles> userRoles = null;
+  private List<UserRole> userRoles = null;
 
   @JsonProperty("status")
   @Valid
@@ -135,14 +137,14 @@ public class UserMin   {
     this.contactEmail = contactEmail;
   }
 
-  public UserMin userRoles(List<UserRoles> userRoles) {
+  public UserMin userRoles(List<UserRole> userRoles) {
     this.userRoles = userRoles;
     return this;
   }
 
-  public UserMin addUserRolesItem(UserRoles userRolesItem) {
+  public UserMin addUserRolesItem(UserRole userRolesItem) {
     if (this.userRoles == null) {
-      this.userRoles = new ArrayList<UserRoles>();
+      this.userRoles = new ArrayList<UserRole>();
     }
     this.userRoles.add(userRolesItem);
     return this;
@@ -154,11 +156,11 @@ public class UserMin   {
    **/
   @Schema(description = "")
       @Valid
-    public List<UserRoles> getUserRoles() {
+    public List<UserRole> getUserRoles() {
     return userRoles;
   }
 
-  public void setUserRoles(List<UserRoles> userRoles) {
+  public void setUserRoles(List<UserRole> userRoles) {
     this.userRoles = userRoles;
   }
 
@@ -191,7 +193,7 @@ public class UserMin   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -233,7 +235,7 @@ public class UserMin   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

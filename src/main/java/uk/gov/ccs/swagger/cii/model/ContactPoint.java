@@ -25,7 +25,7 @@ import java.io.IOException;
  * ContactPoint
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-10-25T10:32:06.874824+01:00[Europe/London]")
+
 public class ContactPoint {
   @SerializedName("name")
   private String name = null;
@@ -155,7 +155,7 @@ public class ContactPoint {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -196,7 +196,7 @@ public class ContactPoint {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

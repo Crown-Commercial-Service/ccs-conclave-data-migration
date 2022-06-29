@@ -3,8 +3,9 @@ package uk.gov.ccs.conclave.data.migration.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
+import uk.gov.ccs.swagger.dataMigration.model.Organisation;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.OrganisationRole;
 import uk.gov.ccs.swagger.sso.model.OrganisationRoleUpdate;
@@ -28,31 +29,40 @@ public class RoleService {
 
     }
 
-    public void applyOrganisationRole(final String organisationId, final List<OrgRoles> orgRolesList) throws ApiException {
-        if (isNotEmpty(orgRolesList)) {
+    public void applyOrganisationRole(final String organisationId, final Organisation organisation) throws ApiException {
+        var orgRolesList = organisation.getOrgRoles();
+        if (isNotEmpty(orgRolesList) && isNotNull(orgRolesList)) {
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
             var rolesToAdd = new ArrayList<OrganisationRole>();
-            for (OrgRoles orgRole : orgRolesList) {
+            for (OrgRole orgRole : orgRolesList) {
                 rolesToAdd.add(filterOrganisationRoleByName(configuredRoles, orgRole.getName()));
             }
-            OrganisationRoleUpdate roleUpdate = new OrganisationRoleUpdate();
-            roleUpdate.setRolesToAdd(rolesToAdd);
-            conclaveClient.updateOrganisationRole(organisationId, roleUpdate);
+            conclaveClient.updateOrganisationRole(
+                    organisationId,
+                    new OrganisationRoleUpdate().rolesToAdd(rolesToAdd).isBuyer(organisation.isRightToBuy())
+            );
         }
     }
 
-    public List<Integer> getUserRoleIdsFromRoleNames(final String organisationId, final List<UserRoles> roleNames) throws ApiException {
+    public List<Integer> getUserRoleIdsFromRoleNames(final String organisationId, final List<UserRole> roleNames) throws ApiException {
         if (isEmpty(roleNames)) {
             return EMPTY_LIST;
         }
         List<OrganisationRole> orgRoles = conclaveClient.getOrganisationRoles(organisationId);
         var roleIds = new ArrayList<Integer>();
-        for (UserRoles userRole : roleNames) {
+        for (UserRole userRole : roleNames) {
             roleIds.add(filterOrganisationRoleByName(orgRoles, userRole.getName()).getRoleId());
         }
         return roleIds;
     }
 
-
+    public boolean isNotNull(final List<OrgRole> orgRolesList) {
+        for (OrgRole orgRole : orgRolesList) {
+            if (orgRole.getName() == null) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

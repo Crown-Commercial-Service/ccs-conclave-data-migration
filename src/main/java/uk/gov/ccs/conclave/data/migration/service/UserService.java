@@ -1,6 +1,8 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
@@ -17,7 +19,6 @@ import static java.util.Collections.singletonList;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRATION_SUCCESS;
-import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
 
 @Service
 @RequiredArgsConstructor
@@ -33,27 +34,28 @@ public class UserService {
 
     private final RoleService roleService;
 
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
-        userDto.setTitle(fromValue(user.getTitle()));
+        userDto.setTitle(user.getTitle());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
         userDto.setOrganisationId(organisationId);
         userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
         userDto.setAccountVerified(properties.isAccountVerified());
+        if (user.getUserRoles().stream().anyMatch(role -> role.getName().equals("Organisation Administrator"))) {
+            userDto.setMfaEnabled(true);
+        }
+
         UserRequestDetail detail = new UserRequestDetail();
         detail.setIdentityProviderIds(singletonList(identityProvideId));
         if (isNotEmpty(roleIds)) {
             detail.setRoleIds(roleIds);
         }
         userDto.setDetail(detail);
-
-
-        if (user.isRoleAdmin(roleIds)) {
-            userDto.setMfaEnabled(true);
-        }
 
         return userDto;
     }
@@ -71,6 +73,7 @@ public class UserService {
 
             } catch (ApiException e) {
                 userFailureCount++;
+                log.error("{}{}: {}", SSO_USER_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
             }
         }

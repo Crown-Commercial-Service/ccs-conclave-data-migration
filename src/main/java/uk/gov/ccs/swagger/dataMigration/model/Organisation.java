@@ -1,19 +1,21 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
+import uk.gov.ccs.swagger.dataMigration.model.User;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Organisation
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 
 
 public class Organisation   {
@@ -28,7 +30,7 @@ public class Organisation   {
 
   @JsonProperty("orgRoles")
   @Valid
-  private List<OrgRoles> orgRoles = null;
+  private List<OrgRole> orgRoles = null;
 
   @JsonProperty("user")
   @Valid
@@ -43,8 +45,9 @@ public class Organisation   {
    * Identifier ID
    * @return identifierId
    **/
-  @Schema(example = "100009655", description = "Identifier ID")
-  
+  @Schema(example = "100009655", required = true, description = "Identifier ID")
+      @NotNull
+
     public String getIdentifierId() {
     return identifierId;
   }
@@ -62,8 +65,9 @@ public class Organisation   {
    * Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
    * @return schemeId
    **/
-  @Schema(example = "GB-COH", description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)")
-  
+  @Schema(example = "GB-COH", required = true, description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)")
+      @NotNull
+
     public String getSchemeId() {
     return schemeId;
   }
@@ -81,8 +85,9 @@ public class Organisation   {
    * Buyer status
    * @return rightToBuy
    **/
-  @Schema(example = "true", description = "Buyer status")
-  
+  @Schema(example = "true", required = true, description = "Buyer status")
+      @NotNull
+
     public Boolean isRightToBuy() {
     return rightToBuy;
   }
@@ -91,14 +96,14 @@ public class Organisation   {
     this.rightToBuy = rightToBuy;
   }
 
-  public Organisation orgRoles(List<OrgRoles> orgRoles) {
+  public Organisation orgRoles(List<OrgRole> orgRoles) {
     this.orgRoles = orgRoles;
     return this;
   }
 
-  public Organisation addOrgRolesItem(OrgRoles orgRolesItem) {
+  public Organisation addOrgRolesItem(OrgRole orgRolesItem) {
     if (this.orgRoles == null) {
-      this.orgRoles = new ArrayList<OrgRoles>();
+      this.orgRoles = new ArrayList<OrgRole>();
     }
     this.orgRoles.add(orgRolesItem);
     return this;
@@ -110,11 +115,11 @@ public class Organisation   {
    **/
   @Schema(description = "")
       @Valid
-    public List<OrgRoles> getOrgRoles() {
+    public List<OrgRole> getOrgRoles() {
     return orgRoles;
   }
 
-  public void setOrgRoles(List<OrgRoles> orgRoles) {
+  public void setOrgRoles(List<OrgRole> orgRoles) {
     this.orgRoles = orgRoles;
   }
 
@@ -147,7 +152,7 @@ public class Organisation   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -185,7 +190,7 @@ public class Organisation   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

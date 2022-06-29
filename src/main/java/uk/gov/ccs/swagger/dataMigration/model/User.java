@@ -1,19 +1,20 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * User
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 
 
 public class User   {
@@ -46,7 +47,7 @@ public class User   {
 
   @JsonProperty("userRoles")
   @Valid
-  private List<UserRoles> userRoles = null;
+  private List<UserRole> userRoles = null;
 
   public User email(String email) {
     this.email = email;
@@ -57,8 +58,9 @@ public class User   {
    * User Email
    * @return email
    **/
-  @Schema(example = "joe.bloggs@kier.com", description = "User Email")
-  
+  @Schema(example = "joe.bloggs@kier.com", required = true, description = "User Email")
+      @NotNull
+
     public String getEmail() {
     return email;
   }
@@ -95,8 +97,9 @@ public class User   {
    * First Name
    * @return firstName
    **/
-  @Schema(example = "Joe", description = "First Name")
-  
+  @Schema(example = "Joe", required = true, description = "First Name")
+      @NotNull
+
     public String getFirstName() {
     return firstName;
   }
@@ -114,8 +117,9 @@ public class User   {
    * Last Name
    * @return lastName
    **/
-  @Schema(example = "Bloggs", description = "Last Name")
-  
+  @Schema(example = "Bloggs", required = true, description = "Last Name")
+      @NotNull
+
     public String getLastName() {
     return lastName;
   }
@@ -152,7 +156,7 @@ public class User   {
    * User Contact Mobile
    * @return contactMobile
    **/
-  @Schema(example = "07956111111", description = "User Contact Mobile")
+  @Schema(example = "7956111111", description = "User Contact Mobile")
   
     public String getContactMobile() {
     return contactMobile;
@@ -219,14 +223,14 @@ public class User   {
     this.contactSocial = contactSocial;
   }
 
-  public User userRoles(List<UserRoles> userRoles) {
+  public User userRoles(List<UserRole> userRoles) {
     this.userRoles = userRoles;
     return this;
   }
 
-  public User addUserRolesItem(UserRoles userRolesItem) {
+  public User addUserRolesItem(UserRole userRolesItem) {
     if (this.userRoles == null) {
-      this.userRoles = new ArrayList<UserRoles>();
+      this.userRoles = new ArrayList<UserRole>();
     }
     this.userRoles.add(userRolesItem);
     return this;
@@ -238,21 +242,17 @@ public class User   {
    **/
   @Schema(description = "")
       @Valid
-    public List<UserRoles> getUserRoles() {
+    public List<UserRole> getUserRoles() {
     return userRoles;
   }
 
-  public void setUserRoles(List<UserRoles> userRoles) {
+  public void setUserRoles(List<UserRole> userRoles) {
     this.userRoles = userRoles;
   }
 
 
-  public boolean isRoleAdmin(List<Integer> roleIds) {
-    return roleIds.contains(2);
-  }
-
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -300,7 +300,7 @@ public class User   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
