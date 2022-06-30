@@ -36,9 +36,9 @@ public class ContactService {
         ContactPoint ciiUserContactPoint = new ContactPoint()
                 .name(user.getContactName())
                 .email(stripToEmpty(user.getContactEmail()))
-                .faxNumber(stripToEmpty(user.getContactFax()).replaceAll("(-| |\\(|\\))", ""))
-                .telephone(stripToEmpty(user.getContactPhone()).replaceAll("(-| |\\(|\\))", ""))
-                .mobile(stripToEmpty(user.getContactMobile()).replaceAll("(-| |\\(|\\))", ""))
+                .faxNumber(stripToEmpty(user.getContactFax()).replaceAll("[- ()]", ""))
+                .telephone(stripToEmpty(user.getContactPhone()).replaceAll("[- ()]", ""))
+                .mobile(stripToEmpty(user.getContactMobile()).replaceAll("[- ()]", ""))
                 .uri(stripToEmpty(user.getContactSocial()));
 
         if (isContactDetailPresent(ciiUserContactPoint)) {
