@@ -72,34 +72,25 @@ public class ContactService {
     }
 
     private ContactRequestInfo buildContactRequestInfo(ContactPoint contactPoint) {
-        ContactRequestInfo contactRequestInfo = new ContactRequestInfo();
-        contactRequestInfo.setContactPointName(contactPoint.getName());
+        ContactRequestInfo contactRequestInfo = new ContactRequestInfo().contactPointName(contactPoint.getName());
         List<ContactRequestDetail> contacts = new ArrayList<>();
         if (isNotEmpty(contactPoint.getEmail())) {
-            contacts.add(buildContactRequestDetail("EMAIL", contactPoint.getEmail()));
+            contacts.add(new ContactRequestDetail().contactType("EMAIL").contactValue(contactPoint.getEmail()));
         }
         if (isNotEmpty(contactPoint.getTelephone())) {
-            contacts.add(buildContactRequestDetail("PHONE", contactPoint.getTelephone()));
+            contacts.add(new ContactRequestDetail().contactType("PHONE").contactValue(contactPoint.getTelephone()));
         }
         if (isNotEmpty(contactPoint.getMobile())) {
-            contacts.add(buildContactRequestDetail("MOBILE", contactPoint.getMobile()));
+            contacts.add(new ContactRequestDetail().contactType("MOBILE").contactValue(contactPoint.getMobile()));
         }
         if (isNotEmpty(contactPoint.getFaxNumber())) {
-            contacts.add(buildContactRequestDetail("FAX", contactPoint.getFaxNumber()));
+            contacts.add(new ContactRequestDetail().contactType("FAX").contactValue(contactPoint.getFaxNumber()));
         }
         if (isNotEmpty(contactPoint.getUri())) {
-            contacts.add(buildContactRequestDetail("WEB_ADDRESS", contactPoint.getUri()));
+            contacts.add(new ContactRequestDetail().contactType("WEB_ADDRESS").contactValue(contactPoint.getUri()));
         }
         contactRequestInfo.setContacts(contacts);
 
         return contactRequestInfo;
-
-    }
-
-    private ContactRequestDetail buildContactRequestDetail(String name, String value) {
-        ContactRequestDetail contactRequestDetail = new ContactRequestDetail();
-        contactRequestDetail.setContactType(name);
-        contactRequestDetail.setContactValue(value);
-        return contactRequestDetail;
     }
 }
