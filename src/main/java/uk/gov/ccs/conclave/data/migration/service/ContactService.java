@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.cii.model.ContactPoint;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
@@ -17,8 +17,10 @@ import uk.gov.ccs.swagger.sso.model.ContactRequestInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.apache.commons.lang3.StringUtils.*;
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.stripToEmpty;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_ORG_CONTACT_ERROR_MESSAGE;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_ERROR_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -61,24 +63,33 @@ public class ContactService {
     }
 
     private boolean isContactDetailPresent(ContactPoint contactPoint) {
-        return (isNotEmpty(contactPoint.getName()))
-                || isNotEmpty(contactPoint.getEmail())
-                || isNotEmpty(contactPoint.getTelephone())
-                || isNotEmpty(contactPoint.getMobile())
-                || isNotEmpty(contactPoint.getFaxNumber())
-                || isNotEmpty(contactPoint.getUri());
+        return (isNotEmpty(contactPoint.getName()) &&
+                  (isNotEmpty(contactPoint.getEmail())
+                    || isNotEmpty(contactPoint.getTelephone())
+                    || isNotEmpty(contactPoint.getMobile())
+                    || isNotEmpty(contactPoint.getFaxNumber())
+                    || isNotEmpty(contactPoint.getUri())));
     }
 
     private ContactRequestInfo buildContactRequestInfo(ContactPoint contactPoint) {
-
         ContactRequestInfo contactRequestInfo = new ContactRequestInfo();
         contactRequestInfo.setContactPointName(contactPoint.getName());
         List<ContactRequestDetail> contacts = new ArrayList<>();
-        contacts.add(buildContactRequestDetail("EMAIL", contactPoint.getEmail()));
-        contacts.add(buildContactRequestDetail("PHONE", contactPoint.getTelephone()));
-        contacts.add(buildContactRequestDetail("MOBILE", contactPoint.getMobile()));
-        contacts.add(buildContactRequestDetail("FAX", contactPoint.getFaxNumber()));
-        contacts.add(buildContactRequestDetail("WEB_ADDRESS", contactPoint.getUri()));
+        if (isNotEmpty(contactPoint.getEmail())) {
+            contacts.add(buildContactRequestDetail("EMAIL", contactPoint.getEmail()));
+        }
+        if (isNotEmpty(contactPoint.getTelephone())) {
+            contacts.add(buildContactRequestDetail("PHONE", contactPoint.getTelephone()));
+        }
+        if (isNotEmpty(contactPoint.getMobile())) {
+            contacts.add(buildContactRequestDetail("MOBILE", contactPoint.getMobile()));
+        }
+        if (isNotEmpty(contactPoint.getFaxNumber())) {
+            contacts.add(buildContactRequestDetail("FAX", contactPoint.getFaxNumber()));
+        }
+        if (isNotEmpty(contactPoint.getUri())) {
+            contacts.add(buildContactRequestDetail("WEB_ADDRESS", contactPoint.getUri()));
+        }
         contactRequestInfo.setContacts(contacts);
 
         return contactRequestInfo;
