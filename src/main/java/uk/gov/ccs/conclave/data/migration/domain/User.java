@@ -43,6 +43,4 @@ public class User {
     @ManyToOne
     @JoinColumn(name="org_id", nullable=false)
     private Org org;
-
-
 }

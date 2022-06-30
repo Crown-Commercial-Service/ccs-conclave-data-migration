@@ -103,7 +103,7 @@ public class ErrorService {
         User user = new User();
         user.setFirstName(u.getFirstName());
         user.setLastName(u.getLastName());
-        if (user.getTitle() != null) {
+        if (u.getTitle() != null) {
             user.setTitle(u.getTitle().toString());
         }
         user.setEmail(u.getEmail());
