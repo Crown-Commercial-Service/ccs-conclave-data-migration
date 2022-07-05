@@ -31,3 +31,14 @@ java -jar swagger-codegen-cli.jar generate --output . --config src/main/resource
 java -jar swagger-codegen-cli.jar generate --output . --config src/main/resources/conclave_config.json --input-spec src/main/resources/conclave_api.yaml --lang java
 java -jar swagger-codegen-cli.jar generate --output . --config src/main/resources/dm_config.json --input-spec src/main/resources/dm_api.yaml --lang spring
 ```
+
+## Database migrations
+
+We use [liquibase](https://docs.liquibase.com/home.html) to manage the database. Migrations are defined in [`master.xml`](src/main/resources/db/changelog/master.xml).
+
+We do not yet know how to run the database migrations securely in production. We have a less secure process you can use in other environments:
+
+1. Install liquibase: `brew install liquibase`
+2. Install the conduit plugin for Cloudfoundry: `cf install-plugin conduit`
+3. Find the name of the database service in your chosen non-production environment
+4. Run `cf conduit <database service name> -- ./run-db-migrations.sh`
