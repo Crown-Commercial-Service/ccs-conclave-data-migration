@@ -72,4 +72,9 @@
     <changeSet author="janice.alvares (generated)" id="1632300211382-7">
         <addForeignKeyConstraint baseColumnNames="org_id" baseTableName="users" constraintName="fkhvruj9y6lvjrje2lvgbftekbw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="org_id" referencedTableName="org"/>
     </changeSet>
+    <changeSet author="benjamin.gill" id="1632300211382-8">
+        <addColumn tableName="users">
+            <column name="contact_name" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
