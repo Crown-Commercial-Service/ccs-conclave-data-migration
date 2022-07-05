@@ -24,8 +24,6 @@ public class User {
 
     private String lastName;
 
-    private String contactName;
-
     private String contactEmail;
 
     private String contactMobile;

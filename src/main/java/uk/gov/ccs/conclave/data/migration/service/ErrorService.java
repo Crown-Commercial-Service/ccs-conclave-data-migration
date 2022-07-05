@@ -111,7 +111,6 @@ public class ErrorService {
         if (isNotEmpty(userRoles)) {
             user.setUserRoles(userRolesAsString(userRoles));
         }
-        user.setContactName(u.getContactName());
         user.setContactEmail(u.getContactEmail());
         user.setContactMobile(u.getContactMobile());
         user.setContactPhone(u.getContactPhone());
