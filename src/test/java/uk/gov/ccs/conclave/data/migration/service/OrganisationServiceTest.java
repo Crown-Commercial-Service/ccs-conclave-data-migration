@@ -87,4 +87,12 @@ public class OrganisationServiceTest {
 
         verify(ciiOrgClient).deleteCiiOrganisation(eq("org_id"));
     }
+
+    @Test
+    public void shouldHandleNullRoles() throws Exception {
+        given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()));
+        given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
+
+        organisationService.migrateOrganisation(new Organisation().user(List.of(new User())));
+    }
 }

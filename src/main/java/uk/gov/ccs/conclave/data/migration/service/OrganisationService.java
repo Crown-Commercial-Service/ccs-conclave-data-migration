@@ -191,6 +191,9 @@ public class OrganisationService {
 
         for (User users : organisation.getUser()) {
             System.out.println(String.format("HERE -> A (user):  %s", users));
+            if (users.getUserRoles() == null) {
+                continue;
+            }
             for (UserRole userRole : users.getUserRoles()) {
                 System.out.println(String.format("HERE -> B (userRole):  %s", userRole));
                 System.out.println(String.format("HERE -> C (userRole.getName()):  %s", userRole.getName()));
