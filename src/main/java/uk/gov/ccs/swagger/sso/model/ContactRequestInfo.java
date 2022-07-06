@@ -66,7 +66,7 @@ public class ContactRequestInfo {
    * Get contactPointName
    * @return contactPointName
   **/
-  @Schema(description = "")
+  @Schema(required = true, description = "")
   public String getContactPointName() {
     return contactPointName;
   }

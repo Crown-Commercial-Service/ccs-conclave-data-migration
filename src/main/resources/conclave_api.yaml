@@ -3138,7 +3138,8 @@
           },
           "contactPointName": {
             "type": "string",
-            "nullable": true
+            "nullable": false,
+            "minLength": 1
           },
           "contacts": {
             "type": "array",
@@ -3148,6 +3149,7 @@
             "nullable": true
           }
         },
+        "required": ["contactPointName"],
         "additionalProperties": false
       },
       "ContactResponseDetail": {
