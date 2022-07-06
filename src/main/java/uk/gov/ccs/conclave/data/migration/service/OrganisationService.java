@@ -185,6 +185,9 @@ public class OrganisationService {
     }
 
     private Boolean checkForAdminOnNewOrg(final Organisation organisation) {
+        if (organisation == null || organisation.getUser() == null) {
+            return false;
+        }
 
         for (User users : organisation.getUser()) {
             System.out.println(String.format("HERE -> A (user):  %s", users));
