@@ -81,22 +81,21 @@ public class OrganisationService {
 
 
     private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
-        System.out.println(String.format("HERE -> 10 (org):  %s", org));
-        System.out.println(String.format("HERE -> 11 (hasOrganisationAdmin(org)):  %s", hasOrganisationAdmin(org)));
-        System.out.println(String.format("HERE -> 12 (isNewOrg(ciiResponse)):  %s", isNewOrg(ciiResponse)));
-        System.out.println(String.format("HERE -> 13 (org.getUser()):  %s", org.getUser()));
+        log.debug("Migrating organisation to conclave: {}", org);
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
             if (isNewOrg(ciiResponse) && !hasOrganisationAdmin(org)) {
+                log.debug("Deleting new organisation without admin");
                 deleteOrganisation(organisationId);
-                System.out.println(String.format("HERE -> 14 DELETING ORG"));
             } else if (isNewOrg(ciiResponse)) {
+                log.debug("Migrating new organisation with admin");
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
                 contactService.migrateOrgContact(org, ciiResponse, organisationId);
                 roleService.applyOrganisationRole(organisationId, org);
             } else {
+                log.debug("Organisation already exists. Applying roles");
                 roleService.applyOrganisationRole(organisationId, org);
             }
 
