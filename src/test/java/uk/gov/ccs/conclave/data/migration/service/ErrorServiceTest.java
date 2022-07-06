@@ -35,7 +35,7 @@ public class ErrorServiceTest {
     @Test
     public void testSuccessfullySaveUser() throws Exception {
         errorService.saveUserDetailWithStatusCode(
-                new User().email("email").firstName("first").lastName("last").title(UserTitle.DOCTOR).contactFax("fax"),
+                new User().email("email").firstName("first").lastName("last").title(UserTitle.DOCTOR).contactName("name").contactEmail("email").contactFax("fax").contactPhone("phone").contactMobile("mobile").contactSocial("social"),
                 "message",
                 200,
                 new Org()
@@ -47,6 +47,11 @@ public class ErrorServiceTest {
         assertThat(argumentCaptor.getValue().getFirstName()).isEqualTo("first");
         assertThat(argumentCaptor.getValue().getLastName()).isEqualTo("last");
         assertThat(argumentCaptor.getValue().getTitle()).isEqualTo("Doctor");
+        assertThat(argumentCaptor.getValue().getContactName()).isEqualTo("name");
+        assertThat(argumentCaptor.getValue().getContactEmail()).isEqualTo("email");
         assertThat(argumentCaptor.getValue().getContactFax()).isEqualTo("fax");
+        assertThat(argumentCaptor.getValue().getContactPhone()).isEqualTo("phone");
+        assertThat(argumentCaptor.getValue().getContactMobile()).isEqualTo("mobile");
+        assertThat(argumentCaptor.getValue().getContactSocial()).isEqualTo("social");
     }
 }
