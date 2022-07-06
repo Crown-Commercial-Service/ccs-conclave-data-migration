@@ -106,10 +106,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrgRole'
+          nullable: True
         user:
           type: array
           items:
             $ref: '#/components/schemas/User'
+          nullable: True
       required:
         - identifier-id
         - scheme-id
@@ -164,6 +166,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserRole'
+          nullable: True
       required:
         - email
         - firstName

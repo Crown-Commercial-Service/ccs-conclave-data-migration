@@ -83,8 +83,16 @@ public class OrganisationServiceTest {
         given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()).organisationId("org_id"));
         given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
 
-        organisationService.migrateOrganisation(new Organisation().user(List.of()));
+        organisationService.migrateOrganisation(new Organisation());
 
         verify(ciiOrgClient).deleteCiiOrganisation(eq("org_id"));
+    }
+
+    @Test
+    public void shouldHandleNullRoles() throws Exception {
+        given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()));
+        given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
+
+        organisationService.migrateOrganisation(new Organisation().user(List.of(new User())));
     }
 }
