@@ -2,26 +2,24 @@ package uk.gov.ccs.conclave.data.migration.service;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.cii.model.Address;
 import uk.gov.ccs.swagger.cii.model.Identifier;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.dataMigration.model.User;
-import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
 import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
 import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
@@ -39,6 +37,7 @@ public class OrganisationService {
 
     private final RoleService roleService;
 
+    private static final Logger log = LoggerFactory.getLogger(OrganisationService.class);
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
@@ -83,13 +82,13 @@ public class OrganisationService {
 
     private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
         System.out.println(String.format("HERE -> 10 (org):  %s", org));
-        System.out.println(String.format("HERE -> 11 (checkForAdminOnNewOrg(org)):  %s", checkForAdminOnNewOrg(org)));
+        System.out.println(String.format("HERE -> 11 (hasOrganisationAdmin(org)):  %s", hasOrganisationAdmin(org)));
         System.out.println(String.format("HERE -> 12 (isNewOrg(ciiResponse)):  %s", isNewOrg(ciiResponse)));
         System.out.println(String.format("HERE -> 13 (org.getUser()):  %s", org.getUser()));
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
-            if (isNewOrg(ciiResponse) && checkForAdminOnNewOrg(org) == false) {
+            if (isNewOrg(ciiResponse) && !hasOrganisationAdmin(org)) {
                 deleteOrganisation(organisationId);
                 System.out.println(String.format("HERE -> 14 DELETING ORG"));
             } else if (isNewOrg(ciiResponse)) {
@@ -184,27 +183,17 @@ public class OrganisationService {
         return identityProviderId;
     }
 
-    private Boolean checkForAdminOnNewOrg(final Organisation organisation) {
+    private Boolean hasOrganisationAdmin(final Organisation organisation) {
         if (organisation == null || organisation.getUser() == null) {
             return false;
         }
 
-        for (User users : organisation.getUser()) {
-            System.out.println(String.format("HERE -> A (user):  %s", users));
-            if (users.getUserRoles() == null) {
-                continue;
-            }
-            for (UserRole userRole : users.getUserRoles()) {
-                System.out.println(String.format("HERE -> B (userRole):  %s", userRole));
-                System.out.println(String.format("HERE -> C (userRole.getName()):  %s", userRole.getName()));
-                System.out.println(String.format("HERE -> D (userRole.getName().equals(Organisation Administrator)):  %s", userRole.getName().equals("Organisation Administrator")));
-                if (userRole.getName().equals("Organisation Administrator")) {
-                    return true;
-                }
-            }
-        }
-        System.out.println(String.format("HERE -> X (FALSE):  %s", false));
-        return false;
+        var allUserRoles = organisation
+                .getUser()
+                .stream()
+                .flatMap(user -> user == null || user.getUserRoles() == null ? Stream.empty(): user.getUserRoles().stream());
+
+        return allUserRoles.anyMatch(userRole -> userRole != null && userRole.getName().equals("Organisation Administrator"));
     }
 
 }
