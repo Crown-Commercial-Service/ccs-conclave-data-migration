@@ -87,7 +87,7 @@ public class OrganisationService {
             String organisationId = ciiResponse.getOrganisationId();
             if (isNewOrg(ciiResponse) && !hasOrganisationAdmin(org)) {
                 log.debug("Deleting new organisation without admin");
-                deleteOrganisation(organisationId);
+                deleteOrgFromCii(organisationId);
             } else if (isNewOrg(ciiResponse)) {
                 log.debug("Migrating new organisation with admin");
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
@@ -104,27 +104,13 @@ public class OrganisationService {
         }
     }
 
-
-    private int deleteOrganisation(String organisationId) throws DataMigrationException {
-        OrgMigration ciiResponse = deleteOrgFromCii(organisationId);
-        if (null != ciiResponse) {
-            return 200;
-        }
-        return 400;
-    }
-
-
-    private OrgMigration deleteOrgFromCii(String organisationId) throws DataMigrationException {
-        OrgMigration ciiOrganisation = null;
+    private void deleteOrgFromCii(String organisationId) throws DataMigrationException {
         try {
-            ciiOrganisation = ciiOrgClient.deleteCiiOrganisation(organisationId);
-
+            ciiOrgClient.deleteCiiOrganisation(organisationId);
         } catch (ApiException e) {
             errorService.logWithStatusString(CII_DEL_ORG_ERROR_MESSAGE, e, e.getCode());
         }
-        return ciiOrganisation;
     }
-
 
     private boolean isNewOrg(OrgMigration ciiResponse) {
         return ciiResponse.getIdentifier() != null;
@@ -177,7 +163,6 @@ public class OrganisationService {
             identityProviderId = conclaveClient.getIdentityProviderId(organisationId);
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
             errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE, e, e.getCode());
-
         }
         return identityProviderId;
     }
