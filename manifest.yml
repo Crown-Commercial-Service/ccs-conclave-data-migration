@@ -14,3 +14,4 @@ applications:
       JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ }, memory_calculator: { stack_threads: 25 } }'
       JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
       SPRING_PROFILES_ACTIVE: cloud
+      JAVA_OPTS: -Dlogging.level.uk.gov.ccs.conclave.data.migration=DEBUG
