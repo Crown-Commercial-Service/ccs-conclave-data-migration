@@ -34,7 +34,7 @@ public class ContactService {
 
     void migrateUserContact(User user, String userId, Org organisation) throws DataMigrationException {
         ContactPoint ciiUserContactPoint = new ContactPoint()
-                .name(user.getContactName())
+                .name(user.getContactPointName())
                 .email(stripToEmpty(user.getContactEmail()))
                 .faxNumber(stripToEmpty(user.getContactFax()).replaceAll("[- ()]", ""))
                 .telephone(stripToEmpty(user.getContactPhone()).replaceAll("[- ()]", ""))

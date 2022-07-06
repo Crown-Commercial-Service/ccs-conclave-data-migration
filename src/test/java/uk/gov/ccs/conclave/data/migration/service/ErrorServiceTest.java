@@ -35,7 +35,7 @@ public class ErrorServiceTest {
     @Test
     public void testSuccessfullySaveUser() throws Exception {
         errorService.saveUserDetailWithStatusCode(
-                new User().email("email").firstName("first").lastName("last").title(UserTitle.DOCTOR).contactName("name").contactEmail("email").contactFax("fax").contactPhone("phone").contactMobile("mobile").contactSocial("social"),
+                new User().email("email").firstName("first").lastName("last").title(UserTitle.DOCTOR).contactPointName("name").contactEmail("email").contactFax("fax").contactPhone("phone").contactMobile("mobile").contactSocial("social"),
                 "message",
                 200,
                 new Org()

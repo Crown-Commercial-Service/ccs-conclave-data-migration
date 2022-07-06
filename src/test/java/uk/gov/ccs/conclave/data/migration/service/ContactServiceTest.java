@@ -45,7 +45,7 @@ public class ContactServiceTest {
 
     @Test
     public void testMigrateUserWithPartialContact() throws Exception {
-        contactService.migrateUserContact(new User().contactName("name").contactSocial("social"), "userId", new Org());
+        contactService.migrateUserContact(new User().contactPointName("name").contactSocial("social"), "userId", new Org());
 
         ArgumentCaptor<ContactRequestInfo> argumentCaptor = ArgumentCaptor.forClass(ContactRequestInfo.class);
         verify(conclaveClient).createUserContact(eq("userId"), argumentCaptor.capture());
@@ -58,7 +58,7 @@ public class ContactServiceTest {
     @Test
     public void testMigrateUserWithFullContact() throws Exception {
         contactService.migrateUserContact(
-                new User().contactName("name").contactEmail("email").contactFax("fax").contactPhone("phone").contactMobile("mobile").contactSocial("social"), "userId",
+                new User().contactPointName("name").contactEmail("email").contactFax("fax").contactPhone("phone").contactMobile("mobile").contactSocial("social"), "userId",
                 new Org()
         );
 
@@ -71,7 +71,7 @@ public class ContactServiceTest {
     @Test
     public void testStripUnwantedCharacters() throws Exception {
         contactService.migrateUserContact(
-                new User().contactName("name").contactFax("fax- ()").contactPhone("phone()-- ").contactMobile("mobile- (-- )("), "userId",
+                new User().contactPointName("name").contactFax("fax- ()").contactPhone("phone()-- ").contactMobile("mobile- (-- )("), "userId",
                 new Org()
         );
 
