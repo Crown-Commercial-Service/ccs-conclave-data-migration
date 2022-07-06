@@ -31,8 +31,8 @@ public class User   {
   @JsonProperty("lastName")
   private String lastName = null;
 
-  @JsonProperty("contactName")
-  private String contactName = null;
+  @JsonProperty("contactPointName")
+  private String contactPointName = null;
 
   @JsonProperty("contactEmail")
   private String contactEmail = null;
@@ -133,23 +133,23 @@ public class User   {
     this.lastName = lastName;
   }
 
-  public User contactName(String contactName) {
-    this.contactName = contactName;
+  public User contactPointName(String contactPointName) {
+    this.contactPointName = contactPointName;
     return this;
   }
 
   /**
-   * User Contact Email. Only applied for new users. Blank treated as null. Must be present and non-empty if any other contact fields are.
-   * @return contactName
+   * Name for the user's contact record. Only applied for new users. Blank treated as null. Must be present and non-empty if any other contact fields are.
+   * @return contactPointName
    **/
-  @Schema(example = "Joe Bloggs", description = "User Contact Email. Only applied for new users. Blank treated as null. Must be present and non-empty if any other contact fields are.")
+  @Schema(example = "Joe Bloggs", description = "Name for the user's contact record. Only applied for new users. Blank treated as null. Must be present and non-empty if any other contact fields are.")
   
-    public String getContactName() {
-    return contactName;
+    public String getContactPointName() {
+    return contactPointName;
   }
 
-  public void setContactName(String contactName) {
-    this.contactName = contactName;
+  public void setContactPointName(String contactPointName) {
+    this.contactPointName = contactPointName;
   }
 
   public User contactEmail(String contactEmail) {
@@ -288,7 +288,7 @@ public class User   {
         Objects.equals(this.title, user.title) &&
         Objects.equals(this.firstName, user.firstName) &&
         Objects.equals(this.lastName, user.lastName) &&
-        Objects.equals(this.contactName, user.contactName) &&
+        Objects.equals(this.contactPointName, user.contactPointName) &&
         Objects.equals(this.contactEmail, user.contactEmail) &&
         Objects.equals(this.contactMobile, user.contactMobile) &&
         Objects.equals(this.contactPhone, user.contactPhone) &&
@@ -299,7 +299,7 @@ public class User   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, title, firstName, lastName, contactName, contactEmail, contactMobile, contactPhone, contactFax, contactSocial, userRoles);
+    return Objects.hash(email, title, firstName, lastName, contactPointName, contactEmail, contactMobile, contactPhone, contactFax, contactSocial, userRoles);
   }
 
   @Override
@@ -311,7 +311,7 @@ public class User   {
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
-    sb.append("    contactName: ").append(toIndentedString(contactName)).append("\n");
+    sb.append("    contactPointName: ").append(toIndentedString(contactPointName)).append("\n");
     sb.append("    contactEmail: ").append(toIndentedString(contactEmail)).append("\n");
     sb.append("    contactMobile: ").append(toIndentedString(contactMobile)).append("\n");
     sb.append("    contactPhone: ").append(toIndentedString(contactPhone)).append("\n");
