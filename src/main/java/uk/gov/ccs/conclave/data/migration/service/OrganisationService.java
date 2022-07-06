@@ -182,7 +182,7 @@ public class OrganisationService {
         return identityProviderId;
     }
 
-    private Boolean hasOrganisationAdmin(final Organisation organisation) {
+    private static boolean hasOrganisationAdmin(final Organisation organisation) {
         if (organisation == null || organisation.getUser() == null) {
             return false;
         }
