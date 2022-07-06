@@ -87,7 +87,7 @@ public class OrganisationService {
             String organisationId = ciiResponse.getOrganisationId();
             if (isNewOrg(ciiResponse) && !hasOrganisationAdmin(org)) {
                 log.debug("Deleting new organisation without admin");
-                deleteOrganisation(organisationId);
+                deleteOrgFromCii(organisationId);
             } else if (isNewOrg(ciiResponse)) {
                 log.debug("Migrating new organisation with admin");
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
@@ -104,16 +104,6 @@ public class OrganisationService {
         }
     }
 
-
-    private int deleteOrganisation(String organisationId) throws DataMigrationException {
-        OrgMigration ciiResponse = deleteOrgFromCii(organisationId);
-        if (null != ciiResponse) {
-            return 200;
-        }
-        return 400;
-    }
-
-
     private OrgMigration deleteOrgFromCii(String organisationId) throws DataMigrationException {
         OrgMigration ciiOrganisation = null;
         try {
@@ -124,7 +114,6 @@ public class OrganisationService {
         }
         return ciiOrganisation;
     }
-
 
     private boolean isNewOrg(OrgMigration ciiResponse) {
         return ciiResponse.getIdentifier() != null;
