@@ -77,4 +77,7 @@
             <column name="contact_name" type="VARCHAR(255)"/>
         </addColumn>
     </changeSet>
+    <changeSet author="benjamin.gill" id="1632300211382-9">
+        <renameColumn tableName="users" oldColumnName="contact_name" newColumnName="contact_point_name"/>
+    </changeSet>
 </databaseChangeLog>

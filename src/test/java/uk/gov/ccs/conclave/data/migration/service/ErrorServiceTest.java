@@ -47,7 +47,7 @@ public class ErrorServiceTest {
         assertThat(argumentCaptor.getValue().getFirstName()).isEqualTo("first");
         assertThat(argumentCaptor.getValue().getLastName()).isEqualTo("last");
         assertThat(argumentCaptor.getValue().getTitle()).isEqualTo("Doctor");
-        assertThat(argumentCaptor.getValue().getContactName()).isEqualTo("name");
+        assertThat(argumentCaptor.getValue().getContactPointName()).isEqualTo("name");
         assertThat(argumentCaptor.getValue().getContactEmail()).isEqualTo("email");
         assertThat(argumentCaptor.getValue().getContactFax()).isEqualTo("fax");
         assertThat(argumentCaptor.getValue().getContactPhone()).isEqualTo("phone");
