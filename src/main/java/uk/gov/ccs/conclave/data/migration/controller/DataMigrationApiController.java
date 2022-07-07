@@ -27,8 +27,7 @@ public class DataMigrationApiController implements DataMigrationApi {
     public ResponseEntity<List<Summary>> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {
         log.info(" API for data migration invoked for file format " + fileFormat);
         log.debug("HERE -> 0 (requestbody):  {}", body);
-        migrationService.migrate(body);
-        return new ResponseEntity<>(List.of(), HttpStatus.OK);
+        return new ResponseEntity<>(migrationService.migrate(body), HttpStatus.OK);
     }
 
     @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class})

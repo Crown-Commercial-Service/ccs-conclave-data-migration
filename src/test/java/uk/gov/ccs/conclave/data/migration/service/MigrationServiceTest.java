@@ -10,6 +10,7 @@ import uk.gov.ccs.swagger.dataMigration.model.User;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_COMPLETE;
@@ -56,5 +57,15 @@ public class MigrationServiceTest {
         migrationService.migrate(List.of(new Organisation().user(List.of(new User()))));
 
         verify(reportService).generateReport(any(), any(), any(), anyLong(), anyLong(), eq(MIGRATION_STATUS_PARTIAL));
+    }
+
+    @Test
+    public void shouldReturnSummary() throws Exception {
+        given(organisationService.migrateOrganisation(any())).willReturn(new OrgMigrationResponse("organisationId", 1234, null));
+        given(userService.migrateUsers(any(), any())).willReturn(0L);
+
+        var result = migrationService.migrate(List.of(new Organisation().user(List.of(new User()))));
+
+        assertThat(result).isEmpty();
     }
 }
