@@ -30,14 +30,14 @@
             <column name="duration" type="FLOAT8">
                 <constraints nullable="false"/>
             </column>
-            <column name="end_time" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="end_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="failed_users" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="processed_users" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="start_time" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="start_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="status" type="VARCHAR(255)"/>
             <column name="total_organisations" type="BIGINT">
                 <constraints nullable="false"/>
