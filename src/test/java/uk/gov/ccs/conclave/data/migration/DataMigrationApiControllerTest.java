@@ -17,7 +17,7 @@ import uk.gov.ccs.swagger.dataMigration.model.UserTitle;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(DataMigrationApiController.class)
 @AutoConfigureMockMvc
@@ -37,7 +37,9 @@ public class DataMigrationApiControllerTest {
     public void shouldBeSuccessful() throws Exception {
         String organisations = new ObjectMapper().writeValueAsString(List.of(getTestOrganisation()));
 
-        this.mockMvc.perform(post("/data-migration/migrate/format/json").contentType(MediaType.APPLICATION_JSON).content(organisations)).andExpect(status().isOk());
+        this.mockMvc.perform(post("/data-migration/migrate/format/json").contentType(MediaType.APPLICATION_JSON).content(organisations))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test

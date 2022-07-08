@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
+import uk.gov.ccs.swagger.dataMigration.model.Summary;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +26,7 @@ public class MigrationService {
     private final ReportService reportService;
 
 
-    public void migrate(List<Organisation> organisations) {
+    public List<Summary> migrate(List<Organisation> organisations) {
         LocalDateTime startTime = now();
         long failedUserCount = 0;
         long processedUserCount = 0;
@@ -48,6 +49,8 @@ public class MigrationService {
             reportService.generateReport(startTime, now(), organisations, failedUserCount, processedUserCount, MIGRATION_STATUS_ABORTED + e.getMessage());
             throw new ResponseStatusException(valueOf(e.getCode()), e.getMessage());
         }
+
+        return List.of();
     }
 }
 
