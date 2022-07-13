@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
+import uk.gov.ccs.swagger.dataMigration.model.UserTitle;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -22,13 +23,16 @@ public class User   {
   private String email = null;
 
   @JsonProperty("title")
-  private String title = null;
+  private UserTitle title = null;
 
   @JsonProperty("firstName")
   private String firstName = null;
 
   @JsonProperty("lastName")
   private String lastName = null;
+
+  @JsonProperty("contactPointName")
+  private String contactPointName = null;
 
   @JsonProperty("contactEmail")
   private String contactEmail = null;
@@ -69,22 +73,23 @@ public class User   {
     this.email = email;
   }
 
-  public User title(String title) {
+  public User title(UserTitle title) {
     this.title = title;
     return this;
   }
 
   /**
-   * User Title
+   * Get title
    * @return title
    **/
-  @Schema(example = "Mr", description = "User Title")
+  @Schema(description = "")
   
-    public String getTitle() {
+    @Valid
+    public UserTitle getTitle() {
     return title;
   }
 
-  public void setTitle(String title) {
+  public void setTitle(UserTitle title) {
     this.title = title;
   }
 
@@ -128,16 +133,35 @@ public class User   {
     this.lastName = lastName;
   }
 
+  public User contactPointName(String contactPointName) {
+    this.contactPointName = contactPointName;
+    return this;
+  }
+
+  /**
+   * Name for the user's contact record. Only applied for new users. Blank treated as null. Must be present and non-empty if any other contact fields are.
+   * @return contactPointName
+   **/
+  @Schema(example = "Joe Bloggs", description = "Name for the user's contact record. Only applied for new users. Blank treated as null. Must be present and non-empty if any other contact fields are.")
+  
+    public String getContactPointName() {
+    return contactPointName;
+  }
+
+  public void setContactPointName(String contactPointName) {
+    this.contactPointName = contactPointName;
+  }
+
   public User contactEmail(String contactEmail) {
     this.contactEmail = contactEmail;
     return this;
   }
 
   /**
-   * User Contact Email
+   * User Contact Email. Only applied for new users. Blank treated as null.
    * @return contactEmail
    **/
-  @Schema(example = "abc@somewhere.org", description = "User Contact Email")
+  @Schema(example = "abc@somewhere.org", description = "User Contact Email. Only applied for new users. Blank treated as null.")
   
     public String getContactEmail() {
     return contactEmail;
@@ -153,10 +177,10 @@ public class User   {
   }
 
   /**
-   * User Contact Mobile
+   * User Contact Mobile. Only applied for new users. Blank treated as null.
    * @return contactMobile
    **/
-  @Schema(example = "7956111111", description = "User Contact Mobile")
+  @Schema(example = "7956111111", description = "User Contact Mobile. Only applied for new users. Blank treated as null.")
   
     public String getContactMobile() {
     return contactMobile;
@@ -172,10 +196,10 @@ public class User   {
   }
 
   /**
-   * User Contact Telephone
+   * User Contact Telephone. Only applied for new users. Blank treated as null.
    * @return contactPhone
    **/
-  @Schema(example = "020 8555 0000", description = "User Contact Telephone")
+  @Schema(example = "020 8555 0000", description = "User Contact Telephone. Only applied for new users. Blank treated as null.")
   
     public String getContactPhone() {
     return contactPhone;
@@ -191,10 +215,10 @@ public class User   {
   }
 
   /**
-   * User Contact Fax
+   * User Contact Fax. Only applied for new users. Blank treated as null.
    * @return contactFax
    **/
-  @Schema(example = "020 8555 0001", description = "User Contact Fax")
+  @Schema(example = "020 8555 0001", description = "User Contact Fax. Only applied for new users. Blank treated as null.")
   
     public String getContactFax() {
     return contactFax;
@@ -210,10 +234,10 @@ public class User   {
   }
 
   /**
-   * User Contact Socila
+   * User Contact Social. Only applied for new users. Blank treated as null.
    * @return contactSocial
    **/
-  @Schema(example = "http://www.linkedin.com/", description = "User Contact Socila")
+  @Schema(example = "http://www.linkedin.com/", description = "User Contact Social. Only applied for new users. Blank treated as null.")
   
     public String getContactSocial() {
     return contactSocial;
@@ -264,6 +288,7 @@ public class User   {
         Objects.equals(this.title, user.title) &&
         Objects.equals(this.firstName, user.firstName) &&
         Objects.equals(this.lastName, user.lastName) &&
+        Objects.equals(this.contactPointName, user.contactPointName) &&
         Objects.equals(this.contactEmail, user.contactEmail) &&
         Objects.equals(this.contactMobile, user.contactMobile) &&
         Objects.equals(this.contactPhone, user.contactPhone) &&
@@ -274,7 +299,7 @@ public class User   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, title, firstName, lastName, contactEmail, contactMobile, contactPhone, contactFax, contactSocial, userRoles);
+    return Objects.hash(email, title, firstName, lastName, contactPointName, contactEmail, contactMobile, contactPhone, contactFax, contactSocial, userRoles);
   }
 
   @Override
@@ -286,6 +311,7 @@ public class User   {
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
+    sb.append("    contactPointName: ").append(toIndentedString(contactPointName)).append("\n");
     sb.append("    contactEmail: ").append(toIndentedString(contactEmail)).append("\n");
     sb.append("    contactMobile: ").append(toIndentedString(contactMobile)).append("\n");
     sb.append("    contactPhone: ").append(toIndentedString(contactPhone)).append("\n");

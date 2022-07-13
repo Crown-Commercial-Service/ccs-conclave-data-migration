@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import uk.gov.ccs.swagger.dataMigration.model.Status;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
+import uk.gov.ccs.swagger.dataMigration.model.UserTitle;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -23,7 +24,7 @@ public class UserMin   {
   private String email = null;
 
   @JsonProperty("title")
-  private String title = null;
+  private UserTitle title = null;
 
   @JsonProperty("firstName")
   private String firstName = null;
@@ -61,22 +62,23 @@ public class UserMin   {
     this.email = email;
   }
 
-  public UserMin title(String title) {
+  public UserMin title(UserTitle title) {
     this.title = title;
     return this;
   }
 
   /**
-   * User Title
+   * Get title
    * @return title
    **/
-  @Schema(example = "Mr", description = "User Title")
+  @Schema(description = "")
   
-    public String getTitle() {
+    @Valid
+    public UserTitle getTitle() {
     return title;
   }
 
-  public void setTitle(String title) {
+  public void setTitle(UserTitle title) {
     this.title = title;
   }
 

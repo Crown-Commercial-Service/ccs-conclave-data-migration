@@ -3,5 +3,6 @@
   "apiPackage" : "uk.gov.ccs.swagger.dataMigration.api",
   "hideGenerationTimestamp": true,
   "interfaceOnly": true,
-  "generateSupportingFiles": false
+  "generateSupportingFiles": false,
+  "additionalProperties": {"errorOnUnknownEnum": true}
 }

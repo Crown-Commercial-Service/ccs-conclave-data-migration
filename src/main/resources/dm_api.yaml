@@ -106,10 +106,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrgRole'
+          nullable: True
         user:
           type: array
           items:
             $ref: '#/components/schemas/User'
+          nullable: True
       required:
         - identifier-id
         - scheme-id
@@ -121,9 +123,7 @@ components:
           description: User Email
           example: joe.bloggs@kier.com
         title:
-          type: string
-          description: User Title
-          example: Mr
+          $ref: '#/components/schemas/UserTitle'
         firstName:
           type: string
           description: First Name
@@ -132,30 +132,41 @@ components:
           type: string
           description: Last Name
           example: Bloggs
+        contactPointName:
+          type: string
+          description: Name for the user's contact record. Only applied for new users. Blank treated as null. Must be present and non-empty if any other contact fields are.
+          example: Joe Bloggs
+          nullable: true
         contactEmail:
           type: string
-          description: User Contact Email
+          description: User Contact Email. Only applied for new users. Blank treated as null.
           example: abc@somewhere.org
+          nullable: true
         contactMobile:
           type: string
-          description: User Contact Mobile
+          description: User Contact Mobile. Only applied for new users. Blank treated as null.
           example: 07956111111
+          nullable: true
         contactPhone:
           type: string
-          description: User Contact Telephone
+          description: User Contact Telephone. Only applied for new users. Blank treated as null.
           example: 020 8555 0000
+          nullable: true
         contactFax:
           type: string
-          description: User Contact Fax
+          description: User Contact Fax. Only applied for new users. Blank treated as null.
           example: 020 8555 0001
+          nullable: true
         contactSocial:
           type: string
-          description: User Contact Socila
+          description: User Contact Social. Only applied for new users. Blank treated as null.
           example: http://www.linkedin.com/
+          nullable: true
         userRoles:
           type: array
           items:
             $ref: '#/components/schemas/UserRole'
+          nullable: True
       required:
         - email
         - firstName
@@ -168,9 +179,7 @@ components:
           description: User Email
           example: joe.bloggs@kier.com
         title:
-          type: string
-          description: User Title
-          example: Mr
+          $ref: '#/components/schemas/UserTitle'
         firstName:
           type: string
           description: First Name
@@ -226,7 +235,7 @@ components:
         - 200 OK
         - 201 Created
         - 400 Bad request
-        - 401 Unathorized
+        - 401 Unauthorized
         - 403 Forbidden
         - 404 Not found
         - 409 Duplicate resource
@@ -263,3 +272,15 @@ components:
           type: string
           description: User Roles
           example: RMI User
+
+    UserTitle:
+      type: string
+      enum:
+        - Mr
+        - Mrs
+        - Miss
+        - Ms
+        - Doctor
+        - Unspecified
+      default: Unspecified
+      nullable: true

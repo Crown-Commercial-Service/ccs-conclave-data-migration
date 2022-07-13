@@ -51,7 +51,7 @@ public enum ContactAssignedStatus {
         return b;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'ContactAssignedStatus' enum.");
   }
 
   public static class Adapter extends TypeAdapter<ContactAssignedStatus> {

@@ -12,6 +12,7 @@ import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
+import uk.gov.ccs.swagger.sso.model.UserTitle;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import static java.util.Collections.singletonList;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRATION_SUCCESS;
+import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
 
 @Service
 @RequiredArgsConstructor
@@ -39,14 +41,16 @@ public class UserService {
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
-        userDto.setTitle(user.getTitle());
+        if (user.getTitle() != null) {
+            userDto.setTitle(fromValue(user.getTitle().toString()));
+        }
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
         userDto.setOrganisationId(organisationId);
         userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
         userDto.setAccountVerified(properties.isAccountVerified());
-        if (user.getUserRoles().stream().anyMatch(role -> role.getName().equals("Organisation Administrator"))) {
+        if (user.getUserRoles() != null && user.getUserRoles().stream().anyMatch(role -> role.getName().equals("Organisation Administrator"))) {
             userDto.setMfaEnabled(true);
         }
 

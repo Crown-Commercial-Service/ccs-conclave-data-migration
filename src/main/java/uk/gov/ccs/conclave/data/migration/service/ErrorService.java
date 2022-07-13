@@ -103,12 +103,15 @@ public class ErrorService {
         User user = new User();
         user.setFirstName(u.getFirstName());
         user.setLastName(u.getLastName());
-        user.setTitle(u.getTitle());
+        if (u.getTitle() != null) {
+            user.setTitle(u.getTitle().toString());
+        }
         user.setEmail(u.getEmail());
         var userRoles = u.getUserRoles();
         if (isNotEmpty(userRoles)) {
             user.setUserRoles(userRolesAsString(userRoles));
         }
+        user.setContactPointName(u.getContactPointName());
         user.setContactEmail(u.getContactEmail());
         user.setContactMobile(u.getContactMobile());
         user.setContactPhone(u.getContactPhone());

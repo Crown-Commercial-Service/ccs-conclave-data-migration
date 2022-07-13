@@ -32,8 +32,8 @@ public class DataMigrationApiController implements DataMigrationApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> constraintViolation(ConstraintViolationException exception) {
+    @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class})
+    public ResponseEntity<String> constraintViolation(Exception exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(exception.getMessage());
