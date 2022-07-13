@@ -1,6 +1,8 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
@@ -10,6 +12,7 @@ import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
+import uk.gov.ccs.swagger.sso.model.UserTitle;
 
 import java.util.List;
 
@@ -33,17 +36,21 @@ public class UserService {
 
     private final RoleService roleService;
 
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
-        userDto.setTitle(fromValue(user.getTitle()));
+        if (user.getTitle() != null) {
+            userDto.setTitle(fromValue(user.getTitle().toString()));
+        }
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
         userDto.setOrganisationId(organisationId);
         userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
         userDto.setAccountVerified(properties.isAccountVerified());
-        if (user.isRoleAdmin(user.getUserRoles())) {
+        if (user.getUserRoles() != null && user.getUserRoles().stream().anyMatch(role -> role.getName().equals("Organisation Administrator"))) {
             userDto.setMfaEnabled(true);
         }
 
@@ -70,6 +77,7 @@ public class UserService {
 
             } catch (ApiException e) {
                 userFailureCount++;
+                log.error("{}{}: {}", SSO_USER_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
             }
         }

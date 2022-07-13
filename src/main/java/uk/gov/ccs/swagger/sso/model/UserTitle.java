@@ -26,20 +26,20 @@ import com.google.gson.stream.JsonWriter;
  */
 @JsonAdapter(UserTitle.Adapter.class)
 public enum UserTitle {
-  NUMBER_0(0),
-  NUMBER_1(1),
-  NUMBER_2(2),
-  NUMBER_3(3),
-  NUMBER_4(4),
-  NUMBER_5(5);
+  MR("Mr"),
+  MRS("Mrs"),
+  MISS("Miss"),
+  MS("Ms"),
+  DOCTOR("Doctor"),
+  UNSPECIFIED("Unspecified");
 
-  private Integer value;
+  private String value;
 
-  UserTitle(Integer value) {
+  UserTitle(String value) {
     this.value = value;
   }
 
-  public Integer getValue() {
+  public String getValue() {
     return value;
   }
 
@@ -54,7 +54,7 @@ public enum UserTitle {
         return b;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'UserTitle' enum.");
   }
 
   public static class Adapter extends TypeAdapter<UserTitle> {
@@ -65,7 +65,7 @@ public enum UserTitle {
 
     @Override
     public UserTitle read(final JsonReader jsonReader) throws IOException {
-      Object value = jsonReader.nextInt();
+      Object value = jsonReader.nextString();
       return UserTitle.fromValue(String.valueOf(value));
     }
   }

@@ -1,23 +1,24 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.Objects;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
- * UserRoles
+ * UserRole
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 
 
-public class UserRoles   {
+public class UserRole   {
   @JsonProperty("name")
   private String name = null;
 
-  public UserRoles name(String name) {
+  public UserRole name(String name) {
     this.name = name;
     return this;
   }
@@ -26,9 +27,10 @@ public class UserRoles   {
    * User Roles
    * @return name
    **/
-  @Schema(example = "RMI User", description = "User Roles")
-  
-  public String getName() {
+  @Schema(example = "RMI User", required = true, description = "User Roles")
+      @NotNull
+
+    public String getName() {
     return name;
   }
 
@@ -36,21 +38,17 @@ public class UserRoles   {
     this.name = name;
   }
 
-  public boolean isUserRoleAdmin() {
-    return this.name.equals("Organisation Administrator");
-  }
-
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UserRoles userRoles = (UserRoles) o;
-    return Objects.equals(this.name, userRoles.name);
+    UserRole userRole = (UserRole) o;
+    return Objects.equals(this.name, userRole.name);
   }
 
   @Override
@@ -61,7 +59,7 @@ public class UserRoles   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserRoles {\n");
+    sb.append("class UserRole {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
@@ -72,7 +70,7 @@ public class UserRoles   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

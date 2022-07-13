@@ -17,7 +17,7 @@ import uk.gov.ccs.swagger.sso.Pair;
 import java.util.Map;
 import java.util.List;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-12-07T09:38:21.309374Z[Europe/London]")public class ApiKeyAuth implements Authentication {
+public class ApiKeyAuth implements Authentication {
   private final String location;
   private final String paramName;
 

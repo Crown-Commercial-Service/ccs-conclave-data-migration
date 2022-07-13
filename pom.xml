@@ -15,7 +15,7 @@
     <description>Data migration service for conclave</description>
     <properties>
         <java.version>11</java.version>
-        <swagger-core-version>2.2.0</swagger-core-version>
+        <swagger-core-version>2.2.1</swagger-core-version>
         <okhttp-version>2.7.5</okhttp-version>
         <gson-version>2.9.0</gson-version>
         <gson-fire-version>1.8.5</gson-fire-version>
@@ -118,6 +118,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <profiles>
+                        <profile>local</profile>
+                    </profiles>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>

@@ -25,7 +25,7 @@ import java.io.IOException;
  * GroupRole
  */
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-12-07T09:38:21.309374Z[Europe/London]")
+
 public class GroupRole {
   @SerializedName("id")
   private Integer id = null;
@@ -71,7 +71,7 @@ public class GroupRole {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -104,7 +104,7 @@ public class GroupRole {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

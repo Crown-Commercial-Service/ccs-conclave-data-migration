@@ -1,0 +1,8 @@
+{
+  "modelPackage" : "uk.gov.ccs.swagger.dataMigration.model",
+  "apiPackage" : "uk.gov.ccs.swagger.dataMigration.api",
+  "hideGenerationTimestamp": true,
+  "interfaceOnly": true,
+  "generateSupportingFiles": false,
+  "additionalProperties": {"errorOnUnknownEnum": true}
+}

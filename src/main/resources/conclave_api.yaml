@@ -3138,7 +3138,8 @@
           },
           "contactPointName": {
             "type": "string",
-            "nullable": true
+            "nullable": false,
+            "minLength": 1
           },
           "contacts": {
             "type": "array",
@@ -3148,6 +3149,7 @@
             "nullable": true
           }
         },
+        "required": ["contactPointName"],
         "additionalProperties": false
       },
       "ContactResponseDetail": {
@@ -4225,15 +4227,15 @@
       },
       "UserTitle": {
         "enum": [
-            0,
-            1,
-            2,
-            3,
-            4,
-            5
+          "Mr",
+          "Mrs",
+          "Miss",
+          "Ms",
+          "Doctor",
+          "Unspecified"
         ],
-        "type": "integer",
-        "format": "int32"
+        "default": "Unspecified",
+        "type": "string"
       }
     },
     "securitySchemes": {

@@ -9,10 +9,9 @@ import uk.gov.ccs.conclave.data.migration.domain.User;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
-import uk.gov.ccs.swagger.cii.model.OrgMigration;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
+import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 
 import java.util.List;
 import java.util.Set;
@@ -48,15 +47,22 @@ public class ErrorService {
 
     private final UserRepository userRepository;
 
-    public void logWithStatus(Organisation org, String message, Integer statusCode) throws DataMigrationException {
-        LOGGER.error(message);
+    public void logWithStatus(Organisation org, String message, uk.gov.ccs.swagger.sso.ApiException exception, Integer statusCode) throws DataMigrationException {
+        LOGGER.error("{}{}: {}", message, exception.getMessage(), exception.getResponseBody(), exception);
         Org savedOrg = saveOrgDetailsWithStatusCode(org, message, statusCode);
         saveAllUserDetailsWithStatusCode(org, message, statusCode, savedOrg);
         handleFailure(message, statusCode);
     }
 
-    public void logWithStatusString(String organisationId, String message, Integer statusCode) throws DataMigrationException {
-        LOGGER.error(message);
+    public void logWithStatus(Organisation org, String message, Exception exception, Integer statusCode) throws DataMigrationException {
+        LOGGER.error(message + exception.getMessage(), exception);
+        Org savedOrg = saveOrgDetailsWithStatusCode(org, message, statusCode);
+        saveAllUserDetailsWithStatusCode(org, message, statusCode, savedOrg);
+        handleFailure(message, statusCode);
+    }
+
+    public void logWithStatusString(String message, Exception exception, Integer statusCode) throws DataMigrationException {
+        LOGGER.error(message + exception.getMessage(), exception);
         handleFailure(message, statusCode);
     }
 
@@ -97,12 +103,15 @@ public class ErrorService {
         User user = new User();
         user.setFirstName(u.getFirstName());
         user.setLastName(u.getLastName());
-        user.setTitle(u.getTitle());
+        if (u.getTitle() != null) {
+            user.setTitle(u.getTitle().toString());
+        }
         user.setEmail(u.getEmail());
         var userRoles = u.getUserRoles();
         if (isNotEmpty(userRoles)) {
             user.setUserRoles(userRolesAsString(userRoles));
         }
+        user.setContactPointName(u.getContactPointName());
         user.setContactEmail(u.getContactEmail());
         user.setContactMobile(u.getContactMobile());
         user.setContactPhone(u.getContactPhone());
@@ -128,13 +137,13 @@ public class ErrorService {
         return org;
     }
 
-    private String orgRolesAsString(List<OrgRoles> roles) {
-        List<String> rolesList = roles.stream().map(OrgRoles::getName).collect(toList());
+    private String orgRolesAsString(List<OrgRole> roles) {
+        List<String> rolesList = roles.stream().map(OrgRole::getName).collect(toList());
         return join(",", rolesList);
     }
 
-    private String userRolesAsString(List<UserRoles> userRoles) {
-        var rolesList = userRoles.stream().map(UserRoles::getName).collect(toList());
+    private String userRolesAsString(List<UserRole> userRoles) {
+        var rolesList = userRoles.stream().map(UserRole::getName).collect(toList());
         return join(",", rolesList);
     }
 

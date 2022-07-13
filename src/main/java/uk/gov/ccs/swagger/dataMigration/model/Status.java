@@ -1,7 +1,12 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
  * Gets or Sets Status
@@ -10,7 +15,7 @@ public enum Status {
   _200_OK("200 OK"),
     _201_CREATED("201 Created"),
     _400_BAD_REQUEST("400 Bad request"),
-    _401_UNATHORIZED("401 Unathorized"),
+    _401_UNAUTHORIZED("401 Unauthorized"),
     _403_FORBIDDEN("403 Forbidden"),
     _404_NOT_FOUND("404 Not found"),
     _409_DUPLICATE_RESOURCE("409 Duplicate resource"),
@@ -40,6 +45,6 @@ public enum Status {
         return b;
       }
     }
-    return null;
+    throw new IllegalArgumentException("Unexpected value '" + text + "' for 'Status' enum.");
   }
 }

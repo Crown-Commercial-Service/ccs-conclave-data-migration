@@ -1,19 +1,22 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
+import uk.gov.ccs.swagger.dataMigration.model.Status;
+import uk.gov.ccs.swagger.dataMigration.model.UserMin;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Summary
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-08-11T09:49:50.709Z[GMT]")
 
 
 public class Summary   {
@@ -28,7 +31,7 @@ public class Summary   {
 
   @JsonProperty("orgRoles")
   @Valid
-  private List<OrgRoles> orgRoles = null;
+  private List<OrgRole> orgRoles = null;
 
   @JsonProperty("user")
   @Valid
@@ -95,14 +98,14 @@ public class Summary   {
     this.rightToBuy = rightToBuy;
   }
 
-  public Summary orgRoles(List<OrgRoles> orgRoles) {
+  public Summary orgRoles(List<OrgRole> orgRoles) {
     this.orgRoles = orgRoles;
     return this;
   }
 
-  public Summary addOrgRolesItem(OrgRoles orgRolesItem) {
+  public Summary addOrgRolesItem(OrgRole orgRolesItem) {
     if (this.orgRoles == null) {
-      this.orgRoles = new ArrayList<OrgRoles>();
+      this.orgRoles = new ArrayList<OrgRole>();
     }
     this.orgRoles.add(orgRolesItem);
     return this;
@@ -114,11 +117,11 @@ public class Summary   {
    **/
   @Schema(description = "")
       @Valid
-    public List<OrgRoles> getOrgRoles() {
+    public List<OrgRole> getOrgRoles() {
     return orgRoles;
   }
 
-  public void setOrgRoles(List<OrgRoles> orgRoles) {
+  public void setOrgRoles(List<OrgRole> orgRoles) {
     this.orgRoles = orgRoles;
   }
 
@@ -178,7 +181,7 @@ public class Summary   {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -218,7 +221,7 @@ public class Summary   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

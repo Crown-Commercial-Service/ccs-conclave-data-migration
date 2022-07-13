@@ -30,14 +30,14 @@
             <column name="duration" type="FLOAT8">
                 <constraints nullable="false"/>
             </column>
-            <column name="end_time" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="end_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="failed_users" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="processed_users" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="start_time" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="start_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="status" type="VARCHAR(255)"/>
             <column name="total_organisations" type="BIGINT">
                 <constraints nullable="false"/>
@@ -71,5 +71,13 @@
     </changeSet>
     <changeSet author="janice.alvares (generated)" id="1632300211382-7">
         <addForeignKeyConstraint baseColumnNames="org_id" baseTableName="users" constraintName="fkhvruj9y6lvjrje2lvgbftekbw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="org_id" referencedTableName="org"/>
+    </changeSet>
+    <changeSet author="benjamin.gill" id="1632300211382-8">
+        <addColumn tableName="users">
+            <column name="contact_name" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="benjamin.gill" id="1632300211382-9">
+        <renameColumn tableName="users" oldColumnName="contact_name" newColumnName="contact_point_name"/>
     </changeSet>
 </databaseChangeLog>

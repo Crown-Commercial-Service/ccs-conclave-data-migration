@@ -21,15 +21,14 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.IOException;
-import uk.gov.ccs.swagger.cii.model.OrganizationScheme;
 /**
  * A unique identifier for a party (organization).
  */
 @Schema(description = "A unique identifier for a party (organization).")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2021-10-25T10:32:06.874824+01:00[Europe/London]")
+
 public class Identifier {
   @SerializedName("scheme")
-  private OrganizationScheme scheme = null;
+  private String scheme = null;
 
   @SerializedName("id")
   private String id = null;
@@ -40,7 +39,7 @@ public class Identifier {
   @SerializedName("uri")
   private String uri = null;
 
-  public Identifier scheme(OrganizationScheme scheme) {
+  public Identifier scheme(String scheme) {
     this.scheme = scheme;
     return this;
   }
@@ -50,11 +49,11 @@ public class Identifier {
    * @return scheme
   **/
   @Schema(description = "")
-  public OrganizationScheme getScheme() {
+  public String getScheme() {
     return scheme;
   }
 
-  public void setScheme(OrganizationScheme scheme) {
+  public void setScheme(String scheme) {
     this.scheme = scheme;
   }
 
@@ -114,7 +113,7 @@ public class Identifier {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -151,7 +150,7 @@ public class Identifier {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

@@ -24,6 +24,8 @@ public class User {
 
     private String lastName;
 
+    private String contactPointName;
+
     private String contactEmail;
 
     private String contactMobile;
@@ -43,6 +45,4 @@ public class User {
     @ManyToOne
     @JoinColumn(name="org_id", nullable=false)
     private Org org;
-
-
 }

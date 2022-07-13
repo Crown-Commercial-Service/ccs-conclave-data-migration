@@ -2,26 +2,24 @@ package uk.gov.ccs.conclave.data.migration.service;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.cii.model.Address;
 import uk.gov.ccs.swagger.cii.model.Identifier;
 import uk.gov.ccs.swagger.cii.model.OrgMigration;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.dataMigration.model.User;
-import uk.gov.ccs.swagger.dataMigration.model.UserRoles;
 import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
 import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
 import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRoles;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
@@ -39,6 +37,7 @@ public class OrganisationService {
 
     private final RoleService roleService;
 
+    private static final Logger log = LoggerFactory.getLogger(OrganisationService.class);
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
         OrgMigration ciiResponse = migrateOrgToCii(org);
@@ -74,7 +73,7 @@ public class OrganisationService {
             if (e.getCode() == 409) {
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
-                errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
+                errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE, e, e.getCode());
             }
         }
         return ciiOrganisation;
@@ -82,51 +81,36 @@ public class OrganisationService {
 
 
     private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
-        System.out.println(String.format("HERE -> 10 (org):  %s", org));
-        System.out.println(String.format("HERE -> 11 (checkForAdminOnNewOrg(org)):  %s", checkForAdminOnNewOrg(org)));
-        System.out.println(String.format("HERE -> 12 (isNewOrg(ciiResponse)):  %s", isNewOrg(ciiResponse)));
-        System.out.println(String.format("HERE -> 13 (org.getUser()):  %s", org.getUser()));
+        log.debug("Migrating organisation to conclave: {}", org);
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
-            if (isNewOrg(ciiResponse) && checkForAdminOnNewOrg(org) == false) {
-                deleteOrganisation(organisationId);
-                System.out.println(String.format("HERE -> 14 DELETING ORG"));
+            if (isNewOrg(ciiResponse) && !hasOrganisationAdmin(org)) {
+                log.debug("Deleting new organisation without admin");
+                deleteOrgFromCii(organisationId);
             } else if (isNewOrg(ciiResponse)) {
+                log.debug("Migrating new organisation with admin");
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
                 contactService.migrateOrgContact(org, ciiResponse, organisationId);
-                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
+                roleService.applyOrganisationRole(organisationId, org);
             } else {
-                roleService.applyOrganisationRole(organisationId, org.getOrgRoles());
+                log.debug("Organisation already exists. Applying roles");
+                roleService.applyOrganisationRole(organisationId, org);
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-            errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());
+            errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE, e, e.getCode());
         }
     }
 
-
-    private int deleteOrganisation(String organisationId) throws DataMigrationException {
-        OrgMigration ciiResponse = deleteOrgFromCii(organisationId);
-        if (null != ciiResponse) {
-            return 200;
-        }
-        return 400;
-    }
-
-
-    private OrgMigration deleteOrgFromCii(String organisationId) throws DataMigrationException {
-        OrgMigration ciiOrganisation = null;
+    private void deleteOrgFromCii(String organisationId) throws DataMigrationException {
         try {
-            ciiOrganisation = ciiOrgClient.deleteCiiOrganisation(organisationId);
-
+            ciiOrgClient.deleteCiiOrganisation(organisationId);
         } catch (ApiException e) {
-            errorService.logWithStatusString(organisationId, CII_DEL_ORG_ERROR_MESSAGE + e.getMessage(), e.getCode());   
+            errorService.logWithStatusString(CII_DEL_ORG_ERROR_MESSAGE, e, e.getCode());
         }
-        return ciiOrganisation;
     }
-
 
     private boolean isNewOrg(OrgMigration ciiResponse) {
         return ciiResponse.getIdentifier() != null;
@@ -178,28 +162,22 @@ public class OrganisationService {
         try {
             identityProviderId = conclaveClient.getIdentityProviderId(organisationId);
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-            errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE + e.getMessage(), e.getCode());
-
+            errorService.logWithStatus(organisation, SSO_IDENTITY_PROVIDER_ERROR_MESSAGE, e, e.getCode());
         }
         return identityProviderId;
     }
 
-    private Boolean checkForAdminOnNewOrg(final Organisation organisation) {
-
-        for (User users : organisation.getUser()) {
-            System.out.println(String.format("HERE -> A (user):  %s", users));
-            for (UserRoles userRole : users.getUserRoles()) {
-                System.out.println(String.format("HERE -> B (userRole):  %s", userRole));
-                System.out.println(String.format("HERE -> C (userRole.getName()):  %s", userRole.getName()));
-                System.out.println(String.format("HERE -> D (userRole.getName().equals(Organisation Administrator)):  %s", userRole.getName().equals("Organisation Administrator")));
-                System.out.println(String.format("HERE -> E (userRole.isUserRoleAdmin()):  %s", userRole.isUserRoleAdmin()));
-                if (userRole.getName().equals("Organisation Administrator")) {
-                    return true;
-                }
-            }
+    private static boolean hasOrganisationAdmin(final Organisation organisation) {
+        if (organisation == null || organisation.getUser() == null) {
+            return false;
         }
-        System.out.println(String.format("HERE -> X (FALSE):  %s", false));
-        return false;
+
+        var allUserRoles = organisation
+                .getUser()
+                .stream()
+                .flatMap(user -> user == null || user.getUserRoles() == null ? Stream.empty(): user.getUserRoles().stream());
+
+        return allUserRoles.anyMatch(userRole -> userRole != null && userRole.getName().equals("Organisation Administrator"));
     }
 
 }
