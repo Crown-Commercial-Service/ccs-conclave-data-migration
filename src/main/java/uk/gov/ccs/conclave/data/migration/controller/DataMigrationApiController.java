@@ -27,7 +27,7 @@ public class DataMigrationApiController implements DataMigrationApi {
     @Override
     public ResponseEntity<List<Summary>> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {
         log.info(" API for data migration invoked for file format " + fileFormat);
-        System.out.println(String.format("\n\n HERE -> 0 (requestbody):  %s \n\n", body));
+        System.out.println(String.format("\n\n HERE -> A (requestbody):  %s \n\n", body));
         migrationService.migrate(body);
         return new ResponseEntity<>(HttpStatus.OK);
     }

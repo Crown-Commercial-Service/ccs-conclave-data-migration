@@ -33,6 +33,18 @@ public class ContactService {
     private static final Logger log = LoggerFactory.getLogger(ContactService.class);
 
     void migrateUserContact(User user, String userId, Org organisation) throws DataMigrationException {
+
+        System.out.println(String.format("\n\n HERE -> 0 (user.getContactEmail()):  %s \n\n", user.getContactEmail()));
+        System.out.println(String.format("\n\n HERE -> 1 (user.getContactPointName()):  %s \n\n", user.getContactPointName()));
+        System.out.println(String.format("\n\n HERE -> 2 (user.getContactPointName()):  %s \n\n", user.getContactPointName()));
+        System.out.println(String.format("\n\n HERE -> 3 (user.getContactFax()):  %s \n\n", user.getContactFax()));
+        System.out.println(String.format("\n\n HERE -> 4 (user.getContactPhone()):  %s \n\n", user.getContactPhone()));
+        System.out.println(String.format("\n\n HERE -> 5 (user.getContactMobile()):  %s \n\n", user.getContactMobile()));
+        System.out.println(String.format("\n\n HERE -> 6 (user.getContactSocial()):  %s \n\n", user.getContactSocial()));
+
+        System.out.println(String.format("\n\n HERE -> 7 (stripToEmpty(user.getContactFax())):  %s \n\n", stripToEmpty(user.getContactFax())));
+        System.out.println(String.format("\n\n HERE -> 8 (stripToEmpty(user.getContactEmail())):  %s \n\n", stripToEmpty(user.getContactEmail())));
+
         ContactPoint ciiUserContactPoint = new ContactPoint()
                 .name(user.getContactPointName())
                 .email(stripToEmpty(user.getContactEmail()))
@@ -41,6 +53,8 @@ public class ContactService {
                 .mobile(stripToEmpty(user.getContactMobile()).replaceAll("[- ()]", ""))
                 .uri(stripToEmpty(user.getContactSocial()));
 
+        System.out.println(String.format("\n\n HERE -> 9 (isContactDetailPresent(ciiUserContactPoint)):  %s \n\n", isContactDetailPresent(ciiUserContactPoint)));
+
         if (isContactDetailPresent(ciiUserContactPoint)) {
             try {
                 conclaveClient.createUserContact(userId, buildContactRequestInfo(ciiUserContactPoint));
@@ -48,6 +62,8 @@ public class ContactService {
                 log.error("{}{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_CONTACT_ERROR_MESSAGE + e.getMessage(), e.getCode(), organisation);
             }
+        } else {
+            System.out.println("\n\n HERE -> 10  REPORT ERROR TO DATABASE?!?! \n\n");
         }
     }
 
