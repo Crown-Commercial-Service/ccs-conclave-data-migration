@@ -64,6 +64,8 @@ public class ContactService {
             }
         } else {
             System.out.println("\n\n HERE -> 10  REPORT ERROR TO DATABASE?!?! \n\n");
+            log.error("{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, "Incomplete Contact Details");
+            errorService.saveUserDetailWithStatusCode(user, SSO_USER_CONTACT_ERROR_MESSAGE + "Incomplete Contact Details", 400, organisation);
         }
     }
 
