@@ -14,6 +14,8 @@ import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.Summary;
 
 import javax.validation.ConstraintViolationException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,7 +24,7 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
-    public static String responseReport;
+    public static List<String> responseReport = new ArrayList<String>();
 
     private final MigrationService migrationService;
 
