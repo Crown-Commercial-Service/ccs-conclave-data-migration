@@ -22,6 +22,8 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
+    public static String responseReport;
+
     private final MigrationService migrationService;
 
     @Override
@@ -31,7 +33,7 @@ public class DataMigrationApiController implements DataMigrationApi {
         migrationService.migrate(body);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("TESTING CON-2464");
+                .body("TESTING CON-2464: " + responseReport);
     }
 
     @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class})
