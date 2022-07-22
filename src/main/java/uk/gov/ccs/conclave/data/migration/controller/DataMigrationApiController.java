@@ -30,7 +30,7 @@ public class DataMigrationApiController implements DataMigrationApi {
         System.out.println(String.format("\n\n HERE -> A (requestbody):  %s \n\n", body));
         migrationService.migrate(body);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body("TESTING CON-2464");
     }
 
