@@ -67,7 +67,7 @@ public class ContactService {
         } else {
             System.out.println("\n\n HERE -> 10  REPORT ERROR TO DATABASE?!?! \n\n");
             log.error("{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, SSO_USER_CONTACT_ERROR_INFO);
-            errorService.saveUserDetailWithStatusCode(user, SSO_USER_CONTACT_ERROR_MESSAGE + SSO_USER_CONTACT_ERROR_INFO, 400, organisation);
+            errorService.saveUserDetailWithStatusCodeWithoutException(user, SSO_USER_CONTACT_ERROR_MESSAGE + SSO_USER_CONTACT_ERROR_INFO, 400, organisation);
             DataMigrationApiController.responseReport.add(SSO_USER_CONTACT_ERROR_INFO + user.getEmail());
         }
     }
