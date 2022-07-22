@@ -29,13 +29,13 @@ public class DataMigrationApiController implements DataMigrationApi {
     private final MigrationService migrationService;
 
     @Override
-    public ResponseEntity<String> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {
+    public ResponseEntity<List<String>> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {
         log.info(" API for data migration invoked for file format " + fileFormat);
-        System.out.println(String.format("\n\n HERE -> A (requestbody):  %s \n\n", body));
+        responseReport.clear();
         migrationService.migrate(body);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("TESTING CON-2464: " + responseReport);
+                .body(responseReport);
     }
 
     @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class})
