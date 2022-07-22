@@ -22,6 +22,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.stripToEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_ORG_CONTACT_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_ERROR_MESSAGE;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_ERROR_INFO;
 
 @Service
 @RequiredArgsConstructor
@@ -65,9 +66,9 @@ public class ContactService {
             }
         } else {
             System.out.println("\n\n HERE -> 10  REPORT ERROR TO DATABASE?!?! \n\n");
-            log.error("{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, "Incomplete Contact Details");
-            errorService.saveUserDetailWithStatusCode(user, SSO_USER_CONTACT_ERROR_MESSAGE + "Incomplete Contact Details", 401, organisation);
-            DataMigrationApiController.responseReport = "Incomplete Contact Details";
+            log.error("{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, SSO_USER_CONTACT_ERROR_INFO);
+            errorService.saveUserDetailWithStatusCode(user, SSO_USER_CONTACT_ERROR_MESSAGE + SSO_USER_CONTACT_ERROR_INFO, 400, organisation);
+            DataMigrationApiController.responseReport.add(SSO_USER_CONTACT_ERROR_INFO + user.getEmail());
         }
     }
 
