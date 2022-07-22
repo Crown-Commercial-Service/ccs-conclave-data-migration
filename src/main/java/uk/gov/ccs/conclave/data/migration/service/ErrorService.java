@@ -87,10 +87,10 @@ public class ErrorService {
         }
     }
 
-    public void saveUserDetailWithStatusCode(uk.gov.ccs.swagger.dataMigration.model.User user, String message, Integer statusCode, Org savedOrg) throws DataMigrationException {
+    public void saveUserDetailWithStatusCode(uk.gov.ccs.swagger.dataMigration.model.User user, String message, Integer statusCode, Org savedOrg) {
         User usersSet = populateUserWithStatus(message, statusCode, savedOrg, user);
         userRepository.save(usersSet);
-        handleFailure(message, statusCode);
+        //handleFailure(message, statusCode);
     }
 
 
