@@ -69,7 +69,7 @@ public interface DataMigrationApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-        ResponseEntity<List<String>> appMigrateOrg(@Parameter(in = ParameterIn.PATH, description = "File format - CSV/JSON", required=true, schema=@Schema()) @PathVariable("fileFormat") String fileFormat, @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema()) @Valid @RequestParam(value = "docId", required = false) String docId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody List<Organisation> body);
+        ResponseEntity<List<String>> appMigrateOrg(@RequestHeader(value="x-api-key") String xApiKey, @Parameter(in = ParameterIn.PATH, description = "File format - CSV/JSON", required=true, schema=@Schema()) @PathVariable("fileFormat") String fileFormat, @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema()) @Valid @RequestParam(value = "docId", required = false) String docId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody List<Organisation> body);
 
 }
 
