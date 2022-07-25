@@ -43,6 +43,12 @@ paths:
             type: string
           required: false
           description:  file location e.g. /path
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: false
+          description:  api key for authorising client.
       requestBody:
         content:
           application/json:

@@ -29,8 +29,9 @@ public class DataMigrationApiController implements DataMigrationApi {
     private final MigrationService migrationService;
 
     @Override
-    public ResponseEntity<List<String>> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {
+    public ResponseEntity<List<String>> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
         log.info(" API for data migration invoked for file format " + fileFormat);
+        log.info(" Testing API Key: " + xApiKey);
         responseReport.clear();
         migrationService.migrate(body);
         return ResponseEntity
