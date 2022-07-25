@@ -12,7 +12,6 @@ import uk.gov.ccs.conclave.data.migration.service.MigrationService;
 import uk.gov.ccs.swagger.dataMigration.api.DataMigrationApi;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.Summary;
-import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 
 import javax.validation.ConstraintViolationException;
 
@@ -29,14 +28,11 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     private final MigrationService migrationService;
 
-    private final ClientRepository clientRepository;
-
     @Override
     public ResponseEntity<List<String>> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
         responseReport.clear();
 
         log.info(" Testing API Key: " + xApiKey);
-        log.info(" Testing Client DB Table: " + clientRepository.findAll());
 
         if (xApiKey == null || xApiKey.trim().isEmpty() || !xApiKey.equals("secret12345test")) {
             log.error("{}:{}","Unauthorised Access ", "Invalid x-api-key. ");
@@ -45,6 +41,8 @@ public class DataMigrationApiController implements DataMigrationApi {
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(responseReport);
         }
+
+        migrationService.test2();
 
         log.info(" API for data migration invoked for file format: " + fileFormat);
         migrationService.migrate(body);

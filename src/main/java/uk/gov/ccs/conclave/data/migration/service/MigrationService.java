@@ -3,6 +3,8 @@ package uk.gov.ccs.conclave.data.migration.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import uk.gov.ccs.conclave.data.migration.domain.Client;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 
@@ -23,6 +25,8 @@ public class MigrationService {
     private final UserService userService;
 
     private final ReportService reportService;
+
+    private final ErrorService errorService;
 
 
     public void migrate(List<Organisation> organisations) {
@@ -48,6 +52,11 @@ public class MigrationService {
             reportService.generateReport(startTime, now(), organisations, failedUserCount, processedUserCount, MIGRATION_STATUS_ABORTED + e.getMessage());
             throw new ResponseStatusException(valueOf(e.getCode()), e.getMessage());
         }
+    }
+
+    public void test2() {
+        List<Client> ts1 = errorService.testing();
+        System.out.println("TESTING: "+ ts1);
     }
 }
 
