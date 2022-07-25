@@ -12,6 +12,7 @@ import uk.gov.ccs.conclave.data.migration.service.MigrationService;
 import uk.gov.ccs.swagger.dataMigration.api.DataMigrationApi;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.Summary;
+import uk.gov.ccs.conclave.data.migration.service.ErrorService;
 
 import javax.validation.ConstraintViolationException;
 
@@ -28,11 +29,14 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     private final MigrationService migrationService;
 
+    private final ErrorService errorService;
+
     @Override
     public ResponseEntity<List<String>> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
         responseReport.clear();
 
         log.info(" Testing API Key: " + xApiKey);
+        errorService.testing();
 
         if (xApiKey == null || xApiKey.trim().isEmpty() || !xApiKey.equals("secret12345test")) {
             log.error("{}:{}","Unauthorised Access ", "Invalid x-api-key. ");
