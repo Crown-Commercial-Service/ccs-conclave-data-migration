@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.domain.User;
+import uk.gov.ccs.conclave.data.migration.domain.Client;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
+import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
@@ -48,6 +50,8 @@ public class ErrorService {
     private final OrganisationRepository organisationRepository;
 
     private final UserRepository userRepository;
+
+    private final ClientRepository clientRepository;
 
     public void logWithStatus(Organisation org, String message, uk.gov.ccs.swagger.sso.ApiException exception, Integer statusCode) throws DataMigrationException {
         LOGGER.error("{}{}: {}", message, exception.getMessage(), exception.getResponseBody(), exception);
@@ -152,6 +156,11 @@ public class ErrorService {
     private String userRolesAsString(List<UserRole> userRoles) {
         var rolesList = userRoles.stream().map(UserRole::getName).collect(toList());
         return join(",", rolesList);
+    }
+
+    public List<Client> testing() {
+        LOGGER.info(" Testing Client DB Table: " + clientRepository.findAll());
+        return clientRepository.findAll();
     }
 
 

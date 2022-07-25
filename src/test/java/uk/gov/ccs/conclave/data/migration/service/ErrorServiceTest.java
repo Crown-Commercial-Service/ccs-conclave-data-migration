@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
+import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.dataMigration.model.UserTitle;
 
@@ -23,6 +24,9 @@ public class ErrorServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private ClientRepository clientRepository;
 
     @InjectMocks
     private ErrorService errorService;

@@ -8,16 +8,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
 import uk.gov.ccs.conclave.data.migration.service.MigrationService;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.dataMigration.model.UserTitle;
-import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 
 import java.util.List;
 
@@ -33,9 +28,6 @@ public class DataMigrationApiControllerTest {
 
     @MockBean
     private MigrationService service;
-
-    @Mock
-    private ClientRepository clientRepository;
 
     private Organisation getTestOrganisation() {
         return new Organisation().identifierId("identifier").schemeId("scheme").rightToBuy(false).user(List.of(new User().firstName("first").lastName("last").email("email").title(UserTitle.DOCTOR)));
