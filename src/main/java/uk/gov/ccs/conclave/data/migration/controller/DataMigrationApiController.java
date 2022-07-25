@@ -42,6 +42,8 @@ public class DataMigrationApiController implements DataMigrationApi {
                     .body(responseReport);
         }
 
+        migrationService.test2();
+
         log.info(" API for data migration invoked for file format: " + fileFormat);
         migrationService.migrate(body);
 

@@ -30,8 +30,6 @@ public class MigrationService {
 
 
     public void migrate(List<Organisation> organisations) {
-        List<Client> ts1 = errorService.testing();
-        System.out.println("TESTING: "+ ts1);
         LocalDateTime startTime = now();
         long failedUserCount = 0;
         long processedUserCount = 0;
@@ -54,6 +52,11 @@ public class MigrationService {
             reportService.generateReport(startTime, now(), organisations, failedUserCount, processedUserCount, MIGRATION_STATUS_ABORTED + e.getMessage());
             throw new ResponseStatusException(valueOf(e.getCode()), e.getMessage());
         }
+    }
+
+    public void test2() {
+        List<Client> ts1 = errorService.testing();
+        System.out.println("TESTING: "+ ts1);
     }
 }
 
