@@ -46,7 +46,9 @@ java -jar swagger-codegen-cli.jar generate --output . --config src/main/resource
 
 We use [liquibase](https://docs.liquibase.com/home.html) to manage the database. Migrations are defined in [`master.xml`](src/main/resources/db/changelog/master.xml).
 
-We do not yet know how to run the database migrations securely in production. We have a less secure process you can use in other environments:
+We do not yet know how to run the database migrations securely in production. We have a less secure process you can use in non-production environments.
+
+From inside the local Data Migration repo/directory:
 
 1. Install liquibase: `brew install liquibase`
 2. Install the conduit plugin for Cloudfoundry: `cf install-plugin conduit`
