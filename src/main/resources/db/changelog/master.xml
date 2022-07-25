@@ -80,4 +80,15 @@
     <changeSet author="benjamin.gill" id="1632300211382-9">
         <renameColumn tableName="users" oldColumnName="contact_name" newColumnName="contact_point_name"/>
     </changeSet>
+    <changeSet author="thomas.berey" id="1632300211382-11">
+        <createTable tableName="clients">
+            <column autoIncrement="true" name="client_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="clients_pkey"/>
+            </column>
+            <column name="api_key" type="VARCHAR(255)"/>
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_key_description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

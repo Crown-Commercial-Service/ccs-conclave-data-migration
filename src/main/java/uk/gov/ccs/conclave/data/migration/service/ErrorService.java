@@ -33,7 +33,8 @@ public class ErrorService {
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
     public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
     public static final String SSO_USER_CONTACT_ERROR_MESSAGE = "Error while creating SSO User Contact. ";
-    public static final String SSO_USER_CONTACT_ERROR_INFO = "Missing Contact Details for User: ";
+    public static final String SSO_USER_CONTACT_ERROR_INFO = "Missing Contact Point Details for User. ";
+    public static final String SSO_USER_CONTACT_RESPONSE_INFO = "No Contact Point created for User: ";
     public static final String SSO_USER_ERROR_MESSAGE = "Error while creating SSO user. ";
     public static final String SSO_ROLE_NOT_FOUND = " Role does not exist. ";
     public static final String SSO_IDENTITY_PROVIDER_ERROR_MESSAGE = "Error while retrieving identity provider of the SSO organisation. ";
