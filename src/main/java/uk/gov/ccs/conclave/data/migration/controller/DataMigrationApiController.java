@@ -34,7 +34,7 @@ public class DataMigrationApiController implements DataMigrationApi {
 
         log.info(" Testing API Key: " + xApiKey);
 
-        if (xApiKey == null || xApiKey.trim().isEmpty() || xApiKey.equals("secret12345test")) {
+        if (xApiKey == null || xApiKey.trim().isEmpty() || !xApiKey.equals("secret12345test")) {
             log.error("{}:{}","Unauthorised Access ", "Invalid x-api-key. ");
             responseReport.add("Unauthorised Access: Invalid x-api-key.");
             return ResponseEntity
