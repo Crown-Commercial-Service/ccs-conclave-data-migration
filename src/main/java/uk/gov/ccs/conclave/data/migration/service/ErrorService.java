@@ -160,7 +160,7 @@ public class ErrorService {
 
     public List<Client> testing() {
         LOGGER.info(" Testing Client DB Table: " + clientRepository.findAll());
-        clientRepository.findClient("abc123");
+        //clientRepository.findClient("abc123");
         return clientRepository.findAll();
     }
 
