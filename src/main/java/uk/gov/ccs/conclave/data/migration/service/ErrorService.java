@@ -33,6 +33,7 @@ public class ErrorService {
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
     public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
     public static final String SSO_USER_CONTACT_ERROR_MESSAGE = "Error while creating SSO User Contact. ";
+    public static final String SSO_USER_CONTACT_ERROR_INFO = "Missing Contact Details for User: ";
     public static final String SSO_USER_ERROR_MESSAGE = "Error while creating SSO user. ";
     public static final String SSO_ROLE_NOT_FOUND = " Role does not exist. ";
     public static final String SSO_IDENTITY_PROVIDER_ERROR_MESSAGE = "Error while retrieving identity provider of the SSO organisation. ";
@@ -91,6 +92,11 @@ public class ErrorService {
         User usersSet = populateUserWithStatus(message, statusCode, savedOrg, user);
         userRepository.save(usersSet);
         handleFailure(message, statusCode);
+    }
+
+    public void saveUserDetailWithStatusCodeWithoutException(uk.gov.ccs.swagger.dataMigration.model.User user, String message, Integer statusCode, Org savedOrg) {
+        User usersSet = populateUserWithStatus(message, statusCode, savedOrg, user);
+        userRepository.save(usersSet);
     }
 
 

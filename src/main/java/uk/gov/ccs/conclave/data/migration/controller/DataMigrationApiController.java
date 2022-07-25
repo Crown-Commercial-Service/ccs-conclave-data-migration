@@ -14,6 +14,8 @@ import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.Summary;
 
 import javax.validation.ConstraintViolationException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,14 +24,18 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
+    public static List<String> responseReport = new ArrayList<String>();
+
     private final MigrationService migrationService;
 
     @Override
-    public ResponseEntity<List<Summary>> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {
+    public ResponseEntity<List<String>> appMigrateOrg(String fileFormat, String docId, List<Organisation> body) {
         log.info(" API for data migration invoked for file format " + fileFormat);
-        System.out.println(String.format("\n\n HERE -> 0 (requestbody):  %s \n\n", body));
+        responseReport.clear();
         migrationService.migrate(body);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseReport);
     }
 
     @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class})
