@@ -30,10 +30,21 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     @Override
     public ResponseEntity<List<String>> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
-        log.info(" API for data migration invoked for file format " + fileFormat);
-        log.info(" Testing API Key: " + xApiKey);
         responseReport.clear();
+
+        log.info(" Testing API Key: " + xApiKey);
+
+        if (xApiKey == null || xApiKey.trim().isEmpty() || xApiKey.equals("secret12345test")) {
+            log.error("{}:{}","Unauthorised Access ", "Invalid x-api-key. ");
+            responseReport.add("Unauthorised Access: Invalid x-api-key.");
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(responseReport);
+        }
+
+        log.info(" API for data migration invoked for file format: " + fileFormat);
         migrationService.migrate(body);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(responseReport);
