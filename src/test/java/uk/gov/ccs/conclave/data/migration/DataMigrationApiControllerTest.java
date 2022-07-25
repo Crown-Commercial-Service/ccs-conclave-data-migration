@@ -17,7 +17,7 @@ import uk.gov.ccs.conclave.data.migration.service.MigrationService;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.dataMigration.model.UserTitle;
-import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
+import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 
 import java.util.List;
 
@@ -28,14 +28,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class DataMigrationApiControllerTest {
 
-    @Mock
-    private UserRepository userRepository;
-
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private MigrationService service;
+
+    @Mock
+    private ClientRepository clientRepository;
 
     private Organisation getTestOrganisation() {
         return new Organisation().identifierId("identifier").schemeId("scheme").rightToBuy(false).user(List.of(new User().firstName("first").lastName("last").email("email").title(UserTitle.DOCTOR)));
