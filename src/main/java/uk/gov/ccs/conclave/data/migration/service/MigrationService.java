@@ -56,7 +56,10 @@ public class MigrationService {
 
     public void test2() {
         List<Client> ts1 = errorService.testing();
-        System.out.println("TESTING: "+ ts1);
+        String ts2 = ts1.get(0).getKey();
+        System.out.println("TESTING1: "+ ts1.get(0));
+        System.out.println("TESTING2: "+ ts1.size());
+        System.out.println("TESTING3: "+ ts2);
     }
 }
 

@@ -20,4 +20,8 @@ public class Client {
 
     private String clientKeyDescription;
 
+    public String getKey() {
+        return this.apiKey;
+    }
+
 }
