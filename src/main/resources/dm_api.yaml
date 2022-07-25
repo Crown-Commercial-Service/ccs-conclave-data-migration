@@ -47,7 +47,7 @@ paths:
           name: x-api-key
           schema:
             type: string
-          required: true
+          required: false
           description:  api key for authorising client.
       requestBody:
         content:
