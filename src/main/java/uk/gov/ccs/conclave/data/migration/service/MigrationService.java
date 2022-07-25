@@ -24,11 +24,8 @@ public class MigrationService {
 
     private final ReportService reportService;
 
-    private final ErrorService errorService;
-
 
     public void migrate(List<Organisation> organisations) {
-        errorService.testing();
 
         LocalDateTime startTime = now();
         long failedUserCount = 0;
