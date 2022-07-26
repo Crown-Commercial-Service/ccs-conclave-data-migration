@@ -16,6 +16,7 @@ import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static java.lang.String.join;
@@ -158,11 +159,22 @@ public class ErrorService {
         return join(",", rolesList);
     }
 
-    public List<Client> testing() {
+    public List<Client> estesting() {
         LOGGER.info(" Testing Client DB Table: " + clientRepository.findAll());
         //clientRepository.findClient("abc123");
         return clientRepository.findAll();
     }
 
+    public Optional<Client> estesting2(String key) {
+        LOGGER.info(" Testing Client DB Table (2): " + clientRepository.findByApiKey(key));
+        return clientRepository.findByApiKey(key);
+    }
 
+    public void estesting3() {
+        LOGGER.info(" Saving to DB table!!!!");
+        Client client = new Client();
+        client.setApiKey("apiKey123");
+        client.setClientKeyDescription("testing3");
+        clientRepository.save(client);
+    }
 }

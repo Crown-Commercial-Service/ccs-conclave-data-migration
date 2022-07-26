@@ -10,6 +10,7 @@ import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
@@ -54,12 +55,16 @@ public class MigrationService {
         }
     }
 
-    public void test2() {
-        List<Client> ts1 = errorService.testing();
+    public void mstesting(String key) {
+        Optional<Client> x = errorService.estesting2(key);
+        List<Client> ts1 = errorService.estesting();
         String ts2 = ts1.get(0).getKey();
         System.out.println("TESTING1: "+ ts1.get(0));
         System.out.println("TESTING2: "+ ts1.size());
         System.out.println("TESTING3: "+ ts2);
+        System.out.println("TESTINGX1: "+ x.get());
+        System.out.println("TESTINGX2: "+ x.get().getClientKeyDescription());
+        errorService.estesting3();
     }
 }
 
