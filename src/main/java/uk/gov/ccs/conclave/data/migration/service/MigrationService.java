@@ -8,7 +8,9 @@ import uk.gov.ccs.conclave.data.migration.domain.Client;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,16 +57,21 @@ public class MigrationService {
         }
     }
 
-    public void mstesting(String key) {
-        Optional<Client> x = errorService.estesting2(key);
-        List<Client> ts1 = errorService.estesting();
-        String ts2 = ts1.get(0).getKey();
-        System.out.println("TESTING1: "+ ts1.get(0));
-        System.out.println("TESTING2: "+ ts1.size());
-        System.out.println("TESTING3: "+ ts2);
-        System.out.println("TESTINGX1: "+ x.get());
-        System.out.println("TESTINGX2: "+ x.get().getClientKeyDescription());
-        errorService.estesting3();
+    public boolean checkClientApiKey(String key) {
+        Optional<Client> record = errorService.findApiKey(key);
+        System.out.println("TESTING: "+ record.isPresent());
+        if (record.isPresent()) {
+            System.out.println("TESTING2: "+ record.get().getClientKeyDescription());
+            return true;
+        }
+        return false;
+    }
+
+    public void createClientApiKey() {
+        String key = AuthorizationService.createNewApiKey();
+        String description = "CCS Testing Team " + new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        Client newRecord = errorService.saveNewApiKey(key, description);
+        System.out.println("TESTING3: "+ newRecord.getClientId());
     }
 }
 

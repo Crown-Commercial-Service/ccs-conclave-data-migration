@@ -46,6 +46,9 @@ public class ErrorService {
     public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
     public static final String MIGRATION_STATUS_COMPLETE = "Completed with no errors. ";
     public static final String MIGRATION_STATUS_ABORTED = "Migration aborted. ";
+    public static final String PROCESS_ABORTED = "Migration aborted. ";
+    public static final String NEW_API_KEY = "Created and saving a new x-api-key to the database: ";
+    public static final String CHECKING_API_KEY = "Checking x-api-key in the database. ";
     static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 
     private final OrganisationRepository organisationRepository;
@@ -75,7 +78,7 @@ public class ErrorService {
 
     private void handleFailure(String message, Integer statusCode) throws DataMigrationException {
         if (contains(FATAL_ERROR_CODES, statusCode)) {
-            LOGGER.error("Process aborted. " + message);
+            LOGGER.error(PROCESS_ABORTED + message);
             throw new DataMigrationException(message, statusCode);
         }
     }
@@ -159,22 +162,16 @@ public class ErrorService {
         return join(",", rolesList);
     }
 
-    public List<Client> estesting() {
-        LOGGER.info(" Testing Client DB Table: " + clientRepository.findAll());
-        //clientRepository.findClient("abc123");
-        return clientRepository.findAll();
-    }
-
-    public Optional<Client> estesting2(String key) {
-        LOGGER.info(" Testing Client DB Table (2): " + clientRepository.findByApiKey(key));
+    public Optional<Client> findApiKey(String key) {
+        LOGGER.info(CHECKING_API_KEY);
         return clientRepository.findByApiKey(key);
     }
 
-    public void estesting3() {
-        LOGGER.info(" Saving to DB table!!!!");
+    public Client saveNewApiKey(String key, String description) {
+        LOGGER.info(NEW_API_KEY + description);
         Client client = new Client();
-        client.setApiKey("apiKey123");
-        client.setClientKeyDescription("testing3");
-        clientRepository.save(client);
+        client.setApiKey(key);
+        client.setClientKeyDescription(description);
+        return clientRepository.save(client);
     }
 }

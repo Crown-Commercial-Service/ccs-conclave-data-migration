@@ -29,12 +29,11 @@ public class AuthorizationService {
         String key = null;
             try {
                 key = AuthorizationService.randomAESKeyGen(256);
-                log.info("Successfully created new API key.");
+                log.info("Successfully generated new key.");
             } catch (NoSuchAlgorithmException e) {
-                log.error("Exception caught when creating new API key.");
+                log.error("Exception caught when creating new key.");
                 e.printStackTrace();
             }
-            System.out.println(key);
             return key;
     }
 }
