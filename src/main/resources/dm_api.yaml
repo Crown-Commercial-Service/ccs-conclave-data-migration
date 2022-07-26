@@ -43,6 +43,12 @@ paths:
             type: string
           required: false
           description:  file location e.g. /path
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+          description:  api key for authorizing client.
       requestBody:
         content:
           application/json:
@@ -58,7 +64,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Summary'
+                  $ref: 'String'
         '201':
           description: Created
         '400':
@@ -255,8 +261,6 @@ components:
     #
     OrgRole:
       type: object
-      required:
-        - name
       properties:
         name:
           type: string

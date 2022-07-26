@@ -3,11 +3,16 @@ package uk.gov.ccs.conclave.data.migration.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import uk.gov.ccs.conclave.data.migration.domain.Client;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
@@ -23,6 +28,8 @@ public class MigrationService {
     private final UserService userService;
 
     private final ReportService reportService;
+
+    private final ErrorService errorService;
 
 
     public void migrate(List<Organisation> organisations) {
@@ -48,6 +55,20 @@ public class MigrationService {
             reportService.generateReport(startTime, now(), organisations, failedUserCount, processedUserCount, MIGRATION_STATUS_ABORTED + e.getMessage());
             throw new ResponseStatusException(valueOf(e.getCode()), e.getMessage());
         }
+    }
+
+    public boolean checkClientApiKey(String key) {
+        Optional<Client> record = errorService.findApiKey(key);
+        if (record.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    public void createClientApiKey() {
+        String key = AuthorizationService.createNewApiKey();
+        String description = "CCS Testing Team " + new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        errorService.saveNewApiKey(key, description);
     }
 }
 

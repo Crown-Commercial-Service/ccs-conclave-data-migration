@@ -6,7 +6,6 @@
 package uk.gov.ccs.swagger.dataMigration.api;
 
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.dataMigration.model.Summary;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -38,7 +37,7 @@ public interface DataMigrationApi {
 
     @Operation(summary = "A generic endpoint for regisering organisations and users", description = "", tags={ "datamigration" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Summary.class)))),
+        @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = String.class)))),
         
         @ApiResponse(responseCode = "201", description = "Created"),
         
@@ -69,7 +68,7 @@ public interface DataMigrationApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<List<Summary>> appMigrateOrg(@Parameter(in = ParameterIn.PATH, description = "File format - CSV/JSON", required=true, schema=@Schema()) @PathVariable("fileFormat") String fileFormat, @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema()) @Valid @RequestParam(value = "docId", required = false) String docId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody List<Organisation> body);
+    ResponseEntity<List<String>> appMigrateOrg(@Parameter(in = ParameterIn.HEADER, description = "api key for authorizing client." ,required=true,schema=@Schema()) @RequestHeader(value="x-api-key", required=true) String xApiKey, @Parameter(in = ParameterIn.PATH, description = "File format - CSV/JSON", required=true, schema=@Schema()) @PathVariable("fileFormat") String fileFormat, @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema()) @Valid @RequestParam(value = "docId", required = false) String docId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody List<Organisation> body);
 
 }
 
