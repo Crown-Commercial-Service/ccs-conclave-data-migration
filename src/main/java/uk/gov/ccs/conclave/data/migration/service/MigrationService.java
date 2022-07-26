@@ -59,9 +59,7 @@ public class MigrationService {
 
     public boolean checkClientApiKey(String key) {
         Optional<Client> record = errorService.findApiKey(key);
-        System.out.println("TESTING: "+ record.isPresent());
         if (record.isPresent()) {
-            System.out.println("TESTING2: "+ record.get().getClientKeyDescription());
             return true;
         }
         return false;
@@ -70,8 +68,7 @@ public class MigrationService {
     public void createClientApiKey() {
         String key = AuthorizationService.createNewApiKey();
         String description = "CCS Testing Team " + new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        Client newRecord = errorService.saveNewApiKey(key, description);
-        System.out.println("TESTING3: "+ newRecord.getClientId());
+        errorService.saveNewApiKey(key, description);
     }
 }
 
