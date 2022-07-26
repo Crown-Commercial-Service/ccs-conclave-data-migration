@@ -6,14 +6,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.domain.User;
+import uk.gov.ccs.conclave.data.migration.domain.Client;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
+import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static java.lang.String.join;
@@ -33,7 +36,8 @@ public class ErrorService {
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
     public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
     public static final String SSO_USER_CONTACT_ERROR_MESSAGE = "Error while creating SSO User Contact. ";
-    public static final String SSO_USER_CONTACT_ERROR_INFO = "Missing Contact Details for User: ";
+    public static final String SSO_USER_CONTACT_ERROR_INFO = "Missing Contact Point Details for User. ";
+    public static final String SSO_USER_CONTACT_RESPONSE_INFO = "No Contact Point created for User: ";
     public static final String SSO_USER_ERROR_MESSAGE = "Error while creating SSO user. ";
     public static final String SSO_ROLE_NOT_FOUND = " Role does not exist. ";
     public static final String SSO_IDENTITY_PROVIDER_ERROR_MESSAGE = "Error while retrieving identity provider of the SSO organisation. ";
@@ -42,11 +46,16 @@ public class ErrorService {
     public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
     public static final String MIGRATION_STATUS_COMPLETE = "Completed with no errors. ";
     public static final String MIGRATION_STATUS_ABORTED = "Migration aborted. ";
+    public static final String PROCESS_ABORTED = "Migration aborted. ";
+    public static final String NEW_API_KEY = "Created and saving a new x-api-key to the database: ";
+    public static final String CHECKING_API_KEY = "Checking x-api-key in the database. ";
     static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 
     private final OrganisationRepository organisationRepository;
 
     private final UserRepository userRepository;
+
+    private final ClientRepository clientRepository;
 
     public void logWithStatus(Organisation org, String message, uk.gov.ccs.swagger.sso.ApiException exception, Integer statusCode) throws DataMigrationException {
         LOGGER.error("{}{}: {}", message, exception.getMessage(), exception.getResponseBody(), exception);
@@ -69,7 +78,7 @@ public class ErrorService {
 
     private void handleFailure(String message, Integer statusCode) throws DataMigrationException {
         if (contains(FATAL_ERROR_CODES, statusCode)) {
-            LOGGER.error("Process aborted. " + message);
+            LOGGER.error(PROCESS_ABORTED + message);
             throw new DataMigrationException(message, statusCode);
         }
     }
@@ -153,5 +162,16 @@ public class ErrorService {
         return join(",", rolesList);
     }
 
+    public Optional<Client> findApiKey(String key) {
+        LOGGER.info(CHECKING_API_KEY);
+        return clientRepository.findByApiKey(key);
+    }
 
+    public Client saveNewApiKey(String key, String description) {
+        LOGGER.info(NEW_API_KEY + description);
+        Client client = new Client();
+        client.setApiKey(key);
+        client.setClientKeyDescription(description);
+        return clientRepository.save(client);
+    }
 }
