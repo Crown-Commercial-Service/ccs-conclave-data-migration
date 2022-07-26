@@ -29,9 +29,6 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     @Override
     public ResponseEntity<List<String>> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
-        if (fileFormat.equals("newKey")) {
-            migrationService.createClientApiKey();
-        }
 
         responseReport.clear();
 
@@ -40,6 +37,15 @@ public class DataMigrationApiController implements DataMigrationApi {
             responseReport.add("Unauthorised Access: Invalid x-api-key.");
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
+                    .body(responseReport);
+        }
+
+        if (fileFormat.equals("newApiKey")) {
+            log.error("{}:{}","Successfully created a new x-api-key. ", "Find the key and details in the database. ");
+            migrationService.createClientApiKey();
+            responseReport.add("Successfully created a new x-api-key. Find the key and details in the database.");
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
                     .body(responseReport);
         }
 
