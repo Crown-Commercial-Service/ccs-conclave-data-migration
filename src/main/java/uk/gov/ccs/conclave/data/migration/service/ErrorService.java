@@ -48,7 +48,7 @@ public class ErrorService {
     public static final String MIGRATION_STATUS_ABORTED = "Migration aborted. ";
     public static final String PROCESS_ABORTED = "Migration aborted. ";
     public static final String NEW_API_KEY = "Created and saving a new x-api-key to the database: ";
-    public static final String CHECKING_API_KEY = "Checking x-api-key in the database. ";
+    public static final String CHECKING_API_KEY = "Checking for x-api-key in the database. ";
     static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 
     private final OrganisationRepository organisationRepository;
