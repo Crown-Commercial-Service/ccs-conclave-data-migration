@@ -30,8 +30,9 @@ public class DataMigrationApiController implements DataMigrationApi {
     @Override
     public ResponseEntity<List<String>> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
         responseReport.clear();
-
+        System.out.println(" Testing Creating New API Key: " + fileFormat);
         if (fileFormat.equals("key")) {
+            System.out.println(" SUCCESS Creating New API Key: " + fileFormat);
             migrationService.createClientApiKey();
         }
 
