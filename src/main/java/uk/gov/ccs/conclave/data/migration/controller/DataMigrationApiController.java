@@ -29,15 +29,11 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     @Override
     public ResponseEntity<List<String>> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
-        responseReport.clear();
-        System.out.println(" Testing Creating New API Key: " + fileFormat);
-        if (fileFormat.equals("key")) {
-            System.out.println(" SUCCESS Creating New API Key: " + fileFormat);
+        if (fileFormat.equals("newKey")) {
             migrationService.createClientApiKey();
         }
 
-        System.out.println(" Testing Client API Key: " + xApiKey);
-        System.out.println(" Testing API Key Check True/False: " + migrationService.checkClientApiKey(xApiKey));
+        responseReport.clear();
 
         if (xApiKey == null || xApiKey.trim().isEmpty() || !migrationService.checkClientApiKey(xApiKey)) {
             log.error("{}:{}","Unauthorised Access ", "Invalid x-api-key. ");
