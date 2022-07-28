@@ -30,14 +30,14 @@
             <column name="duration" type="FLOAT8">
                 <constraints nullable="false"/>
             </column>
-            <column name="end_time" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="end_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="failed_users" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="processed_users" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="start_time" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="start_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="status" type="VARCHAR(255)"/>
             <column name="total_organisations" type="BIGINT">
                 <constraints nullable="false"/>
@@ -79,5 +79,14 @@
     </changeSet>
     <changeSet author="benjamin.gill" id="1632300211382-9">
         <renameColumn tableName="users" oldColumnName="contact_name" newColumnName="contact_point_name"/>
+    </changeSet>
+    <changeSet author="thomas.berey" id="1632300211382-11">
+        <createTable tableName="clients">
+            <column autoIncrement="true" name="client_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="clients_pkey"/>
+            </column>
+            <column name="api_key" type="VARCHAR(255)"/>
+            <column name="client_key_description" type="VARCHAR(255)"/>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.cii.model.ContactPoint;
@@ -21,6 +22,8 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.stripToEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_ORG_CONTACT_ERROR_MESSAGE;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_ERROR_MESSAGE;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_ERROR_INFO;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_RESPONSE_INFO;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +51,10 @@ public class ContactService {
                 log.error("{}{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_CONTACT_ERROR_MESSAGE + e.getMessage(), e.getCode(), organisation);
             }
+        } else {
+            log.error("{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, SSO_USER_CONTACT_ERROR_INFO);
+            errorService.saveUserDetailWithStatusCodeWithoutException(user, SSO_USER_CONTACT_ERROR_MESSAGE + SSO_USER_CONTACT_ERROR_INFO, 400, organisation);
+            DataMigrationApiController.responseReport.add(SSO_USER_CONTACT_RESPONSE_INFO + user.getEmail());
         }
     }
 
