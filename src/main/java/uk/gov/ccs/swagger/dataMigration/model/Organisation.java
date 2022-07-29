@@ -88,7 +88,7 @@ public class Organisation   {
   @Schema(example = "true", required = true, description = "Buyer status")
       @NotNull
 
-  @Pattern(regexp="^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$")   public String getRightToBuy() {
+  @Size(min=4,max=5) @Pattern(regexp="^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$")   public String getRightToBuy() {
     return rightToBuy;
   }
 
