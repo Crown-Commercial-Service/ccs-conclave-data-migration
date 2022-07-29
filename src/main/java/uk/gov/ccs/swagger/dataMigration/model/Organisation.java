@@ -85,8 +85,9 @@ public class Organisation   {
    * Buyer status
    * @return rightToBuy
    **/
-  @Schema(example = "true", description = "Buyer status")
-  
+  @Schema(example = "true", required = true, description = "Buyer status")
+      @NotNull
+
     public Boolean isRightToBuy() {
     return rightToBuy;
   }
