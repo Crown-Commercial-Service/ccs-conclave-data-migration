@@ -25,7 +25,7 @@ public class Organisation   {
   @JsonProperty("scheme-id")
   private String schemeId = null;
 
-  @JsonProperty("rightToBuy")
+  @JsonProperty("right-to-buy")
   private Boolean rightToBuy = null;
 
   @JsonProperty("orgRoles")
