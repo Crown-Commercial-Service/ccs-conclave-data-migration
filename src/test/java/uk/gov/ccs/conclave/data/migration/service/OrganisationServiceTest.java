@@ -63,7 +63,7 @@ public class OrganisationServiceTest {
 
         ArgumentCaptor<OrganisationProfileInfo> argumentCaptor = ArgumentCaptor.forClass(OrganisationProfileInfo.class);
         verify(conclaveClient).createConclaveOrg(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue().getDetail().getRightToBuy()).isEqualTo(true);
+        assertThat(argumentCaptor.getValue().getDetail().isRightToBuy()).isEqualTo(true);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class OrganisationServiceTest {
 
         ArgumentCaptor<OrganisationProfileInfo> argumentCaptor = ArgumentCaptor.forClass(OrganisationProfileInfo.class);
         verify(conclaveClient).createConclaveOrg(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue().getDetail().getRightToBuy()).isEqualTo(false);
+        assertThat(argumentCaptor.getValue().getDetail().isRightToBuy()).isEqualTo(false);
     }
 
     @Test
