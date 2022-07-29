@@ -106,6 +106,7 @@ components:
           example: GB-COH
         rightToBuy:
           type: string
+          pattern: '^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$'
           description: Buyer status
           example: true
         orgRoles:
