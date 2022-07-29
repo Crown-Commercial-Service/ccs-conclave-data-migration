@@ -108,6 +108,7 @@ components:
           type: boolean
           description: Buyer status
           example: True
+          nullable: False
         orgRoles:
           type: array
           items:
