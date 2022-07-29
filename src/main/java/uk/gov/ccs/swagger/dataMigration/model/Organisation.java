@@ -25,7 +25,7 @@ public class Organisation   {
   @JsonProperty("scheme-id")
   private String schemeId = null;
 
-  @JsonProperty("right-to-buy")
+  @JsonProperty("rightToBuy")
   private Boolean rightToBuy = null;
 
   @JsonProperty("orgRoles")
@@ -45,9 +45,8 @@ public class Organisation   {
    * Identifier ID
    * @return identifierId
    **/
-  @Schema(example = "100009655", required = true, description = "Identifier ID")
-      @NotNull
-
+  @Schema(example = "100009655", description = "Identifier ID")
+  
     public String getIdentifierId() {
     return identifierId;
   }
