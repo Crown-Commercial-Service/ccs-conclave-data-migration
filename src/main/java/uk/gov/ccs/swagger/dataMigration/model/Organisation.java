@@ -25,11 +25,8 @@ public class Organisation   {
   @JsonProperty("scheme-id")
   private String schemeId = null;
 
-  @JsonProperty("rightToBy")
-  private Boolean rightToBy = null;
-
   @JsonProperty("rightToBuy")
-  private Boolean rightToBuy = null;
+  private String rightToBuy = null;
 
   @JsonProperty("orgRoles")
   @Valid
@@ -79,27 +76,7 @@ public class Organisation   {
     this.schemeId = schemeId;
   }
 
-  public Organisation rightToBy(Boolean rightToBy) {
-    this.rightToBy = rightToBy;
-    return this;
-  }
-
-  /**
-   * Buyer status
-   * @return rightToBy
-   **/
-  @Schema(example = "true", required = true, description = "Buyer status")
-      @NotNull
-
-    public Boolean isRightToBy() {
-    return rightToBy;
-  }
-
-  public void setRightToBy(Boolean rightToBy) {
-    this.rightToBy = rightToBy;
-  }
-
-  public Organisation rightToBuy(Boolean rightToBuy) {
+  public Organisation rightToBuy(String rightToBuy) {
     this.rightToBuy = rightToBuy;
     return this;
   }
@@ -111,12 +88,16 @@ public class Organisation   {
   @Schema(example = "true", required = true, description = "Buyer status")
       @NotNull
 
-    public Boolean isRightToBuy() {
+    public String getRightToBuy() {
     return rightToBuy;
   }
 
-  public void setRightToBuy(Boolean rightToBuy) {
+  public void setRightToBuy(String rightToBuy) {
     this.rightToBuy = rightToBuy;
+  }
+
+  public Boolean isRightToBuy() {
+    return Boolean.parseBoolean(rightToBuy);
   }
 
   public Organisation orgRoles(List<OrgRole> orgRoles) {
@@ -185,7 +166,6 @@ public class Organisation   {
     Organisation organisation = (Organisation) o;
     return Objects.equals(this.identifierId, organisation.identifierId) &&
         Objects.equals(this.schemeId, organisation.schemeId) &&
-        Objects.equals(this.rightToBy, organisation.rightToBy) &&
         Objects.equals(this.rightToBuy, organisation.rightToBuy) &&
         Objects.equals(this.orgRoles, organisation.orgRoles) &&
         Objects.equals(this.user, organisation.user);
@@ -193,7 +173,7 @@ public class Organisation   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifierId, schemeId, rightToBy, rightToBuy, orgRoles, user);
+    return Objects.hash(identifierId, schemeId, rightToBuy, orgRoles, user);
   }
 
   @Override
@@ -203,7 +183,6 @@ public class Organisation   {
     
     sb.append("    identifierId: ").append(toIndentedString(identifierId)).append("\n");
     sb.append("    schemeId: ").append(toIndentedString(schemeId)).append("\n");
-    sb.append("    rightToBy: ").append(toIndentedString(rightToBy)).append("\n");
     sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
     sb.append("    orgRoles: ").append(toIndentedString(orgRoles)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
