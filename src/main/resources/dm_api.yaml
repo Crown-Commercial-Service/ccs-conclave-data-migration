@@ -107,7 +107,7 @@ components:
         rightToBuy:
           type: boolean
           description: Buyer status
-          example: true
+          example: truee
           required: true
         orgRoles:
           type: array
@@ -221,7 +221,7 @@ components:
         rightToBuy:
           type: boolean
           description: Buyer status
-          example: true
+          example: truee
           required: true
         orgRoles:
           type: array
