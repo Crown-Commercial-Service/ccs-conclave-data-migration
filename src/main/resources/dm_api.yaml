@@ -108,8 +108,6 @@ components:
           type: boolean
           description: Buyer status
           example: true
-          nullable: false
-          allowEmptyValue: false
         orgRoles:
           type: array
           items:
@@ -171,8 +169,7 @@ components:
           example: http://www.linkedin.com/
           nullable: true
         userRoles:
-          allowEmptyValue: false
-          required: true
+          minItems: 1
           type: array
           items:
             $ref: '#/components/schemas/UserRole'
@@ -204,9 +201,8 @@ components:
           description: User Contact Email
           example: abc@somewhere.org
         userRoles:
-          allowEmptyValue: false
+          minItems: 1
           nullable: false
-          required: true
           type: array
           items:
             $ref: '#/components/schemas/UserRole'
@@ -278,7 +274,7 @@ components:
           example: RMI
     
     UserRole:
-      allowEmptyValue: false
+      minItems: 1
       nullable: false
       type: object
       required:
