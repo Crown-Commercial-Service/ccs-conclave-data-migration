@@ -43,7 +43,7 @@ public class ReportService {
         Summary summary = new Summary();
         summary.setIdentifierId(org.getIdentifierId());
         summary.setSchemeId(org.getSchemeId());
-        summary.setRightToBuy(org.isRightToBuy());
+        summary.setRightToBuy(org.getRightToBuy());
         if (null != org.getOrgRoles()) {
             summary.setOrgRoles(org.getOrgRoles());
         }
