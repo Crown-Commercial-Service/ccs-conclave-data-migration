@@ -26,7 +26,7 @@ public class Organisation   {
   private String schemeId = null;
 
   @JsonProperty("rightToBy")
-  private String rightToBy = null;
+  private Boolean rightToBy = null;
 
   @JsonProperty("rightToBuy")
   private Boolean rightToBuy = null;
@@ -79,7 +79,7 @@ public class Organisation   {
     this.schemeId = schemeId;
   }
 
-  public Organisation rightToBy(String rightToBy) {
+  public Organisation rightToBy(Boolean rightToBy) {
     this.rightToBy = rightToBy;
     return this;
   }
@@ -91,11 +91,11 @@ public class Organisation   {
   @Schema(example = "true", required = true, description = "Buyer status")
       @NotNull
 
-    public String getRightToBy() {
+    public Boolean isRightToBy() {
     return rightToBy;
   }
 
-  public void setRightToBy(String rightToBy) {
+  public void setRightToBy(Boolean rightToBy) {
     this.rightToBy = rightToBy;
   }
 
