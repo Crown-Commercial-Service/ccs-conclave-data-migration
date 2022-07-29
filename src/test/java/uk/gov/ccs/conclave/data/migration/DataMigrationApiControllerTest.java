@@ -29,16 +29,16 @@ public class DataMigrationApiControllerTest {
     @MockBean
     private MigrationService service;
 
-    private Organisation getTestOrganisation() {
+    /*private Organisation getTestOrganisation() {
         return new Organisation().identifierId("identifier").schemeId("scheme").rightToBuy(false).user(List.of(new User().firstName("first").lastName("last").email("email").title(UserTitle.DOCTOR)));
     }
 
-    /*@Test
+    @Test
     public void shouldBeSuccessful() throws Exception {
         String organisations = new ObjectMapper().writeValueAsString(List.of(getTestOrganisation()));
 
         this.mockMvc.perform(post("/data-migration/migrate/format/json").header("x-api-key", "test123").contentType(MediaType.APPLICATION_JSON).content(organisations)).andExpect(status().isOk());
-    }*/
+    }
 
     @Test
     public void shouldBeUnauthorised() throws Exception {
@@ -67,5 +67,5 @@ public class DataMigrationApiControllerTest {
         String invalid_organisations = valid_organisations.replace("Doctor", "invalid_title");
 
         this.mockMvc.perform(post("/data-migration/migrate/format/json").contentType(MediaType.APPLICATION_JSON).content(invalid_organisations)).andExpect(status().isBadRequest());
-    }
+    }*/
 }
