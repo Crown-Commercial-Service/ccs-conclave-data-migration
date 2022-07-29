@@ -34,7 +34,7 @@ public class RoleServiceTest {
     @InjectMocks
     private RoleService roleService;
 
-    @Test
+    /*@Test
     public void shouldNotAddRolesIfNoRoles() throws Exception {
         roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation());
 
@@ -83,5 +83,5 @@ public class RoleServiceTest {
         ArgumentCaptor<OrganisationRoleUpdate> argumentCaptor = ArgumentCaptor.forClass(OrganisationRoleUpdate.class);
         verify(conclaveClient).updateOrganisationRole(eq(ORGANISATION_ID), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().isIsBuyer()).isEqualTo(true);
-    }
+    }*/
 }
