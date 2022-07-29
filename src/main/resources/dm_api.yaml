@@ -170,14 +170,16 @@ components:
           example: http://www.linkedin.com/
           nullable: true
         userRoles:
+          required: true
           type: array
           items:
             $ref: '#/components/schemas/UserRole'
-          nullable: True
+          nullable: false
       required:
         - email
         - firstName
         - lastName
+        - userRoles
 
     UserMin:
       properties:
@@ -207,6 +209,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Status'
+      required:
+        - userRoles
 
     Summary:
       properties:
@@ -222,7 +226,6 @@ components:
           type: boolean
           description: Buyer status
           example: truee
-          required: true
         orgRoles:
           type: array
           items:
