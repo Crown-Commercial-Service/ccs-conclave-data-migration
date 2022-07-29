@@ -137,7 +137,7 @@ public class OrganisationService {
     private OrganisationDetail buildOrgDetail(OrgMigration ciiResponse, Organisation org) {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
-        organisationDetail.setRightToBuy(org.isRightToBuy());
+        organisationDetail.setRightToBuy(org.getRightToBuy());
         return organisationDetail;
     }
 

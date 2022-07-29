@@ -169,7 +169,7 @@ public class OrganisationDetail {
    * @return rightToBuy
   **/
   @Schema(description = "")
-  public Boolean isRightToBuy() {
+  public Boolean getRightToBuy() {
     return rightToBuy;
   }
 
