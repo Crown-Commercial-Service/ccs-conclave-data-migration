@@ -26,7 +26,7 @@ public class Summary   {
   @JsonProperty("scheme-id")
   private String schemeId = null;
 
-  @JsonProperty("right-to-buy")
+  @JsonProperty("rightToBuy")
   private Boolean rightToBuy = null;
 
   @JsonProperty("orgRoles")

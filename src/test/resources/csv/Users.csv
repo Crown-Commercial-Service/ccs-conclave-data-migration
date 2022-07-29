@@ -1,4 +1,4 @@
-identifier-id,scheme-id,right-to-buy,email,title,firstName,lastName,contactEmail,contactMobile,contactPhone,contactFax,contactSocial
+identifier-id,scheme-id,rightToBuy,email,title,firstName,lastName,contactEmail,contactMobile,contactPhone,contactFax,contactSocial
 10009655,URN,FALSE,admin@anywhere.com,Miss,Zoe,Smith,abc@anywhere.com,02846 726492,0207 777 7777,0207 777 7778,http://www.linkedin.com/
 10009655,URN,FALSE,abc@anywhere.com,Mr,Joe,Bloggs,abc@anywhere.com,01846 938941,0207 777 7777,0207 777 7778,http://www.linkedin.com/
 10009655,URN,FALSE,xyz@anywhere.com,Mr,John,Smith,abc@anywhere.com,09573 826459,0207 777 7777,0207 777 7778,http://www.linkedin.com/
