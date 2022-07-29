@@ -105,7 +105,7 @@ components:
           description: Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
           example: GB-COH
         rightToBy:
-          type: string
+          type: boolean
           description: Buyer status
           example: true
         rightToBuy:
