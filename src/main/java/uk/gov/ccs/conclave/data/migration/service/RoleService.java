@@ -39,7 +39,7 @@ public class RoleService {
             }
             conclaveClient.updateOrganisationRole(
                     organisationId,
-                    new OrganisationRoleUpdate().rolesToAdd(rolesToAdd).isBuyer(organisation.getRightToBuy())
+                    new OrganisationRoleUpdate().rolesToAdd(rolesToAdd).isBuyer(organisation.isRightToBuy())
             );
         }
     }

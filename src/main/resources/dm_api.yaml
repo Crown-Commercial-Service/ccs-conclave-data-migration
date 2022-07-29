@@ -105,10 +105,9 @@ components:
           description: Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
           example: GB-COH
         rightToBuy:
-          type: string
+          type: boolean
           description: Buyer status
-          example: True
-          nullable: False
+          example: true
         orgRoles:
           type: array
           items:
@@ -120,7 +119,6 @@ components:
             $ref: '#/components/schemas/User'
           nullable: True
       required:
-        - rightToBuy
         - identifier-id
         - scheme-id
     User:

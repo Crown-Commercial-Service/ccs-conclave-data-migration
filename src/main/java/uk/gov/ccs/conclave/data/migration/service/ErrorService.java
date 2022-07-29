@@ -142,7 +142,7 @@ public class ErrorService {
         Org org = new Org();
         org.setIdentifierId(organisation.getIdentifierId());
         org.setSchemeId(organisation.getSchemeId());
-        org.setRightToBuy(organisation.getRightToBuy());
+        org.setRightToBuy(organisation.isRightToBuy());
         var orgRoles = organisation.getOrgRoles();
         if (isNotEmpty(orgRoles)) {
             org.setOrgRoles(orgRolesAsString(orgRoles));

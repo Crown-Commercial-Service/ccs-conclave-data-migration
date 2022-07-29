@@ -26,7 +26,7 @@ public class Organisation   {
   private String schemeId = null;
 
   @JsonProperty("rightToBuy")
-  private String rightToBuy = null;
+  private Boolean rightToBuy = null;
 
   @JsonProperty("orgRoles")
   @Valid
@@ -76,7 +76,7 @@ public class Organisation   {
     this.schemeId = schemeId;
   }
 
-  public Organisation rightToBuy(String rightToBuy) {
+  public Organisation rightToBuy(Boolean rightToBuy) {
     this.rightToBuy = rightToBuy;
     return this;
   }
@@ -85,14 +85,13 @@ public class Organisation   {
    * Buyer status
    * @return rightToBuy
    **/
-  @Schema(example = "true", required = true, description = "Buyer status")
-      @NotNull
-
-    public Boolean getRightToBuy() {
-    return Boolean.parseBoolean(rightToBuy);
+  @Schema(example = "true", description = "Buyer status")
+  
+    public Boolean isRightToBuy() {
+    return rightToBuy;
   }
 
-  public void setRightToBuy(String rightToBuy) {
+  public void setRightToBuy(Boolean rightToBuy) {
     this.rightToBuy = rightToBuy;
   }
 
