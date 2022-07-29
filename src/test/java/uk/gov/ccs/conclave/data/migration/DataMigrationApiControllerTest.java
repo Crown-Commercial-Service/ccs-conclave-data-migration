@@ -40,12 +40,12 @@ public class DataMigrationApiControllerTest {
         this.mockMvc.perform(post("/data-migration/migrate/format/json").header("x-api-key", "test123").contentType(MediaType.APPLICATION_JSON).content(organisations)).andExpect(status().isOk());
     }*/
 
-    @Test
+    /*@Test
     public void shouldBeUnauthorised() throws Exception {
         String organisations = new ObjectMapper().writeValueAsString(List.of(getTestOrganisation()));
 
         this.mockMvc.perform(post("/data-migration/migrate/format/json").header("x-api-key", "testing12345").contentType(MediaType.APPLICATION_JSON).content(organisations)).andExpect(status().isUnauthorized());
-    }
+    }*/
 
     @Test
     public void shouldRejectNoApiKey() throws Exception {

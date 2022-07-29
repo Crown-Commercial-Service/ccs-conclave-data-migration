@@ -76,7 +76,14 @@ public class Organisation   {
     this.schemeId = schemeId;
   }
 
-  public Organisation rightToBuy(Boolean rightToBuy) {
+  /**
+   * Buyer status
+   * @return rightToBuy
+   **/
+  @Schema(example = "true", required = true, description = "Buyer status")
+      @NotNull
+
+    public Organisation rightToBuy(Boolean rightToBuy) {
     this.rightToBuy = rightToBuy;
     return this;
   }

@@ -156,7 +156,7 @@ public class UserMin   {
   @Schema(required = true, description = "")
       @NotNull
     @Valid
-    public List<UserRole> getUserRoles() {
+  @Size(min=1)   public List<UserRole> getUserRoles() {
     return userRoles;
   }
 
