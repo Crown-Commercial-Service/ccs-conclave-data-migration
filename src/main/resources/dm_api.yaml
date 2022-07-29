@@ -120,7 +120,6 @@ components:
             $ref: '#/components/schemas/User'
           nullable: True
       required:
-        - identifier-id
         - scheme-id
         - rightToBuy
     User:
