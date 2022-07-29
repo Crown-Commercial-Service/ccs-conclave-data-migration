@@ -105,9 +105,10 @@ components:
           description: Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
           example: GB-COH
         rightToBuy:
-          type: boolean
+          type: string
+          pattern: '^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$'
           description: Buyer status
-          example: True
+          example: true
         orgRoles:
           type: array
           items:
@@ -169,14 +170,16 @@ components:
           example: http://www.linkedin.com/
           nullable: true
         userRoles:
+          minItems: 1
           type: array
           items:
             $ref: '#/components/schemas/UserRole'
-          nullable: True
+          nullable: false
       required:
         - email
         - firstName
         - lastName
+        - userRoles
 
     UserMin:
       properties:
@@ -199,6 +202,8 @@ components:
           description: User Contact Email
           example: abc@somewhere.org
         userRoles:
+          minItems: 1
+          nullable: false
           type: array
           items:
             $ref: '#/components/schemas/UserRole'
@@ -206,6 +211,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Status'
+      required:
+        - userRoles
 
     Summary:
       properties:
@@ -220,7 +227,7 @@ components:
         rightToBuy:
           type: boolean
           description: Buyer status
-          example: True
+          example: truee
         orgRoles:
           type: array
           items:
@@ -258,7 +265,7 @@ components:
         - Organisation requires a minimum of 1 Admin user
         - Unable to process record - see http response code
         - Record processed
-    #
+    
     OrgRole:
       type: object
       properties:
@@ -266,13 +273,18 @@ components:
           type: string
           description: Organisation Roles
           example: RMI
-    #
+    
     UserRole:
+      minItems: 1
+      nullable: false
       type: object
       required:
         - name
       properties:
         name:
+          allowEmptyValue: false
+          nullable: false
+          required: true
           type: string
           description: User Roles
           example: RMI User

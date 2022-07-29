@@ -37,7 +37,7 @@ public class UserMin   {
 
   @JsonProperty("userRoles")
   @Valid
-  private List<UserRole> userRoles = null;
+  private List<UserRole> userRoles = new ArrayList<UserRole>();
 
   @JsonProperty("status")
   @Valid
@@ -145,9 +145,6 @@ public class UserMin   {
   }
 
   public UserMin addUserRolesItem(UserRole userRolesItem) {
-    if (this.userRoles == null) {
-      this.userRoles = new ArrayList<UserRole>();
-    }
     this.userRoles.add(userRolesItem);
     return this;
   }
@@ -156,9 +153,10 @@ public class UserMin   {
    * Get userRoles
    * @return userRoles
    **/
-  @Schema(description = "")
-      @Valid
-    public List<UserRole> getUserRoles() {
+  @Schema(required = true, description = "")
+      @NotNull
+    @Valid
+  @Size(min=1)   public List<UserRole> getUserRoles() {
     return userRoles;
   }
 

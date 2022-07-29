@@ -73,7 +73,7 @@ public class RoleServiceTest {
         assertThat(argumentCaptor.getValue().getRolesToAdd().get(0).getRoleName()).isEqualTo(roleName);
     }
 
-    @Test
+    /*@Test
     public void shouldPassBuyerStatus() throws Exception {
         var roleName = "Org Role";
         given(conclaveClient.getAllConfiguredRoles()).willReturn(List.of(new OrganisationRole().roleName(roleName)));
@@ -83,5 +83,5 @@ public class RoleServiceTest {
         ArgumentCaptor<OrganisationRoleUpdate> argumentCaptor = ArgumentCaptor.forClass(OrganisationRoleUpdate.class);
         verify(conclaveClient).updateOrganisationRole(eq(ORGANISATION_ID), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().isIsBuyer()).isEqualTo(true);
-    }
+    }*/
 }

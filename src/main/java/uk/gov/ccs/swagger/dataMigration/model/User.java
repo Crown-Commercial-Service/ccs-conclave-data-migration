@@ -51,7 +51,7 @@ public class User   {
 
   @JsonProperty("userRoles")
   @Valid
-  private List<UserRole> userRoles = null;
+  private List<UserRole> userRoles = new ArrayList<UserRole>();
 
   public User email(String email) {
     this.email = email;
@@ -253,9 +253,6 @@ public class User   {
   }
 
   public User addUserRolesItem(UserRole userRolesItem) {
-    if (this.userRoles == null) {
-      this.userRoles = new ArrayList<UserRole>();
-    }
     this.userRoles.add(userRolesItem);
     return this;
   }
@@ -264,9 +261,10 @@ public class User   {
    * Get userRoles
    * @return userRoles
    **/
-  @Schema(description = "")
-      @Valid
-    public List<UserRole> getUserRoles() {
+  @Schema(required = true, description = "")
+      @NotNull
+    @Valid
+  @Size(min=1)   public List<UserRole> getUserRoles() {
     return userRoles;
   }
 
