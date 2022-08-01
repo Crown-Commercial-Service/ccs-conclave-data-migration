@@ -297,6 +297,7 @@ components:
           nullable: false
           required: true
           type: string
+          minLength: 1
           description: User Roles
           example: RMI User
 
