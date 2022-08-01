@@ -130,7 +130,6 @@ components:
       properties:
         email:
           type: string
-          format: email
           minLength: 1
           pattern: '^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
           description: User Email
@@ -154,7 +153,6 @@ components:
           nullable: true
         contactEmail:
           type: string
-          format: email
           pattern: '^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
           description: User Contact Email. Only applied for new users. Blank treated as null.
           example: abc@somewhere.org
@@ -195,7 +193,6 @@ components:
       properties:
         email:
           type: string
-          format: email
           minLength: 1
           pattern: '^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
           description: User Email
@@ -212,7 +209,6 @@ components:
           example: Bloggs
         contactEmail:
           type: string
-          format: email
           pattern: '^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
           description: User Contact Email
           example: abc@somewhere.org

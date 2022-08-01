@@ -31,7 +31,7 @@ import uk.gov.ccs.swagger.sso.model.ContactRequestDetail;
 
 public class ContactRequestInfo {
   @SerializedName("contactPointReason")
-  private String contactPointReason = null;
+  private String contactPointReason = "General";
 
   @SerializedName("contactPointName")
   private String contactPointName = null;

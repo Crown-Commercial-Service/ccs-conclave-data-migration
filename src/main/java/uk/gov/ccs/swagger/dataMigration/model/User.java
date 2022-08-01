@@ -65,7 +65,7 @@ public class User   {
   @Schema(example = "joe.bloggs@kier.com", required = true, description = "User Email")
       @NotNull
 
-    public String getEmail() {
+  @Pattern(regexp="^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$") @Size(min=1)   public String getEmail() {
     return email;
   }
 
@@ -163,7 +163,7 @@ public class User   {
    **/
   @Schema(example = "abc@somewhere.org", description = "User Contact Email. Only applied for new users. Blank treated as null.")
   
-    public String getContactEmail() {
+  @Pattern(regexp="^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")   public String getContactEmail() {
     return contactEmail;
   }
 

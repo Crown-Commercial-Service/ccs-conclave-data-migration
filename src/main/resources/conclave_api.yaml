@@ -731,7 +731,7 @@
             "Organisation contact"
         ],
         "summary": "Allows a user to create organisation contact",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/1/contacts\r\n    {\r\n       \"contactPointReason\": \"BILLING/SHIPPING\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /organisations/1/contacts\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -925,7 +925,7 @@
             "Organisation contact"
         ],
         "summary": "Allows a user to edit organisation contact",
-        "description": "Sample request:\r\n            \r\n    PUT /organisations/1/contacts/1\r\n    {\r\n       \"contactPointReason\": \"BILLING/SHIPPING\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    PUT /organisations/1/contacts/1\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -1467,7 +1467,7 @@
             "Organisation site contact"
         ],
         "summary": "Allows a user to create organisation site contact",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/1/sites/1/contacts\r\n    {\r\n       \"contactPointReason\": \"BILLING/SHIPPING\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /organisations/1/sites/1/contacts\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -1688,7 +1688,7 @@
             "Organisation site contact"
         ],
         "summary": "Allows a user to edit organisation site contact",
-        "description": "Sample request:\r\n            \r\n    PUT /organisations/1/sites/1/contacts/1\r\n    {\r\n       \"contactPointReason\": \"BILLING/SHIPPING\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    PUT /organisations/1/sites/1/contacts/1\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -2739,7 +2739,7 @@
             "User contact"
         ],
         "summary": "Allows a user to create user contact details",
-        "description": "Sample request:\r\n            \r\n    POST /users/contacts?user-id=user@mail.com\r\n    {\r\n       \"contactPointReason\": \"BILLING/SHIPPING\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /users/contacts?user-id=user@mail.com\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "user-id",
@@ -2929,7 +2929,7 @@
             "User contact"
         ],
         "summary": "Allows a user to edit user contact details",
-        "description": "Sample request:\r\n            \r\n    PUT /users/contacts/1?user-id=user@mail.com\r\n    {\r\n       \"contactPointReason\": \"BILLING/SHIPPING\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    PUT /users/contacts/1?user-id=user@mail.com\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "user-id",
@@ -3134,6 +3134,7 @@
         "properties": {
           "contactPointReason": {
             "type": "string",
+            "default": "General",
             "nullable": true
           },
           "contactPointName": {
@@ -3175,6 +3176,7 @@
         "properties": {
           "contactPointReason": {
             "type": "string",
+            "default": "General",
             "nullable": true
           },
           "contactPointName": {
@@ -3339,6 +3341,7 @@
         "properties": {
           "contactPointReason": {
             "type": "string",
+            "default": "General",
             "nullable": true
           },
           "contactPointName": {
@@ -3705,6 +3708,7 @@
         "properties": {
           "contactPointReason": {
             "type": "string",
+            "default": "General",
             "nullable": true
           },
           "contactPointName": {
@@ -3941,6 +3945,7 @@
         "properties": {
           "contactPointReason": {
             "type": "string",
+            "default": "General",
             "nullable": true
           },
           "contactPointName": {
