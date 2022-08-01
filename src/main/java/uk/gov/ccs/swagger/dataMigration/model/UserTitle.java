@@ -17,6 +17,7 @@ public enum UserTitle {
     MISS("Miss"),
     MS("Ms"),
     DOCTOR("Doctor"),
+    EMPTY(""),
     UNSPECIFIED("Unspecified");
 
   private String value;
