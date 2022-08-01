@@ -48,7 +48,7 @@ public class Organisation   {
   @Schema(example = "100009655", required = true, description = "Identifier ID")
       @NotNull
 
-    public String getIdentifierId() {
+  @Size(min=1)   public String getIdentifierId() {
     return identifierId;
   }
 
@@ -68,7 +68,7 @@ public class Organisation   {
   @Schema(example = "GB-COH", required = true, description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)")
       @NotNull
 
-    public String getSchemeId() {
+  @Size(min=1)   public String getSchemeId() {
     return schemeId;
   }
 
@@ -88,7 +88,7 @@ public class Organisation   {
   @Schema(example = "true", required = true, description = "Buyer status")
       @NotNull
 
-  @Pattern(regexp="^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$") @Size(min=4,max=5)   public String getRightToBuy() {
+  @Pattern(regexp="^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$") @Size(min=1)   public String getRightToBuy() {
     return rightToBuy;
   }
 

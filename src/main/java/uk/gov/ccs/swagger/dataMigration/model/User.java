@@ -105,7 +105,7 @@ public class User   {
   @Schema(example = "Joe", required = true, description = "First Name")
       @NotNull
 
-    public String getFirstName() {
+  @Size(min=1)   public String getFirstName() {
     return firstName;
   }
 
@@ -125,7 +125,7 @@ public class User   {
   @Schema(example = "Bloggs", required = true, description = "Last Name")
       @NotNull
 
-    public String getLastName() {
+  @Size(min=1)   public String getLastName() {
     return lastName;
   }
 
