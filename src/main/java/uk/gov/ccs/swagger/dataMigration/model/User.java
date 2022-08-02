@@ -163,7 +163,7 @@ public class User   {
    **/
   @Schema(example = "abc@somewhere.org", description = "User Contact Email. Only applied for new users. Blank treated as null.")
   
-  @Pattern(regexp="^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")   public String getContactEmail() {
+    public String getContactEmail() {
     return contactEmail;
   }
 
