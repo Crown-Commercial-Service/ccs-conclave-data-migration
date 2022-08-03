@@ -30,7 +30,7 @@ public class UserRole   {
   @Schema(example = "RMI User", required = true, description = "User Roles")
       @NotNull
 
-    public String getName() {
+  @Size(min=1)   public String getName() {
     return name;
   }
 

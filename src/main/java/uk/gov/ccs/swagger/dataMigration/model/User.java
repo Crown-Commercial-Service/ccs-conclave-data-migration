@@ -51,7 +51,7 @@ public class User   {
 
   @JsonProperty("userRoles")
   @Valid
-  private List<UserRole> userRoles = null;
+  private List<UserRole> userRoles = new ArrayList<UserRole>();
 
   public User email(String email) {
     this.email = email;
@@ -65,7 +65,7 @@ public class User   {
   @Schema(example = "joe.bloggs@kier.com", required = true, description = "User Email")
       @NotNull
 
-    public String getEmail() {
+  @Pattern(regexp="^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$") @Size(min=1)   public String getEmail() {
     return email;
   }
 
@@ -105,7 +105,7 @@ public class User   {
   @Schema(example = "Joe", required = true, description = "First Name")
       @NotNull
 
-    public String getFirstName() {
+  @Size(min=1)   public String getFirstName() {
     return firstName;
   }
 
@@ -125,7 +125,7 @@ public class User   {
   @Schema(example = "Bloggs", required = true, description = "Last Name")
       @NotNull
 
-    public String getLastName() {
+  @Size(min=1)   public String getLastName() {
     return lastName;
   }
 
@@ -253,9 +253,6 @@ public class User   {
   }
 
   public User addUserRolesItem(UserRole userRolesItem) {
-    if (this.userRoles == null) {
-      this.userRoles = new ArrayList<UserRole>();
-    }
     this.userRoles.add(userRolesItem);
     return this;
   }
@@ -264,9 +261,10 @@ public class User   {
    * Get userRoles
    * @return userRoles
    **/
-  @Schema(description = "")
-      @Valid
-    public List<UserRole> getUserRoles() {
+  @Schema(required = true, description = "")
+      @NotNull
+    @Valid
+  @Size(min=1)   public List<UserRole> getUserRoles() {
     return userRoles;
   }
 

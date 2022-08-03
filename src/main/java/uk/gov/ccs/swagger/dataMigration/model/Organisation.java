@@ -26,7 +26,7 @@ public class Organisation   {
   private String schemeId = null;
 
   @JsonProperty("rightToBuy")
-  private Boolean rightToBuy = null;
+  private String rightToBuy = null;
 
   @JsonProperty("orgRoles")
   @Valid
@@ -48,7 +48,7 @@ public class Organisation   {
   @Schema(example = "100009655", required = true, description = "Identifier ID")
       @NotNull
 
-    public String getIdentifierId() {
+  @Size(min=1)   public String getIdentifierId() {
     return identifierId;
   }
 
@@ -68,7 +68,7 @@ public class Organisation   {
   @Schema(example = "GB-COH", required = true, description = "Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)")
       @NotNull
 
-    public String getSchemeId() {
+  @Size(min=1)   public String getSchemeId() {
     return schemeId;
   }
 
@@ -76,7 +76,7 @@ public class Organisation   {
     this.schemeId = schemeId;
   }
 
-  public Organisation rightToBuy(Boolean rightToBuy) {
+  public Organisation rightToBuy(String rightToBuy) {
     this.rightToBuy = rightToBuy;
     return this;
   }
@@ -88,12 +88,16 @@ public class Organisation   {
   @Schema(example = "true", required = true, description = "Buyer status")
       @NotNull
 
-    public Boolean isRightToBuy() {
+  @Pattern(regexp="^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$") @Size(min=1)   public String getRightToBuy() {
     return rightToBuy;
   }
 
-  public void setRightToBuy(Boolean rightToBuy) {
+  public void setRightToBuy(String rightToBuy) {
     this.rightToBuy = rightToBuy;
+  }
+
+  public Boolean isRightToBuy() {
+    return Boolean.parseBoolean(rightToBuy);
   }
 
   public Organisation orgRoles(List<OrgRole> orgRoles) {

@@ -88,7 +88,7 @@ public class Summary   {
    * Buyer status
    * @return rightToBuy
    **/
-  @Schema(example = "true", description = "Buyer status")
+  @Schema(example = "false", description = "Buyer status")
   
     public Boolean isRightToBuy() {
     return rightToBuy;
