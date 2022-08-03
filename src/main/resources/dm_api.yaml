@@ -98,16 +98,20 @@ components:
       properties:
         identifier-id:
           type: string
+          minLength: 1
           description: Identifier ID
           example: 100009655
         scheme-id:
           type: string
+          minLength: 1
           description: Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
           example: GB-COH
         rightToBuy:
-          type: boolean
+          type: string
+          minLength: 1
+          pattern: '^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$'
           description: Buyer status
-          example: True
+          example: true
         orgRoles:
           type: array
           items:
@@ -126,16 +130,20 @@ components:
       properties:
         email:
           type: string
+          minLength: 1
+          pattern: '^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
           description: User Email
           example: joe.bloggs@kier.com
         title:
           $ref: '#/components/schemas/UserTitle'
         firstName:
           type: string
+          minLength: 1
           description: First Name
           example: Joe
         lastName:
           type: string
+          minLength: 1
           description: Last Name
           example: Bloggs
         contactPointName:
@@ -169,19 +177,23 @@ components:
           example: http://www.linkedin.com/
           nullable: true
         userRoles:
+          minItems: 1
           type: array
           items:
             $ref: '#/components/schemas/UserRole'
-          nullable: True
+          nullable: false
       required:
         - email
         - firstName
         - lastName
+        - userRoles
 
     UserMin:
       properties:
         email:
           type: string
+          minLength: 1
+          pattern: '^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
           description: User Email
           example: joe.bloggs@kier.com
         title:
@@ -199,6 +211,8 @@ components:
           description: User Contact Email
           example: abc@somewhere.org
         userRoles:
+          minItems: 1
+          nullable: false
           type: array
           items:
             $ref: '#/components/schemas/UserRole'
@@ -206,6 +220,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Status'
+      required:
+        - userRoles
 
     Summary:
       properties:
@@ -220,7 +236,7 @@ components:
         rightToBuy:
           type: boolean
           description: Buyer status
-          example: True
+          example: truee
         orgRoles:
           type: array
           items:
@@ -258,7 +274,7 @@ components:
         - Organisation requires a minimum of 1 Admin user
         - Unable to process record - see http response code
         - Record processed
-    #
+    
     OrgRole:
       type: object
       properties:
@@ -266,14 +282,20 @@ components:
           type: string
           description: Organisation Roles
           example: RMI
-    #
+    
     UserRole:
+      minItems: 1
+      nullable: false
       type: object
       required:
         - name
       properties:
         name:
+          allowEmptyValue: false
+          nullable: false
+          required: true
           type: string
+          minLength: 1
           description: User Roles
           example: RMI User
 
@@ -285,6 +307,7 @@ components:
         - Miss
         - Ms
         - Doctor
+        - ""
         - Unspecified
       default: Unspecified
       nullable: true
