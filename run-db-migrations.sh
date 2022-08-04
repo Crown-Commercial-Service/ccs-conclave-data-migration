@@ -7,4 +7,4 @@ echo "This script is not secure. Don't use it in production"
 liquibase update \
   --changelog-file src/main/resources/db/changelog/master.xml \
   --defaults-file src/main/resources/liquibase.properties \
-  --url "$(jq -nr 'env.VCAP_SERVICES | fromjson | .postgres[].Credentials.jdbcuri')&ssl=false"
+  --url "$(jq -nr 'env.VCAP_SERVICES | fromjson | .postgres[].Credentials.jdbcuri')"
