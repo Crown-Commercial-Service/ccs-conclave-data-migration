@@ -24,42 +24,41 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
-    public static List<String> responseReport = new ArrayList<String>();
-    public static JSONObject responseReport2 = new JSONObject();
+    public static List<String> responseArr = new ArrayList<String>();
+    public static JSONObject responseReport = new JSONObject();
+    public static HttpStatus responseStatus = HttpStatus.OK;
 
     private final MigrationService migrationService;
 
     @Override
     public ResponseEntity<JSONObject> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
 
-        responseReport.clear();
-        responseReport2 = new JSONObject();
+        responseArr.clear();
+        responseReport = new JSONObject();
 
         if (xApiKey == null || xApiKey.trim().isEmpty() || !migrationService.checkClientApiKey(xApiKey)) {
             log.error("{}:{}","Unauthorised Access ", "Invalid x-api-key. ");
-            responseReport.add("Unauthorised Access: Invalid x-api-key.");
-            responseReport2.put( "Error", "Unauthorised Access: Invalid x-api-key.");
+            responseReport.put( "Error", "Unauthorised Access: Invalid x-api-key.");
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(responseReport2);
+                    .body(responseReport);
         }
 
         if (fileFormat.equals("newApiKey")) {
             log.error("{}:{}","Successfully created a new x-api-key. ", "Find the key and details in the database. ");
             migrationService.createClientApiKey();
-            responseReport.add("Successfully created a new x-api-key. Find the key and details in the database.");
-            responseReport2.put( "Info", "Successfully created a new x-api-key. Find the key and details in the database.");
+            responseReport.put( "Info", "Successfully created a new x-api-key. Find the key and details in the database.");
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(responseReport2);
+                    .body(responseReport);
         }
 
         log.info(" API for data migration invoked for file format: " + fileFormat);
         migrationService.migrate(body);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseReport2);
+                .status(responseStatus)
+                .body(responseReport);
     }
 
     @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class})
