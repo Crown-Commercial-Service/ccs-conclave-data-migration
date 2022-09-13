@@ -54,7 +54,7 @@ public class ContactService {
         } else {
             log.error("{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, SSO_USER_CONTACT_ERROR_INFO);
             errorService.saveUserDetailWithStatusCodeWithoutException(user, SSO_USER_CONTACT_ERROR_MESSAGE + SSO_USER_CONTACT_ERROR_INFO, 400, organisation);
-            DataMigrationApiController.responseReport.add(SSO_USER_CONTACT_RESPONSE_INFO + user.getEmail());
+            DataMigrationApiController.responseArr.add(SSO_USER_CONTACT_RESPONSE_INFO + user.getEmail());
         }
     }
 
