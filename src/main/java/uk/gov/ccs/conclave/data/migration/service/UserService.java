@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
+import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
+import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
 import uk.gov.ccs.swagger.dataMigration.model.User;
@@ -66,14 +68,15 @@ public class UserService {
 
     public long migrateUsers(List<User> users, OrgMigrationResponse response) throws DataMigrationException {
         long userFailureCount = 0;
+        Org organisation = response.getOrganisation();
         for (User user : users) {
             try {
                 var roleIds = roleService.getUserRoleIdsFromRoleNames(response.getOrganisationId(), user.getUserRoles());
                 UserProfileEditRequestInfo userDto = populateUserProfileInfo(user, response.getOrganisationId(), response.getIdentityProviderId(), roleIds);
 
                 UserEditResponseInfo userInfo = conclaveUserClient.createUser(userDto);
-                contactService.migrateUserContact(user, userInfo.getUserId(), response.getOrganisation());
-                errorService.saveUserDetailWithStatusCode(user, USER_MIGRATION_SUCCESS, 200, response.getOrganisation());
+                contactService.migrateUserContact(user, userInfo.getUserId(), organisation);
+                errorService.saveUserDetailWithStatusCode(user, USER_MIGRATION_SUCCESS, 200, organisation);
 
             } catch (ApiException e) {
                 userFailureCount++;
@@ -81,6 +84,12 @@ public class UserService {
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
             }
         }
+
+        if (DataMigrationApiController.responseArr.size() >= 1) {
+            String responseString = organisation.getIdentifierId() + "-" + organisation.getIdentifierId();
+            DataMigrationApiController.responseReport.put(responseString, DataMigrationApiController.responseArr);
+        }
+
         return userFailureCount;
     }
 

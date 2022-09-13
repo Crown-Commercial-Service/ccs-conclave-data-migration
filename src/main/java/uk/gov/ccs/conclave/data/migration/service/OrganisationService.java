@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
+import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
 import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.cii.model.Address;
 import uk.gov.ccs.swagger.cii.model.Identifier;
@@ -64,16 +66,20 @@ public class OrganisationService {
     }
 
 
-    private OrgMigration migrateOrgToCii(Organisation org) throws DataMigrationException {
+    private OrgMigration migrateOrgToCii(Organisation organisation) throws DataMigrationException {
         OrgMigration ciiOrganisation = null;
         try {
-            ciiOrganisation = ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
+            ciiOrganisation = ciiOrgClient.createCiiOrganisation(organisation.getSchemeId(), organisation.getIdentifierId());
 
         } catch (ApiException e) {
             if (e.getCode() == 409) {
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
-                errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE, e, e.getCode());
+                errorService.logWithStatus(organisation, CII_ORG_ERROR_MESSAGE, e, e.getCode());
+
+                String responseString = organisation.getIdentifierId() + "-" + organisation.getIdentifierId();
+                DataMigrationApiController.responseReport.put(responseString, CII_ORG_ERROR_MESSAGE + e);
+                DataMigrationApiController.responseStatus = HttpStatus.NOT_FOUND;
             }
         }
         return ciiOrganisation;
