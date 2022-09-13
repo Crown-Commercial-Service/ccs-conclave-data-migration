@@ -86,7 +86,7 @@ public class UserService {
         }
 
         if (DataMigrationApiController.responseArr.size() >= 1) {
-            String responseString = organisation.getIdentifierId() + "-" + organisation.getIdentifierId();
+            String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
             DataMigrationApiController.responseReport.put(responseString, DataMigrationApiController.responseArr);
         }
 
