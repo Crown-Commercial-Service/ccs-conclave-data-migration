@@ -77,7 +77,7 @@ public class OrganisationService {
             } else {
                 errorService.logWithStatus(organisation, CII_ORG_ERROR_MESSAGE, e, e.getCode());
 
-                String responseString = organisation.getIdentifierId() + "-" + organisation.getIdentifierId();
+                String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
                 DataMigrationApiController.responseReport.put(responseString, CII_ORG_ERROR_MESSAGE + e);
                 DataMigrationApiController.responseStatus = HttpStatus.NOT_FOUND;
             }

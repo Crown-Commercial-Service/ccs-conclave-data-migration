@@ -82,11 +82,12 @@ public class UserService {
                 userFailureCount++;
                 log.error("{}{}: {}", SSO_USER_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
+                DataMigrationApiController.responseArr.add(SSO_USER_ERROR_MESSAGE + e.getMessage() + user.getEmail());
             }
         }
 
         if (DataMigrationApiController.responseArr.size() >= 1) {
-            String responseString = organisation.getIdentifierId() + "-" + organisation.getIdentifierId();
+            String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
             DataMigrationApiController.responseReport.put(responseString, DataMigrationApiController.responseArr);
         }
 
