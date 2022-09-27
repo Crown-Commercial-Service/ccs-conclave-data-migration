@@ -89,6 +89,7 @@ public class UserService {
         if (DataMigrationApiController.responseArr.size() >= 1) {
             String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
             DataMigrationApiController.responseReport.put(responseString, DataMigrationApiController.responseArr);
+            DataMigrationApiController.responseArr.clear();
         }
 
         return userFailureCount;
