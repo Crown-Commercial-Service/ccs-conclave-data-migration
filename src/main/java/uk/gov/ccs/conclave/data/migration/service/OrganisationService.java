@@ -80,7 +80,7 @@ public class OrganisationService {
             } else {
                 System.out.println("VHY0");
                 errorService.logWithStatus(organisation, CII_ORG_ERROR_MESSAGE, e, e.getCode());
-                log.debug("HERE->0 Message: " + e + " Status: " + e.getCode());
+
                 String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
                 DataMigrationApiController.responseReport.put(responseString, CII_ORG_ERROR_MESSAGE + e);
                 System.out.println("DXB4");
