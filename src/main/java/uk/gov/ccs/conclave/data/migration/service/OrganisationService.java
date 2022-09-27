@@ -68,18 +68,26 @@ public class OrganisationService {
 
     private OrgMigration migrateOrgToCii(Organisation organisation) throws DataMigrationException {
         OrgMigration ciiOrganisation = null;
+        System.out.println("STR7");
         try {
             ciiOrganisation = ciiOrgClient.createCiiOrganisation(organisation.getSchemeId(), organisation.getIdentifierId());
 
         } catch (ApiException e) {
             if (e.getCode() == 409) {
+                System.out.println("SWT3");
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
+                System.out.println("JKQ5");
             } else {
+                System.out.println("VHY0");
                 errorService.logWithStatus(organisation, CII_ORG_ERROR_MESSAGE, e, e.getCode());
-
+                log.debug("HERE->0 Message: " + e + " Status: " + e.getCode());
                 String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
                 DataMigrationApiController.responseReport.put(responseString, CII_ORG_ERROR_MESSAGE + e);
+                System.out.println("DXB4");
+                System.out.println("DXB-- " + DataMigrationApiController.responseStatus);
                 DataMigrationApiController.responseStatus = HttpStatus.NOT_FOUND;
+                System.out.println("FIN9");
+                System.out.println("FIN-- " + DataMigrationApiController.responseStatus);
             }
         }
         return ciiOrganisation;
