@@ -54,8 +54,15 @@ public class DataMigrationApiController implements DataMigrationApi {
         }
 
         log.info(" API for data migration invoked for file format: " + fileFormat);
+        System.out.println("DPM4");
+        System.out.println("DPM-- " + responseStatus);
         migrationService.migrate(body);
 
+        System.out.println("ZIR1");
+        System.out.println("ZIR-- " + responseStatus);
+        if (responseStatus == HttpStatus.NOT_FOUND) {
+            System.out.println("TRUE");
+        }
         return ResponseEntity
                 .status(responseStatus)
                 .body(responseReport);
