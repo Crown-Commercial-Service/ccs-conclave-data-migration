@@ -76,7 +76,7 @@ public class OrganisationService {
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
                 errorService.logWithStatus(organisation, CII_ORG_ERROR_MESSAGE, e, e.getCode());
-
+                log.debug("HERE->0 Message: " + e + " Status: " + e.getCode());
                 String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
                 DataMigrationApiController.responseReport.put(responseString, CII_ORG_ERROR_MESSAGE + e);
                 DataMigrationApiController.responseStatus = HttpStatus.NOT_FOUND;
