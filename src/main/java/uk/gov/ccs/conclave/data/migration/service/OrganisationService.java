@@ -79,7 +79,7 @@ public class OrganisationService {
                 log.debug("HERE->0 Message: " + e + " Status: " + e.getCode());
                 String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
                 DataMigrationApiController.responseReport.put(responseString, CII_ORG_ERROR_MESSAGE + e);
-                DataMigrationApiController.responseStatus = HttpStatus.NOT_FOUND;
+                //DataMigrationApiController.responseStatus = HttpStatus.NOT_FOUND;
             }
         }
         return ciiOrganisation;
