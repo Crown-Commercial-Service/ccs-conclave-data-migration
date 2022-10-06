@@ -14,7 +14,6 @@ import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,6 +24,7 @@ import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.ArrayUtils.contains;
 
+
 @Service
 @RequiredArgsConstructor
 public class ErrorService {
@@ -33,29 +33,37 @@ public class ErrorService {
 
     public static final String CII_ORG_ERROR_MESSAGE = "Error while creating CII organisation. ";
     public static final String CII_DEL_ORG_ERROR_MESSAGE = "Error while deleting CII organisation. ";
+
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
     public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
+    public static final String SSO_ORG_ADMIN_ERROR_MESSAGE = "No Organisation Administrator provided for new organisation. ";
+
     public static final String SSO_USER_CONTACT_ERROR_MESSAGE = "User contact record not created. ";
     public static final String SSO_USER_CONTACT_ERROR_INFO = "Invalid data or contact information not Supplied. ";
     public static final String SSO_USER_CONTACT_RESPONSE_INFO = "Contact record not created: Invalid data or contact information not Supplied. ";
     public static final String SSO_USER_ERROR_MESSAGE = "Error while creating SSO user. ";
+
     public static final String SSO_ROLE_NOT_FOUND = " Role does not exist. ";
     public static final String SSO_IDENTITY_PROVIDER_ERROR_MESSAGE = "Error while retrieving identity provider of the SSO organisation. ";
+
     public static final String ORG_MIGRATION_SUCCESS = "Organisation migrated successfully. ";
     public static final String USER_MIGRATION_SUCCESS = "User migrated successfully. ";
+
     public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
     public static final String MIGRATION_STATUS_COMPLETE = "Completed with no errors. ";
     public static final String MIGRATION_STATUS_ABORTED = "Migration aborted. ";
+
     public static final String PROCESS_ABORTED = "Migration aborted. ";
-    public static final String NEW_API_KEY = "Created and saving a new x-api-key to the database: ";
-    public static final String CHECKING_API_KEY = "Checking for x-api-key in the database. ";
+    public static final String API_KEY_INFO = "Creating new x-api-key: Key and details can be found in database. ";
+    public static final String API_KEY_ERROR = "Unauthorised Access: Invalid x-api-key. ";
+    public static final String API_KEY_CHECK = "Checking for x-api-key in the database. ";
+
     static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 
     private final OrganisationRepository organisationRepository;
-
     private final UserRepository userRepository;
-
     private final ClientRepository clientRepository;
+
 
     public void logWithStatus(Organisation org, String message, uk.gov.ccs.swagger.sso.ApiException exception, Integer statusCode) throws DataMigrationException {
         LOGGER.error("{}{}: {}", message, exception.getMessage(), exception.getResponseBody(), exception);
@@ -163,12 +171,12 @@ public class ErrorService {
     }
 
     public Optional<Client> findApiKey(String key) {
-        LOGGER.info(CHECKING_API_KEY);
+        LOGGER.info(API_KEY_CHECK);
         return clientRepository.findByApiKey(key);
     }
 
     public Client saveNewApiKey(String key, String description) {
-        LOGGER.info(NEW_API_KEY + description);
+        LOGGER.info(API_KEY_INFO);
         Client client = new Client();
         client.setApiKey(key);
         client.setClientKeyDescription(description);
