@@ -77,8 +77,7 @@ public class OrganisationService {
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
                 errorService.logWithStatus(organisation, CII_ORG_ERROR_MESSAGE, e, e.getCode());
-                String responseOrgDetails = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
-                DataMigrationApiController.responseBody.put(responseOrgDetails, CII_ORG_ERROR_MESSAGE + e);
+                DataMigrationApiController.responseBody.put(organisation.getSchemeId() + "-" + organisation.getIdentifierId(), CII_ORG_ERROR_MESSAGE + e);
                 DataMigrationApiController.responseStatus = HttpStatus.NOT_FOUND;
             }
         }
@@ -98,8 +97,7 @@ public class OrganisationService {
 
                 deleteOrgFromCii(organisationId);
 
-                String responseOrgDetails = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
-                DataMigrationApiController.responseBody.put(responseOrgDetails, SSO_ORG_ADMIN_ERROR_MESSAGE);
+                DataMigrationApiController.responseBody.put(organisation.getSchemeId() + "-" + organisation.getIdentifierId(), SSO_ORG_ADMIN_ERROR_MESSAGE);
                 DataMigrationApiController.responseStatus = HttpStatus.BAD_REQUEST;
 
             } else if (isNewOrg(ciiResponse)) {
