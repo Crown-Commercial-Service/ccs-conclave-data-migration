@@ -14,8 +14,6 @@ import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
-import uk.gov.ccs.swagger.sso.model.UserTitle;
-
 import java.util.List;
 
 import static java.util.Collections.singletonList;
@@ -24,21 +22,19 @@ import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_E
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.USER_MIGRATION_SUCCESS;
 import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
 
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final ConclaveClient conclaveUserClient;
-
     private final ErrorService errorService;
-
     private final MigrationProperties properties;
-
     private final ContactService contactService;
-
     private final RoleService roleService;
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
 
     private UserProfileEditRequestInfo populateUserProfileInfo(User user, String organisationId, Integer identityProvideId, List<Integer> roleIds) {
 
@@ -82,14 +78,14 @@ public class UserService {
                 userFailureCount++;
                 log.error("{}{}: {}", SSO_USER_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
-                DataMigrationApiController.responseArr.add(SSO_USER_ERROR_MESSAGE + e.getMessage() + user.getEmail());
+                DataMigrationApiController.responseMsgArray.add(SSO_USER_ERROR_MESSAGE + e.getMessage() + user.getEmail());
             }
         }
 
-        if (DataMigrationApiController.responseArr.size() >= 1) {
+        if (DataMigrationApiController.responseMsgArray.size() >= 1) {
             String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
-            DataMigrationApiController.responseReport.put(responseString, DataMigrationApiController.responseArr);
-            DataMigrationApiController.responseArr.clear();
+            DataMigrationApiController.responseBody.put(responseString, DataMigrationApiController.responseMsgArray);
+            DataMigrationApiController.responseMsgArray.clear();
         }
 
         return userFailureCount;
