@@ -38,7 +38,7 @@ public class DataMigrationApiController implements DataMigrationApi {
         responseStatus = HttpStatus.OK;
 
         if (xApiKey == null || xApiKey.trim().isEmpty() || !migrationService.checkClientApiKey(xApiKey)) {
-            responseReport.put( "Error", API_KEY_ERROR);
+            //responseReport.put( "Error", API_KEY_ERROR);
 
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
@@ -46,7 +46,7 @@ public class DataMigrationApiController implements DataMigrationApi {
 
         } else if (fileFormat.equals("newApiKey")) {
             migrationService.createClientApiKey();
-            responseReport.put( "Info", API_KEY_INFO);
+            //responseReport.put( "Info", API_KEY_INFO);
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
