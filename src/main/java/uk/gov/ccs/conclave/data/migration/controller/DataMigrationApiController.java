@@ -24,7 +24,7 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
-    public static JSONObject responseBody; // Overall response body, that is built up then delivered in a json response to the user.
+    public static JSONObject responseBody = new JSONObject(); // Overall response body, that is built up then delivered in a json response to the user.
     public static HttpStatus responseStatus; // The status code to be sent in the response.
     public static List<String> responseMsgArray = new ArrayList<String>(); // Stores & collects any error messages or info text, to be added to repsonseBody.
 
