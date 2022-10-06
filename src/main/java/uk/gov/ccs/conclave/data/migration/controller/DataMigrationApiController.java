@@ -26,16 +26,15 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
-    public static List<String> responseArr = new ArrayList<String>(); // Stores & collects any error messages or info text, to be added to repsonse body.
-    public static JSONObject responseReport; // Overall response body, that is built up then delivered in a json response to the user.
-    public static HttpStatus responseStatus; // The status code to be sent in the response.
+    public static List<String> responseArr = new ArrayList<String>();
+    public static JSONObject responseReport;
+    public static HttpStatus responseStatus;
 
     private final MigrationService migrationService;
 
     @Override
     public ResponseEntity<JSONObject> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
 
-        // Reset the response body, and constituent parts, ready for a new request.
         responseArr.clear();
         responseReport = new JSONObject();
         responseStatus = HttpStatus.OK;
