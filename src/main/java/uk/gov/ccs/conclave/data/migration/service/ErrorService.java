@@ -24,7 +24,6 @@ import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.ArrayUtils.contains;
 
-
 @Service
 @RequiredArgsConstructor
 public class ErrorService {
@@ -62,7 +61,6 @@ public class ErrorService {
     private final OrganisationRepository organisationRepository;
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
-
 
     public void logWithStatus(Organisation org, String message, uk.gov.ccs.swagger.sso.ApiException exception, Integer statusCode) throws DataMigrationException {
         LOGGER.error("{}{}: {}", message, exception.getMessage(), exception.getResponseBody(), exception);

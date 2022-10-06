@@ -17,7 +17,6 @@ import org.json.simple.JSONObject;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
-
 @RestController
 @RequiredArgsConstructor
 public class DataMigrationApiController implements DataMigrationApi {
@@ -29,7 +28,6 @@ public class DataMigrationApiController implements DataMigrationApi {
     public static HttpStatus responseStatus; // The status code to be sent in the response.
 
     private final MigrationService migrationService;
-
 
     @Override
     public ResponseEntity<JSONObject> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
