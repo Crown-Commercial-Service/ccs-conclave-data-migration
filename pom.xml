@@ -59,7 +59,7 @@
         <dependency>
             <groupId>io.pivotal.cfenv</groupId>
             <artifactId>java-cfenv-boot</artifactId>
-            <version>2.4.0</version>
+            <version>2.4.1</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>5.6</version>
+            <version>5.7.0</version>
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
