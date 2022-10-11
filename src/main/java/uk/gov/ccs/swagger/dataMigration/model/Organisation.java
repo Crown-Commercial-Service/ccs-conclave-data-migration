@@ -96,10 +96,6 @@ public class Organisation   {
     this.rightToBuy = rightToBuy;
   }
 
-  public Boolean isRightToBuy() {
-    return Boolean.parseBoolean(rightToBuy);
-  }
-
   public Organisation orgRoles(List<OrgRole> orgRoles) {
     this.orgRoles = orgRoles;
     return this;
