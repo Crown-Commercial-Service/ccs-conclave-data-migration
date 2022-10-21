@@ -7,15 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
-
 import uk.gov.ccs.conclave.data.migration.service.MigrationService;
 import uk.gov.ccs.swagger.dataMigration.api.DataMigrationApi;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-
 import javax.validation.ConstraintViolationException;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.json.simple.JSONObject;
+
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -23,38 +24,43 @@ public class DataMigrationApiController implements DataMigrationApi {
 
     private static final Logger log = LoggerFactory.getLogger(DataMigrationApiController.class);
 
-    public static List<String> responseReport = new ArrayList<String>();
+    public static JSONObject responseBody = new JSONObject(); // Overall response body, that is built up then delivered in a json response to the user.
+    public static HttpStatus responseStatus; // The status code to be sent in the response.
+    public static List<String> responseMsgArray = new ArrayList<String>(); // Stores & collects any error messages or info text, to be added to repsonseBody.
 
     private final MigrationService migrationService;
 
-    @Override
-    public ResponseEntity<List<String>> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
 
-        responseReport.clear();
+    @Override
+    public ResponseEntity<JSONObject> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
+
+        //Reset the response body, and constituent parts, ready for a new request.
+        responseMsgArray.clear();
+        responseBody = new JSONObject();
+        responseStatus = HttpStatus.OK;
 
         if (xApiKey == null || xApiKey.trim().isEmpty() || !migrationService.checkClientApiKey(xApiKey)) {
-            log.error("{}:{}","Unauthorised Access ", "Invalid x-api-key. ");
-            responseReport.add("Unauthorised Access: Invalid x-api-key.");
+            responseBody.put( "Error", API_KEY_ERROR);
+
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(responseReport);
-        }
+                    .body(responseBody);
 
-        if (fileFormat.equals("newApiKey")) {
-            log.error("{}:{}","Successfully created a new x-api-key. ", "Find the key and details in the database. ");
+        } else if (fileFormat.equals("newApiKey")) {
             migrationService.createClientApiKey();
-            responseReport.add("Successfully created a new x-api-key. Find the key and details in the database.");
+            responseBody.put( "Info", API_KEY_INFO);
+
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(responseReport);
+                    .body(responseBody);
         }
 
-        log.info(" API for data migration invoked for file format: " + fileFormat);
+        log.info("Data Migration API invoked for file format: " + fileFormat);
         migrationService.migrate(body);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responseReport);
+                .status(responseStatus)
+                .body(responseBody);
     }
 
     @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class})
