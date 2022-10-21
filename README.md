@@ -18,16 +18,6 @@ This project uses Java 11 and Maven. To run the tests, ensure that `JAVA_HOME` i
 
 CCS people can view [the internal quickstart guide](https://crowncommercialservice.atlassian.net/wiki/spaces/CON/pages/3373465612) that lists all the access and permissions you should ask for.
 
-## Run locally
-
-You can run Data Migration and its database locally. However, it needs access to Vault, CII, and SSO, which we can't run locally. So we have a script that runs the application against a local database, but using the Vault, CII, and SSO from the sandbox environment.
-
-You need to have `docker` and `cf` installed, and have access to the sandbox space in our GOV.UK PaaS organisation.
-
-1. Run `docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=test postgres:13`
-2. In another terminal window, run `./run-locally.sh`
-3. Access the application at `http://localhost:8080`
-
 ## Generating server stub and API clients
 
 The server interface and CII and SSO clients are generated using [swagger-codegen](https://github.com/swagger-api/swagger-codegen) from [OpenAPI specs](src/main/resources).
