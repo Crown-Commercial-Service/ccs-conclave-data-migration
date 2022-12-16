@@ -21,12 +21,13 @@ public class AWSConfig {
     private static final CfCredentials awsCredentials = cfEnv.findCredentialsByTag("aws-ssm");
     private static final String awsId = awsCredentials.getString("aws_access_key_id");
     private static final String awsSecretId = awsCredentials.getString("aws_secret_access_key");
+    private static final Boolean credsTest = getVaultCredentials();
 
-    public static void main(String[] args) {
-        System.out.println("\nHERE-->0001!!\n");
+    private static Boolean getVaultCredentials() {
+        System.out.println("\nHERE-->000X!!\n");
         System.out.println(awsId);
         System.out.println(awsSecretId);
-        System.out.println("\nHERE-->0002!!\n");
+        System.out.println("\nHERE-->000Y!!\n");
         AwsCredentials credentials = AwsBasicCredentials.create("client_id_string", "client_secret_string");
 
         SsmClient ssmClient = SsmClient.builder()
@@ -41,10 +42,14 @@ public class AWSConfig {
 
             GetParameterResponse parameterResponse = ssmClient.getParameter(parameterRequest);
             System.out.println("HERE-->3!!  The parameter value is: "+parameterResponse.parameter().value());
+            return true;
 
         } catch (SsmException e) {
+        System.out.println("\nHERE-->000E!!\n");
         System.err.println(e.getMessage());
         System.exit(1);
+        System.out.println(credsTest);
+        return false;
         }
    }
 
