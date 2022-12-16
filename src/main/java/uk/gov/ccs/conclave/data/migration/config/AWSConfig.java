@@ -24,11 +24,11 @@ public class AWSConfig {
     private static final Boolean credsTest = getVaultCredentials();
 
     private static Boolean getVaultCredentials() {
-        System.out.println("\nHERE-->000X!!\n");
+        /*System.out.println("\nHERE-->000X!!\n");
         System.out.println(awsId);
         System.out.println(awsSecretId);
-        System.out.println("\nHERE-->000Y!!\n");
-        AwsCredentials credentials = AwsBasicCredentials.create("client_id_string", "client_secret_string");
+        System.out.println("\nHERE-->000Y!!\n");*/
+        AwsCredentials credentials = AwsBasicCredentials.create(awsId, awsSecretId);
 
         SsmClient ssmClient = SsmClient.builder()
                 .region(Region.EU_WEST_2)
@@ -37,7 +37,7 @@ public class AWSConfig {
 
         try {
             GetParameterRequest parameterRequest = GetParameterRequest.builder()
-                .name("/conclave-cii/SALESFORCE_AUTH_URL").withDecryption(true)
+                .name("/conclave-data-migration/ciiOrigin").withDecryption(true)
                 .build();
 
             GetParameterResponse parameterResponse = ssmClient.getParameter(parameterRequest);
