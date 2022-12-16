@@ -2,6 +2,7 @@ package uk.gov.ccs.conclave.data.migration.config;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Bean;
 
 @Getter
 @Setter
