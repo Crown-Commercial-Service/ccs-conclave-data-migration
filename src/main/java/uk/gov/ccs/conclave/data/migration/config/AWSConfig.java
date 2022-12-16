@@ -25,6 +25,7 @@ public class AWSConfig {
     public static void main(String[] args) {
         System.out.println("\nHERE-->0001!!\n");
         System.out.println(awsId);
+        System.out.println(awsSecretId);
         System.out.println("\nHERE-->0002!!\n");
         AwsCredentials credentials = AwsBasicCredentials.create("client_id_string", "client_secret_string");
 
