@@ -46,8 +46,8 @@ public class UserService {
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getEmail());
         userDto.setOrganisationId(organisationId);
-        userDto.sendUserRegistrationEmail(properties.isSendUserRegistrationEmail());
-        userDto.setAccountVerified(properties.isAccountVerified());
+        userDto.sendUserRegistrationEmail(MigrationProperties.isSendUserRegistrationEmail());
+        userDto.setAccountVerified(MigrationProperties.isAccountVerified());
         if (user.getUserRoles() != null && user.getUserRoles().stream().anyMatch(role -> role.getName().equals("Organisation Administrator"))) {
             userDto.setMfaEnabled(true);
         }
