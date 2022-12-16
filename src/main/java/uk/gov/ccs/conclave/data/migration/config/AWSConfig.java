@@ -45,13 +45,46 @@ public class AWSConfig {
 
                 GetParameterResponse parameterResponse = ssmClient.getParameter(awsParameter);
                 System.out.println("HERE-->00003!!!  "+key+": "+parameterResponse.parameter().value());
-                //MigrationProperties.setCiiOrigin(parameterResponse1.parameter().value());
+
+                switch(key) {
+                    case "ciiApiKey":
+                        System.out.println("HERE-->0000A!!!");
+                        MigrationProperties.setCiiApiKey(parameterResponse.parameter().value());
+                        break;
+                    case "ciiDeleteToken":
+                        System.out.println("HERE-->0000B!!!");
+                        MigrationProperties.setCiiDeleteToken(parameterResponse.parameter().value());
+                        break;
+                    case "ciiOrigin":
+                        System.out.println("HERE-->0000C!!!");
+                        MigrationProperties.setCiiOrigin(parameterResponse.parameter().value());
+                        break;
+                    case "conclaveApiKey":
+                        System.out.println("HERE-->0000D!!!");
+                        MigrationProperties.setConclaveApiKey(parameterResponse.parameter().value());
+                        break;
+                    case "conclaveOrigin":
+                        System.out.println("HERE-->0000E!!!");
+                        MigrationProperties.setConclaveOrigin(parameterResponse.parameter().value());
+                        break;
+                    case "sendUserRegistrationEmail":
+                        System.out.println("HERE-->0000F!!!");
+                        MigrationProperties.setSendUserRegistrationEmail(Boolean.parseBoolean(parameterResponse.parameter().value()));
+                        break;
+                    case "accountVerified":
+                        System.out.println("HERE-->0000G!!!");
+                        MigrationProperties.setAccountVerified(Boolean.parseBoolean(parameterResponse.parameter().value()));
+                        break;
+                    default:
+                        System.out.println("HERE-->0000EXTRA!!!");
+                }
+                  
             }
 
             return true;
 
         } catch (SsmException e) {
-        System.out.println("HERE-->0000E!!!");
+        System.out.println("HERE-->0000ERROR!!!");
         System.err.println(e.getMessage());
         System.exit(1);
         System.out.println(credsTest);
