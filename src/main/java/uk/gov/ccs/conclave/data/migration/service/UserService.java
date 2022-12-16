@@ -29,7 +29,6 @@ public class UserService {
 
     private final ConclaveClient conclaveUserClient;
     private final ErrorService errorService;
-    private final MigrationProperties properties;
     private final ContactService contactService;
     private final RoleService roleService;
 
