@@ -10,17 +10,16 @@ import uk.gov.ccs.swagger.cii.api.IdentitiesApi;
 @RequiredArgsConstructor
 public class CiiConfig {
 
-    private final MigrationProperties properties;
-
     @Bean
     IdentitiesApi identitiesApi() {
         return new IdentitiesApi(apiClient());
     }
 
+    @Bean("ciiClient")
     public ApiClient apiClient() {
         return new ApiClient()
-                .addDefaultHeader("x-api-key", properties.getCiiApiKey())
-                .addDefaultHeader("x-api-key-delete", properties.getCiiDeleteToken())
-                .setBasePath(properties.getCiiOrigin());
+                .addDefaultHeader("x-api-key", MigrationProperties.getCiiApiKey())
+                .addDefaultHeader("x-api-key-delete", MigrationProperties.getCiiDeleteToken())
+                .setBasePath(MigrationProperties.getCiiOrigin());
     }
 }
