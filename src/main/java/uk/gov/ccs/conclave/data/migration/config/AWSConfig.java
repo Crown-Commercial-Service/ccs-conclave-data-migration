@@ -26,8 +26,8 @@ public class AWSConfig {
     private static final Boolean credsTest = getAWSSecrets();
 
     private static Boolean getAWSSecrets() {
-        System.out.println("HERE-->00000!!! Key: "+awsId);
         log.info("Configuring AWS SSM Credentials & Client.");
+
         AwsCredentials credentials = AwsBasicCredentials.create(awsId, awsSecretId);
 
         SsmClient ssmClient = SsmClient.builder()
@@ -36,47 +36,37 @@ public class AWSConfig {
                 .build();
 
         try {
-            System.out.println("HERE-->00001!!!");
             log.info("Getting App Parameters.");
+
             String[] keys = {"ciiApiKey", "ciiDeleteToken", "ciiOrigin", "conclaveApiKey", "conclaveOrigin", "sendUserRegistrationEmail", "accountVerified"};
 
             for (String key : keys) {
-                System.out.println("HERE-->00002!!!  "+key);
-
                 GetParameterRequest awsParameter = GetParameterRequest.builder()
                         .name("/conclave-data-migration/"+key).withDecryption(true)
                         .build();
 
                 GetParameterResponse parameterResponse = ssmClient.getParameter(awsParameter);
-                System.out.println("HERE-->00003!!!  "+key+": "+parameterResponse.parameter().value());
 
                 switch(key) {
                     case "ciiApiKey":
-                        System.out.println("HERE-->0000A!!!");
                         MigrationProperties.setCiiApiKey(parameterResponse.parameter().value());
                         break;
                     case "ciiDeleteToken":
-                        System.out.println("HERE-->0000B!!!");
                         MigrationProperties.setCiiDeleteToken(parameterResponse.parameter().value());
                         break;
                     case "ciiOrigin":
-                        System.out.println("HERE-->0000C!!!");
                         MigrationProperties.setCiiOrigin(parameterResponse.parameter().value());
                         break;
                     case "conclaveApiKey":
-                        System.out.println("HERE-->0000D!!!");
                         MigrationProperties.setConclaveApiKey(parameterResponse.parameter().value());
                         break;
                     case "conclaveOrigin":
-                        System.out.println("HERE-->0000E!!!");
                         MigrationProperties.setConclaveOrigin(parameterResponse.parameter().value());
                         break;
                     case "sendUserRegistrationEmail":
-                        System.out.println("HERE-->0000F!!!");
                         MigrationProperties.setSendUserRegistrationEmail(Boolean.parseBoolean(parameterResponse.parameter().value()));
                         break;
                     case "accountVerified":
-                        System.out.println("HERE-->0000G!!!");
                         MigrationProperties.setAccountVerified(Boolean.parseBoolean(parameterResponse.parameter().value()));
                         break;
                 }
@@ -85,7 +75,6 @@ public class AWSConfig {
             return true;
 
         } catch (SsmException e) {
-            System.out.println("HERE-->0000ERROR!!!");
             log.error("AWS SSM Config Error: "+e.getMessage()+" : "+credsTest);
             return false;
         }
