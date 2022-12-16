@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.Map;
 
 @Configuration
-@Profile("cloud")
+@Profile("cloud2")
 public class VaultMigrationConfig extends AbstractVaultConfiguration {
 
     private static final CfCredentials cfCredentials = getVaultCredentials();
