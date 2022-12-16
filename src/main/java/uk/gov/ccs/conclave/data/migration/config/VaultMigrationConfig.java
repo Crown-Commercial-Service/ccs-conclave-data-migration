@@ -34,7 +34,7 @@ public class VaultMigrationConfig extends AbstractVaultConfiguration {
     private static CfCredentials getVaultCredentials() {
         CfEnv cfEnv = new CfEnv();
         System.out.println("\nHERE-->0001!!\n");
-        System.out.println(cfEnv.findCredentialsByName("conclave-data-migration-integration-ssm-service"));
+        //System.out.println(cfEnv.findCredentialsByName("conclave-data-migration-integration-ssm-service"));
         //System.out.println(cfEnv.findCredentialsByLabel("user-provided"));
         System.out.println(cfEnv.findAllServices());
         System.out.println("\nHERE-->0002!!\n");
