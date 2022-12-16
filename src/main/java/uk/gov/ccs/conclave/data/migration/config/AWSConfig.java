@@ -1,5 +1,7 @@
 package uk.gov.ccs.conclave.data.migration.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import io.pivotal.cfenv.core.CfCredentials;
 import io.pivotal.cfenv.core.CfEnv;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -16,7 +18,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("cloud")
 public class AWSConfig {
-
+    private static final Logger log = LoggerFactory.getLogger(AWSConfig.class);
     private static final CfEnv cfEnv = new CfEnv();
     private static final CfCredentials awsCredentials = cfEnv.findCredentialsByTag("aws-ssm");
     private static final String awsId = awsCredentials.getString("aws_access_key_id");
@@ -25,6 +27,7 @@ public class AWSConfig {
 
     private static Boolean getAWSSecrets() {
         System.out.println("HERE-->00000!!! Key: "+awsId);
+        log.info("Configuring AWS SSM Credentials & Client.");
         AwsCredentials credentials = AwsBasicCredentials.create(awsId, awsSecretId);
 
         SsmClient ssmClient = SsmClient.builder()
@@ -34,6 +37,7 @@ public class AWSConfig {
 
         try {
             System.out.println("HERE-->00001!!!");
+            log.info("Getting App Parameters.");
             String[] keys = {"ciiApiKey", "ciiDeleteToken", "ciiOrigin", "conclaveApiKey", "conclaveOrigin", "sendUserRegistrationEmail", "accountVerified"};
 
             for (String key : keys) {
@@ -75,20 +79,15 @@ public class AWSConfig {
                         System.out.println("HERE-->0000G!!!");
                         MigrationProperties.setAccountVerified(Boolean.parseBoolean(parameterResponse.parameter().value()));
                         break;
-                    default:
-                        System.out.println("HERE-->0000EXTRA!!!");
                 }
-                  
             }
-
+            log.info("Application Parameters Configured Successfully.");
             return true;
 
         } catch (SsmException e) {
-        System.out.println("HERE-->0000ERROR!!!");
-        System.err.println(e.getMessage());
-        System.exit(1);
-        System.out.println(credsTest);
-        return false;
+            System.out.println("HERE-->0000ERROR!!!");
+            log.error("AWS SSM Config Error: "+e.getMessage()+" : "+credsTest);
+            return false;
         }
    }
 }
