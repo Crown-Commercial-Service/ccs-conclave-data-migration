@@ -7,19 +7,19 @@ import lombok.Setter;
 @Setter
 public class MigrationProperties {
 
-    private static String ciiApiKey;
+    private static String ciiApiKey = null;
 
-    private static String ciiDeleteToken;
+    private static String ciiDeleteToken = null;
 
-    private static String ciiOrigin;
+    private static String ciiOrigin = null;
 
-    private static String conclaveApiKey;
+    private static String conclaveApiKey = null;
 
-    private static String conclaveOrigin;
+    private static String conclaveOrigin = null;
 
-    private static boolean sendUserRegistrationEmail;
+    private static boolean sendUserRegistrationEmail = false;
 
-    private static boolean accountVerified;
+    private static boolean accountVerified = false;
 
     public static String getCiiApiKey() {
         return ciiApiKey;
