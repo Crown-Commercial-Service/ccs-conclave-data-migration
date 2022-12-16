@@ -17,7 +17,6 @@ public class CiiConfig {
         return new IdentitiesApi(apiClient());
     }
 
-    @Bean("ciiClient")
     public ApiClient apiClient() {
         return new ApiClient()
                 .addDefaultHeader("x-api-key", properties.getCiiApiKey())
