@@ -29,13 +29,20 @@ public class RoleService {
 
     }
 
+    private Boolean checkRoleExistsInOrganisation(final List<OrganisationRole> roles, final String roleName) {
+        return roles.stream().anyMatch(role -> role.getRoleName().equalsIgnoreCase(roleName));
+    }
+
     public void applyOrganisationRole(final String organisationId, final Organisation organisation) throws ApiException {
         var orgRolesList = organisation.getOrgRoles();
         if (isNotEmpty(orgRolesList) && isNotNull(orgRolesList)) {
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
+            List<OrganisationRole> existingRoles = conclaveClient.getOrganisationRoles(organisationId);
             var rolesToAdd = new ArrayList<OrganisationRole>();
             for (OrgRole orgRole : orgRolesList) {
-                rolesToAdd.add(filterOrganisationRoleByName(configuredRoles, orgRole.getName()));
+                if(!checkRoleExistsInOrganisation(existingRoles, orgRole.getName())) {
+                    rolesToAdd.add(filterOrganisationRoleByName(configuredRoles, orgRole.getName()));
+                }
             }
             conclaveClient.updateOrganisationRole(
                     organisationId,
