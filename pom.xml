@@ -15,7 +15,7 @@
     <description>Data migration service for conclave</description>
     <properties>
         <java.version>11</java.version>
-        <swagger-core-version>2.2.4</swagger-core-version>
+        <swagger-core-version>2.2.7</swagger-core-version>
         <okhttp-version>2.7.5</okhttp-version>
         <gson-version>2.10</gson-version>
         <gson-fire-version>1.8.5</gson-fire-version>
