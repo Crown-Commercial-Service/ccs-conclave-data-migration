@@ -14,7 +14,7 @@ This application provides an implementation of the [REST API](https://app.swagge
 
 # Developing
 
-This project uses Java 11 and Maven. To run the tests, ensure that `JAVA_HOME` is set, then run `./mvnw test`.
+This project uses Java 17 and Maven. To run the tests, ensure that `JAVA_HOME` is set, then run `./mvnw test`.
 
 CCS people can view [the internal quickstart guide](https://crowncommercialservice.atlassian.net/wiki/spaces/CON/pages/3373465612) that lists all the access and permissions you should ask for.
 
