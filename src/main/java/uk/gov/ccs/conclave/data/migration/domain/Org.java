@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Set;
 
-@javax.persistence.Entity
+@Entity
 @Table(name = "org")
 @Getter
 @Setter
