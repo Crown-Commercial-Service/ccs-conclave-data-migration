@@ -14,7 +14,7 @@
     <name>migration</name>
     <description>Data migration service for conclave</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <swagger-core-version>2.2.8</swagger-core-version>
         <okhttp-version>2.7.5</okhttp-version>
         <gson-version>2.10.1</gson-version>
