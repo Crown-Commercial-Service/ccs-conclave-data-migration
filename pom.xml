@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.1</version>
+        <version>2.6.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>uk.gov.ccs.conclave.data</groupId>
@@ -14,7 +14,7 @@
     <name>migration</name>
     <description>Data migration service for conclave</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>11</java.version>
         <swagger-core-version>2.2.8</swagger-core-version>
         <okhttp-version>2.7.5</okhttp-version>
         <gson-version>2.10.1</gson-version>
@@ -28,6 +28,7 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>3.0.1</version>
         </dependency>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -120,16 +121,12 @@
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>ssm</artifactId>
             <version>2.19.13</version>
+            <scope>import</scope>
         </dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>2.2</version>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>ssm</artifactId>
+            <version>2.19.13</version>
         </dependency>
     </dependencies>
     <build>
