@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.1</version>
+        <version>2.7.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>uk.gov.ccs.conclave.data</groupId>
@@ -14,41 +14,40 @@
     <name>migration</name>
     <description>Data migration service for conclave</description>
     <properties>
-        <java.version>11</java.version>
-        <swagger-core-version>2.2.4</swagger-core-version>
+        <java.version>17</java.version>
+        <swagger-core-version>2.2.8</swagger-core-version>
         <okhttp-version>2.7.5</okhttp-version>
-        <gson-version>2.9.1</gson-version>
+        <gson-version>2.10.1</gson-version>
         <gson-fire-version>1.8.5</gson-fire-version>
-        <threetenbp-version>1.6.3</threetenbp-version>
+        <threetenbp-version>1.6.5</threetenbp-version>
         <log4j2.version>2.17.1</log4j2.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>2.7.4</version>
+            <version>2.7.7</version>
         </dependency>
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.0</version>
+            <version>42.5.1</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.7.4</version>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-            <version>2.7.4</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>2.7.4</version>
+            <version>3.0.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -69,7 +68,7 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.17.0</version>
+            <version>4.17.2</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -120,13 +119,7 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>ssm</artifactId>
-            <version>2.18.38</version>
-            <scope>import</scope>
-        </dependency>
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>ssm</artifactId>
-            <version>2.17.216</version>
+            <version>2.19.13</version>
         </dependency>
     </dependencies>
     <build>
