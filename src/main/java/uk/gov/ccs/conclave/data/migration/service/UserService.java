@@ -14,6 +14,7 @@ import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
 import uk.gov.ccs.swagger.sso.model.UserProfileEditRequestInfo;
 import uk.gov.ccs.swagger.sso.model.UserRequestDetail;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
@@ -84,7 +85,8 @@ public class UserService {
         if (DataMigrationApiController.responseMsgArray.size() >= 1) {
             String responseString = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
             DataMigrationApiController.responseBody.put(responseString, DataMigrationApiController.responseMsgArray);
-            DataMigrationApiController.responseMsgArray.clear();
+            // reassign ref to new array to prevent original being emptied
+            DataMigrationApiController.responseMsgArray = new ArrayList<String>();
         }
 
         return userFailureCount;

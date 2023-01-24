@@ -1,5 +1,11 @@
 package uk.gov.ccs.conclave.data.migration.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +18,11 @@ import uk.gov.ccs.swagger.dataMigration.api.DataMigrationApi;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.json.simple.JSONObject;
-
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
 
 @RestController
@@ -64,9 +71,40 @@ public class DataMigrationApiController implements DataMigrationApi {
     }
 
     @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class})
-    public ResponseEntity<String> constraintViolation(Exception exception) {
+    public ResponseEntity<String> constraintViolation(Exception exception) throws JsonProcessingException {
+        String formattedErrors = formatExceptionMessage(exception.getMessage());
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(exception.getMessage());
+                .body(formattedErrors);
+    }
+
+    private static String formatExceptionMessage (String messages) throws JsonProcessingException {
+
+        HashMap<String, List<String>> ExceptionMap = mapExceptionMsg(messages);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(ExceptionMap);
+
+        // beautify exception message
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement je = JsonParser.parseString(json);
+        String prettyExceptionMsg = gson.toJson(je);
+
+        return  prettyExceptionMsg;
+    }
+
+    private static HashMap<String, List<String>> mapExceptionMsg(String messages) {
+        HashMap<String, List<String>> result = new HashMap<>();
+
+        String[] messagesArr = messages.split(",");
+
+        for(String message : messagesArr) {
+            Pattern pattern = Pattern.compile("body\\[(\\d)\\]");
+            Matcher matcher = pattern.matcher(message);
+            if (matcher.find()) {
+                result.computeIfAbsent(matcher.group(1), k -> new ArrayList<>()).add(message);
+            }
+        }
+        return result;
     }
 }
