@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.json.simple.JSONObject;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
 
 @RestController
