@@ -18,6 +18,7 @@ import uk.gov.ccs.swagger.dataMigration.api.DataMigrationApi;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -98,6 +99,7 @@ public class DataMigrationApiController implements DataMigrationApi {
         HashMap<String, List<String>> result = new HashMap<>();
 
         String[] messagesArr = messages.split(",");
+        Arrays.sort(messagesArr, (a, b)->Integer.compare(extractUserMsgNum(a), extractUserMsgNum(b)));
 
         for(String message : messagesArr) {
             Pattern pattern = Pattern.compile("body\\[(\\d)\\]");
@@ -107,5 +109,16 @@ public class DataMigrationApiController implements DataMigrationApi {
             }
         }
         return result;
+    }
+
+    private static int extractUserMsgNum (String message) {
+        int userNum = 0;
+        Pattern pattern = Pattern.compile("user\\[(\\d)\\]");
+        Matcher matcher = pattern.matcher(message);
+        if (matcher.find()) {
+            userNum = Integer.parseInt(matcher.group(1));
+        }
+
+        return userNum;
     }
 }
