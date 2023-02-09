@@ -2,16 +2,21 @@ package uk.gov.ccs.conclave.data.migration.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.KeyGenerator;
 import static javax.xml.bind.DatatypeConverter.printHexBinary;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
 public class AuthorizationService {
 
     private final ErrorService errorService;
+    private static final Logger log = LoggerFactory.getLogger(ContactService.class);
 
     private String generateRandomAESKey() throws NoSuchAlgorithmException {
 
@@ -33,14 +38,14 @@ public class AuthorizationService {
         String key;
         try {
             key = generateRandomAESKey();
-            System.out.println("Successfully generated new key.");
+            log.info("Successfully generated new key.");
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("Error while generating new key: " + e.getMessage());
+            log.error("Error while generating new key: " + e.getMessage());
             e.printStackTrace();
             return;
         }
 
-        errorService.saveNewApiKey(key, "CCS Dev & Test Team");
+        errorService.saveNewApiKey(key, ("CCS Testing Team " + new SimpleDateFormat("dd-MM-yyyy").format(new Date())));
     }
 }
 
