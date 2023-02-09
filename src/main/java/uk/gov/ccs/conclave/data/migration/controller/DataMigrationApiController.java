@@ -53,7 +53,7 @@ public class DataMigrationApiController implements DataMigrationApi {
 
         log.info("Data Migration API invoked for file format: " + fileFormat);
 
-        if (authorizationService.invalidClientApiKey(xApiKey)) {
+        if (authorizationService.isClientApiKeyValid(xApiKey)) {
             responseBody.put( "Error", API_KEY_ERROR);
 
             return ResponseEntity
@@ -68,10 +68,10 @@ public class DataMigrationApiController implements DataMigrationApi {
                     .status(HttpStatus.CREATED)
                     .body(responseBody);
 
-        } else if (fileFormat.toLowerCase().equals("json")) {
+        } else if (fileFormat.equalsIgnoreCase("json")) {
             migrationService.migrate(body);
 
-        } else if (fileFormat.toLowerCase().equals("csv")) {
+        } else if (fileFormat.equalsIgnoreCase("csv")) {
             migrationService.formatCsv(csvFile);
 
         } else {
@@ -105,9 +105,8 @@ public class DataMigrationApiController implements DataMigrationApi {
         // beautify exception message
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonElement je = JsonParser.parseString(json);
-        String prettyExceptionMsg = gson.toJson(je);
 
-        return  prettyExceptionMsg;
+        return gson.toJson(je);
     }
 
     private static HashMap<String, List<String>> mapExceptionMsg(String messages) {
