@@ -4,19 +4,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.ccs.conclave.data.migration.domain.Client;
+import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 
 import javax.crypto.KeyGenerator;
 import static javax.xml.bind.DatatypeConverter.printHexBinary;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthorizationService {
 
-    private final ErrorService errorService;
     private static final Logger log = LoggerFactory.getLogger(ContactService.class);
+    private final ClientRepository clientRepository;
 
     private String generateRandomAESKey() throws NoSuchAlgorithmException {
 
@@ -26,12 +29,17 @@ public class AuthorizationService {
         return printHexBinary(encoded);
     }
 
-    public Boolean isClientApiKeyValid(String key) {
-        if (key == null || key.trim().isEmpty()) {
-            return Boolean.FALSE;
-        }
+    private Client saveNewApiKey(String key, String description) {
+        log.info("Key and details can be found in database.");
+        Client client = new Client();
+        client.setApiKey(key);
+        client.setClientKeyDescription(description);
+        return clientRepository.save(client);
+    }
 
-        return errorService.findApiKey(key).isPresent() ? Boolean.TRUE : Boolean.FALSE;
+    private Optional<Client> findApiKey(String key) {
+        log.info("Checking for x-api-key in the database.");
+        return clientRepository.findByApiKey(key);
     }
 
     public void createClientApiKey() {
@@ -45,7 +53,15 @@ public class AuthorizationService {
             return;
         }
 
-        errorService.saveNewApiKey(key, ("CCS Testing Team " + new SimpleDateFormat("dd-MM-yyyy").format(new Date())));
+        saveNewApiKey(key, ("CCS Testing Team " + new SimpleDateFormat("dd-MM-yyyy").format(new Date())));
+    }
+
+    public Boolean isClientApiKeyValid(String key) {
+        if (key == null || key.trim().isEmpty()) {
+            return Boolean.FALSE;
+        }
+
+        return findApiKey(key).isPresent() ? Boolean.TRUE : Boolean.FALSE;
     }
 }
 
