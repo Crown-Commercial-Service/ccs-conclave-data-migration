@@ -11,12 +11,12 @@ import java.security.NoSuchAlgorithmException;
 @RequiredArgsConstructor
 public class AuthorizationService {
 
-    private final ErrorService errorService;
+    // private final ErrorService errorService;
 
-    private String generateRandomAESKey(int keyLen) throws NoSuchAlgorithmException {
+    private String generateRandomAESKey() throws NoSuchAlgorithmException {
 
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(keyLen);
+        keyGenerator.init(256);
         byte[] encoded = keyGenerator.generateKey().getEncoded();
         return printHexBinary(encoded);
     }
@@ -26,21 +26,22 @@ public class AuthorizationService {
             return Boolean.FALSE;
         }
 
-        return errorService.findApiKey(key).isPresent() ? Boolean.TRUE : Boolean.FALSE;
+        // return errorService.findApiKey(key).isPresent() ? Boolean.TRUE : Boolean.FALSE;
+        return Boolean.TRUE;
     }
 
     public void createClientApiKey() {
         String key;
         try {
-            key = generateRandomAESKey(256);
+            key = generateRandomAESKey();
             System.out.println("Successfully generated new key.");
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Error while generating new key: " + e.getMessage());
             e.printStackTrace();
-            return;
+            // return;
         }
 
-        errorService.saveNewApiKey(key, "CCS Dev & Test Team");
+        // errorService.saveNewApiKey(key, "CCS Dev & Test Team");
     }
 }
 
