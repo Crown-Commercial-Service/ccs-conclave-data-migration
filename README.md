@@ -5,7 +5,7 @@ Conclave Data Migration project.
 
 # Description
 
-The Public Procurement Gateway (PPG; previously known as Conclave) is a new single sign-on platform for users of CCS services. Some CCS services will soon start using PPG. To avoid users needing to re-enter all their information, we want to migrate their existing information from the various different services to PPG..
+The Public Procurement Gateway (PPG; previously known as Conclave) is a new single sign-on platform for users of CCS services. Some CCS services will soon start using PPG. To avoid users needing to re-enter all their information, we want to migrate their existing information from the various different services to PPG.
 
 Data Migration is an application that the various services will use to migrate buyer and supplier data for both organisations and users to PPG.
 
