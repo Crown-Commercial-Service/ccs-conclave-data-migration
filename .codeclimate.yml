@@ -40,6 +40,4 @@ checks:
 
 exclude_patterns:
   - src/main/java/uk/gov/ccs/swagger
-
-
-
+  
