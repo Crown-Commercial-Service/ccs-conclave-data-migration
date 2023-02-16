@@ -1,6 +1,8 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @Service
+@Primary
 @RequiredArgsConstructor
 public class AuthorizationService implements JpaRepository<Client, Long> {
 
