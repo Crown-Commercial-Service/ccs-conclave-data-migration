@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import uk.gov.ccs.conclave.data.migration.service.AuthorizationService;
 import uk.gov.ccs.conclave.data.migration.service.MigrationService;
 import uk.gov.ccs.swagger.dataMigration.api.DataMigrationApi;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
@@ -38,34 +40,47 @@ public class DataMigrationApiController implements DataMigrationApi {
     public static List<String> responseMsgArray = new ArrayList<String>(); // Stores & collects any error messages or info text, to be added to repsonseBody.
 
     private final MigrationService migrationService;
+    private final AuthorizationService authorizationService;
 
 
     @Override
-    public ResponseEntity<JSONObject> appMigrateOrg(String xApiKey, String fileFormat, String docId, List<Organisation> body) {
+    public ResponseEntity<JSONObject> appMigrateOrg(String xApiKey, String fileFormat, String docId, MultipartFile csvFile, List<Organisation> body) {
 
         //Reset the response body, and constituent parts, ready for a new request.
         responseMsgArray.clear();
         responseBody = new JSONObject();
         responseStatus = HttpStatus.OK;
 
-        if (xApiKey == null || xApiKey.trim().isEmpty() || !migrationService.checkClientApiKey(xApiKey)) {
+        log.info("Data Migration API invoked for file format: " + fileFormat);
+
+        if (authorizationService.isClientApiKeyValid(xApiKey)) {
             responseBody.put( "Error", API_KEY_ERROR);
 
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(responseBody);
 
-        } else if (fileFormat.equals("newApiKey")) {
-            migrationService.createClientApiKey();
+        } else if (fileFormat.equals("newApiKeyDev")) {
+            authorizationService.createClientApiKey();
             responseBody.put( "Info", API_KEY_INFO);
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(responseBody);
-        }
 
-        log.info("Data Migration API invoked for file format: " + fileFormat);
-        migrationService.migrate(body);
+        } else if (fileFormat.equalsIgnoreCase("json")) {
+            migrationService.migrate(body);
+
+        } else if (fileFormat.equalsIgnoreCase("csv")) {
+            migrationService.formatCsv(csvFile);
+
+        } else {
+            responseBody.put( "Error", API_ENDPOINT_ERROR);
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        }
 
         return ResponseEntity
                 .status(responseStatus)
@@ -90,9 +105,8 @@ public class DataMigrationApiController implements DataMigrationApi {
         // beautify exception message
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonElement je = JsonParser.parseString(json);
-        String prettyExceptionMsg = gson.toJson(je);
 
-        return  prettyExceptionMsg;
+        return gson.toJson(je);
     }
 
     private static HashMap<String, List<String>> mapExceptionMsg(String messages) {

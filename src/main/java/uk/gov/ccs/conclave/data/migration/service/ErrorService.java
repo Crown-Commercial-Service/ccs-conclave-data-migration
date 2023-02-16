@@ -6,16 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.domain.User;
-import uk.gov.ccs.conclave.data.migration.domain.Client;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
-import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import static java.lang.String.join;
@@ -52,17 +49,16 @@ public class ErrorService {
     public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
     public static final String MIGRATION_STATUS_COMPLETE = "Completed with no errors. ";
     public static final String MIGRATION_STATUS_ABORTED = "Migration aborted. ";
-
     public static final String PROCESS_ABORTED = "Migration aborted. ";
-    public static final String API_KEY_INFO = "Creating new x-api-key: Key and details can be found in database. ";
+
+    public static final String API_KEY_INFO = "Creating new x-api-key. ";
     public static final String API_KEY_ERROR = "Unauthorised Access: Invalid x-api-key. ";
-    public static final String API_KEY_CHECK = "Checking for x-api-key in the database. ";
+    public static final String API_ENDPOINT_ERROR = "Invalid endpoint called. ";
 
     static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 
     private final OrganisationRepository organisationRepository;
     private final UserRepository userRepository;
-    private final ClientRepository clientRepository;
 
 
     public void logWithStatus(Organisation org, String message, uk.gov.ccs.swagger.sso.ApiException exception, Integer statusCode) throws DataMigrationException {
@@ -168,18 +164,5 @@ public class ErrorService {
     private String userRolesAsString(List<UserRole> userRoles) {
         var rolesList = userRoles.stream().map(UserRole::getName).collect(toList());
         return join(",", rolesList);
-    }
-
-    public Optional<Client> findApiKey(String key) {
-        LOGGER.info(API_KEY_CHECK);
-        return clientRepository.findByApiKey(key);
-    }
-
-    public Client saveNewApiKey(String key, String description) {
-        LOGGER.info(API_KEY_INFO);
-        Client client = new Client();
-        client.setApiKey(key);
-        client.setClientKeyDescription(description);
-        return clientRepository.save(client);
     }
 }
