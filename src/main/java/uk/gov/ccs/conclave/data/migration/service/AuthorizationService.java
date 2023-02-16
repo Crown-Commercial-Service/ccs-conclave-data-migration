@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.ccs.conclave.data.migration.domain.Client;
-//import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 
 import javax.crypto.KeyGenerator;
 import static javax.xml.bind.DatatypeConverter.printHexBinary;
@@ -21,8 +20,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-
-//import org.springframework.stereotype.Repository;
 
 @Service
 @RequiredArgsConstructor
@@ -84,7 +81,7 @@ public class AuthorizationService implements JpaRepository<Client, Long> {
     }
 
     Optional<Client> findByApiKey(String apiKey) {
-        return null;
+        return Optional.empty();
     }
 
     @Override
