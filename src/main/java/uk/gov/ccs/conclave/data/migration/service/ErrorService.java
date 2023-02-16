@@ -57,6 +57,7 @@ public class ErrorService {
     public static final String API_KEY_INFO = "Creating new x-api-key: Key and details can be found in database. ";
     public static final String API_KEY_ERROR = "Unauthorised Access: Invalid x-api-key. ";
     public static final String API_KEY_CHECK = "Checking for x-api-key in the database. ";
+    public static final String API_ENDPOINT_ERROR = "Invalid endpoint called. ";
 
     static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 
