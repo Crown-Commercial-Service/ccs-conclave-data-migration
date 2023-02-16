@@ -36,6 +36,7 @@ public class ReportService {
         report.setProcessedUsers(processesUserCount);
         report.setFailedUsers(failedUserCount);
         reportRepository.save(report);
+
     }
 
     public Summary buildSummary(Organisation org, Status status) {
