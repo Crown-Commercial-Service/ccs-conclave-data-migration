@@ -74,7 +74,7 @@ public interface DataMigrationApi {
             @PathVariable("fileFormat") String fileFormat,
             @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema())
             @Valid @RequestParam(value = "docId", required = false) String docId,
-            @RequestParam("file") MultipartFile csvFile,
+            @RequestParam(value = "file", required = false) MultipartFile csvFile,
             @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema())
             @Valid @RequestBody List<Organisation> body);
 }

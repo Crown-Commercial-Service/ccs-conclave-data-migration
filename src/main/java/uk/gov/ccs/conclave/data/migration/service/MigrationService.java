@@ -149,21 +149,24 @@ public class MigrationService {
             }
 
             migrate(organisations);
+        } else {
+            System.out.println("Invalid CSV file");
         }
     }
 
     public static boolean isValidCSV(MultipartFile file) {
+        if (file.isEmpty()) { return false; }
+
         final List<String> requiredHeaders = Arrays.asList(
                 "IdentifierId","SchemeId","OrganisationType","EmailAddress","Title","FirstName","LastName","OrganisationRoles","UserRoles","ContactEmail","ContactMobile","ContactPhone","ContactFax","ContactSocial"
         );
+
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             String[] headers = br.readLine().split(",");
             br.close();
             return new HashSet<>(Arrays.asList(headers)).containsAll(requiredHeaders);
-        } catch (Exception e) {
-            return false;
-        }
+        } catch (Exception e) { return false; }
     }
 
     public boolean isValidClientApiKey(String key) {
