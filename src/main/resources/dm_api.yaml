@@ -16,7 +16,6 @@ tags:
       description: Find out more
       url: 'http://apis.crowncommercial.gov.uk'
 paths:
-
   /data-migration/migrate/format/{fileFormat}:
     post:
       tags:
@@ -24,6 +23,9 @@ paths:
       summary: >-
         A generic endpoint for regisering organisations and users
       operationId: app.migrateOrg
+      consumes:
+        - application/json
+        - multipart/form-data
       parameters:
         #        - in: path
         #          name: inputType
@@ -43,6 +45,11 @@ paths:
             type: string
           required: false
           description:  file location e.g. /path
+        - in: formData
+          name: csvFile
+          type: file
+          required: false
+          description:  csv file to upload.
         - in: header
           name: x-api-key
           schema:

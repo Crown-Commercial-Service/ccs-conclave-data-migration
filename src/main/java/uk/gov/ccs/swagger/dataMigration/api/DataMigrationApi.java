@@ -65,7 +65,7 @@ public interface DataMigrationApi {
         @ApiResponse(responseCode = "505", description = "HTTP Version Not Supported") })
     @RequestMapping(value = "/data-migration/migrate/format/{fileFormat}",
         produces = { "application/json" }, 
-        consumes = { "application/json" }, 
+        consumes = { "application/json", "multipart/form-data" }, 
         method = RequestMethod.POST)
         ResponseEntity<JSONObject> appMigrateOrg(
             @Parameter(in = ParameterIn.HEADER, description = "api key for authorizing client." ,required=true,schema=@Schema())
@@ -74,7 +74,7 @@ public interface DataMigrationApi {
             @PathVariable("fileFormat") String fileFormat,
             @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema())
             @Valid @RequestParam(value = "docId", required = false) String docId,
-            @RequestParam(value = "file", required = false) MultipartFile csvFile,
+            @RequestParam(value = "csvFile", required = false) MultipartFile csvFile,
             @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema())
             @Valid @RequestBody List<Organisation> body);
 }
