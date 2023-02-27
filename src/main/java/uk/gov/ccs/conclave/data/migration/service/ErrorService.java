@@ -51,7 +51,6 @@ public class ErrorService {
     public static final String USER_INVALID_ROLES_ERROR = "Invalid roles not applied to user ";
     public static final String USER_MIGRATION_SUCCESS = "User migrated successfully. ";
 
-
     public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
     public static final String MIGRATION_STATUS_COMPLETE = "Completed with no errors. ";
     public static final String MIGRATION_STATUS_ABORTED = "Migration aborted. ";
