@@ -1,8 +1,12 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
+import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
@@ -16,13 +20,15 @@ import java.util.List;
 import static java.util.Collections.EMPTY_LIST;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_ROLE_NOT_FOUND;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
 @Service
 @RequiredArgsConstructor
 public class RoleService {
 
     private final ConclaveClient conclaveClient;
+    private final ErrorService errorService;
+    private static final Logger log = LoggerFactory.getLogger(ContactService.class);
 
     private OrganisationRole filterOrganisationRoleByName(final List<OrganisationRole> roles, final String roleName) throws ApiException {
         return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).findFirst().orElseThrow(() -> new ApiException(404, roleName + SSO_ROLE_NOT_FOUND));
@@ -35,12 +41,20 @@ public class RoleService {
 
     public void applyOrganisationRole(final String organisationId, final Organisation organisation) throws ApiException {
         var orgRolesList = organisation.getOrgRoles();
+
         if (isNotEmpty(orgRolesList) && isNotNull(orgRolesList)) {
             List<OrganisationRole> configuredRoles = conclaveClient.getAllConfiguredRoles();
             List<OrganisationRole> existingRoles = conclaveClient.getOrganisationRoles(organisationId);
             var rolesToAdd = new ArrayList<OrganisationRole>();
+
             for (OrgRole orgRole : orgRolesList) {
                 if(!checkRoleExistsInOrganisation(existingRoles, orgRole.getName())) {
+                    if(!checkRoleExistsInOrganisation(configuredRoles, orgRole.getName())) {
+                        log.error("{}", ORG_INVALID_ROLES_ERROR);
+                        errorService.saveOrgDetailsWithStatusCode(organisation, ORG_INVALID_ROLES_ERROR, 400);
+                        DataMigrationApiController.responseMsgArray.add(ORG_INVALID_ROLES_ERROR  + organisation.getIdentifierId());
+                        continue;
+                    }
                     rolesToAdd.add(filterOrganisationRoleByName(configuredRoles, orgRole.getName()));
                 }
             }
