@@ -42,6 +42,7 @@ public class ErrorService {
     public static final String SSO_USER_CONTACT_ERROR_INFO = "Invalid data or contact information not Supplied. ";
     public static final String SSO_USER_CONTACT_RESPONSE_INFO = "Contact record not created: Invalid data or contact information not Supplied. ";
     public static final String SSO_USER_ERROR_MESSAGE = "Error while creating SSO user. ";
+    public static final String SSO_DUPLICATE_USER_ERROR_MESSAGE = "User already exists. ";
 
     public static final String SSO_ROLE_NOT_FOUND = " Role does not exist. ";
     public static final String SSO_IDENTITY_PROVIDER_ERROR_MESSAGE = "Error while retrieving identity provider of the SSO organisation. ";
