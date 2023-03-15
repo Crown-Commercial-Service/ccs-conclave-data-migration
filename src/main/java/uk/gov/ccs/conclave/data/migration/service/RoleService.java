@@ -9,10 +9,10 @@ import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
+import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import uk.gov.ccs.swagger.sso.ApiException;
-import uk.gov.ccs.swagger.sso.model.OrganisationRole;
-import uk.gov.ccs.swagger.sso.model.OrganisationRoleUpdate;
+import uk.gov.ccs.swagger.sso.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,14 +65,36 @@ public class RoleService {
         }
     }
 
-    public List<Integer> getUserRoleIdsFromRoleNames(final String organisationId, final List<UserRole> roleNames) throws ApiException {
+
+    public List<Integer> getExistingUserRoleIdsFromRoleNames(final String organisationId, final List<UserRole> roleNames, final User user, final Org organisation) throws ApiException {
+        // get all existing roles and add to roleIds this is to prevent overwriting existing roles
+        UserProfileResponseInfo existingUser = conclaveClient.getUser(user);
+        List<RolePermissionInfo> userRoleInfo = existingUser.getDetail().getRolePermissionInfo();
+        for(RolePermissionInfo role : userRoleInfo) {
+            UserRole existingUserRole = new UserRole();
+            existingUserRole.setName(role.getRoleName());
+            if(!roleNames.contains(existingUserRole)) {
+                roleNames.add(existingUserRole);
+            }
+        }
+        var roleIds = getUserRoleIdsFromRoleNames(organisationId, roleNames, user, organisation);
+        return roleIds;
+    }
+
+    public List<Integer> getUserRoleIdsFromRoleNames(final String organisationId, final List<UserRole> roleNames, final User user, final Org organisation) throws ApiException {
         if (isEmpty(roleNames)) {
             return EMPTY_LIST;
         }
         List<OrganisationRole> orgRoles = conclaveClient.getOrganisationRoles(organisationId);
         var roleIds = new ArrayList<Integer>();
         for (UserRole userRole : roleNames) {
-            roleIds.add(filterOrganisationRoleByName(orgRoles, userRole.getName()).getRoleId());
+            if(checkRoleExistsInOrganisation(conclaveClient.getAllConfiguredRoles(), userRole.getName())) {
+                roleIds.add(filterOrganisationRoleByName(orgRoles, userRole.getName()).getRoleId());
+            } else {
+                log.error("{}", USER_INVALID_ROLES_ERROR);
+                errorService.saveUserDetailWithStatusCodeWithoutException(user, USER_INVALID_ROLES_ERROR, 400, organisation);
+                DataMigrationApiController.responseMsgArray.add(USER_INVALID_ROLES_ERROR  + user.getEmail());
+            }
         }
         return roleIds;
     }

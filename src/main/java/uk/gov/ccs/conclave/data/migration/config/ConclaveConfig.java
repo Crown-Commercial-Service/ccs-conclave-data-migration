@@ -35,6 +35,11 @@ public class ConclaveConfig {
         return new ConfigurationApi(apiClient());
     }
 
+    @Bean
+    public OrganisationUserApi organisationUserApi() {
+        return new OrganisationUserApi(apiClient());
+    }
+
 
     @Bean
     public ApiClient apiClient() {
