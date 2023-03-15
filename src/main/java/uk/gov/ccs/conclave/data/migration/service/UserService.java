@@ -79,17 +79,24 @@ public class UserService {
         }
     }
 
+    private Boolean checkUserExistsInOrg(User user, String orgId) throws ApiException {
+        UserListResponse orgUsers = conclaveUserClient.getAllOrgUsers(orgId);
+        List<UserListInfo> userList = orgUsers.getUserList();
+        UserListInfo orgUser = new UserListInfo();
+        orgUser.setUserName(user.getEmail());
+        orgUser.setName(user.getFirstName() + " " + user.getLastName());
+        if(userList.contains(orgUser)) {
+            return true;
+        }
+            return false;
+    }
+
     public long migrateUsers(List<User> users, OrgMigrationResponse response) throws DataMigrationException {
         long userFailureCount = 0;
         Org organisation = response.getOrganisation();
         for (User user : users) {
             try {
-                UserListResponse orgUsers = conclaveUserClient.getAllOrgUsers(response.getOrganisationId());
-                List<UserListInfo> userList = orgUsers.getUserList();
-                UserListInfo orgUser = new UserListInfo();
-                orgUser.setUserName(user.getEmail());
-                orgUser.setName(user.getFirstName() + " " + user.getLastName());
-                if(userList.contains(orgUser)) {
+                if(checkUserExistsInOrg(user, response.getOrganisationId())) {
                     updateUserRoles(user, response, organisation);
                     errorService.saveUserDetailWithStatusCode(user, SSO_DUPLICATE_USER_ERROR_MESSAGE, 409, response.getOrganisation());
                 } else {
@@ -98,8 +105,6 @@ public class UserService {
                     contactService.migrateUserContact(user, userInfo.getUserId(), organisation);
                     errorService.saveUserDetailWithStatusCode(user, USER_MIGRATION_SUCCESS, 200, organisation);
                 }
-
-
             } catch (ApiException e) {
                 userFailureCount++;
                 log.error("{}{}: {}", SSO_USER_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
