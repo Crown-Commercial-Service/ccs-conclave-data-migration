@@ -39,14 +39,13 @@ public class ConclaveClient {
     }
 
     public UserProfileResponseInfo getUser(final User user) throws ApiException {
-        LOGGER.info("Getting All conclave users.");
+        LOGGER.info("Getting user.");
         return userApi.usersGet(user.getEmail());
     }
     public UserListResponse getAllOrgUsers(final String organisationId) throws ApiException {
         LOGGER.info("Getting All conclave users.");
         return orgUserApi.organisationsOrganisationIdUsersGet(organisationId, null, null, null, null);
     }
-
 
     public UserEditResponseInfo updateUserRole(final UserProfileEditRequestInfo userDto) throws ApiException {
         LOGGER.info("Updating role(s) for User: " + userDto.getUserName());
