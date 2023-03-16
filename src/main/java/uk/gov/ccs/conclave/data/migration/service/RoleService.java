@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
@@ -39,6 +40,10 @@ public class RoleService {
         return roles.stream().anyMatch(role -> role.getRoleName().equalsIgnoreCase(roleName));
     }
 
+    private Boolean checkRoleExistsInUserRoles(final List<RolePermissionInfo> roles, final String roleName) {
+        return roles.stream().anyMatch(role -> role.getRoleName().equalsIgnoreCase(roleName));
+    }
+
     public void applyOrganisationRole(final String organisationId, final Organisation organisation) throws ApiException {
         var orgRolesList = organisation.getOrgRoles();
 
@@ -66,16 +71,24 @@ public class RoleService {
     }
 
 
-    public List<Integer> getExistingUserRoleIdsFromRoleNames(final String organisationId, final List<UserRole> roleNames, final User user, final Org organisation) throws ApiException {
+    public List<Integer> getExistingUserRoleIdsFromRoleNames(final String organisationId, final List<UserRole> roleNames, final User user, final Org organisation) throws ApiException, DataMigrationException {
         // get all existing roles and add to roleIds this is to prevent overwriting existing roles
         UserProfileResponseInfo existingUser = conclaveClient.getUser(user);
         List<RolePermissionInfo> userRoleInfo = existingUser.getDetail().getRolePermissionInfo();
+        int newRoleAdded = 0;
         for(RolePermissionInfo role : userRoleInfo) {
             UserRole existingUserRole = new UserRole();
             existingUserRole.setName(role.getRoleName());
+            if (!checkRoleExistsInUserRoles(userRoleInfo, role.getRoleName())) {
+                newRoleAdded++;
+            }
             if(!roleNames.contains(existingUserRole)) {
                 roleNames.add(existingUserRole);
             }
+        }
+        if(newRoleAdded == 0) {
+            // existing user with existing roles only
+            errorService.saveUserDetailWithStatusCode(user, SSO_DUPLICATE_USER_ERROR_MESSAGE, 409, organisation);
         }
         var roleIds = getUserRoleIdsFromRoleNames(organisationId, roleNames, user, organisation);
         return roleIds;
@@ -88,7 +101,7 @@ public class RoleService {
         List<OrganisationRole> orgRoles = conclaveClient.getOrganisationRoles(organisationId);
         var roleIds = new ArrayList<Integer>();
         for (UserRole userRole : roleNames) {
-            if(checkRoleExistsInOrganisation(conclaveClient.getAllConfiguredRoles(), userRole.getName())) {
+            if(checkRoleExistsInOrganisation(orgRoles, userRole.getName())) {
                 roleIds.add(filterOrganisationRoleByName(orgRoles, userRole.getName()).getRoleId());
             } else {
                 log.error("{}", USER_INVALID_ROLES_ERROR);

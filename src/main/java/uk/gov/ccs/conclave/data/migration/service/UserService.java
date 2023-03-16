@@ -98,7 +98,6 @@ public class UserService {
             try {
                 if(checkUserExistsInOrg(user, response.getOrganisationId())) {
                     updateUserRoles(user, response, organisation);
-                    errorService.saveUserDetailWithStatusCode(user, SSO_DUPLICATE_USER_ERROR_MESSAGE, 409, response.getOrganisation());
                 } else {
                     UserProfileEditRequestInfo userDto = buildUserDto(user, response);
                     UserEditResponseInfo userInfo = conclaveUserClient.createUser(userDto);
