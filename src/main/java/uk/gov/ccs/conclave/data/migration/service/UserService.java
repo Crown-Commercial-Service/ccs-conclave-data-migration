@@ -81,13 +81,16 @@ public class UserService {
 
     private Boolean checkUserExistsInOrg(User user, String orgId) throws ApiException {
         UserListResponse orgUsers = conclaveUserClient.getAllOrgUsers(orgId);
-        List<UserListInfo> userList = orgUsers.getUserList();
-        UserListInfo orgUser = new UserListInfo();
-        orgUser.setUserName(user.getEmail());
-        orgUser.setName(user.getFirstName() + " " + user.getLastName());
-        if(userList.contains(orgUser)) {
-            return true;
+        if(orgUsers != null) {
+            List<UserListInfo> userList = orgUsers.getUserList();
+            UserListInfo orgUser = new UserListInfo();
+            orgUser.setUserName(user.getEmail());
+            orgUser.setName(user.getFirstName() + " " + user.getLastName());
+            if(userList.contains(orgUser)) {
+                return true;
+            }
         }
+
             return false;
     }
 
