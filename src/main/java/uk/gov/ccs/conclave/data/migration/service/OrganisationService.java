@@ -159,7 +159,7 @@ public class OrganisationService {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
         organisationDetail.setRightToBuy(org.isRightToBuy());
-        organisationDetail.setDomainName(org.getDomainName());
+        // organisationDetail.setDomainName(org.getDomainName());
         return organisationDetail;
     }
 
