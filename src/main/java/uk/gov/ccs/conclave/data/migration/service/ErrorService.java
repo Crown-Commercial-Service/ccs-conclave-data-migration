@@ -37,16 +37,20 @@ public class ErrorService {
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
     public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
     public static final String SSO_ORG_ADMIN_ERROR_MESSAGE = "No Organisation Administrator provided for new organisation. ";
+    public static final String SSO_DUPLICATE_ORG_ERROR_MESSAGE = "Org already exists. ";
 
     public static final String SSO_USER_CONTACT_ERROR_MESSAGE = "User contact record not created. ";
     public static final String SSO_USER_CONTACT_ERROR_INFO = "Invalid data or contact information not Supplied. ";
     public static final String SSO_USER_CONTACT_RESPONSE_INFO = "Contact record not created: Invalid data or contact information not Supplied. ";
     public static final String SSO_USER_ERROR_MESSAGE = "Error while creating SSO user. ";
+    public static final String SSO_DUPLICATE_USER_ERROR_MESSAGE = "User already exists. ";
 
     public static final String SSO_ROLE_NOT_FOUND = " Role does not exist. ";
     public static final String SSO_IDENTITY_PROVIDER_ERROR_MESSAGE = "Error while retrieving identity provider of the SSO organisation. ";
 
     public static final String ORG_MIGRATION_SUCCESS = "Organisation migrated successfully. ";
+    public static final String ORG_INVALID_ROLES_ERROR = "Invalid roles not applied to org ";
+    public static final String USER_INVALID_ROLES_ERROR = "Invalid roles not applied to user ";
     public static final String USER_MIGRATION_SUCCESS = "User migrated successfully. ";
 
     public static final String MIGRATION_STATUS_PARTIAL = "Completed with errors. ";
@@ -57,6 +61,7 @@ public class ErrorService {
     public static final String API_KEY_INFO = "Creating new x-api-key: Key and details can be found in database. ";
     public static final String API_KEY_ERROR = "Unauthorised Access: Invalid x-api-key. ";
     public static final String API_KEY_CHECK = "Checking for x-api-key in the database. ";
+    public static final String API_ENDPOINT_ERROR = "Invalid endpoint called. ";
 
     static final int[] FATAL_ERROR_CODES = new int[]{401, 429, 500, 501, 502, 503, 504, 505};
 

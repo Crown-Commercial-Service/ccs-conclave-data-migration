@@ -16,10 +16,10 @@ public class AuthorizationService {
     
     private static final Logger log = LoggerFactory.getLogger(ContactService.class);
 
-    private static String randomAESKeyGen(final int keyLen) throws NoSuchAlgorithmException {
+    private static String randomAESKeyGen() throws NoSuchAlgorithmException {
 
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        keyGen.init(keyLen);
+        keyGen.init(256);
         SecretKey secretKey = keyGen.generateKey();
         byte[] encoded = secretKey.getEncoded();
         return DatatypeConverter.printHexBinary(encoded);
@@ -28,7 +28,7 @@ public class AuthorizationService {
     public static String createNewApiKey() {
         String key = null;
             try {
-                key = AuthorizationService.randomAESKeyGen(256);
+                key = AuthorizationService.randomAESKeyGen();
                 log.info("Successfully generated new key.");
             } catch (NoSuchAlgorithmException e) {
                 log.error("Exception caught when creating new key.");

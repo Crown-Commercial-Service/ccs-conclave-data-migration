@@ -36,6 +36,7 @@ public class OrganisationService {
     private final RoleService roleService;
 
     private static final Logger log = LoggerFactory.getLogger(OrganisationService.class);
+    private boolean orgExistsInConclave = false;
 
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
@@ -57,7 +58,9 @@ public class OrganisationService {
     private OrgMigrationResponse generateOrgMigrationResponseAndSaveSuccess(Organisation org, String orgId, Integer idp) {
         OrgMigrationResponse response = null;
         if (idp != null && orgId != null) {
-            Org migratedOrg = errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200);
+            Org migratedOrg = (orgExistsInConclave ?
+                    errorService.saveOrgDetailsWithStatusCode(org, SSO_DUPLICATE_ORG_ERROR_MESSAGE, 409) :
+                    errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200)) ;
             response = new OrgMigrationResponse(orgId, idp, migratedOrg);
         }
 
@@ -110,6 +113,7 @@ public class OrganisationService {
 
             } else {
                 log.debug("Organisation already exists. Applying roles...");
+                orgExistsInConclave = true;
                 roleService.applyOrganisationRole(organisationId, organisation);
             }
 
@@ -155,6 +159,7 @@ public class OrganisationService {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
         organisationDetail.setRightToBuy(org.isRightToBuy());
+        // organisationDetail.setDomainName(org.getDomainName());
         return organisationDetail;
     }
 
