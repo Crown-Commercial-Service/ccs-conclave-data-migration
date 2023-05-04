@@ -64,8 +64,8 @@ public interface DataMigrationApi {
         
         @ApiResponse(responseCode = "505", description = "HTTP Version Not Supported") })
     @RequestMapping(value = "/data-migration/migrate/format/{fileFormat}",
-        produces = { "application/json" }, 
-        consumes = { "application/json" }, 
+        produces = { "text/csv" },
+        consumes = { "text/csv" },
         method = RequestMethod.POST)
         ResponseEntity<JSONObject> appMigrateOrg(
             @Parameter(in = ParameterIn.HEADER, description = "api key for authorizing client." ,required=true,schema=@Schema())
