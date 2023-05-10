@@ -26,53 +26,49 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.json.simple.JSONObject;
+
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
+import java.util.Map;
 
 @Validated
 public interface DataMigrationApi {
 
     @Operation(summary = "A generic endpoint for regisering organisations and users", description = "", tags={ "datamigration" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = String.class)))),
-
-            @ApiResponse(responseCode = "201", description = "Created"),
-
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-
-            @ApiResponse(responseCode = "409", description = "Duplicate resource"),
-
-            @ApiResponse(responseCode = "429", description = "Too Many Requests"),
-
-            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
-
-            @ApiResponse(responseCode = "501", description = "Not Implemented"),
-
-            @ApiResponse(responseCode = "502", description = "Bad Gateway"),
-
-            @ApiResponse(responseCode = "503", description = "Service Unavailable/Limit Exceeded"),
-
-            @ApiResponse(responseCode = "504", description = "Gateway Timeout"),
-
-            @ApiResponse(responseCode = "505", description = "HTTP Version Not Supported") })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = String.class)))),
+        
+        @ApiResponse(responseCode = "201", description = "Created"),
+        
+        @ApiResponse(responseCode = "400", description = "Bad Request"),
+        
+        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+        
+        @ApiResponse(responseCode = "403", description = "Forbidden"),
+        
+        @ApiResponse(responseCode = "404", description = "Not Found"),
+        
+        @ApiResponse(responseCode = "409", description = "Duplicate resource"),
+        
+        @ApiResponse(responseCode = "429", description = "Too Many Requests"),
+        
+        @ApiResponse(responseCode = "500", description = "Internal Server Error"),
+        
+        @ApiResponse(responseCode = "501", description = "Not Implemented"),
+        
+        @ApiResponse(responseCode = "502", description = "Bad Gateway"),
+        
+        @ApiResponse(responseCode = "503", description = "Service Unavailable/Limit Exceeded"),
+        
+        @ApiResponse(responseCode = "504", description = "Gateway Timeout"),
+        
+        @ApiResponse(responseCode = "505", description = "HTTP Version Not Supported") })
     @RequestMapping(value = "/data-migration/migrate/format/{fileFormat}",
-            method = RequestMethod.POST)
-    ResponseEntity<JSONObject> appMigrateOrg(
-            @Parameter(in = ParameterIn.HEADER, description = "api key for authorizing client." ,required=true,schema=@Schema())
-            @RequestHeader(value="x-api-key", required=true) String xApiKey,
-            @Parameter(in = ParameterIn.PATH, description = "File format - CSV/JSON", required=true, schema=@Schema())
-            @PathVariable("fileFormat") String fileFormat,
-            @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema())
-            @Valid @RequestParam(value = "docId", required = false) String docId,
-            @RequestParam(value = "files", required = false) MultipartFile csvFile,
-            @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema())
-            @Valid @RequestBody List<Organisation> body);
+        produces = { "application/json" }, 
+        consumes = { "application/json" }, 
+        method = RequestMethod.POST)
+    ResponseEntity<List<String>> appMigrateOrg(@Parameter(in = ParameterIn.HEADER, description = "api key for authorizing client." ,required=true,schema=@Schema()) @RequestHeader(value="x-api-key", required=true) String xApiKey, @Parameter(in = ParameterIn.PATH, description = "File format - CSV/JSON", required=true, schema=@Schema()) @PathVariable("fileFormat") String fileFormat, @Parameter(in = ParameterIn.QUERY, description = "file location e.g. /path" ,schema=@Schema()) @Valid @RequestParam(value = "docId", required = false) String docId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody List<Organisation> body);
+
 }
+
