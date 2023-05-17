@@ -156,6 +156,7 @@ public class ErrorService {
         org.setIdentifierId(organisation.getIdentifierId());
         org.setSchemeId(organisation.getSchemeId());
         org.setRightToBuy(organisation.isRightToBuy());
+        org.setDomainName(organisation.getDomainName());
         var orgRoles = organisation.getOrgRoles();
         if (isNotEmpty(orgRoles)) {
             org.setOrgRoles(orgRolesAsString(orgRoles));
