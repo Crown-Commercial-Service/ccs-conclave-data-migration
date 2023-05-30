@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.api.*;
 import uk.gov.ccs.swagger.sso.model.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -28,10 +30,26 @@ public class ConclaveClient {
 
     private final UserContactApi userContactApi;
 
+    private final OrganisationUserApi orgUserApi;
+
 
     public UserEditResponseInfo createUser(final UserProfileEditRequestInfo userDto) throws ApiException {
         LOGGER.info("Creating a conclave user.");
         return userApi.usersPost(userDto);
+    }
+
+    public UserProfileResponseInfo getUser(final User user) throws ApiException {
+        LOGGER.info("Getting user.");
+        return userApi.usersGet(user.getEmail());
+    }
+    public UserListResponse getAllOrgUsers(final String organisationId) throws ApiException {
+        LOGGER.info("Getting All conclave users.");
+        return orgUserApi.organisationsOrganisationIdUsersGet(organisationId, null, null, null, null);
+    }
+
+    public UserEditResponseInfo updateUserRole(final UserProfileEditRequestInfo userDto) throws ApiException {
+        LOGGER.info("Updating role(s) for User: " + userDto.getUserName());
+        return userApi.usersPut(userDto, userDto.getUserName());
     }
 
     public void createConclaveOrg(final OrganisationProfileInfo orgDto) throws ApiException {

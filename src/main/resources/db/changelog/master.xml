@@ -17,6 +17,7 @@
             <column name="identifier_id" type="VARCHAR(255)"/>
             <column name="org_roles" type="VARCHAR(255)"/>
             <column name="right_to_buy" type="BOOL"/>
+            <column name="domain_name" type="VARCHAR(255)"/>
             <column name="scheme_id" type="VARCHAR(255)"/>
             <column name="status" type="INT"/>
             <column name="status_description" type="VARCHAR(255)"/>

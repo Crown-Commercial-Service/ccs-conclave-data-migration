@@ -25,6 +25,9 @@ public class Organisation   {
   @JsonProperty("scheme-id")
   private String schemeId = null;
 
+  @JsonProperty("domainName")
+  private String domainName = null;
+
   @JsonProperty("rightToBuy")
   private String rightToBuy = null;
 
@@ -78,6 +81,26 @@ public class Organisation   {
 
   public Organisation rightToBuy(String rightToBuy) {
     this.rightToBuy = rightToBuy;
+    return this;
+  }
+
+  /**
+   * domainName
+   * @return domainName
+   **/
+  @Schema(example = "kier.com", required = true, description = "domainName")
+  @NotNull
+
+  @Size(min=1)   public String getDomainName() {
+    return domainName;
+  }
+
+  public void setDomainName(String domainName) {
+    this.domainName = domainName;
+  }
+
+  public Organisation domainName(String domainName) {
+    this.domainName = domainName;
     return this;
   }
 
@@ -167,13 +190,14 @@ public class Organisation   {
     return Objects.equals(this.identifierId, organisation.identifierId) &&
         Objects.equals(this.schemeId, organisation.schemeId) &&
         Objects.equals(this.rightToBuy, organisation.rightToBuy) &&
+        Objects.equals(this.domainName, organisation.domainName) &&
         Objects.equals(this.orgRoles, organisation.orgRoles) &&
         Objects.equals(this.user, organisation.user);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifierId, schemeId, rightToBuy, orgRoles, user);
+    return Objects.hash(identifierId, schemeId, domainName, rightToBuy, orgRoles, user);
   }
 
   @Override
@@ -183,6 +207,7 @@ public class Organisation   {
     
     sb.append("    identifierId: ").append(toIndentedString(identifierId)).append("\n");
     sb.append("    schemeId: ").append(toIndentedString(schemeId)).append("\n");
+    sb.append("    domainName: ").append(toIndentedString(domainName)).append("\n");
     sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
     sb.append("    orgRoles: ").append(toIndentedString(orgRoles)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
