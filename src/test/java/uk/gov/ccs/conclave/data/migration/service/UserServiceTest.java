@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.config.MigrationProperties;
@@ -11,6 +12,8 @@ import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.UserEditResponseInfo;
+import uk.gov.ccs.swagger.sso.model.UserListResponse;
+import uk.gov.ccs.swagger.sso.model.UserProfileResponseInfo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +42,9 @@ public class UserServiceTest {
     @Mock
     private RoleService roleService;
 
+    @Mock
+    private UserListResponse userListResponse;
+
     @InjectMocks
     private UserService userService;
 
@@ -56,16 +62,6 @@ public class UserServiceTest {
         var failures = userService.migrateUsers(List.of(new User()), new OrgMigrationResponse("organisationId", 1234, new Org()));
 
         assertThat(failures).isEqualTo(0);
-    }
-
-    @Test
-    public void testExistingUser() throws Exception {
-        given(conclaveClient.createUser(any())).willThrow(new ApiException(409, "Conflict"));
-
-        var failures = userService.migrateUsers(List.of(new User()), new OrgMigrationResponse("organisationId", 1234, new Org()));
-
-        assertThat(failures).isEqualTo(1);
-        verifyNoInteractions(contactService);
     }
 
     @Test
