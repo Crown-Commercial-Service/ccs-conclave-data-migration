@@ -51,6 +51,9 @@ public class OrganisationDetail {
   @SerializedName("isActive")
   private Boolean isActive = null;
 
+  @SerializedName("domainName")
+  private String domainName = null;
+
   public OrganisationDetail organisationId(String organisationId) {
     this.organisationId = organisationId;
     return this;
@@ -196,6 +199,25 @@ public class OrganisationDetail {
   }
 
 
+  /**
+   * Get domainName
+   * @return domainName
+   **/
+  @Schema(description = "")
+  public String getDomainName() {
+    return domainName;
+  }
+
+  public void setDomainName(String domainName) {
+    this.domainName = domainName;
+  }
+
+  public OrganisationDetail domainName(String domainName) {
+    this.domainName = domainName;
+    return this;
+  }
+
+
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -212,12 +234,13 @@ public class OrganisationDetail {
         Objects.equals(this.isSme, organisationDetail.isSme) &&
         Objects.equals(this.isVcse, organisationDetail.isVcse) &&
         Objects.equals(this.rightToBuy, organisationDetail.rightToBuy) &&
-        Objects.equals(this.isActive, organisationDetail.isActive);
+        Objects.equals(this.isActive, organisationDetail.isActive) &&
+        Objects.equals(this.domainName, organisationDetail.domainName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(organisationId, creationDate, businessType, supplierBuyerType, isSme, isVcse, rightToBuy, isActive);
+    return Objects.hash(organisationId, creationDate, businessType, supplierBuyerType, isSme, isVcse, rightToBuy, isActive, domainName);
   }
 
 
@@ -234,6 +257,7 @@ public class OrganisationDetail {
     sb.append("    isVcse: ").append(toIndentedString(isVcse)).append("\n");
     sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
+    sb.append("    domainName: ").append(toIndentedString(domainName)).append("\n");
     sb.append("}");
     return sb.toString();
   }
