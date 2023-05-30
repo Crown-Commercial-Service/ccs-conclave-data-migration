@@ -37,6 +37,7 @@ public class ErrorService {
     public static final String SSO_ORG_ERROR_MESSAGE = "Error while creating SSO Organisation. ";
     public static final String SSO_ORG_CONTACT_ERROR_MESSAGE = "Error while creating SSO Organisation Contact. ";
     public static final String SSO_ORG_ADMIN_ERROR_MESSAGE = "No Organisation Administrator provided for new organisation. ";
+    public static final String SSO_DUPLICATE_ORG_ERROR_MESSAGE = "Org already exists. ";
 
     public static final String SSO_USER_CONTACT_ERROR_MESSAGE = "User contact record not created. ";
     public static final String SSO_USER_CONTACT_ERROR_INFO = "Invalid data or contact information not Supplied. ";
@@ -155,6 +156,7 @@ public class ErrorService {
         org.setIdentifierId(organisation.getIdentifierId());
         org.setSchemeId(organisation.getSchemeId());
         org.setRightToBuy(organisation.isRightToBuy());
+        org.setDomainName(organisation.getDomainName());
         var orgRoles = organisation.getOrgRoles();
         if (isNotEmpty(orgRoles)) {
             org.setOrgRoles(orgRolesAsString(orgRoles));
