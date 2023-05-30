@@ -59,7 +59,7 @@ public class UserMin   {
   }
 
   public void setEmail(String email) {
-    this.email = email;
+    this.email = email.toLowerCase();
   }
 
   public UserMin title(UserTitle title) {
