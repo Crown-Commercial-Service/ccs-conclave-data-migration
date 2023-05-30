@@ -66,7 +66,7 @@ public class UserListInfo {
   }
 
   public void setUserName(String userName) {
-    this.userName = userName;
+    this.userName = userName.toLowerCase();
   }
 
 
