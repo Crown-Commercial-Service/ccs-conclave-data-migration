@@ -106,6 +106,7 @@ public class OrganisationService {
             } else if (isNewOrg(ciiResponse)) {
                 log.debug("Migrating new organisation with an admin user present...");
 
+                orgExistsInConclave = false;
                 OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, organisation);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
                 contactService.migrateOrgContact(organisation, ciiResponse, organisationId);
