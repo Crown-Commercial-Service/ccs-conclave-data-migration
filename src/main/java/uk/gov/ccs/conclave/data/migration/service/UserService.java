@@ -99,6 +99,7 @@ public class UserService {
         Org organisation = response.getOrganisation();
         for (User user : users) {
             try {
+                Thread.sleep(1100);
                 if(checkUserExistsInOrg(user, response.getOrganisationId())) {
                     updateUserRoles(user, response, organisation);
                 } else {
@@ -111,6 +112,8 @@ public class UserService {
                 userFailureCount++;
                 log.error("{}{}: {}", SSO_USER_ERROR_MESSAGE, e.getMessage(), e.getResponseBody());
                 errorService.saveUserDetailWithStatusCode(user, SSO_USER_ERROR_MESSAGE + e.getMessage(), e.getCode(), response.getOrganisation());
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
 
