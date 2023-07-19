@@ -34,5 +34,5 @@ addons:
 after_deploy:
   - echo "JSON Application Finished Deploying. Check for Success or Failure."
   - echo "Now Deploying CSV Application."
-  - echo ls
+  - sudo apt-get install cf7-cli
   - bash csv/CF/deploy-app.sh -u $CF_USER -p $CF_PASS -o $CF_ORG -s $CF_SPACE
