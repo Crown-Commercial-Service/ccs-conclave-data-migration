@@ -9,6 +9,7 @@ def config_aws
 end
 
 def initialize_ssm_client
+     vcap_services = nil
      ssm_client = nil
      vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
 
