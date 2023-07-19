@@ -1,8 +1,17 @@
 language: java
 jdk:
   - openjdk17
+
 script:
   - mvn verify
+
+env:
+  global:
+    - CF_USER=$deploy_username
+    - CF_PASS=$deploy_password
+    - CF_ORG=$deploy_org_name
+    - CF_SPACE=$SPACE_NAME
+
 deploy:
   edge: true
   provider: cloudfoundry
@@ -15,7 +24,15 @@ deploy:
   on:
     repo: Crown-Commercial-Service/ccs-conclave-data-migration
     branch: $DEPLOY_BRANCH
+
 services:
   - postgresql
+
 addons:
   postgresql: '12'
+
+after_deploy:
+  - echo "JSON Application Finished Deploying. Check for Success or Failure."
+  - echo "Now Deploying CSV Application."
+  - echo ls
+  - bash csv/CF/deploy-app.sh -u $CF_USER -p $CF_PASS -o $CF_ORG -s $CF_SPACE
