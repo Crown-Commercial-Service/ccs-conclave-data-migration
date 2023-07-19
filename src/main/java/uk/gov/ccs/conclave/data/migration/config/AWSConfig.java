@@ -38,7 +38,7 @@ public class AWSConfig {
         try {
             log.info("Getting App Parameters.");
 
-            String[] keys = {"ciiApiKey", "ciiDeleteToken", "ciiOrigin", "conclaveApiKey", "conclaveOrigin", "sendUserRegistrationEmail", "accountVerified"};
+            String[] keys = {"ciiApiKey", "ciiDeleteToken", "ciiOrigin", "conclaveApiKey", "conclaveOrigin", "sendUserRegistrationEmail", "accountVerified", "dmJsonKey", "dmJsonURL"};
 
             for (String key : keys) {
                 GetParameterRequest awsParameter = GetParameterRequest.builder()
