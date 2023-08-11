@@ -99,7 +99,7 @@ public class UserService {
         Org organisation = response.getOrganisation();
         for (User user : users) {
             try {
-                Thread.sleep(1100);
+                Thread.sleep(500);
                 if(checkUserExistsInOrg(user, response.getOrganisationId())) {
                     updateUserRoles(user, response, organisation);
                 } else {
