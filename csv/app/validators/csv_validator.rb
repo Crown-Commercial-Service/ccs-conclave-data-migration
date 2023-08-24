@@ -66,7 +66,7 @@ class CsvValidator
     # Use a regular expression to validate that the phone number is valid.
     # This regex matches numbers that are numerical, start with a plus character, and can have spaces in between numbers.
     # For more complex validation, a more robust regex or third-party library could be used.
-    phone_regex = /\A\+?[0-9 ]+\z/
+    phone_regex = /\A\+?[0-9 ()-]+\z/
     phone_regex.match?(phone_number)
   end
 end
