@@ -5,6 +5,6 @@ applications:
     - https://github.com/cloudfoundry/ruby-buildpack.git#v1.10.0
   instances: 1
   routes:
-    - route: int-ccs-conclave-data-migration-csv-ingester.london.cloudapps.digital
+    - route: production-ccs-conclave-data-migration-csv-ingester.london.cloudapps.digital
   env:
-    SERVER_ENV_NAME: integration
+    SERVER_ENV_NAME: production
