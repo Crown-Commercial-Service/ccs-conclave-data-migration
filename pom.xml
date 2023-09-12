@@ -127,11 +127,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <profiles>
-                        <profile>local</profile>
-                    </profiles>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>
