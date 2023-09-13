@@ -14,7 +14,6 @@ import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.sso.model.ContactRequestDetail;
 import uk.gov.ccs.swagger.sso.model.ContactRequestInfo;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,17 +24,19 @@ import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_C
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_ERROR_INFO;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.SSO_USER_CONTACT_RESPONSE_INFO;
 
+
 @Service
 @RequiredArgsConstructor
 public class ContactService {
 
     private final ConclaveClient conclaveClient;
-
     private final ErrorService errorService;
 
     private static final Logger log = LoggerFactory.getLogger(ContactService.class);
 
+
     void migrateUserContact(User user, String userId, Org organisation) throws DataMigrationException {
+
         ContactPoint ciiUserContactPoint = new ContactPoint()
                 .name(user.getContactPointName())
                 .email(stripToEmpty(user.getContactEmail()))
@@ -54,7 +55,7 @@ public class ContactService {
         } else {
             log.error("{}: {}", SSO_USER_CONTACT_ERROR_MESSAGE, SSO_USER_CONTACT_ERROR_INFO);
             errorService.saveUserDetailWithStatusCodeWithoutException(user, SSO_USER_CONTACT_ERROR_MESSAGE + SSO_USER_CONTACT_ERROR_INFO, 400, organisation);
-            DataMigrationApiController.responseReport.add(SSO_USER_CONTACT_RESPONSE_INFO + user.getEmail());
+            DataMigrationApiController.responseMsgArray.add(SSO_USER_CONTACT_RESPONSE_INFO + user.getEmail());
         }
     }
 

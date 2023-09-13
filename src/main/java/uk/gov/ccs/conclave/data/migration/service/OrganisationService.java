@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
+import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
 import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.cii.model.Address;
 import uk.gov.ccs.swagger.cii.model.Identifier;
@@ -18,28 +20,27 @@ import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
 import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
 import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
-
 import java.util.stream.Stream;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
+
 
 @Service
 @RequiredArgsConstructor
 public class OrganisationService {
 
     private final CiiOrgClient ciiOrgClient;
-
     private final ConclaveClient conclaveClient;
-
     private final ErrorService errorService;
-
     private final ContactService contactService;
-
     private final RoleService roleService;
 
     private static final Logger log = LoggerFactory.getLogger(OrganisationService.class);
+    private boolean orgExistsInConclave = false;
+
 
     public OrgMigrationResponse migrateOrganisation(Organisation org) throws DataMigrationException {
+
         OrgMigration ciiResponse = migrateOrgToCii(org);
         String organisationId = null;
         Integer identityProviderId = null;
@@ -57,50 +58,71 @@ public class OrganisationService {
     private OrgMigrationResponse generateOrgMigrationResponseAndSaveSuccess(Organisation org, String orgId, Integer idp) {
         OrgMigrationResponse response = null;
         if (idp != null && orgId != null) {
-            Org migratedOrg = errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200);
+            Org migratedOrg = (orgExistsInConclave ?
+                    errorService.saveOrgDetailsWithStatusCode(org, SSO_DUPLICATE_ORG_ERROR_MESSAGE, 409) :
+                    errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200)) ;
             response = new OrgMigrationResponse(orgId, idp, migratedOrg);
         }
+
         return response;
     }
 
 
-    private OrgMigration migrateOrgToCii(Organisation org) throws DataMigrationException {
+    private OrgMigration migrateOrgToCii(Organisation organisation) throws DataMigrationException {
         OrgMigration ciiOrganisation = null;
+
         try {
-            ciiOrganisation = ciiOrgClient.createCiiOrganisation(org.getSchemeId(), org.getIdentifierId());
+            ciiOrganisation = ciiOrgClient.createCiiOrganisation(organisation.getSchemeId(), organisation.getIdentifierId());
 
         } catch (ApiException e) {
+
             if (e.getCode() == 409) {
                 ciiOrganisation = new Gson().fromJson(e.getResponseBody(), OrgMigration.class);
             } else {
-                errorService.logWithStatus(org, CII_ORG_ERROR_MESSAGE, e, e.getCode());
+                errorService.logWithStatus(organisation, CII_ORG_ERROR_MESSAGE, e, e.getCode());
+                DataMigrationApiController.responseBody.put(organisation.getSchemeId() + "-" + organisation.getIdentifierId(), CII_ORG_ERROR_MESSAGE + e);
+                DataMigrationApiController.responseStatus = HttpStatus.NOT_FOUND;
             }
         }
+
         return ciiOrganisation;
     }
 
 
-    private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation org) throws DataMigrationException {
-        log.debug("Migrating organisation to conclave: {}", org);
+    private void migrateOrgToConclave(OrgMigration ciiResponse, Organisation organisation) throws DataMigrationException {
+        log.debug("Migrating organisation to conclave: {}", organisation);
 
         try {
             String organisationId = ciiResponse.getOrganisationId();
-            if (isNewOrg(ciiResponse) && !hasOrganisationAdmin(org)) {
-                log.debug("Deleting new organisation without admin");
+
+            if (isNewOrg(ciiResponse) && !hasOrganisationAdmin(organisation)) {
+                log.debug("Deleting new organisation without admin...");
+
                 deleteOrgFromCii(organisationId);
+
+                DataMigrationApiController.responseBody.put(organisation.getSchemeId() + "-" + organisation.getIdentifierId(), SSO_ORG_ADMIN_ERROR_MESSAGE);
+                DataMigrationApiController.responseStatus = HttpStatus.BAD_REQUEST;
+
             } else if (isNewOrg(ciiResponse)) {
-                log.debug("Migrating new organisation with admin");
-                OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, org);
+                log.debug("Migrating new organisation with an admin user present...");
+
+                orgExistsInConclave = false;
+                OrganisationProfileInfo conclaveOrgProfile = buildOrgProfileRequest(ciiResponse, organisation);
                 conclaveClient.createConclaveOrg(conclaveOrgProfile);
-                contactService.migrateOrgContact(org, ciiResponse, organisationId);
-                roleService.applyOrganisationRole(organisationId, org);
+                contactService.migrateOrgContact(organisation, ciiResponse, organisationId);
+                roleService.applyOrganisationRole(organisationId, organisation);
+
             } else {
-                log.debug("Organisation already exists. Applying roles");
-                roleService.applyOrganisationRole(organisationId, org);
+                log.debug("Organisation already exists. Applying roles...");
+                orgExistsInConclave = true;
+                roleService.applyOrganisationRole(organisationId, organisation);
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
-            errorService.logWithStatus(org, SSO_ORG_ERROR_MESSAGE, e, e.getCode());
+            errorService.logWithStatus(organisation, SSO_ORG_ERROR_MESSAGE, e, e.getCode());
+            String responseOrgDetails = organisation.getSchemeId() + "-" + organisation.getIdentifierId();
+            DataMigrationApiController.responseBody.put(responseOrgDetails, SSO_ORG_ERROR_MESSAGE + e);
+            DataMigrationApiController.responseStatus = HttpStatus.BAD_REQUEST;
         }
     }
 
@@ -138,6 +160,7 @@ public class OrganisationService {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
         organisationDetail.setRightToBuy(org.isRightToBuy());
+        organisationDetail.setDomainName(org.getDomainName());
         return organisationDetail;
     }
 

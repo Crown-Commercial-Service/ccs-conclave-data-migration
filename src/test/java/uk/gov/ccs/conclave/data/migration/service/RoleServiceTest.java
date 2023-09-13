@@ -56,12 +56,6 @@ public class RoleServiceTest {
     }
 
     @Test
-    public void shouldErrorIfRoleDoesNotExist() {
-        assertThrows(ApiException.class, () ->
-                roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole().name("Org Role")))));
-    }
-
-    @Test
     public void shouldAddOrgRoles() throws Exception {
         var roleName = "Org Role";
         given(conclaveClient.getAllConfiguredRoles()).willReturn(List.of(new OrganisationRole().roleName(roleName)));

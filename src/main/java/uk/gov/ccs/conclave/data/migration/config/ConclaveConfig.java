@@ -10,8 +10,6 @@ import uk.gov.ccs.swagger.sso.api.*;
 @RequiredArgsConstructor
 public class ConclaveConfig {
 
-    private final MigrationProperties properties;
-
     @Bean
     public UserApi userApi() {
         return new UserApi(apiClient());
@@ -37,11 +35,16 @@ public class ConclaveConfig {
         return new ConfigurationApi(apiClient());
     }
 
+    @Bean
+    public OrganisationUserApi organisationUserApi() {
+        return new OrganisationUserApi(apiClient());
+    }
+
 
     @Bean
     public ApiClient apiClient() {
         return new ApiClient()
-                .addDefaultHeader("x-api-key", properties.getConclaveApiKey())
-                .setBasePath(properties.getConclaveOrigin());
+                .addDefaultHeader("x-api-key", MigrationProperties.getConclaveApiKey())
+                .setBasePath(MigrationProperties.getConclaveOrigin());
     }
 }

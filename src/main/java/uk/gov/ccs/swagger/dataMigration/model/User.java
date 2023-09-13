@@ -65,12 +65,12 @@ public class User   {
   @Schema(example = "joe.bloggs@kier.com", required = true, description = "User Email")
       @NotNull
 
-  @Pattern(regexp="^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$") @Size(min=1)   public String getEmail() {
+  @Pattern(regexp="^([a-zA-Z0-9_\\-\\.]{1,64}+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]{1,63}+\\.)+))([a-zA-Z]|[0-9]){2,63}(\\]?)$") @Size(min=1)   public String getEmail() {
     return email;
   }
 
   public void setEmail(String email) {
-    this.email = email;
+    this.email = email.toLowerCase();
   }
 
   public User title(UserTitle title) {

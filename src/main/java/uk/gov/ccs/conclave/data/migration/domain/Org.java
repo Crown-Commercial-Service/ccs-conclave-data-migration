@@ -21,6 +21,8 @@ public class Org {
 
     private String schemeId;
 
+    private String domainName;
+
     private Boolean rightToBuy;
 
     private String orgRoles;

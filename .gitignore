@@ -1,3 +1,4 @@
 target
 .idea
-swagger-codegen-cli.jar
+
+csv/tmp/
