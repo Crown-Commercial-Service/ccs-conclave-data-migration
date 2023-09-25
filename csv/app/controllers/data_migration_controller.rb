@@ -43,7 +43,6 @@ class DataMigrationController < ApplicationController
                         title: row["Title"],
                         firstName: row["FirstName"],
                         lastName: row["LastName"],
-                        contactPointName: row["ContactName"],
                         contactEmail: row["ContactEmail"],
                         contactMobile: row["ContactMobile"],
                         contactPhone: row["ContactPhone"],
