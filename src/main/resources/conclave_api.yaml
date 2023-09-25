@@ -5,7 +5,7 @@
     "version": "v1"
   },
   "paths": {
-    "/configurations/identity-providers": {
+    "/configuration-service/identity-providers": {
       "get": {
         "tags": [
             "Configuration"
@@ -48,7 +48,7 @@
         }
       }
     },
-    "/configurations/roles": {
+    "/configuration-service/roles": {
       "get": {
         "tags": [
             "Configuration"
@@ -86,7 +86,7 @@
         }
       }
     },
-    "/configurations/services": {
+    "/configuration-service/services": {
       "get": {
         "tags": [
             "Configuration"
@@ -124,7 +124,7 @@
         }
       }
     },
-    "/configurations/services/{clientId}": {
+    "/configuration-service/services/{clientId}": {
       "get": {
         "tags": [
             "Configuration"
@@ -170,7 +170,7 @@
         }
       }
     },
-    "/contacts/contact-types": {
+    "/contact-service/contact-types": {
       "get": {
         "tags": [
             "Contact"
@@ -207,7 +207,7 @@
         }
       }
     },
-    "/contacts/contact-reasons": {
+    "/contact-service/contact-reasons": {
       "get": {
         "tags": [
             "Contact"
@@ -315,7 +315,7 @@
         }
       }
     },
-    "/contacts/{id}": {
+    "/contact-service/{id}": {
       "get": {
         "tags": [
             "Contact"
