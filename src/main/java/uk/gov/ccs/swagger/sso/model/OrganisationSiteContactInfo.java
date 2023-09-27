@@ -36,7 +36,7 @@ public class OrganisationSiteContactInfo {
   private String contactPointReason = "General";
 
   @SerializedName("contactPointName")
-  private String contactPointName = null;
+  private String contactPointName = "User Contact";
 
   @SerializedName("contactPointId")
   private Integer contactPointId = null;
