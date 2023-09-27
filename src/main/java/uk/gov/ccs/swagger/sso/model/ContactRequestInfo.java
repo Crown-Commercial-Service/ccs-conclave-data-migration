@@ -34,7 +34,7 @@ public class ContactRequestInfo {
   private String contactPointReason = "General";
 
   @SerializedName("contactPointName")
-  private String contactPointName = null;
+  private String contactPointName = "User Contact";
 
   @SerializedName("contacts")
   private List<ContactRequestDetail> contacts = null;
