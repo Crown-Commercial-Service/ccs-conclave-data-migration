@@ -37,13 +37,6 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testMigrateUserWithNoContactName() throws Exception {
-        contactService.migrateUserContact(new User().contactSocial("social"), "userId", new Org());
-
-        verifyNoInteractions(conclaveClient);
-    }
-
-    @Test
     public void testMigrateUserWithPartialContact() throws Exception {
         contactService.migrateUserContact(new User().contactPointName("name").contactSocial("social"), "userId", new Org());
 

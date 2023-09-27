@@ -32,7 +32,7 @@ public class User   {
   private String lastName = null;
 
   @JsonProperty("contactPointName")
-  private String contactPointName = null;
+  private String contactPointName = "User Contact";
 
   @JsonProperty("contactEmail")
   private String contactEmail = null;
