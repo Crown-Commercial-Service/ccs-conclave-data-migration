@@ -52,19 +52,21 @@ class DataMigrationController < ApplicationController
                     }]
                 }
                 
-                #puts "payload_here--> #{data}"
+                # puts "payload_here--> #{data}"
 
             end
 
             # Finally, send data to DM aplication, to be processed.
             send_to_data_migration(data)
-            #render json: { CSV_Payload_Sent_To_Data_Migration: data, Response_From_DM: response.body }, status: :ok
+
+            # render json: { CSV_Data_To_Send_As_JSON: data }, status: :ok
 
         else
             render json: { error: validator.errors }, status: :unprocessable_entity
         end
     end
 
+    # This method needs to be removed when rightToBuy is removed from the payload, as it is converting org type number to rightToBuy boolean.
     def right_to_buy_logic(org_type)
         case org_type.to_i
         when 0
@@ -95,16 +97,22 @@ class DataMigrationController < ApplicationController
         request["x-api-key"] = @api_key
         request.body = data.to_json
         request["Content-Type"] = "application/json"
-      
-        begin
-          response = http.request(request)
-        rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
-          render json: { error: e.message }, status: :unprocessable_entity
-          return
 
+        begin
+            response = http.request(request)
+            response_body = JSON.parse(response.body)
+
+            if response_body.is_a?(Hash) && response_body.empty?
+                render json: { CSV_Data_Sent_To_Data_Migration: data }, status: response.code.to_i
+            else
+                # Use the actual response and status from the JSON application.
+                render json: response_body, status: response.code.to_i
+            end
+        rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+            render json: { error: e.message }, status: :unprocessable_entity
+        rescue JSON::ParserError
+            # Use the actual response and status from the JSON application.
+            render json: response.body, status: response.code.to_i
         end
-      
-        render json: { CSV_Payload_Sent_To_Data_Migration: data, Response_From_DM: response.body }, status: :ok
     end
-      
 end
