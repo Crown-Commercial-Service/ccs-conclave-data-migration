@@ -67,7 +67,7 @@ public class ConfigurationApi {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/configurations/identity-providers";
+        String localVarPath = "/configuration-service/identity-providers";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -183,7 +183,7 @@ public class ConfigurationApi {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/configurations/roles";
+        String localVarPath = "/configuration-service/roles";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -301,7 +301,7 @@ public class ConfigurationApi {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/configurations/services/{clientId}"
+        String localVarPath = "/configuration-service/services/{clientId}"
             .replaceAll("\\{" + "clientId" + "\\}", apiClient.escapeString(clientId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -430,7 +430,7 @@ public class ConfigurationApi {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/configurations/services";
+        String localVarPath = "/configuration-service/services";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
