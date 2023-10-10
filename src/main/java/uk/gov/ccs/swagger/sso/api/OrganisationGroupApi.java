@@ -57,7 +57,7 @@ public class OrganisationGroupApi {
     }
 
     /**
-     * Build call for organisationsOrganisationIdGroupsGet
+     * Build call for organisationProfileorganisationIdGroupsGet
      * @param organisationId  (required)
      * @param searchString  (optional)
      * @param progressListener Progress listener
@@ -65,11 +65,11 @@ public class OrganisationGroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsGetCall(String organisationId, String searchString, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGetCall(String organisationId, String searchString, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/groups"
+        String localVarPath = "/organisation-profile{organisationId}/groups"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -96,7 +96,7 @@ public class OrganisationGroupApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -110,13 +110,13 @@ public class OrganisationGroupApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdGroupsGetValidateBeforeCall(String organisationId, String searchString, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGetValidateBeforeCall(String organisationId, String searchString, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdGroupsGet(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdGroupsGet(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGetCall(organisationId, searchString, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGetCall(organisationId, searchString, progressListener, progressRequestListener);
         return call;
 
         
@@ -127,41 +127,41 @@ public class OrganisationGroupApi {
 
     /**
      * Get organisation groups
-     * Sample request:                    GET /organisations/1/groups
+     * Sample request:                    GET /organisation-profile1/groups
      * @param organisationId  (required)
      * @param searchString  (optional)
      * @return OrganisationGroupList
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public OrganisationGroupList organisationsOrganisationIdGroupsGet(String organisationId, String searchString) throws ApiException {
-        ApiResponse<OrganisationGroupList> resp = organisationsOrganisationIdGroupsGetWithHttpInfo(organisationId, searchString);
+    public OrganisationGroupList organisationProfileorganisationIdGroupsGet(String organisationId, String searchString) throws ApiException {
+        ApiResponse<OrganisationGroupList> resp = organisationProfileorganisationIdGroupsGetWithHttpInfo(organisationId, searchString);
         return resp.getData();
     }
 
     /**
      * Get organisation groups
-     * Sample request:                    GET /organisations/1/groups
+     * Sample request:                    GET /organisation-profile1/groups
      * @param organisationId  (required)
      * @param searchString  (optional)
      * @return ApiResponse&lt;OrganisationGroupList&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<OrganisationGroupList> organisationsOrganisationIdGroupsGetWithHttpInfo(String organisationId, String searchString) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGetValidateBeforeCall(organisationId, searchString, null, null);
+    public ApiResponse<OrganisationGroupList> organisationProfileorganisationIdGroupsGetWithHttpInfo(String organisationId, String searchString) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGetValidateBeforeCall(organisationId, searchString, null, null);
         Type localVarReturnType = new TypeToken<OrganisationGroupList>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Get organisation groups (asynchronously)
-     * Sample request:                    GET /organisations/1/groups
+     * Sample request:                    GET /organisation-profile1/groups
      * @param organisationId  (required)
      * @param searchString  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsGetAsync(String organisationId, String searchString, final ApiCallback<OrganisationGroupList> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGetAsync(String organisationId, String searchString, final ApiCallback<OrganisationGroupList> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -182,13 +182,13 @@ public class OrganisationGroupApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGetValidateBeforeCall(organisationId, searchString, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGetValidateBeforeCall(organisationId, searchString, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<OrganisationGroupList>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdGroupsGroupIdDelete
+     * Build call for organisationProfileorganisationIdGroupsGroupIdDelete
      * @param organisationId  (required)
      * @param groupId  (required)
      * @param progressListener Progress listener
@@ -196,11 +196,11 @@ public class OrganisationGroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsGroupIdDeleteCall(String organisationId, Integer groupId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGroupIdDeleteCall(String organisationId, Integer groupId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/groups/{groupId}"
+        String localVarPath = "/organisation-profile{organisationId}/groups/{groupId}"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()))
             .replaceAll("\\{" + "groupId" + "\\}", apiClient.escapeString(groupId.toString()));
 
@@ -226,7 +226,7 @@ public class OrganisationGroupApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -240,17 +240,17 @@ public class OrganisationGroupApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdGroupsGroupIdDeleteValidateBeforeCall(String organisationId, Integer groupId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGroupIdDeleteValidateBeforeCall(String organisationId, Integer groupId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdGroupsGroupIdDelete(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdGroupsGroupIdDelete(Async)");
         }
         // verify the required parameter 'groupId' is set
         if (groupId == null) {
-            throw new ApiException("Missing the required parameter 'groupId' when calling organisationsOrganisationIdGroupsGroupIdDelete(Async)");
+            throw new ApiException("Missing the required parameter 'groupId' when calling organisationProfileorganisationIdGroupsGroupIdDelete(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGroupIdDeleteCall(organisationId, groupId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGroupIdDeleteCall(organisationId, groupId, progressListener, progressRequestListener);
         return call;
 
         
@@ -261,38 +261,38 @@ public class OrganisationGroupApi {
 
     /**
      * Delete organisation group
-     * Sample request:                    DELETE /organisations/1/groups/1
+     * Sample request:                    DELETE /organisation-profile1/groups/1
      * @param organisationId  (required)
      * @param groupId  (required)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public void organisationsOrganisationIdGroupsGroupIdDelete(String organisationId, Integer groupId) throws ApiException {
-        organisationsOrganisationIdGroupsGroupIdDeleteWithHttpInfo(organisationId, groupId);
+    public void organisationProfileorganisationIdGroupsGroupIdDelete(String organisationId, Integer groupId) throws ApiException {
+        organisationProfileorganisationIdGroupsGroupIdDeleteWithHttpInfo(organisationId, groupId);
     }
 
     /**
      * Delete organisation group
-     * Sample request:                    DELETE /organisations/1/groups/1
+     * Sample request:                    DELETE /organisation-profile1/groups/1
      * @param organisationId  (required)
      * @param groupId  (required)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Void> organisationsOrganisationIdGroupsGroupIdDeleteWithHttpInfo(String organisationId, Integer groupId) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGroupIdDeleteValidateBeforeCall(organisationId, groupId, null, null);
+    public ApiResponse<Void> organisationProfileorganisationIdGroupsGroupIdDeleteWithHttpInfo(String organisationId, Integer groupId) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGroupIdDeleteValidateBeforeCall(organisationId, groupId, null, null);
         return apiClient.execute(call);
     }
 
     /**
      * Delete organisation group (asynchronously)
-     * Sample request:                    DELETE /organisations/1/groups/1
+     * Sample request:                    DELETE /organisation-profile1/groups/1
      * @param organisationId  (required)
      * @param groupId  (required)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsGroupIdDeleteAsync(String organisationId, Integer groupId, final ApiCallback<Void> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGroupIdDeleteAsync(String organisationId, Integer groupId, final ApiCallback<Void> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -313,12 +313,12 @@ public class OrganisationGroupApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGroupIdDeleteValidateBeforeCall(organisationId, groupId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGroupIdDeleteValidateBeforeCall(organisationId, groupId, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdGroupsGroupIdGet
+     * Build call for organisationProfileorganisationIdGroupsGroupIdGet
      * @param organisationId  (required)
      * @param groupId  (required)
      * @param progressListener Progress listener
@@ -326,11 +326,11 @@ public class OrganisationGroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsGroupIdGetCall(String organisationId, Integer groupId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGroupIdGetCall(String organisationId, Integer groupId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/groups/{groupId}"
+        String localVarPath = "/organisation-profile{organisationId}/groups/{groupId}"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()))
             .replaceAll("\\{" + "groupId" + "\\}", apiClient.escapeString(groupId.toString()));
 
@@ -356,7 +356,7 @@ public class OrganisationGroupApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -370,17 +370,17 @@ public class OrganisationGroupApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdGroupsGroupIdGetValidateBeforeCall(String organisationId, Integer groupId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGroupIdGetValidateBeforeCall(String organisationId, Integer groupId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdGroupsGroupIdGet(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdGroupsGroupIdGet(Async)");
         }
         // verify the required parameter 'groupId' is set
         if (groupId == null) {
-            throw new ApiException("Missing the required parameter 'groupId' when calling organisationsOrganisationIdGroupsGroupIdGet(Async)");
+            throw new ApiException("Missing the required parameter 'groupId' when calling organisationProfileorganisationIdGroupsGroupIdGet(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGroupIdGetCall(organisationId, groupId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGroupIdGetCall(organisationId, groupId, progressListener, progressRequestListener);
         return call;
 
         
@@ -391,41 +391,41 @@ public class OrganisationGroupApi {
 
     /**
      * Get organisation group
-     * Sample request:                    GET /organisations/1/groups/1
+     * Sample request:                    GET /organisation-profile1/groups/1
      * @param organisationId  (required)
      * @param groupId  (required)
      * @return OrganisationGroupResponseInfo
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public OrganisationGroupResponseInfo organisationsOrganisationIdGroupsGroupIdGet(String organisationId, Integer groupId) throws ApiException {
-        ApiResponse<OrganisationGroupResponseInfo> resp = organisationsOrganisationIdGroupsGroupIdGetWithHttpInfo(organisationId, groupId);
+    public OrganisationGroupResponseInfo organisationProfileorganisationIdGroupsGroupIdGet(String organisationId, Integer groupId) throws ApiException {
+        ApiResponse<OrganisationGroupResponseInfo> resp = organisationProfileorganisationIdGroupsGroupIdGetWithHttpInfo(organisationId, groupId);
         return resp.getData();
     }
 
     /**
      * Get organisation group
-     * Sample request:                    GET /organisations/1/groups/1
+     * Sample request:                    GET /organisation-profile1/groups/1
      * @param organisationId  (required)
      * @param groupId  (required)
      * @return ApiResponse&lt;OrganisationGroupResponseInfo&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<OrganisationGroupResponseInfo> organisationsOrganisationIdGroupsGroupIdGetWithHttpInfo(String organisationId, Integer groupId) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGroupIdGetValidateBeforeCall(organisationId, groupId, null, null);
+    public ApiResponse<OrganisationGroupResponseInfo> organisationProfileorganisationIdGroupsGroupIdGetWithHttpInfo(String organisationId, Integer groupId) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGroupIdGetValidateBeforeCall(organisationId, groupId, null, null);
         Type localVarReturnType = new TypeToken<OrganisationGroupResponseInfo>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Get organisation group (asynchronously)
-     * Sample request:                    GET /organisations/1/groups/1
+     * Sample request:                    GET /organisation-profile1/groups/1
      * @param organisationId  (required)
      * @param groupId  (required)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsGroupIdGetAsync(String organisationId, Integer groupId, final ApiCallback<OrganisationGroupResponseInfo> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGroupIdGetAsync(String organisationId, Integer groupId, final ApiCallback<OrganisationGroupResponseInfo> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -446,13 +446,13 @@ public class OrganisationGroupApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGroupIdGetValidateBeforeCall(organisationId, groupId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGroupIdGetValidateBeforeCall(organisationId, groupId, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<OrganisationGroupResponseInfo>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdGroupsGroupIdPatch
+     * Build call for organisationProfileorganisationIdGroupsGroupIdPatch
      * @param organisationId  (required)
      * @param groupId  (required)
      * @param body  (optional)
@@ -461,11 +461,11 @@ public class OrganisationGroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsGroupIdPatchCall(String organisationId, Integer groupId, OrganisationGroupRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGroupIdPatchCall(String organisationId, Integer groupId, OrganisationGroupRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/groups/{groupId}"
+        String localVarPath = "/organisation-profile{organisationId}/groups/{groupId}"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()))
             .replaceAll("\\{" + "groupId" + "\\}", apiClient.escapeString(groupId.toString()));
 
@@ -491,7 +491,7 @@ public class OrganisationGroupApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -505,17 +505,17 @@ public class OrganisationGroupApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdGroupsGroupIdPatchValidateBeforeCall(String organisationId, Integer groupId, OrganisationGroupRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGroupIdPatchValidateBeforeCall(String organisationId, Integer groupId, OrganisationGroupRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdGroupsGroupIdPatch(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdGroupsGroupIdPatch(Async)");
         }
         // verify the required parameter 'groupId' is set
         if (groupId == null) {
-            throw new ApiException("Missing the required parameter 'groupId' when calling organisationsOrganisationIdGroupsGroupIdPatch(Async)");
+            throw new ApiException("Missing the required parameter 'groupId' when calling organisationProfileorganisationIdGroupsGroupIdPatch(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGroupIdPatchCall(organisationId, groupId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGroupIdPatchCall(organisationId, groupId, body, progressListener, progressRequestListener);
         return call;
 
         
@@ -526,33 +526,33 @@ public class OrganisationGroupApi {
 
     /**
      * Update organisation group
-     * Sample requests:                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;: null      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: null,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;: null      }
+     * Sample requests:                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;: null      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: null,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;: null      }
      * @param organisationId  (required)
      * @param groupId  (required)
      * @param body  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public void organisationsOrganisationIdGroupsGroupIdPatch(String organisationId, Integer groupId, OrganisationGroupRequestInfo body) throws ApiException {
-        organisationsOrganisationIdGroupsGroupIdPatchWithHttpInfo(organisationId, groupId, body);
+    public void organisationProfileorganisationIdGroupsGroupIdPatch(String organisationId, Integer groupId, OrganisationGroupRequestInfo body) throws ApiException {
+        organisationProfileorganisationIdGroupsGroupIdPatchWithHttpInfo(organisationId, groupId, body);
     }
 
     /**
      * Update organisation group
-     * Sample requests:                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;: null      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: null,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;: null      }
+     * Sample requests:                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;: null      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: null,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;: null      }
      * @param organisationId  (required)
      * @param groupId  (required)
      * @param body  (optional)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Void> organisationsOrganisationIdGroupsGroupIdPatchWithHttpInfo(String organisationId, Integer groupId, OrganisationGroupRequestInfo body) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGroupIdPatchValidateBeforeCall(organisationId, groupId, body, null, null);
+    public ApiResponse<Void> organisationProfileorganisationIdGroupsGroupIdPatchWithHttpInfo(String organisationId, Integer groupId, OrganisationGroupRequestInfo body) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGroupIdPatchValidateBeforeCall(organisationId, groupId, body, null, null);
         return apiClient.execute(call);
     }
 
     /**
      * Update organisation group (asynchronously)
-     * Sample requests:                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;: null      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: null,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisations/1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;: null      }
+     * Sample requests:                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;: null      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: null,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;: null,        &#x27;userInfo&#x27;:{            &#x27;addedUserIds&#x27;: [ \&quot;user1@mail.com\&quot;, \&quot;user2@mail.com\&quot; ],            &#x27;addedUserIds&#x27;: [ \&quot;user3@mail.com\&quot; ]         }      }                    PATCH /organisation-profile1/groups/1      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;,        &#x27;roleInfo&#x27;:{            &#x27;addedRoleIds&#x27;: [ 1, 2 ],            &#x27;removedRoleIds&#x27;: [ 3 ]         },        &#x27;userInfo&#x27;: null      }
      * @param organisationId  (required)
      * @param groupId  (required)
      * @param body  (optional)
@@ -560,7 +560,7 @@ public class OrganisationGroupApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsGroupIdPatchAsync(String organisationId, Integer groupId, OrganisationGroupRequestInfo body, final ApiCallback<Void> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsGroupIdPatchAsync(String organisationId, Integer groupId, OrganisationGroupRequestInfo body, final ApiCallback<Void> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -581,12 +581,12 @@ public class OrganisationGroupApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsGroupIdPatchValidateBeforeCall(organisationId, groupId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsGroupIdPatchValidateBeforeCall(organisationId, groupId, body, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdGroupsPost
+     * Build call for organisationProfileorganisationIdGroupsPost
      * @param organisationId  (required)
      * @param body  (optional)
      * @param progressListener Progress listener
@@ -594,11 +594,11 @@ public class OrganisationGroupApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsPostCall(String organisationId, OrganisationGroupNameInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsPostCall(String organisationId, OrganisationGroupNameInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/groups"
+        String localVarPath = "/organisation-profile{organisationId}/groups"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -623,7 +623,7 @@ public class OrganisationGroupApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -637,13 +637,13 @@ public class OrganisationGroupApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdGroupsPostValidateBeforeCall(String organisationId, OrganisationGroupNameInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileorganisationIdGroupsPostValidateBeforeCall(String organisationId, OrganisationGroupNameInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdGroupsPost(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdGroupsPost(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsPostCall(organisationId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsPostCall(organisationId, body, progressListener, progressRequestListener);
         return call;
 
         
@@ -654,41 +654,41 @@ public class OrganisationGroupApi {
 
     /**
      * Create organisation group
-     * Sample request:                    POST /organisations/1/groups      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;      }
+     * Sample request:                    POST /organisation-profile1/groups      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @return Integer
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public Integer organisationsOrganisationIdGroupsPost(String organisationId, OrganisationGroupNameInfo body) throws ApiException {
-        ApiResponse<Integer> resp = organisationsOrganisationIdGroupsPostWithHttpInfo(organisationId, body);
+    public Integer organisationProfileorganisationIdGroupsPost(String organisationId, OrganisationGroupNameInfo body) throws ApiException {
+        ApiResponse<Integer> resp = organisationProfileorganisationIdGroupsPostWithHttpInfo(organisationId, body);
         return resp.getData();
     }
 
     /**
      * Create organisation group
-     * Sample request:                    POST /organisations/1/groups      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;      }
+     * Sample request:                    POST /organisation-profile1/groups      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @return ApiResponse&lt;Integer&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Integer> organisationsOrganisationIdGroupsPostWithHttpInfo(String organisationId, OrganisationGroupNameInfo body) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsPostValidateBeforeCall(organisationId, body, null, null);
+    public ApiResponse<Integer> organisationProfileorganisationIdGroupsPostWithHttpInfo(String organisationId, OrganisationGroupNameInfo body) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsPostValidateBeforeCall(organisationId, body, null, null);
         Type localVarReturnType = new TypeToken<Integer>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Create organisation group (asynchronously)
-     * Sample request:                    POST /organisations/1/groups      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;      }
+     * Sample request:                    POST /organisation-profile1/groups      {        &#x27;groupName&#x27;: \&quot;Group Name\&quot;      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGroupsPostAsync(String organisationId, OrganisationGroupNameInfo body, final ApiCallback<Integer> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdGroupsPostAsync(String organisationId, OrganisationGroupNameInfo body, final ApiCallback<Integer> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -709,7 +709,7 @@ public class OrganisationGroupApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGroupsPostValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdGroupsPostValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<Integer>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;

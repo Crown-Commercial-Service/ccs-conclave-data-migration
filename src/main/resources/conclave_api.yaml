@@ -253,7 +253,7 @@
         }
       }
     },
-    "/contacts": {
+    "/contact-service": {
       "post": {
         "tags": [
             "Contact"
@@ -443,13 +443,13 @@
         }
       }
     },
-    "/organisations": {
+    "/organisation-profile": {
       "post": {
         "tags": [
             "Organisation"
         ],
         "summary": "Allows a user to create organisation",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/\r\n    {\r\n      \"Identifier\": {\r\n        \"legalName\": \"Kier Limited\",\r\n        \"uri\": \"http://data.companieshouse.gov.uk/doc/company/1\"\r\n      },\r\n      \"address\": {\r\n        \"streetAddress\": \"1600 Amphitheatre Pkwy\",\r\n        \"locality\": \"Mountain View.\",\r\n        \"region\": \"CA.\",\r\n        \"postalCode\": \"94043\",\r\n        \"countryCode\": \"UK\"\r\n      },\r\n      \"Detail\": {\r\n        \"organisationId\": \"CiiOrgidId\",\r\n        \"rightToBuy\": \"true\",\r\n        \"is_sme\": 1,\r\n        \"is_vcse\": 1,\r\n        \"active\": 1\r\n      }\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /organisation-profile\r\n    {\r\n      \"Identifier\": {\r\n        \"legalName\": \"Kier Limited\",\r\n        \"uri\": \"http://data.companieshouse.gov.uk/doc/company/1\"\r\n      },\r\n      \"address\": {\r\n        \"streetAddress\": \"1600 Amphitheatre Pkwy\",\r\n        \"locality\": \"Mountain View.\",\r\n        \"region\": \"CA.\",\r\n        \"postalCode\": \"94043\",\r\n        \"countryCode\": \"UK\"\r\n      },\r\n      \"Detail\": {\r\n        \"organisationId\": \"CiiOrgidId\",\r\n        \"organisationType\": \"true\",\r\n        \"is_sme\": 1,\r\n        \"is_vcse\": 1,\r\n        \"active\": 1\r\n      }\r\n    }",
         "requestBody": {
           "content": {
             "application/json": {
@@ -499,13 +499,13 @@
         }
       }
     },
-    "/organisations/{organisationId}": {
+    "/organisation-profile/{organisationId}": {
       "get": {
         "tags": [
             "Organisation"
         ],
         "summary": "Get organisation profile details",
-        "description": "Sample request:\r\n            \r\n    GET /organisations/CiiOrgidId",
+        "description": "Sample request:\r\n            \r\n    GET /organisation-profileCiiOrgidId",
         "parameters": [
           {
             "name": "organisationId",
@@ -550,7 +550,7 @@
             "Organisation"
         ],
         "summary": "Allows a user to update organisation",
-        "description": "Sample request:\r\n            \r\n    PUT /organisations/CiiOrgidId\r\n    {\r\n      \"Identifier\": {\r\n        \"legalName\": \"Kier Limited\",\r\n        \"uri\": \"http://data.companieshouse.gov.uk/doc/company/1\"\r\n      },\r\n      \"address\": {\r\n        \"streetAddress\": \"1600 Amphitheatre Pkwy\",\r\n        \"locality\": \"Mountain View.\",\r\n        \"region\": \"CA.\",\r\n        \"postalCode\": \"94043\",\r\n        \"countryCode\": \"UK\"\r\n      },\r\n      \"Detail\": {\r\n        \"organisationId\": \"CiiOrgidId\",\r\n        \"rightToBuy\": \"true\",\r\n        \"is_sme\": 1,\r\n        \"is_vcse\": 1,\r\n        \"active\": 1\r\n      }\r\n    }",
+        "description": "Sample request:\r\n            \r\n    PUT /organisation-profileCiiOrgidId\r\n    {\r\n      \"Identifier\": {\r\n        \"legalName\": \"Kier Limited\",\r\n        \"uri\": \"http://data.companieshouse.gov.uk/doc/company/1\"\r\n      },\r\n      \"address\": {\r\n        \"streetAddress\": \"1600 Amphitheatre Pkwy\",\r\n        \"locality\": \"Mountain View.\",\r\n        \"region\": \"CA.\",\r\n        \"postalCode\": \"94043\",\r\n        \"countryCode\": \"UK\"\r\n      },\r\n      \"Detail\": {\r\n        \"organisationId\": \"CiiOrgidId\",\r\n        \"organisationType\": \"true\",\r\n        \"is_sme\": 1,\r\n        \"is_vcse\": 1,\r\n        \"active\": 1\r\n      }\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -596,13 +596,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/assigned-contacts": {
+    "/organisation-profile/{organisationId}/assigned-contacts": {
       "post": {
         "tags": [
             "Organisation contact"
         ],
         "summary": "Allows a user to assign user/site contacts for an organisation",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/1/assigned-contacts\r\n    {\r\n       \"AssigningContactType\": 1, (User:1, Site:2)\r\n       \"AssigningContactPointIds\": [1, 2],\r\n       \"AssigningContactsUserId\": \"user@mail.com\"\r\n    }\r\n            \r\n    POST /organisations/1/contacts/assign\r\n    {\r\n       \"AssigningContactType\": 2, (User:1, Site:2)\r\n       \"AssigningContactPointIds\": [1, 2],\r\n       \"AssigningContactsSiteId\": 1\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /organisation-profile1/assigned-contacts\r\n    {\r\n       \"AssigningContactType\": 1, (User:1, Site:2)\r\n       \"AssigningContactPointIds\": [1, 2],\r\n       \"AssigningContactsUserId\": \"user@mail.com\"\r\n    }\r\n            \r\n    POST /organisation-profile1/contacts/assign\r\n    {\r\n       \"AssigningContactType\": 2, (User:1, Site:2)\r\n       \"AssigningContactPointIds\": [1, 2],\r\n       \"AssigningContactsSiteId\": 1\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -684,7 +684,7 @@
             "Organisation contact"
         ],
         "summary": "Allows a user to unassign contacts from an organisation.\r\nShould provide the assigned contacts contactpoint ids as a query parameter list",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/1/assigned-contacts?contact-point-ids=2",
+        "description": "Sample request:\r\n            \r\n    POST /organisation-profile1/assigned-contacts?contact-point-ids=2",
         "parameters": [
           {
             "name": "organisationId",
@@ -725,13 +725,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/contacts": {
+    "/organisation-profile/{organisationId}/contacts": {
       "post": {
         "tags": [
             "Organisation contact"
         ],
         "summary": "Allows a user to create organisation contact",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/1/contacts\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /organisation-profile1/contacts\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -804,7 +804,7 @@
             "Organisation contact"
         ],
         "summary": "Allows a user to get organisation contact details",
-        "description": "Sample request:\r\n            \r\n    GET organisations/1/contacts",
+        "description": "Sample request:\r\n            \r\n    GET organisation-profile1/contacts",
         "parameters": [
           {
             "name": "organisationId",
@@ -862,13 +862,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/contacts/{contactId}": {
+    "/organisation-profile/{organisationId}/contacts/{contactId}": {
       "get": {
         "tags": [
             "Organisation contact"
         ],
         "summary": "Allows a user to retrieve details for a given organisation contact",
-        "description": "Sample request:\r\n            \r\n    GET /organisations/1/contacts/1",
+        "description": "Sample request:\r\n            \r\n    GET /organisation-profile1/contacts/1",
         "parameters": [
           {
             "name": "organisationId",
@@ -925,7 +925,7 @@
             "Organisation contact"
         ],
         "summary": "Allows a user to edit organisation contact",
-        "description": "Sample request:\r\n            \r\n    PUT /organisations/1/contacts/1\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    PUT /organisation-profile1/contacts/1\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -987,7 +987,7 @@
             "Organisation contact"
         ],
         "summary": "Remove a contact from an organisation",
-        "description": "Sample request:\r\n            \r\n    DELETE /organisations/1/contacts/1",
+        "description": "Sample request:\r\n            \r\n    DELETE /organisation-profile1/contacts/1",
         "parameters": [
           {
             "name": "organisationId",
@@ -1023,13 +1023,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/sites": {
+    "/organisation-profile/{organisationId}/sites": {
       "post": {
         "tags": [
             "Organisation site"
         ],
         "summary": "Allows a user to create organisation site",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/1/site\r\n    {\r\n      \"siteName\": \"Main Branch\",\r\n      \"address\": {\r\n        \"streetAddress\": \"1600 Amphitheatre Pkwy\",\r\n        \"locality\": \"Mountain View.\",\r\n        \"region\": \"CA.\",\r\n        \"postalCode\": \"94043\",\r\n        \"countryCode\": \"UK\"\r\n      }\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /organisation-profile1/site\r\n    {\r\n      \"siteName\": \"Main Branch\",\r\n      \"address\": {\r\n        \"streetAddress\": \"1600 Amphitheatre Pkwy\",\r\n        \"locality\": \"Mountain View.\",\r\n        \"region\": \"CA.\",\r\n        \"postalCode\": \"94043\",\r\n        \"countryCode\": \"UK\"\r\n      }\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -1102,7 +1102,7 @@
             "Organisation site"
         ],
         "summary": "Allows a user to get all the sites in an organisation",
-        "description": "Sample request:\r\n            \r\n    GET /organisations/1/site?search-string=sitename",
+        "description": "Sample request:\r\n            \r\n    GET /organisation-profile1/site?search-string=sitename",
         "parameters": [
           {
             "name": "organisationId",
@@ -1153,13 +1153,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/sites/{siteId}": {
+    "/organisation-profile/{organisationId}/sites/{siteId}": {
       "get": {
         "tags": [
             "Organisation site"
         ],
         "summary": "Allows a user to get organisation site details",
-        "description": "Sample request:\r\n            \r\n    GET /organisations/1/site/1",
+        "description": "Sample request:\r\n            \r\n    GET /organisation-profile1/site/1",
         "parameters": [
           {
             "name": "organisationId",
@@ -1216,7 +1216,7 @@
             "Organisation site"
         ],
         "summary": "Allows a user to update organisation site",
-        "description": "Sample request:\r\n            \r\n    PUT /organisations/1/site/1\r\n    {\r\n      \"siteName\": \"Main Branch\",\r\n      \"address\": {\r\n        \"streetAddress\": \"1600 Amphitheatre Pkwy\",\r\n        \"locality\": \"Mountain View.\",\r\n        \"region\": \"CA.\",\r\n        \"postalCode\": \"94043\",\r\n        \"countryCode\": \"UK\"\r\n      }\r\n    }",
+        "description": "Sample request:\r\n            \r\n    PUT /organisation-profile1/site/1\r\n    {\r\n      \"siteName\": \"Main Branch\",\r\n      \"address\": {\r\n        \"streetAddress\": \"1600 Amphitheatre Pkwy\",\r\n        \"locality\": \"Mountain View.\",\r\n        \"region\": \"CA.\",\r\n        \"postalCode\": \"94043\",\r\n        \"countryCode\": \"UK\"\r\n      }\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -1278,7 +1278,7 @@
             "Organisation site"
         ],
         "summary": "Allows a user to delete organisation site",
-        "description": "Sample request:\r\n            \r\n    DELETE /organisations/1/site/1",
+        "description": "Sample request:\r\n            \r\n    DELETE /organisation-profile1/site/1",
         "parameters": [
           {
             "name": "organisationId",
@@ -1314,13 +1314,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/sites/{siteId}/assigned-contacts": {
+    "/organisation-profile{organisationId}/sites/{siteId}/assigned-contacts": {
       "post": {
         "tags": [
             "Organisation site contact"
         ],
         "summary": "Allows a user to assign user contacts for an organisation site",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/1/sites/1/assigned-contacts\r\n    {\r\n       \"AssigningContactType\": 1, (User:1, Site:2 Only user contacts are valid here)\r\n       \"AssigningContactPointIds\": [1, 2],\r\n       \"AssigningContactsUserId\": \"user@mail.com\"\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /organisation-profile1/sites/1/assigned-contacts\r\n    {\r\n       \"AssigningContactType\": 1, (User:1, Site:2 Only user contacts are valid here)\r\n       \"AssigningContactPointIds\": [1, 2],\r\n       \"AssigningContactsUserId\": \"user@mail.com\"\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -1411,7 +1411,7 @@
             "Organisation site contact"
         ],
         "summary": "Allows a user to unassign contacts from an organisation site.\r\nShould provide the assigned contacts contactpoint ids as a query parameter list",
-        "description": "Sample request:\r\n            \r\n    DELETE /organisations/1/sites/1/assigned-contacts?contactPointIds=2",
+        "description": "Sample request:\r\n            \r\n    DELETE /organisation-profile1/sites/1/assigned-contacts?contactPointIds=2",
         "parameters": [
           {
             "name": "organisationId",
@@ -1461,13 +1461,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/sites/{siteId}/contacts": {
+    "/organisation-profile{organisationId}/sites/{siteId}/contacts": {
       "post": {
         "tags": [
             "Organisation site contact"
         ],
         "summary": "Allows a user to create organisation site contact",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/1/sites/1/contacts\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /organisation-profile1/sites/1/contacts\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -1549,7 +1549,7 @@
             "Organisation site contact"
         ],
         "summary": "Allows a user to get list of contacts for organisation site",
-        "description": "Sample request:\r\n            \r\n    GET organisations/1/sites/1/contacts",
+        "description": "Sample request:\r\n            \r\n    GET organisation-profile1/sites/1/contacts",
         "parameters": [
           {
             "name": "organisationId",
@@ -1616,13 +1616,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/sites/{siteId}/contacts/{contactId}": {
+    "/organisation-profile{organisationId}/sites/{siteId}/contacts/{contactId}": {
       "get": {
         "tags": [
             "Organisation site contact"
         ],
         "summary": "Allows a user to retrieve details for a given organisation site contact",
-        "description": "Sample request:\r\n            \r\n    GET /organisations/1/sites/1/contacts/1",
+        "description": "Sample request:\r\n            \r\n    GET /organisation-profile1/sites/1/contacts/1",
         "parameters": [
           {
             "name": "organisationId",
@@ -1688,7 +1688,7 @@
             "Organisation site contact"
         ],
         "summary": "Allows a user to edit organisation site contact",
-        "description": "Sample request:\r\n            \r\n    PUT /organisations/1/sites/1/contacts/1\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
+        "description": "Sample request:\r\n            \r\n    PUT /organisation-profile1/sites/1/contacts/1\r\n    {\r\n       \"contactPointReason\": \"General\",\r\n       \"contactPointName\": \"Test User\",\r\n       \"contacts\": [\r\n          {\r\n            contactType: \"EMAIL\",\r\n            contactValue: \"testuser@mail.com\"\r\n          },\r\n          {\r\n            contactType: \"PHONE\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"FAX\",\r\n            contactValue: \"+551155256325\"\r\n          },\r\n          {\r\n            contactType: \"WEB_ADDRESS\",\r\n            contactValue: \"test.com\"\r\n          },\r\n       ]\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -1759,7 +1759,7 @@
             "Organisation site contact"
         ],
         "summary": "Remove a contact from an organisation site",
-        "description": "Sample request:\r\n            \r\n    DELETE /organisations/1/sites/1/contacts/1",
+        "description": "Sample request:\r\n            \r\n    DELETE /organisation-profile1/sites/1/contacts/1",
         "parameters": [
           {
             "name": "organisationId",
@@ -1804,13 +1804,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/users": {
+    "/organisation-profile{organisationId}/users": {
       "get": {
         "tags": [
             "Organisation User"
         ],
         "summary": "Allows a user to retrieve users for a given organisation",
-        "description": "NOTE:- query params page-size, current-page\r\nSample request:\r\n            \r\n    GET /organisations/1/users?page-size=10,current-page=1",
+        "description": "NOTE:- query params page-size, current-page\r\nSample request:\r\n            \r\n    GET /organisation-profile1/users?page-size=10,current-page=1",
         "parameters": [
           {
             "name": "organisationId",
@@ -1885,13 +1885,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/groups": {
+    "/organisation-profile{organisationId}/groups": {
       "post": {
         "tags": [
             "Organisation Group"
         ],
         "summary": "Create organisation group",
-        "description": "Sample request:\r\n            \r\n    POST /organisations/1/groups\r\n    {\r\n      'groupName': \"Group Name\"\r\n    }",
+        "description": "Sample request:\r\n            \r\n    POST /organisation-profile1/groups\r\n    {\r\n      'groupName': \"Group Name\"\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -1967,7 +1967,7 @@
             "Organisation Group"
         ],
         "summary": "Get organisation groups",
-        "description": "Sample request:\r\n            \r\n    GET /organisations/1/groups",
+        "description": "Sample request:\r\n            \r\n    GET /organisation-profile1/groups",
         "parameters": [
           {
             "name": "organisationId",
@@ -2018,13 +2018,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/groups/{groupId}": {
+    "/organisation-profile{organisationId}/groups/{groupId}": {
       "delete": {
         "tags": [
             "Organisation Group"
         ],
         "summary": "Delete organisation group",
-        "description": "Sample request:\r\n            \r\n    DELETE /organisations/1/groups/1",
+        "description": "Sample request:\r\n            \r\n    DELETE /organisation-profile1/groups/1",
         "parameters": [
           {
             "name": "organisationId",
@@ -2064,7 +2064,7 @@
             "Organisation Group"
         ],
         "summary": "Get organisation group",
-        "description": "Sample request:\r\n            \r\n    GET /organisations/1/groups/1",
+        "description": "Sample request:\r\n            \r\n    GET /organisation-profile1/groups/1",
         "parameters": [
           {
             "name": "organisationId",
@@ -2121,7 +2121,7 @@
             "Organisation Group"
         ],
         "summary": "Update organisation group",
-        "description": "Sample requests:\r\n            \r\n    PATCH /organisations/1/groups/1\r\n    {\r\n      'groupName': \"Group Name\",\r\n      'roleInfo': null,\r\n      'userInfo': null\r\n    }\r\n            \r\n    PATCH /organisations/1/groups/1\r\n    {\r\n      'groupName': \"\",\r\n      'roleInfo':{\r\n          'addedRoleIds': [ 1, 2 ],\r\n          'removedRoleIds': [ 3 ]\r\n       },\r\n      'userInfo':{\r\n          'addedUserIds': [ \"user1@mail.com\", \"user2@mail.com\" ],\r\n          'addedUserIds': [ \"user3@mail.com\" ]\r\n       }\r\n    }\r\n            \r\n    PATCH /organisations/1/groups/1\r\n    {\r\n      'groupName': null,\r\n      'roleInfo':{\r\n          'addedRoleIds': [ 1, 2 ],\r\n          'removedRoleIds': [ 3 ]\r\n       },\r\n      'userInfo':{\r\n          'addedUserIds': [ \"user1@mail.com\", \"user2@mail.com\" ],\r\n          'addedUserIds': [ \"user3@mail.com\" ]\r\n       }\r\n    }\r\n            \r\n    PATCH /organisations/1/groups/1\r\n    {\r\n      'groupName': \"Group Name\",\r\n      'roleInfo': null,\r\n      'userInfo':{\r\n          'addedUserIds': [ \"user1@mail.com\", \"user2@mail.com\" ],\r\n          'addedUserIds': [ \"user3@mail.com\" ]\r\n       }\r\n    }\r\n            \r\n    PATCH /organisations/1/groups/1\r\n    {\r\n      'groupName': \"Group Name\",\r\n      'roleInfo':{\r\n          'addedRoleIds': [ 1, 2 ],\r\n          'removedRoleIds': [ 3 ]\r\n       },\r\n      'userInfo': null\r\n    }",
+        "description": "Sample requests:\r\n            \r\n    PATCH /organisation-profile1/groups/1\r\n    {\r\n      'groupName': \"Group Name\",\r\n      'roleInfo': null,\r\n      'userInfo': null\r\n    }\r\n            \r\n    PATCH /organisation-profile1/groups/1\r\n    {\r\n      'groupName': \"\",\r\n      'roleInfo':{\r\n          'addedRoleIds': [ 1, 2 ],\r\n          'removedRoleIds': [ 3 ]\r\n       },\r\n      'userInfo':{\r\n          'addedUserIds': [ \"user1@mail.com\", \"user2@mail.com\" ],\r\n          'addedUserIds': [ \"user3@mail.com\" ]\r\n       }\r\n    }\r\n            \r\n    PATCH /organisation-profile1/groups/1\r\n    {\r\n      'groupName': null,\r\n      'roleInfo':{\r\n          'addedRoleIds': [ 1, 2 ],\r\n          'removedRoleIds': [ 3 ]\r\n       },\r\n      'userInfo':{\r\n          'addedUserIds': [ \"user1@mail.com\", \"user2@mail.com\" ],\r\n          'addedUserIds': [ \"user3@mail.com\" ]\r\n       }\r\n    }\r\n            \r\n    PATCH /organisation-profile1/groups/1\r\n    {\r\n      'groupName': \"Group Name\",\r\n      'roleInfo': null,\r\n      'userInfo':{\r\n          'addedUserIds': [ \"user1@mail.com\", \"user2@mail.com\" ],\r\n          'addedUserIds': [ \"user3@mail.com\" ]\r\n       }\r\n    }\r\n            \r\n    PATCH /organisation-profile1/groups/1\r\n    {\r\n      'groupName': \"Group Name\",\r\n      'roleInfo':{\r\n          'addedRoleIds': [ 1, 2 ],\r\n          'removedRoleIds': [ 3 ]\r\n       },\r\n      'userInfo': null\r\n    }",
         "parameters": [
           {
             "name": "organisationId",
@@ -2182,13 +2182,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/identity-providers": {
+    "/organisation-profile{organisationId}/identity-providers": {
       "get": {
         "tags": [
             "Organisation"
         ],
         "summary": "Allows a user to get identity provider details of an organisation",
-        "description": "Sample request:\r\n            \r\n    GET organisations/1/identity-providers",
+        "description": "Sample request:\r\n            \r\n    GET organisation-profile1/identity-providers",
         "parameters": [
           {
             "name": "organisationId",
@@ -2245,7 +2245,7 @@
             "Organisation"
         ],
         "summary": "Allows a user to update identity provider details of an organisation",
-        "description": "Sample request:\r\n            \r\n    GET organisations/1/identity-providers\r\n    {\r\n      ciiOrganisationId: \"orgid\",\r\n      changedOrgIdentityProviders: [\r\n        {\r\n          id: 1\r\n        }\r\n      ]\r\n     }",
+        "description": "Sample request:\r\n            \r\n    GET organisation-profile1/identity-providers\r\n    {\r\n      ciiOrganisationId: \"orgid\",\r\n      changedOrgIdentityProviders: [\r\n        {\r\n          id: 1\r\n        }\r\n      ]\r\n     }",
         "parameters": [
           {
             "name": "organisationId",
@@ -2291,13 +2291,13 @@
         }
       }
     },
-    "/organisations/{organisationId}/roles": {
+    "/organisation-profile{organisationId}/roles": {
       "get": {
         "tags": [
             "Organisation"
         ],
         "summary": "Get organisation roles",
-        "description": "Sample request:\r\n            \r\n    GET /organisations/1/roles",
+        "description": "Sample request:\r\n            \r\n    GET /organisation-profile1/roles",
         "parameters": [
           {
             "name": "organisationId",
@@ -2354,7 +2354,7 @@
             "Organisation"
         ],
         "summary": "Update organisation eligible roles",
-        "description": "Sample request:\r\n            \r\n    GET /organisations/1/updateEligableRoles\r\n    {\r\n      isBuyer: true,\r\n      rolesToAdd: [\r\n        {\r\n          id: 1\r\n        }\r\n      ],\r\n      rolesToDelete: [\r\n        {\r\n          id: 1\r\n        }\r\n      ]\r\n     }",
+        "description": "Sample request:\r\n            \r\n    GET /organisation-profile1/updateEligableRoles\r\n    {\r\n      isBuyer: true,\r\n      rolesToAdd: [\r\n        {\r\n          id: 1\r\n        }\r\n      ],\r\n      rolesToDelete: [\r\n        {\r\n          id: 1\r\n        }\r\n      ]\r\n     }",
         "parameters": [
           {
             "name": "organisationId",
@@ -3413,7 +3413,7 @@
           "isVcse": {
             "type": "boolean"
           },
-          "rightToBuy": {
+          "organisationType": {
             "type": "boolean"
           },
           "isActive": {

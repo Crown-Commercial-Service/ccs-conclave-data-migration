@@ -58,7 +58,7 @@ public class OrganisationContactApi {
     }
 
     /**
-     * Build call for organisationsOrganisationIdAssignedContactsDelete
+     * Build call for organisationProfileOrganisationIdAssignedContactsDelete
      * @param organisationId  (required)
      * @param contactPointIds  (optional)
      * @param progressListener Progress listener
@@ -66,11 +66,11 @@ public class OrganisationContactApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdAssignedContactsDeleteCall(String organisationId, List<Integer> contactPointIds, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdAssignedContactsDeleteCall(String organisationId, List<Integer> contactPointIds, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/assigned-contacts"
+        String localVarPath = "/organisation-profile/{organisationId}/assigned-contacts"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -97,7 +97,7 @@ public class OrganisationContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -111,13 +111,13 @@ public class OrganisationContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdAssignedContactsDeleteValidateBeforeCall(String organisationId, List<Integer> contactPointIds, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileOrganisationIdAssignedContactsDeleteValidateBeforeCall(String organisationId, List<Integer> contactPointIds, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdAssignedContactsDelete(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileOrganisationIdAssignedContactsDelete(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdAssignedContactsDeleteCall(organisationId, contactPointIds, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdAssignedContactsDeleteCall(organisationId, contactPointIds, progressListener, progressRequestListener);
         return call;
 
         
@@ -128,38 +128,38 @@ public class OrganisationContactApi {
 
     /**
      * Allows a user to unassign contacts from an organisation.  Should provide the assigned contacts contactpoint ids as a query parameter list
-     * Sample request:                    POST /organisations/1/assigned-contacts?contact-point-ids&#x3D;2
+     * Sample request:                    POST /organisation-profile1/assigned-contacts?contact-point-ids&#x3D;2
      * @param organisationId  (required)
      * @param contactPointIds  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public void organisationsOrganisationIdAssignedContactsDelete(String organisationId, List<Integer> contactPointIds) throws ApiException {
-        organisationsOrganisationIdAssignedContactsDeleteWithHttpInfo(organisationId, contactPointIds);
+    public void organisationProfileOrganisationIdAssignedContactsDelete(String organisationId, List<Integer> contactPointIds) throws ApiException {
+        organisationProfileOrganisationIdAssignedContactsDeleteWithHttpInfo(organisationId, contactPointIds);
     }
 
     /**
      * Allows a user to unassign contacts from an organisation.  Should provide the assigned contacts contactpoint ids as a query parameter list
-     * Sample request:                    POST /organisations/1/assigned-contacts?contact-point-ids&#x3D;2
+     * Sample request:                    POST /organisation-profile1/assigned-contacts?contact-point-ids&#x3D;2
      * @param organisationId  (required)
      * @param contactPointIds  (optional)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Void> organisationsOrganisationIdAssignedContactsDeleteWithHttpInfo(String organisationId, List<Integer> contactPointIds) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdAssignedContactsDeleteValidateBeforeCall(organisationId, contactPointIds, null, null);
+    public ApiResponse<Void> organisationProfileOrganisationIdAssignedContactsDeleteWithHttpInfo(String organisationId, List<Integer> contactPointIds) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdAssignedContactsDeleteValidateBeforeCall(organisationId, contactPointIds, null, null);
         return apiClient.execute(call);
     }
 
     /**
      * Allows a user to unassign contacts from an organisation.  Should provide the assigned contacts contactpoint ids as a query parameter list (asynchronously)
-     * Sample request:                    POST /organisations/1/assigned-contacts?contact-point-ids&#x3D;2
+     * Sample request:                    POST /organisation-profile1/assigned-contacts?contact-point-ids&#x3D;2
      * @param organisationId  (required)
      * @param contactPointIds  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdAssignedContactsDeleteAsync(String organisationId, List<Integer> contactPointIds, final ApiCallback<Void> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdAssignedContactsDeleteAsync(String organisationId, List<Integer> contactPointIds, final ApiCallback<Void> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -180,12 +180,12 @@ public class OrganisationContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdAssignedContactsDeleteValidateBeforeCall(organisationId, contactPointIds, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdAssignedContactsDeleteValidateBeforeCall(organisationId, contactPointIds, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdAssignedContactsPost
+     * Build call for organisationProfileOrganisationIdAssignedContactsPost
      * @param organisationId  (required)
      * @param body  (optional)
      * @param progressListener Progress listener
@@ -193,11 +193,11 @@ public class OrganisationContactApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdAssignedContactsPostCall(String organisationId, ContactAssignmentInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdAssignedContactsPostCall(String organisationId, ContactAssignmentInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/assigned-contacts"
+        String localVarPath = "/organisation-profile/{organisationId}/assigned-contacts"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -222,7 +222,7 @@ public class OrganisationContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -236,13 +236,13 @@ public class OrganisationContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdAssignedContactsPostValidateBeforeCall(String organisationId, ContactAssignmentInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileOrganisationIdAssignedContactsPostValidateBeforeCall(String organisationId, ContactAssignmentInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdAssignedContactsPost(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileOrganisationIdAssignedContactsPost(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdAssignedContactsPostCall(organisationId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdAssignedContactsPostCall(organisationId, body, progressListener, progressRequestListener);
         return call;
 
         
@@ -253,41 +253,41 @@ public class OrganisationContactApi {
 
     /**
      * Allows a user to assign user/site contacts for an organisation
-     * Sample request:                    POST /organisations/1/assigned-contacts      {         \&quot;AssigningContactType\&quot;: 1, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsUserId\&quot;: \&quot;user@mail.com\&quot;      }                    POST /organisations/1/contacts/assign      {         \&quot;AssigningContactType\&quot;: 2, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsSiteId\&quot;: 1      }
+     * Sample request:                    POST /organisation-profile1/assigned-contacts      {         \&quot;AssigningContactType\&quot;: 1, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsUserId\&quot;: \&quot;user@mail.com\&quot;      }                    POST /organisation-profile1/contacts/assign      {         \&quot;AssigningContactType\&quot;: 2, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsSiteId\&quot;: 1      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @return List&lt;Integer&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public List<Integer> organisationsOrganisationIdAssignedContactsPost(String organisationId, ContactAssignmentInfo body) throws ApiException {
-        ApiResponse<List<Integer>> resp = organisationsOrganisationIdAssignedContactsPostWithHttpInfo(organisationId, body);
+    public List<Integer> organisationProfileOrganisationIdAssignedContactsPost(String organisationId, ContactAssignmentInfo body) throws ApiException {
+        ApiResponse<List<Integer>> resp = organisationProfileOrganisationIdAssignedContactsPostWithHttpInfo(organisationId, body);
         return resp.getData();
     }
 
     /**
      * Allows a user to assign user/site contacts for an organisation
-     * Sample request:                    POST /organisations/1/assigned-contacts      {         \&quot;AssigningContactType\&quot;: 1, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsUserId\&quot;: \&quot;user@mail.com\&quot;      }                    POST /organisations/1/contacts/assign      {         \&quot;AssigningContactType\&quot;: 2, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsSiteId\&quot;: 1      }
+     * Sample request:                    POST /organisation-profile1/assigned-contacts      {         \&quot;AssigningContactType\&quot;: 1, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsUserId\&quot;: \&quot;user@mail.com\&quot;      }                    POST /organisation-profile1/contacts/assign      {         \&quot;AssigningContactType\&quot;: 2, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsSiteId\&quot;: 1      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @return ApiResponse&lt;List&lt;Integer&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<List<Integer>> organisationsOrganisationIdAssignedContactsPostWithHttpInfo(String organisationId, ContactAssignmentInfo body) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdAssignedContactsPostValidateBeforeCall(organisationId, body, null, null);
+    public ApiResponse<List<Integer>> organisationProfileOrganisationIdAssignedContactsPostWithHttpInfo(String organisationId, ContactAssignmentInfo body) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdAssignedContactsPostValidateBeforeCall(organisationId, body, null, null);
         Type localVarReturnType = new TypeToken<List<Integer>>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Allows a user to assign user/site contacts for an organisation (asynchronously)
-     * Sample request:                    POST /organisations/1/assigned-contacts      {         \&quot;AssigningContactType\&quot;: 1, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsUserId\&quot;: \&quot;user@mail.com\&quot;      }                    POST /organisations/1/contacts/assign      {         \&quot;AssigningContactType\&quot;: 2, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsSiteId\&quot;: 1      }
+     * Sample request:                    POST /organisation-profile1/assigned-contacts      {         \&quot;AssigningContactType\&quot;: 1, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsUserId\&quot;: \&quot;user@mail.com\&quot;      }                    POST /organisation-profile1/contacts/assign      {         \&quot;AssigningContactType\&quot;: 2, (User:1, Site:2)         \&quot;AssigningContactPointIds\&quot;: [1, 2],         \&quot;AssigningContactsSiteId\&quot;: 1      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdAssignedContactsPostAsync(String organisationId, ContactAssignmentInfo body, final ApiCallback<List<Integer>> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdAssignedContactsPostAsync(String organisationId, ContactAssignmentInfo body, final ApiCallback<List<Integer>> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -308,13 +308,13 @@ public class OrganisationContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdAssignedContactsPostValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdAssignedContactsPostValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<List<Integer>>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdContactsContactIdDelete
+     * Build call for organisationProfileOrganisationIdContactsContactIdDelete
      * @param organisationId  (required)
      * @param contactId  (required)
      * @param progressListener Progress listener
@@ -322,11 +322,11 @@ public class OrganisationContactApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsContactIdDeleteCall(String organisationId, Integer contactId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsContactIdDeleteCall(String organisationId, Integer contactId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/contacts/{contactId}"
+        String localVarPath = "/organisation-profile/{organisationId}/contacts/{contactId}"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()))
             .replaceAll("\\{" + "contactId" + "\\}", apiClient.escapeString(contactId.toString()));
 
@@ -352,7 +352,7 @@ public class OrganisationContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -366,17 +366,17 @@ public class OrganisationContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdContactsContactIdDeleteValidateBeforeCall(String organisationId, Integer contactId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileOrganisationIdContactsContactIdDeleteValidateBeforeCall(String organisationId, Integer contactId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdContactsContactIdDelete(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileOrganisationIdContactsContactIdDelete(Async)");
         }
         // verify the required parameter 'contactId' is set
         if (contactId == null) {
-            throw new ApiException("Missing the required parameter 'contactId' when calling organisationsOrganisationIdContactsContactIdDelete(Async)");
+            throw new ApiException("Missing the required parameter 'contactId' when calling organisationProfileOrganisationIdContactsContactIdDelete(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsContactIdDeleteCall(organisationId, contactId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsContactIdDeleteCall(organisationId, contactId, progressListener, progressRequestListener);
         return call;
 
         
@@ -387,38 +387,38 @@ public class OrganisationContactApi {
 
     /**
      * Remove a contact from an organisation
-     * Sample request:                    DELETE /organisations/1/contacts/1
+     * Sample request:                    DELETE /organisation-profile1/contacts/1
      * @param organisationId  (required)
      * @param contactId  (required)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public void organisationsOrganisationIdContactsContactIdDelete(String organisationId, Integer contactId) throws ApiException {
-        organisationsOrganisationIdContactsContactIdDeleteWithHttpInfo(organisationId, contactId);
+    public void organisationProfileOrganisationIdContactsContactIdDelete(String organisationId, Integer contactId) throws ApiException {
+        organisationProfileOrganisationIdContactsContactIdDeleteWithHttpInfo(organisationId, contactId);
     }
 
     /**
      * Remove a contact from an organisation
-     * Sample request:                    DELETE /organisations/1/contacts/1
+     * Sample request:                    DELETE /organisation-profile1/contacts/1
      * @param organisationId  (required)
      * @param contactId  (required)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Void> organisationsOrganisationIdContactsContactIdDeleteWithHttpInfo(String organisationId, Integer contactId) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsContactIdDeleteValidateBeforeCall(organisationId, contactId, null, null);
+    public ApiResponse<Void> organisationProfileOrganisationIdContactsContactIdDeleteWithHttpInfo(String organisationId, Integer contactId) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsContactIdDeleteValidateBeforeCall(organisationId, contactId, null, null);
         return apiClient.execute(call);
     }
 
     /**
      * Remove a contact from an organisation (asynchronously)
-     * Sample request:                    DELETE /organisations/1/contacts/1
+     * Sample request:                    DELETE /organisation-profile1/contacts/1
      * @param organisationId  (required)
      * @param contactId  (required)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsContactIdDeleteAsync(String organisationId, Integer contactId, final ApiCallback<Void> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsContactIdDeleteAsync(String organisationId, Integer contactId, final ApiCallback<Void> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -439,12 +439,12 @@ public class OrganisationContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsContactIdDeleteValidateBeforeCall(organisationId, contactId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsContactIdDeleteValidateBeforeCall(organisationId, contactId, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdContactsContactIdGet
+     * Build call for organisationProfileOrganisationIdContactsContactIdGet
      * @param organisationId  (required)
      * @param contactId  (required)
      * @param progressListener Progress listener
@@ -452,11 +452,11 @@ public class OrganisationContactApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsContactIdGetCall(String organisationId, Integer contactId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsContactIdGetCall(String organisationId, Integer contactId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/contacts/{contactId}"
+        String localVarPath = "/organisation-profile/{organisationId}/contacts/{contactId}"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()))
             .replaceAll("\\{" + "contactId" + "\\}", apiClient.escapeString(contactId.toString()));
 
@@ -482,7 +482,7 @@ public class OrganisationContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -496,17 +496,17 @@ public class OrganisationContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdContactsContactIdGetValidateBeforeCall(String organisationId, Integer contactId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileOrganisationIdContactsContactIdGetValidateBeforeCall(String organisationId, Integer contactId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdContactsContactIdGet(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileOrganisationIdContactsContactIdGet(Async)");
         }
         // verify the required parameter 'contactId' is set
         if (contactId == null) {
-            throw new ApiException("Missing the required parameter 'contactId' when calling organisationsOrganisationIdContactsContactIdGet(Async)");
+            throw new ApiException("Missing the required parameter 'contactId' when calling organisationProfileOrganisationIdContactsContactIdGet(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsContactIdGetCall(organisationId, contactId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsContactIdGetCall(organisationId, contactId, progressListener, progressRequestListener);
         return call;
 
         
@@ -517,41 +517,41 @@ public class OrganisationContactApi {
 
     /**
      * Allows a user to retrieve details for a given organisation contact
-     * Sample request:                    GET /organisations/1/contacts/1
+     * Sample request:                    GET /organisation-profile1/contacts/1
      * @param organisationId  (required)
      * @param contactId  (required)
      * @return OrganisationContactInfo
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public OrganisationContactInfo organisationsOrganisationIdContactsContactIdGet(String organisationId, Integer contactId) throws ApiException {
-        ApiResponse<OrganisationContactInfo> resp = organisationsOrganisationIdContactsContactIdGetWithHttpInfo(organisationId, contactId);
+    public OrganisationContactInfo organisationProfileOrganisationIdContactsContactIdGet(String organisationId, Integer contactId) throws ApiException {
+        ApiResponse<OrganisationContactInfo> resp = organisationProfileOrganisationIdContactsContactIdGetWithHttpInfo(organisationId, contactId);
         return resp.getData();
     }
 
     /**
      * Allows a user to retrieve details for a given organisation contact
-     * Sample request:                    GET /organisations/1/contacts/1
+     * Sample request:                    GET /organisation-profile1/contacts/1
      * @param organisationId  (required)
      * @param contactId  (required)
      * @return ApiResponse&lt;OrganisationContactInfo&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<OrganisationContactInfo> organisationsOrganisationIdContactsContactIdGetWithHttpInfo(String organisationId, Integer contactId) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsContactIdGetValidateBeforeCall(organisationId, contactId, null, null);
+    public ApiResponse<OrganisationContactInfo> organisationProfileOrganisationIdContactsContactIdGetWithHttpInfo(String organisationId, Integer contactId) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsContactIdGetValidateBeforeCall(organisationId, contactId, null, null);
         Type localVarReturnType = new TypeToken<OrganisationContactInfo>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Allows a user to retrieve details for a given organisation contact (asynchronously)
-     * Sample request:                    GET /organisations/1/contacts/1
+     * Sample request:                    GET /organisation-profile1/contacts/1
      * @param organisationId  (required)
      * @param contactId  (required)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsContactIdGetAsync(String organisationId, Integer contactId, final ApiCallback<OrganisationContactInfo> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsContactIdGetAsync(String organisationId, Integer contactId, final ApiCallback<OrganisationContactInfo> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -572,13 +572,13 @@ public class OrganisationContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsContactIdGetValidateBeforeCall(organisationId, contactId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsContactIdGetValidateBeforeCall(organisationId, contactId, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<OrganisationContactInfo>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdContactsContactIdPut
+     * Build call for organisationProfileOrganisationIdContactsContactIdPut
      * @param organisationId  (required)
      * @param contactId  (required)
      * @param body  (optional)
@@ -587,11 +587,11 @@ public class OrganisationContactApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsContactIdPutCall(String organisationId, Integer contactId, ContactRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsContactIdPutCall(String organisationId, Integer contactId, ContactRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/contacts/{contactId}"
+        String localVarPath = "/organisation-profile/{organisationId}/contacts/{contactId}"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()))
             .replaceAll("\\{" + "contactId" + "\\}", apiClient.escapeString(contactId.toString()));
 
@@ -617,7 +617,7 @@ public class OrganisationContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -631,17 +631,17 @@ public class OrganisationContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdContactsContactIdPutValidateBeforeCall(String organisationId, Integer contactId, ContactRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileOrganisationIdContactsContactIdPutValidateBeforeCall(String organisationId, Integer contactId, ContactRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdContactsContactIdPut(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileOrganisationIdContactsContactIdPut(Async)");
         }
         // verify the required parameter 'contactId' is set
         if (contactId == null) {
-            throw new ApiException("Missing the required parameter 'contactId' when calling organisationsOrganisationIdContactsContactIdPut(Async)");
+            throw new ApiException("Missing the required parameter 'contactId' when calling organisationProfileOrganisationIdContactsContactIdPut(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsContactIdPutCall(organisationId, contactId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsContactIdPutCall(organisationId, contactId, body, progressListener, progressRequestListener);
         return call;
 
         
@@ -652,33 +652,33 @@ public class OrganisationContactApi {
 
     /**
      * Allows a user to edit organisation contact
-     * Sample request:                    PUT /organisations/1/contacts/1      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
+     * Sample request:                    PUT /organisation-profile1/contacts/1      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
      * @param organisationId  (required)
      * @param contactId  (required)
      * @param body  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public void organisationsOrganisationIdContactsContactIdPut(String organisationId, Integer contactId, ContactRequestInfo body) throws ApiException {
-        organisationsOrganisationIdContactsContactIdPutWithHttpInfo(organisationId, contactId, body);
+    public void organisationProfileOrganisationIdContactsContactIdPut(String organisationId, Integer contactId, ContactRequestInfo body) throws ApiException {
+        organisationProfileOrganisationIdContactsContactIdPutWithHttpInfo(organisationId, contactId, body);
     }
 
     /**
      * Allows a user to edit organisation contact
-     * Sample request:                    PUT /organisations/1/contacts/1      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
+     * Sample request:                    PUT /organisation-profile1/contacts/1      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
      * @param organisationId  (required)
      * @param contactId  (required)
      * @param body  (optional)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Void> organisationsOrganisationIdContactsContactIdPutWithHttpInfo(String organisationId, Integer contactId, ContactRequestInfo body) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsContactIdPutValidateBeforeCall(organisationId, contactId, body, null, null);
+    public ApiResponse<Void> organisationProfileOrganisationIdContactsContactIdPutWithHttpInfo(String organisationId, Integer contactId, ContactRequestInfo body) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsContactIdPutValidateBeforeCall(organisationId, contactId, body, null, null);
         return apiClient.execute(call);
     }
 
     /**
      * Allows a user to edit organisation contact (asynchronously)
-     * Sample request:                    PUT /organisations/1/contacts/1      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
+     * Sample request:                    PUT /organisation-profile1/contacts/1      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
      * @param organisationId  (required)
      * @param contactId  (required)
      * @param body  (optional)
@@ -686,7 +686,7 @@ public class OrganisationContactApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsContactIdPutAsync(String organisationId, Integer contactId, ContactRequestInfo body, final ApiCallback<Void> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsContactIdPutAsync(String organisationId, Integer contactId, ContactRequestInfo body, final ApiCallback<Void> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -707,12 +707,12 @@ public class OrganisationContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsContactIdPutValidateBeforeCall(organisationId, contactId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsContactIdPutValidateBeforeCall(organisationId, contactId, body, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdContactsGet
+     * Build call for organisationProfileOrganisationIdContactsGet
      * @param organisationId  (required)
      * @param contactType  (optional)
      * @param contactAssignedStatus  (optional)
@@ -721,11 +721,11 @@ public class OrganisationContactApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsGetCall(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsGetCall(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/contacts"
+        String localVarPath = "/organisation-profile/{organisationId}/contacts"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -754,7 +754,7 @@ public class OrganisationContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -768,13 +768,13 @@ public class OrganisationContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdContactsGetValidateBeforeCall(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileOrganisationIdContactsGetValidateBeforeCall(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdContactsGet(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileOrganisationIdContactsGet(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsGetCall(organisationId, contactType, contactAssignedStatus, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsGetCall(organisationId, contactType, contactAssignedStatus, progressListener, progressRequestListener);
         return call;
 
         
@@ -785,36 +785,36 @@ public class OrganisationContactApi {
 
     /**
      * Allows a user to get organisation contact details
-     * Sample request:                    GET organisations/1/contacts
+     * Sample request:                    GET organisation-profile1/contacts
      * @param organisationId  (required)
      * @param contactType  (optional)
      * @param contactAssignedStatus  (optional)
      * @return OrganisationContactInfoList
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public OrganisationContactInfoList organisationsOrganisationIdContactsGet(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus) throws ApiException {
-        ApiResponse<OrganisationContactInfoList> resp = organisationsOrganisationIdContactsGetWithHttpInfo(organisationId, contactType, contactAssignedStatus);
+    public OrganisationContactInfoList organisationProfileOrganisationIdContactsGet(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus) throws ApiException {
+        ApiResponse<OrganisationContactInfoList> resp = organisationProfileOrganisationIdContactsGetWithHttpInfo(organisationId, contactType, contactAssignedStatus);
         return resp.getData();
     }
 
     /**
      * Allows a user to get organisation contact details
-     * Sample request:                    GET organisations/1/contacts
+     * Sample request:                    GET organisation-profile1/contacts
      * @param organisationId  (required)
      * @param contactType  (optional)
      * @param contactAssignedStatus  (optional)
      * @return ApiResponse&lt;OrganisationContactInfoList&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<OrganisationContactInfoList> organisationsOrganisationIdContactsGetWithHttpInfo(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsGetValidateBeforeCall(organisationId, contactType, contactAssignedStatus, null, null);
+    public ApiResponse<OrganisationContactInfoList> organisationProfileOrganisationIdContactsGetWithHttpInfo(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsGetValidateBeforeCall(organisationId, contactType, contactAssignedStatus, null, null);
         Type localVarReturnType = new TypeToken<OrganisationContactInfoList>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Allows a user to get organisation contact details (asynchronously)
-     * Sample request:                    GET organisations/1/contacts
+     * Sample request:                    GET organisation-profile1/contacts
      * @param organisationId  (required)
      * @param contactType  (optional)
      * @param contactAssignedStatus  (optional)
@@ -822,7 +822,7 @@ public class OrganisationContactApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsGetAsync(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus, final ApiCallback<OrganisationContactInfoList> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsGetAsync(String organisationId, String contactType, ContactAssignedStatus contactAssignedStatus, final ApiCallback<OrganisationContactInfoList> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -843,13 +843,13 @@ public class OrganisationContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsGetValidateBeforeCall(organisationId, contactType, contactAssignedStatus, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsGetValidateBeforeCall(organisationId, contactType, contactAssignedStatus, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<OrganisationContactInfoList>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdContactsPost
+     * Build call for organisationProfileOrganisationIdContactsPost
      * @param organisationId  (required)
      * @param body  (optional)
      * @param progressListener Progress listener
@@ -857,11 +857,11 @@ public class OrganisationContactApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsPostCall(String organisationId, ContactRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsPostCall(String organisationId, ContactRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/contacts"
+        String localVarPath = "/organisation-profile/{organisationId}/contacts"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -886,7 +886,7 @@ public class OrganisationContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -900,13 +900,13 @@ public class OrganisationContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdContactsPostValidateBeforeCall(String organisationId, ContactRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileOrganisationIdContactsPostValidateBeforeCall(String organisationId, ContactRequestInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdContactsPost(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileOrganisationIdContactsPost(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsPostCall(organisationId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsPostCall(organisationId, body, progressListener, progressRequestListener);
         return call;
 
         
@@ -917,41 +917,41 @@ public class OrganisationContactApi {
 
     /**
      * Allows a user to create organisation contact
-     * Sample request:                    POST /organisations/1/contacts      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
+     * Sample request:                    POST /organisation-profile1/contacts      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @return Integer
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public Integer organisationsOrganisationIdContactsPost(String organisationId, ContactRequestInfo body) throws ApiException {
-        ApiResponse<Integer> resp = organisationsOrganisationIdContactsPostWithHttpInfo(organisationId, body);
+    public Integer organisationProfileOrganisationIdContactsPost(String organisationId, ContactRequestInfo body) throws ApiException {
+        ApiResponse<Integer> resp = organisationProfileOrganisationIdContactsPostWithHttpInfo(organisationId, body);
         return resp.getData();
     }
 
     /**
      * Allows a user to create organisation contact
-     * Sample request:                    POST /organisations/1/contacts      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
+     * Sample request:                    POST /organisation-profile1/contacts      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @return ApiResponse&lt;Integer&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Integer> organisationsOrganisationIdContactsPostWithHttpInfo(String organisationId, ContactRequestInfo body) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsPostValidateBeforeCall(organisationId, body, null, null);
+    public ApiResponse<Integer> organisationProfileOrganisationIdContactsPostWithHttpInfo(String organisationId, ContactRequestInfo body) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsPostValidateBeforeCall(organisationId, body, null, null);
         Type localVarReturnType = new TypeToken<Integer>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Allows a user to create organisation contact (asynchronously)
-     * Sample request:                    POST /organisations/1/contacts      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
+     * Sample request:                    POST /organisation-profile1/contacts      {         \&quot;contactPointReason\&quot;: \&quot;General\&quot;,         \&quot;contactPointName\&quot;: \&quot;Test User\&quot;,         \&quot;contacts\&quot;: [            {              contactType: \&quot;EMAIL\&quot;,              contactValue: \&quot;testuser@mail.com\&quot;            },            {              contactType: \&quot;PHONE\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;FAX\&quot;,              contactValue: \&quot;+551155256325\&quot;            },            {              contactType: \&quot;WEB_ADDRESS\&quot;,              contactValue: \&quot;test.com\&quot;            },         ]      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdContactsPostAsync(String organisationId, ContactRequestInfo body, final ApiCallback<Integer> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdContactsPostAsync(String organisationId, ContactRequestInfo body, final ApiCallback<Integer> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -972,7 +972,7 @@ public class OrganisationContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdContactsPostValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdContactsPostValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<Integer>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
