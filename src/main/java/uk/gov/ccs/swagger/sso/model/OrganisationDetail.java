@@ -45,14 +45,11 @@ public class OrganisationDetail {
   @SerializedName("isVcse")
   private Boolean isVcse = null;
 
-  @SerializedName("rightToBuy")
-  private Boolean rightToBuy = null;
+  @SerializedName("organisationType")
+  private Boolean organisationType = null;
 
   @SerializedName("isActive")
   private Boolean isActive = null;
-
-  @SerializedName("domainName")
-  private String domainName = null;
 
   public OrganisationDetail organisationId(String organisationId) {
     this.organisationId = organisationId;
@@ -162,22 +159,22 @@ public class OrganisationDetail {
     this.isVcse = isVcse;
   }
 
-  public OrganisationDetail rightToBuy(Boolean rightToBuy) {
-    this.rightToBuy = rightToBuy;
+  public OrganisationDetail organisationType(Boolean organisationType) {
+    this.organisationType = organisationType;
     return this;
   }
 
    /**
-   * Get rightToBuy
-   * @return rightToBuy
+   * Get organisationType
+   * @return organisationType
   **/
   @Schema(description = "")
-  public Boolean isRightToBuy() {
-    return rightToBuy;
+  public Boolean isOrganisationType() {
+    return organisationType;
   }
 
-  public void setRightToBuy(Boolean rightToBuy) {
-    this.rightToBuy = rightToBuy;
+  public void setOrganisationType(Boolean organisationType) {
+    this.organisationType = organisationType;
   }
 
   public OrganisationDetail isActive(Boolean isActive) {
@@ -199,27 +196,8 @@ public class OrganisationDetail {
   }
 
 
-  /**
-   * Get domainName
-   * @return domainName
-   **/
-  @Schema(description = "")
-  public String getDomainName() {
-    return domainName;
-  }
-
-  public void setDomainName(String domainName) {
-    this.domainName = domainName;
-  }
-
-  public OrganisationDetail domainName(String domainName) {
-    this.domainName = domainName;
-    return this;
-  }
-
-
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -233,14 +211,13 @@ public class OrganisationDetail {
         Objects.equals(this.supplierBuyerType, organisationDetail.supplierBuyerType) &&
         Objects.equals(this.isSme, organisationDetail.isSme) &&
         Objects.equals(this.isVcse, organisationDetail.isVcse) &&
-        Objects.equals(this.rightToBuy, organisationDetail.rightToBuy) &&
-        Objects.equals(this.isActive, organisationDetail.isActive) &&
-        Objects.equals(this.domainName, organisationDetail.domainName);
+        Objects.equals(this.organisationType, organisationDetail.organisationType) &&
+        Objects.equals(this.isActive, organisationDetail.isActive);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(organisationId, creationDate, businessType, supplierBuyerType, isSme, isVcse, rightToBuy, isActive, domainName);
+    return Objects.hash(organisationId, creationDate, businessType, supplierBuyerType, isSme, isVcse, organisationType, isActive);
   }
 
 
@@ -255,9 +232,8 @@ public class OrganisationDetail {
     sb.append("    supplierBuyerType: ").append(toIndentedString(supplierBuyerType)).append("\n");
     sb.append("    isSme: ").append(toIndentedString(isSme)).append("\n");
     sb.append("    isVcse: ").append(toIndentedString(isVcse)).append("\n");
-    sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
+    sb.append("    organisationType: ").append(toIndentedString(organisationType)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
-    sb.append("    domainName: ").append(toIndentedString(domainName)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -266,7 +242,7 @@ public class OrganisationDetail {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
