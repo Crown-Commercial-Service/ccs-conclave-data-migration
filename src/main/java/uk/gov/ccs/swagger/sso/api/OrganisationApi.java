@@ -59,18 +59,18 @@ public class OrganisationApi {
     }
 
     /**
-     * Build call for organisationsOrganisationIdGet
+     * Build call for organisationProfileOrganisationIdGet
      * @param organisationId  (required)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGetCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdGetCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}"
+        String localVarPath = "/organisation-profile/{organisationId}"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -95,7 +95,7 @@ public class OrganisationApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -109,13 +109,13 @@ public class OrganisationApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdGetValidateBeforeCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileOrganisationIdGetValidateBeforeCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdGet(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileOrganisationIdGet(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGetCall(organisationId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdGetCall(organisationId, progressListener, progressRequestListener);
         return call;
 
         
@@ -126,38 +126,38 @@ public class OrganisationApi {
 
     /**
      * Get organisation profile details
-     * Sample request:                    GET /organisations/CiiOrgidId
+     * Sample request:                    GET /organisation-profileCiiOrgidId
      * @param organisationId  (required)
      * @return OrganisationProfileResponseInfo
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public OrganisationProfileResponseInfo organisationsOrganisationIdGet(String organisationId) throws ApiException {
-        ApiResponse<OrganisationProfileResponseInfo> resp = organisationsOrganisationIdGetWithHttpInfo(organisationId);
+    public OrganisationProfileResponseInfo organisationProfileOrganisationIdGet(String organisationId) throws ApiException {
+        ApiResponse<OrganisationProfileResponseInfo> resp = organisationProfileOrganisationIdGetWithHttpInfo(organisationId);
         return resp.getData();
     }
 
     /**
      * Get organisation profile details
-     * Sample request:                    GET /organisations/CiiOrgidId
+     * Sample request:                    GET /organisation-profileCiiOrgidId
      * @param organisationId  (required)
      * @return ApiResponse&lt;OrganisationProfileResponseInfo&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<OrganisationProfileResponseInfo> organisationsOrganisationIdGetWithHttpInfo(String organisationId) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGetValidateBeforeCall(organisationId, null, null);
+    public ApiResponse<OrganisationProfileResponseInfo> organisationProfileOrganisationIdGetWithHttpInfo(String organisationId) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdGetValidateBeforeCall(organisationId, null, null);
         Type localVarReturnType = new TypeToken<OrganisationProfileResponseInfo>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Get organisation profile details (asynchronously)
-     * Sample request:                    GET /organisations/CiiOrgidId
+     * Sample request:                    GET /organisation-profileCiiOrgidId
      * @param organisationId  (required)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdGetAsync(String organisationId, final ApiCallback<OrganisationProfileResponseInfo> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdGetAsync(String organisationId, final ApiCallback<OrganisationProfileResponseInfo> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -178,138 +178,13 @@ public class OrganisationApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdGetValidateBeforeCall(organisationId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdGetValidateBeforeCall(organisationId, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<OrganisationProfileResponseInfo>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdIdentityProvidersGet
-     * @param organisationId  (required)
-     * @param progressListener Progress listener
-     * @param progressRequestListener Progress request listener
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    public com.squareup.okhttp.Call organisationsOrganisationIdIdentityProvidersGetCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        Object localVarPostBody = null;
-        
-        // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/identity-providers"
-            .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "text/plain", "application/json", "text/json"
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
-
-        final String[] localVarContentTypes = {
-            
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put("Content-Type", localVarContentType);
-
-        if(progressListener != null) {
-            apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
-                @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
-                    com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
-                    return originalResponse.newBuilder()
-                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
-                    .build();
-                }
-            });
-        }
-
-        String[] localVarAuthNames = new String[] { "ApiKey" };
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
-    }
-    
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdIdentityProvidersGetValidateBeforeCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        // verify the required parameter 'organisationId' is set
-        if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdIdentityProvidersGet(Async)");
-        }
-        
-        com.squareup.okhttp.Call call = organisationsOrganisationIdIdentityProvidersGetCall(organisationId, progressListener, progressRequestListener);
-        return call;
-
-        
-        
-        
-        
-    }
-
-    /**
-     * Allows a user to get identity provider details of an organisation
-     * Sample request:                    GET organisations/1/identity-providers
-     * @param organisationId  (required)
-     * @return List&lt;IdentityProviderDetail&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     */
-    public List<IdentityProviderDetail> organisationsOrganisationIdIdentityProvidersGet(String organisationId) throws ApiException {
-        ApiResponse<List<IdentityProviderDetail>> resp = organisationsOrganisationIdIdentityProvidersGetWithHttpInfo(organisationId);
-        return resp.getData();
-    }
-
-    /**
-     * Allows a user to get identity provider details of an organisation
-     * Sample request:                    GET organisations/1/identity-providers
-     * @param organisationId  (required)
-     * @return ApiResponse&lt;List&lt;IdentityProviderDetail&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     */
-    public ApiResponse<List<IdentityProviderDetail>> organisationsOrganisationIdIdentityProvidersGetWithHttpInfo(String organisationId) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdIdentityProvidersGetValidateBeforeCall(organisationId, null, null);
-        Type localVarReturnType = new TypeToken<List<IdentityProviderDetail>>(){}.getType();
-        return apiClient.execute(call, localVarReturnType);
-    }
-
-    /**
-     * Allows a user to get identity provider details of an organisation (asynchronously)
-     * Sample request:                    GET organisations/1/identity-providers
-     * @param organisationId  (required)
-     * @param callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     */
-    public com.squareup.okhttp.Call organisationsOrganisationIdIdentityProvidersGetAsync(String organisationId, final ApiCallback<List<IdentityProviderDetail>> callback) throws ApiException {
-
-        ProgressResponseBody.ProgressListener progressListener = null;
-        ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
-
-        if (callback != null) {
-            progressListener = new ProgressResponseBody.ProgressListener() {
-                @Override
-                public void update(long bytesRead, long contentLength, boolean done) {
-                    callback.onDownloadProgress(bytesRead, contentLength, done);
-                }
-            };
-
-            progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
-                @Override
-                public void onRequestProgress(long bytesWritten, long contentLength, boolean done) {
-                    callback.onUploadProgress(bytesWritten, contentLength, done);
-                }
-            };
-        }
-
-        com.squareup.okhttp.Call call = organisationsOrganisationIdIdentityProvidersGetValidateBeforeCall(organisationId, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<List<IdentityProviderDetail>>(){}.getType();
-        apiClient.executeAsync(call, localVarReturnType, callback);
-        return call;
-    }
-    /**
-     * Build call for organisationsOrganisationIdIdentityProvidersPut
+     * Build call for organisationProfileOrganisationIdPut
      * @param organisationId  (required)
      * @param body  (optional)
      * @param progressListener Progress listener
@@ -317,11 +192,11 @@ public class OrganisationApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdIdentityProvidersPutCall(String organisationId, OrgIdentityProviderSummary body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdPutCall(String organisationId, OrganisationProfileInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/identity-providers"
+        String localVarPath = "/organisation-profile/{organisationId}"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -346,7 +221,7 @@ public class OrganisationApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -360,138 +235,13 @@ public class OrganisationApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdIdentityProvidersPutValidateBeforeCall(String organisationId, OrgIdentityProviderSummary body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileOrganisationIdPutValidateBeforeCall(String organisationId, OrganisationProfileInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdIdentityProvidersPut(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileOrganisationIdPut(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdIdentityProvidersPutCall(organisationId, body, progressListener, progressRequestListener);
-        return call;
-
-        
-        
-        
-        
-    }
-
-    /**
-     * Allows a user to update identity provider details of an organisation
-     * Sample request:                    GET organisations/1/identity-providers      {        ciiOrganisationId: \&quot;orgid\&quot;,        changedOrgIdentityProviders: [          {            id: 1          }        ]       }
-     * @param organisationId  (required)
-     * @param body  (optional)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     */
-    public void organisationsOrganisationIdIdentityProvidersPut(String organisationId, OrgIdentityProviderSummary body) throws ApiException {
-        organisationsOrganisationIdIdentityProvidersPutWithHttpInfo(organisationId, body);
-    }
-
-    /**
-     * Allows a user to update identity provider details of an organisation
-     * Sample request:                    GET organisations/1/identity-providers      {        ciiOrganisationId: \&quot;orgid\&quot;,        changedOrgIdentityProviders: [          {            id: 1          }        ]       }
-     * @param organisationId  (required)
-     * @param body  (optional)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     */
-    public ApiResponse<Void> organisationsOrganisationIdIdentityProvidersPutWithHttpInfo(String organisationId, OrgIdentityProviderSummary body) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdIdentityProvidersPutValidateBeforeCall(organisationId, body, null, null);
-        return apiClient.execute(call);
-    }
-
-    /**
-     * Allows a user to update identity provider details of an organisation (asynchronously)
-     * Sample request:                    GET organisations/1/identity-providers      {        ciiOrganisationId: \&quot;orgid\&quot;,        changedOrgIdentityProviders: [          {            id: 1          }        ]       }
-     * @param organisationId  (required)
-     * @param body  (optional)
-     * @param callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     */
-    public com.squareup.okhttp.Call organisationsOrganisationIdIdentityProvidersPutAsync(String organisationId, OrgIdentityProviderSummary body, final ApiCallback<Void> callback) throws ApiException {
-
-        ProgressResponseBody.ProgressListener progressListener = null;
-        ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
-
-        if (callback != null) {
-            progressListener = new ProgressResponseBody.ProgressListener() {
-                @Override
-                public void update(long bytesRead, long contentLength, boolean done) {
-                    callback.onDownloadProgress(bytesRead, contentLength, done);
-                }
-            };
-
-            progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
-                @Override
-                public void onRequestProgress(long bytesWritten, long contentLength, boolean done) {
-                    callback.onUploadProgress(bytesWritten, contentLength, done);
-                }
-            };
-        }
-
-        com.squareup.okhttp.Call call = organisationsOrganisationIdIdentityProvidersPutValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
-        apiClient.executeAsync(call, callback);
-        return call;
-    }
-    /**
-     * Build call for organisationsOrganisationIdPut
-     * @param organisationId  (required)
-     * @param body  (optional)
-     * @param progressListener Progress listener
-     * @param progressRequestListener Progress request listener
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    public com.squareup.okhttp.Call organisationsOrganisationIdPutCall(String organisationId, OrganisationProfileInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        Object localVarPostBody = body;
-        
-        // create path and map variables
-        String localVarPath = "/organisations/{organisationId}"
-            .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
-
-        final String[] localVarContentTypes = {
-            "application/json", "text/json", "application/_*+json"
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put("Content-Type", localVarContentType);
-
-        if(progressListener != null) {
-            apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
-                @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
-                    com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
-                    return originalResponse.newBuilder()
-                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
-                    .build();
-                }
-            });
-        }
-
-        String[] localVarAuthNames = new String[] { "ApiKey" };
-        return apiClient.buildCall(localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
-    }
-    
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdPutValidateBeforeCall(String organisationId, OrganisationProfileInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        // verify the required parameter 'organisationId' is set
-        if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdPut(Async)");
-        }
-        
-        com.squareup.okhttp.Call call = organisationsOrganisationIdPutCall(organisationId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdPutCall(organisationId, body, progressListener, progressRequestListener);
         return call;
 
         
@@ -502,38 +252,38 @@ public class OrganisationApi {
 
     /**
      * Allows a user to update organisation
-     * Sample request:                    PUT /organisations/CiiOrgidId      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;rightToBuy\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
+     * Sample request:                    PUT /organisation-profileCiiOrgidId      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;organisationType\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public void organisationsOrganisationIdPut(String organisationId, OrganisationProfileInfo body) throws ApiException {
-        organisationsOrganisationIdPutWithHttpInfo(organisationId, body);
+    public void organisationProfileOrganisationIdPut(String organisationId, OrganisationProfileInfo body) throws ApiException {
+        organisationProfileOrganisationIdPutWithHttpInfo(organisationId, body);
     }
 
     /**
      * Allows a user to update organisation
-     * Sample request:                    PUT /organisations/CiiOrgidId      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;rightToBuy\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
+     * Sample request:                    PUT /organisation-profileCiiOrgidId      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;organisationType\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Void> organisationsOrganisationIdPutWithHttpInfo(String organisationId, OrganisationProfileInfo body) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdPutValidateBeforeCall(organisationId, body, null, null);
+    public ApiResponse<Void> organisationProfileOrganisationIdPutWithHttpInfo(String organisationId, OrganisationProfileInfo body) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdPutValidateBeforeCall(organisationId, body, null, null);
         return apiClient.execute(call);
     }
 
     /**
      * Allows a user to update organisation (asynchronously)
-     * Sample request:                    PUT /organisations/CiiOrgidId      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;rightToBuy\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
+     * Sample request:                    PUT /organisation-profileCiiOrgidId      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;organisationType\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
      * @param organisationId  (required)
      * @param body  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdPutAsync(String organisationId, OrganisationProfileInfo body, final ApiCallback<Void> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileOrganisationIdPutAsync(String organisationId, OrganisationProfileInfo body, final ApiCallback<Void> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -554,273 +304,23 @@ public class OrganisationApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdPutValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileOrganisationIdPutValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
         return call;
     }
     /**
-     * Build call for organisationsOrganisationIdRolesGet
-     * @param organisationId  (required)
-     * @param progressListener Progress listener
-     * @param progressRequestListener Progress request listener
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    public com.squareup.okhttp.Call organisationsOrganisationIdRolesGetCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        Object localVarPostBody = null;
-        
-        // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/roles"
-            .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "text/plain", "application/json", "text/json"
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
-
-        final String[] localVarContentTypes = {
-            
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put("Content-Type", localVarContentType);
-
-        if(progressListener != null) {
-            apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
-                @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
-                    com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
-                    return originalResponse.newBuilder()
-                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
-                    .build();
-                }
-            });
-        }
-
-        String[] localVarAuthNames = new String[] { "ApiKey" };
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
-    }
-    
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdRolesGetValidateBeforeCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        // verify the required parameter 'organisationId' is set
-        if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdRolesGet(Async)");
-        }
-        
-        com.squareup.okhttp.Call call = organisationsOrganisationIdRolesGetCall(organisationId, progressListener, progressRequestListener);
-        return call;
-
-        
-        
-        
-        
-    }
-
-    /**
-     * Get organisation roles
-     * Sample request:                    GET /organisations/1/roles
-     * @param organisationId  (required)
-     * @return List&lt;OrganisationRole&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     */
-    public List<OrganisationRole> organisationsOrganisationIdRolesGet(String organisationId) throws ApiException {
-        ApiResponse<List<OrganisationRole>> resp = organisationsOrganisationIdRolesGetWithHttpInfo(organisationId);
-        return resp.getData();
-    }
-
-    /**
-     * Get organisation roles
-     * Sample request:                    GET /organisations/1/roles
-     * @param organisationId  (required)
-     * @return ApiResponse&lt;List&lt;OrganisationRole&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     */
-    public ApiResponse<List<OrganisationRole>> organisationsOrganisationIdRolesGetWithHttpInfo(String organisationId) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdRolesGetValidateBeforeCall(organisationId, null, null);
-        Type localVarReturnType = new TypeToken<List<OrganisationRole>>(){}.getType();
-        return apiClient.execute(call, localVarReturnType);
-    }
-
-    /**
-     * Get organisation roles (asynchronously)
-     * Sample request:                    GET /organisations/1/roles
-     * @param organisationId  (required)
-     * @param callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     */
-    public com.squareup.okhttp.Call organisationsOrganisationIdRolesGetAsync(String organisationId, final ApiCallback<List<OrganisationRole>> callback) throws ApiException {
-
-        ProgressResponseBody.ProgressListener progressListener = null;
-        ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
-
-        if (callback != null) {
-            progressListener = new ProgressResponseBody.ProgressListener() {
-                @Override
-                public void update(long bytesRead, long contentLength, boolean done) {
-                    callback.onDownloadProgress(bytesRead, contentLength, done);
-                }
-            };
-
-            progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
-                @Override
-                public void onRequestProgress(long bytesWritten, long contentLength, boolean done) {
-                    callback.onUploadProgress(bytesWritten, contentLength, done);
-                }
-            };
-        }
-
-        com.squareup.okhttp.Call call = organisationsOrganisationIdRolesGetValidateBeforeCall(organisationId, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<List<OrganisationRole>>(){}.getType();
-        apiClient.executeAsync(call, localVarReturnType, callback);
-        return call;
-    }
-    /**
-     * Build call for organisationsOrganisationIdRolesPut
-     * @param organisationId  (required)
+     * Build call for organisationProfilePost
      * @param body  (optional)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdRolesPutCall(String organisationId, OrganisationRoleUpdate body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfilePostCall(OrganisationProfileInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/roles"
-            .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
-
-        final String[] localVarContentTypes = {
-            "application/json", "text/json", "application/_*+json"
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put("Content-Type", localVarContentType);
-
-        if(progressListener != null) {
-            apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
-                @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
-                    com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
-                    return originalResponse.newBuilder()
-                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
-                    .build();
-                }
-            });
-        }
-
-        String[] localVarAuthNames = new String[] { "ApiKey" };
-        return apiClient.buildCall(localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
-    }
-    
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdRolesPutValidateBeforeCall(String organisationId, OrganisationRoleUpdate body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        // verify the required parameter 'organisationId' is set
-        if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdRolesPut(Async)");
-        }
-        
-        com.squareup.okhttp.Call call = organisationsOrganisationIdRolesPutCall(organisationId, body, progressListener, progressRequestListener);
-        return call;
-
-        
-        
-        
-        
-    }
-
-    /**
-     * Update organisation eligible roles
-     * Sample request:                    GET /organisations/1/updateEligableRoles      {        isBuyer: true,        rolesToAdd: [          {            id: 1          }        ],        rolesToDelete: [          {            id: 1          }        ]       }
-     * @param organisationId  (required)
-     * @param body  (optional)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     */
-    public void organisationsOrganisationIdRolesPut(String organisationId, OrganisationRoleUpdate body) throws ApiException {
-        organisationsOrganisationIdRolesPutWithHttpInfo(organisationId, body);
-    }
-
-    /**
-     * Update organisation eligible roles
-     * Sample request:                    GET /organisations/1/updateEligableRoles      {        isBuyer: true,        rolesToAdd: [          {            id: 1          }        ],        rolesToDelete: [          {            id: 1          }        ]       }
-     * @param organisationId  (required)
-     * @param body  (optional)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     */
-    public ApiResponse<Void> organisationsOrganisationIdRolesPutWithHttpInfo(String organisationId, OrganisationRoleUpdate body) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdRolesPutValidateBeforeCall(organisationId, body, null, null);
-        return apiClient.execute(call);
-    }
-
-    /**
-     * Update organisation eligible roles (asynchronously)
-     * Sample request:                    GET /organisations/1/updateEligableRoles      {        isBuyer: true,        rolesToAdd: [          {            id: 1          }        ],        rolesToDelete: [          {            id: 1          }        ]       }
-     * @param organisationId  (required)
-     * @param body  (optional)
-     * @param callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     */
-    public com.squareup.okhttp.Call organisationsOrganisationIdRolesPutAsync(String organisationId, OrganisationRoleUpdate body, final ApiCallback<Void> callback) throws ApiException {
-
-        ProgressResponseBody.ProgressListener progressListener = null;
-        ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
-
-        if (callback != null) {
-            progressListener = new ProgressResponseBody.ProgressListener() {
-                @Override
-                public void update(long bytesRead, long contentLength, boolean done) {
-                    callback.onDownloadProgress(bytesRead, contentLength, done);
-                }
-            };
-
-            progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
-                @Override
-                public void onRequestProgress(long bytesWritten, long contentLength, boolean done) {
-                    callback.onUploadProgress(bytesWritten, contentLength, done);
-                }
-            };
-        }
-
-        com.squareup.okhttp.Call call = organisationsOrganisationIdRolesPutValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
-        apiClient.executeAsync(call, callback);
-        return call;
-    }
-    /**
-     * Build call for organisationsPost
-     * @param body  (optional)
-     * @param progressListener Progress listener
-     * @param progressRequestListener Progress request listener
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    public com.squareup.okhttp.Call organisationsPostCall(OrganisationProfileInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        Object localVarPostBody = body;
-        
-        // create path and map variables
-        String localVarPath = "/organisations";
+        String localVarPath = "/organisation-profile";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -844,7 +344,7 @@ public class OrganisationApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -858,9 +358,9 @@ public class OrganisationApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsPostValidateBeforeCall(OrganisationProfileInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfilePostValidateBeforeCall(OrganisationProfileInfo body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
-        com.squareup.okhttp.Call call = organisationsPostCall(body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfilePostCall(body, progressListener, progressRequestListener);
         return call;
 
         
@@ -871,38 +371,38 @@ public class OrganisationApi {
 
     /**
      * Allows a user to create organisation
-     * Sample request:                    POST /organisations/      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;rightToBuy\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
+     * Sample request:                    POST /organisation-profile      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;organisationType\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
      * @param body  (optional)
      * @return String
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public String organisationsPost(OrganisationProfileInfo body) throws ApiException {
-        ApiResponse<String> resp = organisationsPostWithHttpInfo(body);
+    public String organisationProfilePost(OrganisationProfileInfo body) throws ApiException {
+        ApiResponse<String> resp = organisationProfilePostWithHttpInfo(body);
         return resp.getData();
     }
 
     /**
      * Allows a user to create organisation
-     * Sample request:                    POST /organisations/      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;rightToBuy\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
+     * Sample request:                    POST /organisation-profile      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;organisationType\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
      * @param body  (optional)
      * @return ApiResponse&lt;String&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<String> organisationsPostWithHttpInfo(OrganisationProfileInfo body) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsPostValidateBeforeCall(body, null, null);
+    public ApiResponse<String> organisationProfilePostWithHttpInfo(OrganisationProfileInfo body) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfilePostValidateBeforeCall(body, null, null);
         Type localVarReturnType = new TypeToken<String>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Allows a user to create organisation (asynchronously)
-     * Sample request:                    POST /organisations/      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;rightToBuy\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
+     * Sample request:                    POST /organisation-profile      {        \&quot;Identifier\&quot;: {          \&quot;legalName\&quot;: \&quot;Kier Limited\&quot;,          \&quot;uri\&quot;: \&quot;http://data.companieshouse.gov.uk/doc/company/1\&quot;        },        \&quot;address\&quot;: {          \&quot;streetAddress\&quot;: \&quot;1600 Amphitheatre Pkwy\&quot;,          \&quot;locality\&quot;: \&quot;Mountain View.\&quot;,          \&quot;region\&quot;: \&quot;CA.\&quot;,          \&quot;postalCode\&quot;: \&quot;94043\&quot;,          \&quot;countryCode\&quot;: \&quot;UK\&quot;        },        \&quot;Detail\&quot;: {          \&quot;organisationId\&quot;: \&quot;CiiOrgidId\&quot;,          \&quot;organisationType\&quot;: \&quot;true\&quot;,          \&quot;is_sme\&quot;: 1,          \&quot;is_vcse\&quot;: 1,          \&quot;active\&quot;: 1        }      }
      * @param body  (optional)
      * @param callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsPostAsync(OrganisationProfileInfo body, final ApiCallback<String> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfilePostAsync(OrganisationProfileInfo body, final ApiCallback<String> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -923,9 +423,509 @@ public class OrganisationApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsPostValidateBeforeCall(body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfilePostValidateBeforeCall(body, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<String>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
+        return call;
+    }
+    /**
+     * Build call for organisationProfileorganisationIdIdentityProvidersGet
+     * @param organisationId  (required)
+     * @param progressListener Progress listener
+     * @param progressRequestListener Progress request listener
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     */
+    public com.squareup.okhttp.Call organisationProfileorganisationIdIdentityProvidersGetCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        Object localVarPostBody = null;
+        
+        // create path and map variables
+        String localVarPath = "/organisation-profile{organisationId}/identity-providers"
+            .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "text/plain", "application/json", "text/json"
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
+
+        final String[] localVarContentTypes = {
+            
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put("Content-Type", localVarContentType);
+
+        if(progressListener != null) {
+            apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
+                @Override
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                    com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
+                    return originalResponse.newBuilder()
+                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
+                    .build();
+                }
+            });
+        }
+
+        String[] localVarAuthNames = new String[] { "ApiKey" };
+        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
+    }
+    
+    @SuppressWarnings("rawtypes")
+    private com.squareup.okhttp.Call organisationProfileorganisationIdIdentityProvidersGetValidateBeforeCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        // verify the required parameter 'organisationId' is set
+        if (organisationId == null) {
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdIdentityProvidersGet(Async)");
+        }
+        
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdIdentityProvidersGetCall(organisationId, progressListener, progressRequestListener);
+        return call;
+
+        
+        
+        
+        
+    }
+
+    /**
+     * Allows a user to get identity provider details of an organisation
+     * Sample request:                    GET organisation-profile1/identity-providers
+     * @param organisationId  (required)
+     * @return List&lt;IdentityProviderDetail&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public List<IdentityProviderDetail> organisationProfileorganisationIdIdentityProvidersGet(String organisationId) throws ApiException {
+        ApiResponse<List<IdentityProviderDetail>> resp = organisationProfileorganisationIdIdentityProvidersGetWithHttpInfo(organisationId);
+        return resp.getData();
+    }
+
+    /**
+     * Allows a user to get identity provider details of an organisation
+     * Sample request:                    GET organisation-profile1/identity-providers
+     * @param organisationId  (required)
+     * @return ApiResponse&lt;List&lt;IdentityProviderDetail&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public ApiResponse<List<IdentityProviderDetail>> organisationProfileorganisationIdIdentityProvidersGetWithHttpInfo(String organisationId) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdIdentityProvidersGetValidateBeforeCall(organisationId, null, null);
+        Type localVarReturnType = new TypeToken<List<IdentityProviderDetail>>(){}.getType();
+        return apiClient.execute(call, localVarReturnType);
+    }
+
+    /**
+     * Allows a user to get identity provider details of an organisation (asynchronously)
+     * Sample request:                    GET organisation-profile1/identity-providers
+     * @param organisationId  (required)
+     * @param callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     */
+    public com.squareup.okhttp.Call organisationProfileorganisationIdIdentityProvidersGetAsync(String organisationId, final ApiCallback<List<IdentityProviderDetail>> callback) throws ApiException {
+
+        ProgressResponseBody.ProgressListener progressListener = null;
+        ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
+
+        if (callback != null) {
+            progressListener = new ProgressResponseBody.ProgressListener() {
+                @Override
+                public void update(long bytesRead, long contentLength, boolean done) {
+                    callback.onDownloadProgress(bytesRead, contentLength, done);
+                }
+            };
+
+            progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
+                @Override
+                public void onRequestProgress(long bytesWritten, long contentLength, boolean done) {
+                    callback.onUploadProgress(bytesWritten, contentLength, done);
+                }
+            };
+        }
+
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdIdentityProvidersGetValidateBeforeCall(organisationId, progressListener, progressRequestListener);
+        Type localVarReturnType = new TypeToken<List<IdentityProviderDetail>>(){}.getType();
+        apiClient.executeAsync(call, localVarReturnType, callback);
+        return call;
+    }
+    /**
+     * Build call for organisationProfileorganisationIdIdentityProvidersPut
+     * @param organisationId  (required)
+     * @param body  (optional)
+     * @param progressListener Progress listener
+     * @param progressRequestListener Progress request listener
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     */
+    public com.squareup.okhttp.Call organisationProfileorganisationIdIdentityProvidersPutCall(String organisationId, OrgIdentityProviderSummary body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        Object localVarPostBody = body;
+        
+        // create path and map variables
+        String localVarPath = "/organisation-profile{organisationId}/identity-providers"
+            .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
+
+        final String[] localVarContentTypes = {
+            "application/json", "text/json", "application/_*+json"
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put("Content-Type", localVarContentType);
+
+        if(progressListener != null) {
+            apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
+                @Override
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                    com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
+                    return originalResponse.newBuilder()
+                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
+                    .build();
+                }
+            });
+        }
+
+        String[] localVarAuthNames = new String[] { "ApiKey" };
+        return apiClient.buildCall(localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
+    }
+    
+    @SuppressWarnings("rawtypes")
+    private com.squareup.okhttp.Call organisationProfileorganisationIdIdentityProvidersPutValidateBeforeCall(String organisationId, OrgIdentityProviderSummary body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        // verify the required parameter 'organisationId' is set
+        if (organisationId == null) {
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdIdentityProvidersPut(Async)");
+        }
+        
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdIdentityProvidersPutCall(organisationId, body, progressListener, progressRequestListener);
+        return call;
+
+        
+        
+        
+        
+    }
+
+    /**
+     * Allows a user to update identity provider details of an organisation
+     * Sample request:                    GET organisation-profile1/identity-providers      {        ciiOrganisationId: \&quot;orgid\&quot;,        changedOrgIdentityProviders: [          {            id: 1          }        ]       }
+     * @param organisationId  (required)
+     * @param body  (optional)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public void organisationProfileorganisationIdIdentityProvidersPut(String organisationId, OrgIdentityProviderSummary body) throws ApiException {
+        organisationProfileorganisationIdIdentityProvidersPutWithHttpInfo(organisationId, body);
+    }
+
+    /**
+     * Allows a user to update identity provider details of an organisation
+     * Sample request:                    GET organisation-profile1/identity-providers      {        ciiOrganisationId: \&quot;orgid\&quot;,        changedOrgIdentityProviders: [          {            id: 1          }        ]       }
+     * @param organisationId  (required)
+     * @param body  (optional)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public ApiResponse<Void> organisationProfileorganisationIdIdentityProvidersPutWithHttpInfo(String organisationId, OrgIdentityProviderSummary body) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdIdentityProvidersPutValidateBeforeCall(organisationId, body, null, null);
+        return apiClient.execute(call);
+    }
+
+    /**
+     * Allows a user to update identity provider details of an organisation (asynchronously)
+     * Sample request:                    GET organisation-profile1/identity-providers      {        ciiOrganisationId: \&quot;orgid\&quot;,        changedOrgIdentityProviders: [          {            id: 1          }        ]       }
+     * @param organisationId  (required)
+     * @param body  (optional)
+     * @param callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     */
+    public com.squareup.okhttp.Call organisationProfileorganisationIdIdentityProvidersPutAsync(String organisationId, OrgIdentityProviderSummary body, final ApiCallback<Void> callback) throws ApiException {
+
+        ProgressResponseBody.ProgressListener progressListener = null;
+        ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
+
+        if (callback != null) {
+            progressListener = new ProgressResponseBody.ProgressListener() {
+                @Override
+                public void update(long bytesRead, long contentLength, boolean done) {
+                    callback.onDownloadProgress(bytesRead, contentLength, done);
+                }
+            };
+
+            progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
+                @Override
+                public void onRequestProgress(long bytesWritten, long contentLength, boolean done) {
+                    callback.onUploadProgress(bytesWritten, contentLength, done);
+                }
+            };
+        }
+
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdIdentityProvidersPutValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
+        apiClient.executeAsync(call, callback);
+        return call;
+    }
+    /**
+     * Build call for organisationProfileorganisationIdRolesGet
+     * @param organisationId  (required)
+     * @param progressListener Progress listener
+     * @param progressRequestListener Progress request listener
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     */
+    public com.squareup.okhttp.Call organisationProfileorganisationIdRolesGetCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        Object localVarPostBody = null;
+        
+        // create path and map variables
+        String localVarPath = "/organisation-profile{organisationId}/roles"
+            .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "text/plain", "application/json", "text/json"
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
+
+        final String[] localVarContentTypes = {
+            
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put("Content-Type", localVarContentType);
+
+        if(progressListener != null) {
+            apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
+                @Override
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                    com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
+                    return originalResponse.newBuilder()
+                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
+                    .build();
+                }
+            });
+        }
+
+        String[] localVarAuthNames = new String[] { "ApiKey" };
+        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
+    }
+    
+    @SuppressWarnings("rawtypes")
+    private com.squareup.okhttp.Call organisationProfileorganisationIdRolesGetValidateBeforeCall(String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        // verify the required parameter 'organisationId' is set
+        if (organisationId == null) {
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdRolesGet(Async)");
+        }
+        
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdRolesGetCall(organisationId, progressListener, progressRequestListener);
+        return call;
+
+        
+        
+        
+        
+    }
+
+    /**
+     * Get organisation roles
+     * Sample request:                    GET /organisation-profile1/roles
+     * @param organisationId  (required)
+     * @return List&lt;OrganisationRole&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public List<OrganisationRole> organisationProfileorganisationIdRolesGet(String organisationId) throws ApiException {
+        ApiResponse<List<OrganisationRole>> resp = organisationProfileorganisationIdRolesGetWithHttpInfo(organisationId);
+        return resp.getData();
+    }
+
+    /**
+     * Get organisation roles
+     * Sample request:                    GET /organisation-profile1/roles
+     * @param organisationId  (required)
+     * @return ApiResponse&lt;List&lt;OrganisationRole&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public ApiResponse<List<OrganisationRole>> organisationProfileorganisationIdRolesGetWithHttpInfo(String organisationId) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdRolesGetValidateBeforeCall(organisationId, null, null);
+        Type localVarReturnType = new TypeToken<List<OrganisationRole>>(){}.getType();
+        return apiClient.execute(call, localVarReturnType);
+    }
+
+    /**
+     * Get organisation roles (asynchronously)
+     * Sample request:                    GET /organisation-profile1/roles
+     * @param organisationId  (required)
+     * @param callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     */
+    public com.squareup.okhttp.Call organisationProfileorganisationIdRolesGetAsync(String organisationId, final ApiCallback<List<OrganisationRole>> callback) throws ApiException {
+
+        ProgressResponseBody.ProgressListener progressListener = null;
+        ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
+
+        if (callback != null) {
+            progressListener = new ProgressResponseBody.ProgressListener() {
+                @Override
+                public void update(long bytesRead, long contentLength, boolean done) {
+                    callback.onDownloadProgress(bytesRead, contentLength, done);
+                }
+            };
+
+            progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
+                @Override
+                public void onRequestProgress(long bytesWritten, long contentLength, boolean done) {
+                    callback.onUploadProgress(bytesWritten, contentLength, done);
+                }
+            };
+        }
+
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdRolesGetValidateBeforeCall(organisationId, progressListener, progressRequestListener);
+        Type localVarReturnType = new TypeToken<List<OrganisationRole>>(){}.getType();
+        apiClient.executeAsync(call, localVarReturnType, callback);
+        return call;
+    }
+    /**
+     * Build call for organisationProfileorganisationIdRolesPut
+     * @param organisationId  (required)
+     * @param body  (optional)
+     * @param progressListener Progress listener
+     * @param progressRequestListener Progress request listener
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     */
+    public com.squareup.okhttp.Call organisationProfileorganisationIdRolesPutCall(String organisationId, OrganisationRoleUpdate body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        Object localVarPostBody = body;
+        
+        // create path and map variables
+        String localVarPath = "/organisation-profile{organisationId}/roles"
+            .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put("Accept", localVarAccept);
+
+        final String[] localVarContentTypes = {
+            "application/json", "text/json", "application/_*+json"
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put("Content-Type", localVarContentType);
+
+        if(progressListener != null) {
+            apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
+                @Override
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                    com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
+                    return originalResponse.newBuilder()
+                    .body(new ProgressResponseBody(originalResponse.body(), progressListener))
+                    .build();
+                }
+            });
+        }
+
+        String[] localVarAuthNames = new String[] { "ApiKey" };
+        return apiClient.buildCall(localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
+    }
+    
+    @SuppressWarnings("rawtypes")
+    private com.squareup.okhttp.Call organisationProfileorganisationIdRolesPutValidateBeforeCall(String organisationId, OrganisationRoleUpdate body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+        // verify the required parameter 'organisationId' is set
+        if (organisationId == null) {
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdRolesPut(Async)");
+        }
+        
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdRolesPutCall(organisationId, body, progressListener, progressRequestListener);
+        return call;
+
+        
+        
+        
+        
+    }
+
+    /**
+     * Update organisation eligible roles
+     * Sample request:                    GET /organisation-profile1/updateEligableRoles      {        isBuyer: true,        rolesToAdd: [          {            id: 1          }        ],        rolesToDelete: [          {            id: 1          }        ]       }
+     * @param organisationId  (required)
+     * @param body  (optional)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public void organisationProfileorganisationIdRolesPut(String organisationId, OrganisationRoleUpdate body) throws ApiException {
+        organisationProfileorganisationIdRolesPutWithHttpInfo(organisationId, body);
+    }
+
+    /**
+     * Update organisation eligible roles
+     * Sample request:                    GET /organisation-profile1/updateEligableRoles      {        isBuyer: true,        rolesToAdd: [          {            id: 1          }        ],        rolesToDelete: [          {            id: 1          }        ]       }
+     * @param organisationId  (required)
+     * @param body  (optional)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public ApiResponse<Void> organisationProfileorganisationIdRolesPutWithHttpInfo(String organisationId, OrganisationRoleUpdate body) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdRolesPutValidateBeforeCall(organisationId, body, null, null);
+        return apiClient.execute(call);
+    }
+
+    /**
+     * Update organisation eligible roles (asynchronously)
+     * Sample request:                    GET /organisation-profile1/updateEligableRoles      {        isBuyer: true,        rolesToAdd: [          {            id: 1          }        ],        rolesToDelete: [          {            id: 1          }        ]       }
+     * @param organisationId  (required)
+     * @param body  (optional)
+     * @param callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     */
+    public com.squareup.okhttp.Call organisationProfileorganisationIdRolesPutAsync(String organisationId, OrganisationRoleUpdate body, final ApiCallback<Void> callback) throws ApiException {
+
+        ProgressResponseBody.ProgressListener progressListener = null;
+        ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
+
+        if (callback != null) {
+            progressListener = new ProgressResponseBody.ProgressListener() {
+                @Override
+                public void update(long bytesRead, long contentLength, boolean done) {
+                    callback.onDownloadProgress(bytesRead, contentLength, done);
+                }
+            };
+
+            progressRequestListener = new ProgressRequestBody.ProgressRequestListener() {
+                @Override
+                public void onRequestProgress(long bytesWritten, long contentLength, boolean done) {
+                    callback.onUploadProgress(bytesWritten, contentLength, done);
+                }
+            };
+        }
+
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdRolesPutValidateBeforeCall(organisationId, body, progressListener, progressRequestListener);
+        apiClient.executeAsync(call, callback);
         return call;
     }
 }

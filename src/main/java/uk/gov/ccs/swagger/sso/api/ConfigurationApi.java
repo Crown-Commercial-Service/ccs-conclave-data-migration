@@ -57,13 +57,13 @@ public class ConfigurationApi {
     }
 
     /**
-     * Build call for configurationsIdentityProvidersGet
+     * Build call for configurationServiceIdentityProvidersGet
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call configurationsIdentityProvidersGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call configurationServiceIdentityProvidersGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -91,7 +91,7 @@ public class ConfigurationApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -105,9 +105,9 @@ public class ConfigurationApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call configurationsIdentityProvidersGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call configurationServiceIdentityProvidersGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
-        com.squareup.okhttp.Call call = configurationsIdentityProvidersGetCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = configurationServiceIdentityProvidersGetCall(progressListener, progressRequestListener);
         return call;
 
         
@@ -122,8 +122,8 @@ public class ConfigurationApi {
      * @return List&lt;IdentityProviderDetail&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public List<IdentityProviderDetail> configurationsIdentityProvidersGet() throws ApiException {
-        ApiResponse<List<IdentityProviderDetail>> resp = configurationsIdentityProvidersGetWithHttpInfo();
+    public List<IdentityProviderDetail> configurationServiceIdentityProvidersGet() throws ApiException {
+        ApiResponse<List<IdentityProviderDetail>> resp = configurationServiceIdentityProvidersGetWithHttpInfo();
         return resp.getData();
     }
 
@@ -133,8 +133,8 @@ public class ConfigurationApi {
      * @return ApiResponse&lt;List&lt;IdentityProviderDetail&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<List<IdentityProviderDetail>> configurationsIdentityProvidersGetWithHttpInfo() throws ApiException {
-        com.squareup.okhttp.Call call = configurationsIdentityProvidersGetValidateBeforeCall(null, null);
+    public ApiResponse<List<IdentityProviderDetail>> configurationServiceIdentityProvidersGetWithHttpInfo() throws ApiException {
+        com.squareup.okhttp.Call call = configurationServiceIdentityProvidersGetValidateBeforeCall(null, null);
         Type localVarReturnType = new TypeToken<List<IdentityProviderDetail>>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -146,7 +146,7 @@ public class ConfigurationApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call configurationsIdentityProvidersGetAsync(final ApiCallback<List<IdentityProviderDetail>> callback) throws ApiException {
+    public com.squareup.okhttp.Call configurationServiceIdentityProvidersGetAsync(final ApiCallback<List<IdentityProviderDetail>> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -167,19 +167,19 @@ public class ConfigurationApi {
             };
         }
 
-        com.squareup.okhttp.Call call = configurationsIdentityProvidersGetValidateBeforeCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = configurationServiceIdentityProvidersGetValidateBeforeCall(progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<List<IdentityProviderDetail>>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for configurationsRolesGet
+     * Build call for configurationServiceRolesGet
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call configurationsRolesGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call configurationServiceRolesGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -207,7 +207,7 @@ public class ConfigurationApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -221,9 +221,9 @@ public class ConfigurationApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call configurationsRolesGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call configurationServiceRolesGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
-        com.squareup.okhttp.Call call = configurationsRolesGetCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = configurationServiceRolesGetCall(progressListener, progressRequestListener);
         return call;
 
         
@@ -238,8 +238,8 @@ public class ConfigurationApi {
      * @return List&lt;OrganisationRole&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public List<OrganisationRole> configurationsRolesGet() throws ApiException {
-        ApiResponse<List<OrganisationRole>> resp = configurationsRolesGetWithHttpInfo();
+    public List<OrganisationRole> configurationServiceRolesGet() throws ApiException {
+        ApiResponse<List<OrganisationRole>> resp = configurationServiceRolesGetWithHttpInfo();
         return resp.getData();
     }
 
@@ -249,8 +249,8 @@ public class ConfigurationApi {
      * @return ApiResponse&lt;List&lt;OrganisationRole&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<List<OrganisationRole>> configurationsRolesGetWithHttpInfo() throws ApiException {
-        com.squareup.okhttp.Call call = configurationsRolesGetValidateBeforeCall(null, null);
+    public ApiResponse<List<OrganisationRole>> configurationServiceRolesGetWithHttpInfo() throws ApiException {
+        com.squareup.okhttp.Call call = configurationServiceRolesGetValidateBeforeCall(null, null);
         Type localVarReturnType = new TypeToken<List<OrganisationRole>>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -262,7 +262,7 @@ public class ConfigurationApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call configurationsRolesGetAsync(final ApiCallback<List<OrganisationRole>> callback) throws ApiException {
+    public com.squareup.okhttp.Call configurationServiceRolesGetAsync(final ApiCallback<List<OrganisationRole>> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -283,13 +283,13 @@ public class ConfigurationApi {
             };
         }
 
-        com.squareup.okhttp.Call call = configurationsRolesGetValidateBeforeCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = configurationServiceRolesGetValidateBeforeCall(progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<List<OrganisationRole>>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for configurationsServicesClientIdGet
+     * Build call for configurationServiceServicesClientIdGet
      * @param clientId  (required)
      * @param organisationId  (optional)
      * @param progressListener Progress listener
@@ -297,7 +297,7 @@ public class ConfigurationApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call configurationsServicesClientIdGetCall(String clientId, String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call configurationServiceServicesClientIdGetCall(String clientId, String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -328,7 +328,7 @@ public class ConfigurationApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -342,13 +342,13 @@ public class ConfigurationApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call configurationsServicesClientIdGetValidateBeforeCall(String clientId, String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call configurationServiceServicesClientIdGetValidateBeforeCall(String clientId, String organisationId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'clientId' is set
         if (clientId == null) {
-            throw new ApiException("Missing the required parameter 'clientId' when calling configurationsServicesClientIdGet(Async)");
+            throw new ApiException("Missing the required parameter 'clientId' when calling configurationServiceServicesClientIdGet(Async)");
         }
         
-        com.squareup.okhttp.Call call = configurationsServicesClientIdGetCall(clientId, organisationId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = configurationServiceServicesClientIdGetCall(clientId, organisationId, progressListener, progressRequestListener);
         return call;
 
         
@@ -365,8 +365,8 @@ public class ConfigurationApi {
      * @return ServiceProfile
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ServiceProfile configurationsServicesClientIdGet(String clientId, String organisationId) throws ApiException {
-        ApiResponse<ServiceProfile> resp = configurationsServicesClientIdGetWithHttpInfo(clientId, organisationId);
+    public ServiceProfile configurationServiceServicesClientIdGet(String clientId, String organisationId) throws ApiException {
+        ApiResponse<ServiceProfile> resp = configurationServiceServicesClientIdGetWithHttpInfo(clientId, organisationId);
         return resp.getData();
     }
 
@@ -378,8 +378,8 @@ public class ConfigurationApi {
      * @return ApiResponse&lt;ServiceProfile&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<ServiceProfile> configurationsServicesClientIdGetWithHttpInfo(String clientId, String organisationId) throws ApiException {
-        com.squareup.okhttp.Call call = configurationsServicesClientIdGetValidateBeforeCall(clientId, organisationId, null, null);
+    public ApiResponse<ServiceProfile> configurationServiceServicesClientIdGetWithHttpInfo(String clientId, String organisationId) throws ApiException {
+        com.squareup.okhttp.Call call = configurationServiceServicesClientIdGetValidateBeforeCall(clientId, organisationId, null, null);
         Type localVarReturnType = new TypeToken<ServiceProfile>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -393,7 +393,7 @@ public class ConfigurationApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call configurationsServicesClientIdGetAsync(String clientId, String organisationId, final ApiCallback<ServiceProfile> callback) throws ApiException {
+    public com.squareup.okhttp.Call configurationServiceServicesClientIdGetAsync(String clientId, String organisationId, final ApiCallback<ServiceProfile> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -414,19 +414,19 @@ public class ConfigurationApi {
             };
         }
 
-        com.squareup.okhttp.Call call = configurationsServicesClientIdGetValidateBeforeCall(clientId, organisationId, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = configurationServiceServicesClientIdGetValidateBeforeCall(clientId, organisationId, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<ServiceProfile>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for configurationsServicesGet
+     * Build call for configurationServiceServicesGet
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call configurationsServicesGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call configurationServiceServicesGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -454,7 +454,7 @@ public class ConfigurationApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -468,9 +468,9 @@ public class ConfigurationApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call configurationsServicesGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call configurationServiceServicesGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
-        com.squareup.okhttp.Call call = configurationsServicesGetCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = configurationServiceServicesGetCall(progressListener, progressRequestListener);
         return call;
 
         
@@ -485,8 +485,8 @@ public class ConfigurationApi {
      * @return List&lt;CcsServiceInfo&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public List<CcsServiceInfo> configurationsServicesGet() throws ApiException {
-        ApiResponse<List<CcsServiceInfo>> resp = configurationsServicesGetWithHttpInfo();
+    public List<CcsServiceInfo> configurationServiceServicesGet() throws ApiException {
+        ApiResponse<List<CcsServiceInfo>> resp = configurationServiceServicesGetWithHttpInfo();
         return resp.getData();
     }
 
@@ -496,8 +496,8 @@ public class ConfigurationApi {
      * @return ApiResponse&lt;List&lt;CcsServiceInfo&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<List<CcsServiceInfo>> configurationsServicesGetWithHttpInfo() throws ApiException {
-        com.squareup.okhttp.Call call = configurationsServicesGetValidateBeforeCall(null, null);
+    public ApiResponse<List<CcsServiceInfo>> configurationServiceServicesGetWithHttpInfo() throws ApiException {
+        com.squareup.okhttp.Call call = configurationServiceServicesGetValidateBeforeCall(null, null);
         Type localVarReturnType = new TypeToken<List<CcsServiceInfo>>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -509,7 +509,7 @@ public class ConfigurationApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call configurationsServicesGetAsync(final ApiCallback<List<CcsServiceInfo>> callback) throws ApiException {
+    public com.squareup.okhttp.Call configurationServiceServicesGetAsync(final ApiCallback<List<CcsServiceInfo>> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -530,7 +530,7 @@ public class ConfigurationApi {
             };
         }
 
-        com.squareup.okhttp.Call call = configurationsServicesGetValidateBeforeCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = configurationServiceServicesGetValidateBeforeCall(progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<List<CcsServiceInfo>>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
