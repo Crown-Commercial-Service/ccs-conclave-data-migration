@@ -56,13 +56,13 @@ public class ContactApi {
     }
 
     /**
-     * Build call for contactsContactReasonsGet
+     * Build call for contactServiceContactReasonsGet
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call contactsContactReasonsGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceContactReasonsGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -90,7 +90,7 @@ public class ContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -104,9 +104,9 @@ public class ContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call contactsContactReasonsGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call contactServiceContactReasonsGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
-        com.squareup.okhttp.Call call = contactsContactReasonsGetCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceContactReasonsGetCall(progressListener, progressRequestListener);
         return call;
 
         
@@ -121,8 +121,8 @@ public class ContactApi {
      * @return List&lt;ContactReasonInfo&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public List<ContactReasonInfo> contactsContactReasonsGet() throws ApiException {
-        ApiResponse<List<ContactReasonInfo>> resp = contactsContactReasonsGetWithHttpInfo();
+    public List<ContactReasonInfo> contactServiceContactReasonsGet() throws ApiException {
+        ApiResponse<List<ContactReasonInfo>> resp = contactServiceContactReasonsGetWithHttpInfo();
         return resp.getData();
     }
 
@@ -132,8 +132,8 @@ public class ContactApi {
      * @return ApiResponse&lt;List&lt;ContactReasonInfo&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<List<ContactReasonInfo>> contactsContactReasonsGetWithHttpInfo() throws ApiException {
-        com.squareup.okhttp.Call call = contactsContactReasonsGetValidateBeforeCall(null, null);
+    public ApiResponse<List<ContactReasonInfo>> contactServiceContactReasonsGetWithHttpInfo() throws ApiException {
+        com.squareup.okhttp.Call call = contactServiceContactReasonsGetValidateBeforeCall(null, null);
         Type localVarReturnType = new TypeToken<List<ContactReasonInfo>>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -145,7 +145,7 @@ public class ContactApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call contactsContactReasonsGetAsync(final ApiCallback<List<ContactReasonInfo>> callback) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceContactReasonsGetAsync(final ApiCallback<List<ContactReasonInfo>> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -166,19 +166,19 @@ public class ContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = contactsContactReasonsGetValidateBeforeCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceContactReasonsGetValidateBeforeCall(progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<List<ContactReasonInfo>>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for contactsContactTypesGet
+     * Build call for contactServiceContactTypesGet
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call contactsContactTypesGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceContactTypesGetCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -206,7 +206,7 @@ public class ContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -220,9 +220,9 @@ public class ContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call contactsContactTypesGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call contactServiceContactTypesGetValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
-        com.squareup.okhttp.Call call = contactsContactTypesGetCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceContactTypesGetCall(progressListener, progressRequestListener);
         return call;
 
         
@@ -237,8 +237,8 @@ public class ContactApi {
      * @return ContactResponseDetail
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ContactResponseDetail contactsContactTypesGet() throws ApiException {
-        ApiResponse<ContactResponseDetail> resp = contactsContactTypesGetWithHttpInfo();
+    public ContactResponseDetail contactServiceContactTypesGet() throws ApiException {
+        ApiResponse<ContactResponseDetail> resp = contactServiceContactTypesGetWithHttpInfo();
         return resp.getData();
     }
 
@@ -248,8 +248,8 @@ public class ContactApi {
      * @return ApiResponse&lt;ContactResponseDetail&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<ContactResponseDetail> contactsContactTypesGetWithHttpInfo() throws ApiException {
-        com.squareup.okhttp.Call call = contactsContactTypesGetValidateBeforeCall(null, null);
+    public ApiResponse<ContactResponseDetail> contactServiceContactTypesGetWithHttpInfo() throws ApiException {
+        com.squareup.okhttp.Call call = contactServiceContactTypesGetValidateBeforeCall(null, null);
         Type localVarReturnType = new TypeToken<ContactResponseDetail>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -261,7 +261,7 @@ public class ContactApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call contactsContactTypesGetAsync(final ApiCallback<ContactResponseDetail> callback) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceContactTypesGetAsync(final ApiCallback<ContactResponseDetail> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -282,20 +282,20 @@ public class ContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = contactsContactTypesGetValidateBeforeCall(progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceContactTypesGetValidateBeforeCall(progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<ContactResponseDetail>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for contactsIdDelete
+     * Build call for contactServiceIdDelete
      * @param id  (required)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call contactsIdDeleteCall(Integer id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceIdDeleteCall(Integer id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -324,7 +324,7 @@ public class ContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -338,13 +338,13 @@ public class ContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call contactsIdDeleteValidateBeforeCall(Integer id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call contactServiceIdDeleteValidateBeforeCall(Integer id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling contactsIdDelete(Async)");
+            throw new ApiException("Missing the required parameter 'id' when calling contactServiceIdDelete(Async)");
         }
         
-        com.squareup.okhttp.Call call = contactsIdDeleteCall(id, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceIdDeleteCall(id, progressListener, progressRequestListener);
         return call;
 
         
@@ -359,8 +359,8 @@ public class ContactApi {
      * @param id  (required)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public void contactsIdDelete(Integer id) throws ApiException {
-        contactsIdDeleteWithHttpInfo(id);
+    public void contactServiceIdDelete(Integer id) throws ApiException {
+        contactServiceIdDeleteWithHttpInfo(id);
     }
 
     /**
@@ -370,8 +370,8 @@ public class ContactApi {
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Void> contactsIdDeleteWithHttpInfo(Integer id) throws ApiException {
-        com.squareup.okhttp.Call call = contactsIdDeleteValidateBeforeCall(id, null, null);
+    public ApiResponse<Void> contactServiceIdDeleteWithHttpInfo(Integer id) throws ApiException {
+        com.squareup.okhttp.Call call = contactServiceIdDeleteValidateBeforeCall(id, null, null);
         return apiClient.execute(call);
     }
 
@@ -383,7 +383,7 @@ public class ContactApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call contactsIdDeleteAsync(Integer id, final ApiCallback<Void> callback) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceIdDeleteAsync(Integer id, final ApiCallback<Void> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -404,19 +404,19 @@ public class ContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = contactsIdDeleteValidateBeforeCall(id, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceIdDeleteValidateBeforeCall(id, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
         return call;
     }
     /**
-     * Build call for contactsIdGet
+     * Build call for contactServiceIdGet
      * @param id  (required)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call contactsIdGetCall(Integer id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceIdGetCall(Integer id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -445,7 +445,7 @@ public class ContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -459,13 +459,13 @@ public class ContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call contactsIdGetValidateBeforeCall(Integer id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call contactServiceIdGetValidateBeforeCall(Integer id, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling contactsIdGet(Async)");
+            throw new ApiException("Missing the required parameter 'id' when calling contactServiceIdGet(Async)");
         }
         
-        com.squareup.okhttp.Call call = contactsIdGetCall(id, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceIdGetCall(id, progressListener, progressRequestListener);
         return call;
 
         
@@ -481,8 +481,8 @@ public class ContactApi {
      * @return ContactResponseDetail
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ContactResponseDetail contactsIdGet(Integer id) throws ApiException {
-        ApiResponse<ContactResponseDetail> resp = contactsIdGetWithHttpInfo(id);
+    public ContactResponseDetail contactServiceIdGet(Integer id) throws ApiException {
+        ApiResponse<ContactResponseDetail> resp = contactServiceIdGetWithHttpInfo(id);
         return resp.getData();
     }
 
@@ -493,8 +493,8 @@ public class ContactApi {
      * @return ApiResponse&lt;ContactResponseDetail&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<ContactResponseDetail> contactsIdGetWithHttpInfo(Integer id) throws ApiException {
-        com.squareup.okhttp.Call call = contactsIdGetValidateBeforeCall(id, null, null);
+    public ApiResponse<ContactResponseDetail> contactServiceIdGetWithHttpInfo(Integer id) throws ApiException {
+        com.squareup.okhttp.Call call = contactServiceIdGetValidateBeforeCall(id, null, null);
         Type localVarReturnType = new TypeToken<ContactResponseDetail>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -507,7 +507,7 @@ public class ContactApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call contactsIdGetAsync(Integer id, final ApiCallback<ContactResponseDetail> callback) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceIdGetAsync(Integer id, final ApiCallback<ContactResponseDetail> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -528,13 +528,13 @@ public class ContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = contactsIdGetValidateBeforeCall(id, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceIdGetValidateBeforeCall(id, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<ContactResponseDetail>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
     }
     /**
-     * Build call for contactsIdPut
+     * Build call for contactServiceIdPut
      * @param id  (required)
      * @param body  (optional)
      * @param progressListener Progress listener
@@ -542,7 +542,7 @@ public class ContactApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call contactsIdPutCall(Integer id, ContactRequestDetail body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceIdPutCall(Integer id, ContactRequestDetail body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
@@ -571,7 +571,7 @@ public class ContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -585,13 +585,13 @@ public class ContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call contactsIdPutValidateBeforeCall(Integer id, ContactRequestDetail body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call contactServiceIdPutValidateBeforeCall(Integer id, ContactRequestDetail body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling contactsIdPut(Async)");
+            throw new ApiException("Missing the required parameter 'id' when calling contactServiceIdPut(Async)");
         }
         
-        com.squareup.okhttp.Call call = contactsIdPutCall(id, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceIdPutCall(id, body, progressListener, progressRequestListener);
         return call;
 
         
@@ -607,8 +607,8 @@ public class ContactApi {
      * @param body  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public void contactsIdPut(Integer id, ContactRequestDetail body) throws ApiException {
-        contactsIdPutWithHttpInfo(id, body);
+    public void contactServiceIdPut(Integer id, ContactRequestDetail body) throws ApiException {
+        contactServiceIdPutWithHttpInfo(id, body);
     }
 
     /**
@@ -619,8 +619,8 @@ public class ContactApi {
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Void> contactsIdPutWithHttpInfo(Integer id, ContactRequestDetail body) throws ApiException {
-        com.squareup.okhttp.Call call = contactsIdPutValidateBeforeCall(id, body, null, null);
+    public ApiResponse<Void> contactServiceIdPutWithHttpInfo(Integer id, ContactRequestDetail body) throws ApiException {
+        com.squareup.okhttp.Call call = contactServiceIdPutValidateBeforeCall(id, body, null, null);
         return apiClient.execute(call);
     }
 
@@ -633,7 +633,7 @@ public class ContactApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call contactsIdPutAsync(Integer id, ContactRequestDetail body, final ApiCallback<Void> callback) throws ApiException {
+    public com.squareup.okhttp.Call contactServiceIdPutAsync(Integer id, ContactRequestDetail body, final ApiCallback<Void> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -654,23 +654,23 @@ public class ContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = contactsIdPutValidateBeforeCall(id, body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServiceIdPutValidateBeforeCall(id, body, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
         return call;
     }
     /**
-     * Build call for contactsPost
+     * Build call for contactServicePost
      * @param body  (optional)
      * @param progressListener Progress listener
      * @param progressRequestListener Progress request listener
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call contactsPostCall(ContactRequestDetail body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call contactServicePostCall(ContactRequestDetail body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
-        String localVarPath = "/contacts";
+        String localVarPath = "/contact-service";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -694,7 +694,7 @@ public class ContactApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -708,9 +708,9 @@ public class ContactApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call contactsPostValidateBeforeCall(ContactRequestDetail body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call contactServicePostValidateBeforeCall(ContactRequestDetail body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
-        com.squareup.okhttp.Call call = contactsPostCall(body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServicePostCall(body, progressListener, progressRequestListener);
         return call;
 
         
@@ -726,8 +726,8 @@ public class ContactApi {
      * @return Integer
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public Integer contactsPost(ContactRequestDetail body) throws ApiException {
-        ApiResponse<Integer> resp = contactsPostWithHttpInfo(body);
+    public Integer contactServicePost(ContactRequestDetail body) throws ApiException {
+        ApiResponse<Integer> resp = contactServicePostWithHttpInfo(body);
         return resp.getData();
     }
 
@@ -738,8 +738,8 @@ public class ContactApi {
      * @return ApiResponse&lt;Integer&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Integer> contactsPostWithHttpInfo(ContactRequestDetail body) throws ApiException {
-        com.squareup.okhttp.Call call = contactsPostValidateBeforeCall(body, null, null);
+    public ApiResponse<Integer> contactServicePostWithHttpInfo(ContactRequestDetail body) throws ApiException {
+        com.squareup.okhttp.Call call = contactServicePostValidateBeforeCall(body, null, null);
         Type localVarReturnType = new TypeToken<Integer>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
@@ -752,7 +752,7 @@ public class ContactApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call contactsPostAsync(ContactRequestDetail body, final ApiCallback<Integer> callback) throws ApiException {
+    public com.squareup.okhttp.Call contactServicePostAsync(ContactRequestDetail body, final ApiCallback<Integer> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -773,7 +773,7 @@ public class ContactApi {
             };
         }
 
-        com.squareup.okhttp.Call call = contactsPostValidateBeforeCall(body, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = contactServicePostValidateBeforeCall(body, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<Integer>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;

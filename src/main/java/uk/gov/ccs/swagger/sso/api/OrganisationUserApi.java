@@ -54,7 +54,7 @@ public class OrganisationUserApi {
     }
 
     /**
-     * Build call for organisationsOrganisationIdUsersGet
+     * Build call for organisationProfileorganisationIdUsersGet
      * @param organisationId  (required)
      * @param pageSize  (optional)
      * @param currentPage  (optional)
@@ -65,11 +65,11 @@ public class OrganisationUserApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdUsersGetCall(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdUsersGetCall(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = null;
         
         // create path and map variables
-        String localVarPath = "/organisations/{organisationId}/users"
+        String localVarPath = "/organisation-profile{organisationId}/users"
             .replaceAll("\\{" + "organisationId" + "\\}", apiClient.escapeString(organisationId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -102,7 +102,7 @@ public class OrganisationUserApi {
         if(progressListener != null) {
             apiClient.getHttpClient().networkInterceptors().add(new com.squareup.okhttp.Interceptor() {
                 @Override
-                public com.squareup.okhttp.Response intercept(com.squareup.okhttp.Interceptor.Chain chain) throws IOException {
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                     com.squareup.okhttp.Response originalResponse = chain.proceed(chain.request());
                     return originalResponse.newBuilder()
                     .body(new ProgressResponseBody(originalResponse.body(), progressListener))
@@ -116,13 +116,13 @@ public class OrganisationUserApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call organisationsOrganisationIdUsersGetValidateBeforeCall(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call organisationProfileorganisationIdUsersGetValidateBeforeCall(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         // verify the required parameter 'organisationId' is set
         if (organisationId == null) {
-            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationsOrganisationIdUsersGet(Async)");
+            throw new ApiException("Missing the required parameter 'organisationId' when calling organisationProfileorganisationIdUsersGet(Async)");
         }
         
-        com.squareup.okhttp.Call call = organisationsOrganisationIdUsersGetCall(organisationId, pageSize, currentPage, searchString, includeSelf, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdUsersGetCall(organisationId, pageSize, currentPage, searchString, includeSelf, progressListener, progressRequestListener);
         return call;
 
         
@@ -133,7 +133,7 @@ public class OrganisationUserApi {
 
     /**
      * Allows a user to retrieve users for a given organisation
-     * NOTE:- query params page-size, current-page  Sample request:                    GET /organisations/1/users?page-size&#x3D;10,current-page&#x3D;1
+     * NOTE:- query params page-size, current-page  Sample request:                    GET /organisation-profile1/users?page-size&#x3D;10,current-page&#x3D;1
      * @param organisationId  (required)
      * @param pageSize  (optional)
      * @param currentPage  (optional)
@@ -142,14 +142,14 @@ public class OrganisationUserApi {
      * @return UserListResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public UserListResponse organisationsOrganisationIdUsersGet(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf) throws ApiException {
-        ApiResponse<UserListResponse> resp = organisationsOrganisationIdUsersGetWithHttpInfo(organisationId, pageSize, currentPage, searchString, includeSelf);
+    public UserListResponse organisationProfileorganisationIdUsersGet(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf) throws ApiException {
+        ApiResponse<UserListResponse> resp = organisationProfileorganisationIdUsersGetWithHttpInfo(organisationId, pageSize, currentPage, searchString, includeSelf);
         return resp.getData();
     }
 
     /**
      * Allows a user to retrieve users for a given organisation
-     * NOTE:- query params page-size, current-page  Sample request:                    GET /organisations/1/users?page-size&#x3D;10,current-page&#x3D;1
+     * NOTE:- query params page-size, current-page  Sample request:                    GET /organisation-profile1/users?page-size&#x3D;10,current-page&#x3D;1
      * @param organisationId  (required)
      * @param pageSize  (optional)
      * @param currentPage  (optional)
@@ -158,15 +158,15 @@ public class OrganisationUserApi {
      * @return ApiResponse&lt;UserListResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<UserListResponse> organisationsOrganisationIdUsersGetWithHttpInfo(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf) throws ApiException {
-        com.squareup.okhttp.Call call = organisationsOrganisationIdUsersGetValidateBeforeCall(organisationId, pageSize, currentPage, searchString, includeSelf, null, null);
+    public ApiResponse<UserListResponse> organisationProfileorganisationIdUsersGetWithHttpInfo(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf) throws ApiException {
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdUsersGetValidateBeforeCall(organisationId, pageSize, currentPage, searchString, includeSelf, null, null);
         Type localVarReturnType = new TypeToken<UserListResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     /**
      * Allows a user to retrieve users for a given organisation (asynchronously)
-     * NOTE:- query params page-size, current-page  Sample request:                    GET /organisations/1/users?page-size&#x3D;10,current-page&#x3D;1
+     * NOTE:- query params page-size, current-page  Sample request:                    GET /organisation-profile1/users?page-size&#x3D;10,current-page&#x3D;1
      * @param organisationId  (required)
      * @param pageSize  (optional)
      * @param currentPage  (optional)
@@ -176,7 +176,7 @@ public class OrganisationUserApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call organisationsOrganisationIdUsersGetAsync(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf, final ApiCallback<UserListResponse> callback) throws ApiException {
+    public com.squareup.okhttp.Call organisationProfileorganisationIdUsersGetAsync(String organisationId, Integer pageSize, Integer currentPage, String searchString, Boolean includeSelf, final ApiCallback<UserListResponse> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -197,7 +197,7 @@ public class OrganisationUserApi {
             };
         }
 
-        com.squareup.okhttp.Call call = organisationsOrganisationIdUsersGetValidateBeforeCall(organisationId, pageSize, currentPage, searchString, includeSelf, progressListener, progressRequestListener);
+        com.squareup.okhttp.Call call = organisationProfileorganisationIdUsersGetValidateBeforeCall(organisationId, pageSize, currentPage, searchString, includeSelf, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<UserListResponse>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
         return call;
