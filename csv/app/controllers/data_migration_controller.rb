@@ -35,7 +35,7 @@ class DataMigrationController < ApplicationController
                 data << {
                     "identifier-id": row["IdentifierId"],
                     "scheme-id": row["SchemeId"],
-                    rightToBuy: right_to_buy_logic(row["OrganisationType"]),
+                    organisationType: right_to_buy_logic(row["OrganisationType"]),
                     domainName: row["DomainName"],
                     orgRoles: parse_comma_separated_list(row["OrganisationRoles"]),
                     user: [{
