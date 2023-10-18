@@ -19,7 +19,6 @@ import java.util.List;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
-import static uk.gov.ccs.swagger.sso.model.UserTitle.fromValue;
 
 
 @Service
@@ -38,7 +37,7 @@ public class UserService {
 
         UserProfileEditRequestInfo userDto = new UserProfileEditRequestInfo();
         if (user.getTitle() != null) {
-            userDto.setTitle(fromValue(user.getTitle().toString()));
+            userDto.setTitle(String.valueOf(user.getTitle()));
         }
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
@@ -80,7 +79,7 @@ public class UserService {
     }
 
     private Boolean checkUserExistsInOrg(User user, String orgId) throws ApiException {
-        UserListResponse orgUsers = conclaveUserClient.getAllOrgUsers(orgId);
+        UserListResponseInfo orgUsers = conclaveUserClient.getAllOrgUsers(orgId);
         if(orgUsers != null) {
             List<UserListInfo> userList = orgUsers.getUserList();
             UserListInfo orgUser = new UserListInfo();
