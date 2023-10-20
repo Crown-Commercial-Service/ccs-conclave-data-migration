@@ -27,8 +27,6 @@ public class ConclaveClient {
 
     private final OrganisationAutoValidationApi organisationAutoValidationApi;
 
-    private final OrganisationIdentityProviderApi organisationIdentityProviderApi;
-
     private final OrganisationContactApi orgContactApi;
 
     private final UserContactApi userContactApi;
@@ -62,7 +60,7 @@ public class ConclaveClient {
 
     public Integer getIdentityProviderId(final String organisationId) throws ApiException {
         LOGGER.info("Getting organisation identity provider Id for organisationId: " + organisationId);
-        List<OrgEligibleIdentityProvider> identityProviders = organisationIdentityProviderApi.organisationProfileOrganisationIdIdentityProvidersGet(organisationId);
+        List<IdentityProviderDetail> identityProviders = configurationApi.configurationServiceIdentityProvidersGet();
         return identityProviders.stream().filter(idp -> idp.getName().equalsIgnoreCase("User ID and password")).collect(toList()).get(0).getId();
     }
 

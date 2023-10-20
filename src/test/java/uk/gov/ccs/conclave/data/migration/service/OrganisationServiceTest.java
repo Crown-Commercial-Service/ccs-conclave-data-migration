@@ -81,7 +81,7 @@ public class OrganisationServiceTest {
     @Test
     public void shouldDeleteOrganisationIfNoAdmin() throws Exception {
         given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()).organisationId("org_id"));
-        given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
+        //given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
 
         organisationService.migrateOrganisation(new Organisation());
 
@@ -91,7 +91,7 @@ public class OrganisationServiceTest {
     @Test
     public void shouldHandleNullRoles() throws Exception {
         given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()));
-        given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
+        //given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
 
         organisationService.migrateOrganisation(new Organisation().user(List.of(new User())));
     }
