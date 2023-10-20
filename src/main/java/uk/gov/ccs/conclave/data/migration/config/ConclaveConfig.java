@@ -31,11 +31,6 @@ public class ConclaveConfig {
     }
 
     @Bean
-    public OrganisationIdentityProviderApi organisationIdentityProviderApi() {
-        return new OrganisationIdentityProviderApi(apiClient());
-    }
-
-    @Bean
     public OrganisationContactApi organisationContactApi() {
         return new OrganisationContactApi(apiClient());
     }
