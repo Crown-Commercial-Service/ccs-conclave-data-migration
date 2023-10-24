@@ -75,12 +75,12 @@ public class DataMigrationApiController implements DataMigrationApi {
             responseBody.put( "Error", API_ENDPOINT_ERROR);
 
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
+                    .status(HttpStatus.OK)
                     .body(responseBody);
         }
 
         return ResponseEntity
-                .status(responseStatus)
+                .status(HttpStatus.OK)
                 .body(responseBody);
     }
 
@@ -89,7 +89,7 @@ public class DataMigrationApiController implements DataMigrationApi {
         String formattedErrors = formatExceptionMessage(exception.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.OK)
                 .body(formattedErrors);
     }
 

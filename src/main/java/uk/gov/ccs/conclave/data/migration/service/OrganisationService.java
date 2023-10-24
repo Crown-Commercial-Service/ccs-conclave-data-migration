@@ -43,12 +43,12 @@ public class OrganisationService {
 
         OrgMigration ciiResponse = migrateOrgToCii(org);
         String organisationId = null;
-        Integer identityProviderId = null;
+        Integer identityProviderId = 0;
 
         if (null != ciiResponse) {
             migrateOrgToConclave(ciiResponse, org);
             organisationId = ciiResponse.getOrganisationId();
-            identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
+           // identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
         }
 
         return generateOrgMigrationResponseAndSaveSuccess(org, organisationId, identityProviderId);

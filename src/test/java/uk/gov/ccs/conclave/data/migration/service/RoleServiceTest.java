@@ -10,6 +10,7 @@ import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.sso.ApiException;
+import uk.gov.ccs.swagger.sso.model.OrganisationAutoValidationRoleUpdate;
 import uk.gov.ccs.swagger.sso.model.OrganisationRole;
 import uk.gov.ccs.swagger.sso.model.OrganisationRoleUpdate;
 
@@ -62,7 +63,7 @@ public class RoleServiceTest {
 
         roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole().name(roleName))));
 
-        ArgumentCaptor<OrganisationRoleUpdate> argumentCaptor = ArgumentCaptor.forClass(OrganisationRoleUpdate.class);
+        ArgumentCaptor<OrganisationAutoValidationRoleUpdate> argumentCaptor = ArgumentCaptor.forClass(OrganisationAutoValidationRoleUpdate.class);
         verify(conclaveClient).updateOrganisationRole(eq(ORGANISATION_ID), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getRolesToAdd().get(0).getRoleName()).isEqualTo(roleName);
     }

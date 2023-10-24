@@ -26,13 +26,18 @@ public class ConclaveConfig {
     }
 
     @Bean
+    public OrganisationAutoValidationApi organisationAutoValidationApiApi() {
+        return new OrganisationAutoValidationApi(apiClient());
+    }
+
+    @Bean
     public OrganisationContactApi organisationContactApi() {
         return new OrganisationContactApi(apiClient());
     }
 
     @Bean
-    public ConfigurationApi configurationApi() {
-        return new ConfigurationApi(apiClient());
+    public ConfigurationServicesApi configurationServicesApi() {
+        return new ConfigurationServicesApi(apiClient());
     }
 
     @Bean
