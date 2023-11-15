@@ -2,7 +2,6 @@ package uk.gov.ccs.conclave.data.migration.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.annotation.Bean;
 
 @Getter
 @Setter
@@ -21,6 +20,10 @@ public class MigrationProperties {
     private static boolean sendUserRegistrationEmail = false;
 
     private static boolean accountVerified = false;
+
+    private static String conclaveConfigApiKey = null;
+
+    private static String conclaveUserApiKey = null;
 
     public static String getCiiApiKey() {
         return ciiApiKey;
@@ -76,5 +79,22 @@ public class MigrationProperties {
 
     public static void setAccountVerified(boolean accountVerified) {
         MigrationProperties.accountVerified = accountVerified;
+    }
+
+    public static void setConclaveConfigApiKey(String conclaveConfigApiKey) {
+        MigrationProperties.conclaveConfigApiKey = conclaveConfigApiKey;
+    }
+
+    public static String getConclaveConfigApiKey() {
+        return  conclaveConfigApiKey;
+
+    }
+
+    public static String getConclaveUserApiKey() {
+        return conclaveUserApiKey;
+    }
+
+    public static void setConclaveUserApiKey(String conclaveUserApiKey) {
+        MigrationProperties.conclaveUserApiKey = conclaveUserApiKey;
     }
 }

@@ -23,6 +23,10 @@ public class ConclaveClient {
 
     private final OrganisationApi orgApi;
 
+    private final OrganisationRoleApi organisationRoleApi;
+
+    private final OrganisationIdentityProviderApi organisationIdentityProviderApi;
+
     private final ConfigurationServicesApi configurationApi;
 
     private final OrganisationAutoValidationApi organisationAutoValidationApi;
@@ -50,7 +54,7 @@ public class ConclaveClient {
 
     public UserEditResponseInfo updateUserRole(final UserProfileEditRequestInfo userDto) throws ApiException {
         LOGGER.info("Updating role(s) for User: " + userDto.getUserName());
-        return userApi.userProfilePost(userDto);
+        return userApi.userProfilePut(userDto, userDto.getUserName());
     }
 
     public void createConclaveOrg(final OrganisationProfileInfo orgDto) throws ApiException {
@@ -60,8 +64,8 @@ public class ConclaveClient {
 
     public Integer getIdentityProviderId(final String organisationId) throws ApiException {
         LOGGER.info("Getting organisation identity provider Id for organisationId: " + organisationId);
-        List<IdentityProviderDetail> identityProviders = configurationApi.configurationServiceIdentityProvidersGet();
-        return identityProviders.stream().filter(idp -> idp.getName().equalsIgnoreCase("User ID and password")).collect(toList()).get(0).getId();
+        List<OrgEligibleIdentityProvider> identityProviders = organisationIdentityProviderApi.organisationProfileOrganisationIdIdentityProvidersGet(organisationId);
+        return identityProviders.stream().filter(idp -> idp.getName().equalsIgnoreCase("User ID and password")).toList().get(0).getId();
     }
 
     public List<OrganisationRole> getAllConfiguredRoles() throws ApiException {
@@ -71,7 +75,7 @@ public class ConclaveClient {
 
     public List<OrganisationRole> getOrganisationRoles(String organisationId) throws ApiException {
         LOGGER.info("Getting all roles for the Organisation. ");
-        return organisationAutoValidationApi.organisationProfileOrganisationIdValidationAutoGet(organisationId);
+        return organisationRoleApi.organisationProfileOrganisationIdRolesGet(organisationId);
     }
 
     public void updateOrganisationRole(final String organisationId, final OrganisationAutoValidationRoleUpdate roleUpdate) throws ApiException {
