@@ -23,6 +23,7 @@ public class ConclaveClient {
 
     private final OrganisationApi orgApi;
 
+
     private final OrganisationRoleApi organisationRoleApi;
 
     private final OrganisationIdentityProviderApi organisationIdentityProviderApi;
@@ -75,7 +76,7 @@ public class ConclaveClient {
 
     public List<OrganisationRole> getOrganisationRoles(String organisationId) throws ApiException {
         LOGGER.info("Getting all roles for the Organisation. ");
-        return organisationRoleApi.organisationProfileOrganisationIdRolesGet(organisationId);
+       return organisationRoleApi.organisationProfileOrganisationIdRolesGet(organisationId);
     }
 
     public void updateOrganisationRole(final String organisationId, final OrganisationAutoValidationRoleUpdate roleUpdate) throws ApiException {
