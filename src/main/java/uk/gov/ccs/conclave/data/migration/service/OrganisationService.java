@@ -43,12 +43,12 @@ public class OrganisationService {
 
         OrgMigration ciiResponse = migrateOrgToCii(org);
         String organisationId = null;
-        Integer identityProviderId = 0;
+        Integer identityProviderId = null;
 
         if (null != ciiResponse) {
             migrateOrgToConclave(ciiResponse, org);
             organisationId = ciiResponse.getOrganisationId();
-           // identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
+            identityProviderId = getIdentityProviderIdOfOrganisation(organisationId, org);
         }
 
         return generateOrgMigrationResponseAndSaveSuccess(org, organisationId, identityProviderId);
@@ -60,7 +60,7 @@ public class OrganisationService {
         if (idp != null && orgId != null) {
             Org migratedOrg = (orgExistsInConclave ?
                     errorService.saveOrgDetailsWithStatusCode(org, SSO_DUPLICATE_ORG_ERROR_MESSAGE, 409) :
-                    errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200)) ;
+                    errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200));
             response = new OrgMigrationResponse(orgId, idp, migratedOrg);
         }
 
