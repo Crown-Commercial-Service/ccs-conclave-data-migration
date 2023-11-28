@@ -6,18 +6,21 @@ import org.springframework.context.annotation.Configuration;
 import uk.gov.ccs.swagger.sso.ApiClient;
 import uk.gov.ccs.swagger.sso.api.*;
 
+import static uk.gov.ccs.conclave.data.migration.config.AWSConfig.X_API_KEY;
+import static uk.gov.ccs.conclave.data.migration.config.MigrationProperties.*;
+
 @Configuration
 @RequiredArgsConstructor
 public class ConclaveConfig {
 
     @Bean
     public UserApi userApi() {
-        return new UserApi(apiClient());
+        return new UserApi(userApiClient());
     }
 
     @Bean
     public UserContactApi userContactApi() {
-        return new UserContactApi(apiClient());
+        return new UserContactApi(userApiClient());
     }
 
     @Bean
@@ -26,8 +29,18 @@ public class ConclaveConfig {
     }
 
     @Bean
-    public OrganisationAutoValidationApi organisationAutoValidationApiApi() {
+    public OrganisationRoleApi organisationRoleApi() {
+        return new OrganisationRoleApi(apiClient());
+    }
+
+    @Bean
+    public OrganisationAutoValidationApi organisationAutoValidationApi() {
         return new OrganisationAutoValidationApi(apiClient());
+    }
+
+    @Bean
+    public OrganisationIdentityProviderApi organisationIdentityProviderApi() {
+        return new OrganisationIdentityProviderApi(apiClient());
     }
 
     @Bean
@@ -37,7 +50,7 @@ public class ConclaveConfig {
 
     @Bean
     public ConfigurationServicesApi configurationServicesApi() {
-        return new ConfigurationServicesApi(apiClient());
+        return new ConfigurationServicesApi(configApiClient());
     }
 
     @Bean
@@ -49,7 +62,21 @@ public class ConclaveConfig {
     @Bean
     public ApiClient apiClient() {
         return new ApiClient()
-                .addDefaultHeader("x-api-key", MigrationProperties.getConclaveApiKey())
-                .setBasePath(MigrationProperties.getConclaveOrigin());
+                .setBasePath(getConclaveOrigin())
+                .addDefaultHeader(X_API_KEY, getConclaveApiKey());
+    }
+
+    @Bean
+    public ApiClient userApiClient() {
+        return new ApiClient()
+                .setBasePath(getConclaveOrigin())
+                .addDefaultHeader(X_API_KEY, getConclaveUserApiKey());
+    }
+
+    @Bean
+    public ApiClient configApiClient() {
+        return new ApiClient()
+                .setBasePath(getConclaveOrigin())
+                .addDefaultHeader(X_API_KEY, getConclaveConfigApiKey());
     }
 }
