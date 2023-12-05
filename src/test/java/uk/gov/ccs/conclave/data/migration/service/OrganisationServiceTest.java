@@ -54,12 +54,12 @@ public class OrganisationServiceTest {
         organisationService.migrateOrganisation(getTestOrganisation());
     }
 
-    /*@Test
+    @Test
     public void shouldMigrateBuyer() throws Exception {
         given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()));
         given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
 
-        organisationService.migrateOrganisation(getTestOrganisation().rightToBuy(true));
+        organisationService.migrateOrganisation(getTestOrganisation().rightToBuy("true"));
 
         ArgumentCaptor<OrganisationProfileInfo> argumentCaptor = ArgumentCaptor.forClass(OrganisationProfileInfo.class);
         verify(conclaveClient).createConclaveOrg(argumentCaptor.capture());
@@ -71,17 +71,17 @@ public class OrganisationServiceTest {
         given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()));
         given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
 
-        organisationService.migrateOrganisation(getTestOrganisation().rightToBuy(false));
+        organisationService.migrateOrganisation(getTestOrganisation().rightToBuy("false"));
 
         ArgumentCaptor<OrganisationProfileInfo> argumentCaptor = ArgumentCaptor.forClass(OrganisationProfileInfo.class);
         verify(conclaveClient).createConclaveOrg(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getDetail().isRightToBuy()).isEqualTo(false);
-    }*/
+    }
 
     @Test
     public void shouldDeleteOrganisationIfNoAdmin() throws Exception {
         given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()).organisationId("org_id"));
-        //given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
+        given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
 
         organisationService.migrateOrganisation(new Organisation());
 
@@ -91,7 +91,7 @@ public class OrganisationServiceTest {
     @Test
     public void shouldHandleNullRoles() throws Exception {
         given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()));
-        //given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
+        given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
 
         organisationService.migrateOrganisation(new Organisation().user(List.of(new User())));
     }

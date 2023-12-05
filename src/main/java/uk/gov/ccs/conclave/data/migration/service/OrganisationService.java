@@ -20,6 +20,8 @@ import uk.gov.ccs.swagger.sso.model.OrganisationAddress;
 import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
 import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
+
+import java.util.Locale;
 import java.util.stream.Stream;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
@@ -115,7 +117,7 @@ public class OrganisationService {
             } else {
                 log.debug("Organisation already exists. Applying roles...");
                 orgExistsInConclave = true;
-                roleService.applyOrganisationRole(organisationId, organisation);
+                //roleService.applyOrganisationRole(organisationId, organisation);
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
@@ -160,6 +162,7 @@ public class OrganisationService {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
         organisationDetail.setRightToBuy(org.isRightToBuy());
+        organisationDetail.setSupplierBuyerType(!org.isRightToBuy() ? 0: 1);
         organisationDetail.setDomainName(org.getDomainName());
         return organisationDetail;
     }
@@ -177,6 +180,7 @@ public class OrganisationService {
         organisationAddress.setLocality(ciiAddress.getLocality());
         organisationAddress.setPostalCode(ciiAddress.getPostalCode());
         organisationAddress.setRegion(ciiAddress.getRegion());
+        organisationAddress.setCountryCode(Locale.getDefault().getCountry());
         return organisationAddress;
     }
 
@@ -198,7 +202,7 @@ public class OrganisationService {
         var allUserRoles = organisation
                 .getUser()
                 .stream()
-                .flatMap(user -> user == null || user.getUserRoles() == null ? Stream.empty(): user.getUserRoles().stream());
+                .flatMap(user -> user == null || user.getUserRoles() == null ? Stream.empty() : user.getUserRoles().stream());
 
         return allUserRoles.anyMatch(userRole -> userRole != null && userRole.getName().equals("Organisation Administrator"));
     }
