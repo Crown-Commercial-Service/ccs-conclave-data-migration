@@ -117,7 +117,7 @@ public class OrganisationService {
             } else {
                 log.debug("Organisation already exists. Applying roles...");
                 orgExistsInConclave = true;
-                //roleService.applyOrganisationRole(organisationId, organisation);
+                roleService.applyOrganisationRole(organisationId, organisation);
             }
 
         } catch (uk.gov.ccs.swagger.sso.ApiException e) {
