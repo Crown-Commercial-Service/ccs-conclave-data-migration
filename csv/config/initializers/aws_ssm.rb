@@ -50,4 +50,4 @@ def set_env(ssm_client, params_list)
 	end
 end
 
-config_aws
+#config_aws
