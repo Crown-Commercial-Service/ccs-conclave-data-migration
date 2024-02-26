@@ -26,8 +26,11 @@ import com.google.gson.stream.JsonWriter;
  */
 @JsonAdapter(RoleEligibleOrgType.Adapter.class)
 public enum RoleEligibleOrgType {
+  @SerializedName("0")
   NUMBER_0(0),
+  @SerializedName("1")
   NUMBER_1(1),
+  @SerializedName("2")
   NUMBER_2(2);
 
   private Integer value;
