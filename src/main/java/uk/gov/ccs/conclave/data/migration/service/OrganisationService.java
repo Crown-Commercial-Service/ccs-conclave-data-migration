@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import uk.gov.ccs.conclave.data.migration.client.CiiOrgClient;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
+import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
-import uk.gov.ccs.conclave.data.migration.controller.DataMigrationApiController;
 import uk.gov.ccs.swagger.cii.ApiException;
 import uk.gov.ccs.swagger.cii.model.Address;
 import uk.gov.ccs.swagger.cii.model.Identifier;
@@ -21,7 +21,6 @@ import uk.gov.ccs.swagger.sso.model.OrganisationDetail;
 import uk.gov.ccs.swagger.sso.model.OrganisationIdentifier;
 import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
 
-import java.util.Locale;
 import java.util.stream.Stream;
 
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
@@ -162,7 +161,7 @@ public class OrganisationService {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
         organisationDetail.setRightToBuy(org.isRightToBuy());
-        organisationDetail.setSupplierBuyerType(!org.isRightToBuy() ? 0: 1);
+        //organisationDetail.setSupplierBuyerType(!org.isRightToBuy() ? 0: 1);
         organisationDetail.setDomainName(org.getDomainName());
         return organisationDetail;
     }
@@ -180,7 +179,6 @@ public class OrganisationService {
         organisationAddress.setLocality(ciiAddress.getLocality());
         organisationAddress.setPostalCode(ciiAddress.getPostalCode());
         organisationAddress.setRegion(ciiAddress.getRegion());
-        organisationAddress.setCountryCode(Locale.getDefault().getCountry());
         return organisationAddress;
     }
 
