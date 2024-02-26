@@ -64,7 +64,7 @@ public class RoleService {
                 }
             }
             OrganisationAutoValidationRoleUpdate organisationAutoValidationRoleUpdate = new OrganisationAutoValidationRoleUpdate();
-            organisationAutoValidationRoleUpdate.setOrgType(RoleEligibleTradeType.NUMBER_0);
+            organisationAutoValidationRoleUpdate.orgType(RoleEligibleTradeType.NUMBER_2);
             organisationAutoValidationRoleUpdate.rolesToAdd(rolesToAdd);
             conclaveClient.updateOrganisationRole(organisationId, organisationAutoValidationRoleUpdate);
         }
