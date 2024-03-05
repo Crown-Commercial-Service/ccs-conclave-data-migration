@@ -59,11 +59,10 @@ public class OrganisationServiceTest {
         given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()));
         given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
 
-        organisationService.migrateOrganisation(getTestOrganisation().rightToBuy("true"));
+        organisationService.migrateOrganisation(getTestOrganisation().organisationType("0"));
 
         ArgumentCaptor<OrganisationProfileInfo> argumentCaptor = ArgumentCaptor.forClass(OrganisationProfileInfo.class);
         verify(conclaveClient).createConclaveOrg(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue().getDetail().isRightToBuy()).isEqualTo(true);
     }
 
     @Test
@@ -71,11 +70,11 @@ public class OrganisationServiceTest {
         given(ciiOrgClient.createCiiOrganisation(any(), any())).willReturn(new OrgMigration().identifier(new Identifier()).address(new Address()));
         given(conclaveClient.getIdentityProviderId(any())).willReturn(1);
 
-        organisationService.migrateOrganisation(getTestOrganisation().rightToBuy("false"));
+        organisationService.migrateOrganisation(getTestOrganisation().organisationType("1"));
 
         ArgumentCaptor<OrganisationProfileInfo> argumentCaptor = ArgumentCaptor.forClass(OrganisationProfileInfo.class);
         verify(conclaveClient).createConclaveOrg(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue().getDetail().isRightToBuy()).isEqualTo(false);
+        assertThat(argumentCaptor.getValue().getDetail().getSupplierBuyerType()).isEqualTo(1);
     }
 
     @Test
