@@ -35,7 +35,7 @@ class DataMigrationController < ApplicationController
                 data << {
                     "identifier-id": row["IdentifierId"],
                     "scheme-id": row["SchemeId"],
-                    rightToBuy: right_to_buy_logic(row["OrganisationType"]),
+                    "organisationType": row["OrganisationType"],
                     domainName: row["DomainName"],
                     orgRoles: parse_comma_separated_list(row["OrganisationRoles"]),
                     user: [{
@@ -66,17 +66,6 @@ class DataMigrationController < ApplicationController
         end
     end
 
-    # This method needs to be removed when rightToBuy is removed from the payload, as it is converting org type number to rightToBuy boolean.
-    def right_to_buy_logic(org_type)
-        case org_type.to_i
-        when 0
-            return "false"
-        when 1..2
-            return "false"
-        else
-            return "OrganisationType Error: Please enter 0, 1 or 2."
-        end        
-    end
 
     private
 

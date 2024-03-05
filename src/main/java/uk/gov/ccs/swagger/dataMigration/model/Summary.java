@@ -1,17 +1,13 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
-import uk.gov.ccs.swagger.dataMigration.model.Status;
-import uk.gov.ccs.swagger.dataMigration.model.UserMin;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
 /**
  * Summary
@@ -26,8 +22,8 @@ public class Summary   {
   @JsonProperty("scheme-id")
   private String schemeId = null;
 
-  @JsonProperty("rightToBuy")
-  private Boolean rightToBuy = null;
+  @JsonProperty("organisationType")
+  private String organisationType = null;
 
   @JsonProperty("orgRoles")
   @Valid
@@ -44,6 +40,14 @@ public class Summary   {
   public Summary identifierId(String identifierId) {
     this.identifierId = identifierId;
     return this;
+  }
+
+  public String getOrganisationType() {
+    return organisationType;
+  }
+
+  public void setOrganisationType(String organisationType) {
+    this.organisationType = organisationType;
   }
 
   /**
@@ -79,24 +83,8 @@ public class Summary   {
     this.schemeId = schemeId;
   }
 
-  public Summary rightToBuy(Boolean rightToBuy) {
-    this.rightToBuy = rightToBuy;
-    return this;
-  }
 
-  /**
-   * Buyer status
-   * @return rightToBuy
-   **/
-  @Schema(example = "false", description = "Buyer status")
-  
-    public Boolean isRightToBuy() {
-    return rightToBuy;
-  }
 
-  public void setRightToBuy(Boolean rightToBuy) {
-    this.rightToBuy = rightToBuy;
-  }
 
   public Summary orgRoles(List<OrgRole> orgRoles) {
     this.orgRoles = orgRoles;
@@ -191,7 +179,7 @@ public class Summary   {
     Summary summary = (Summary) o;
     return Objects.equals(this.identifierId, summary.identifierId) &&
         Objects.equals(this.schemeId, summary.schemeId) &&
-        Objects.equals(this.rightToBuy, summary.rightToBuy) &&
+        Objects.equals(this.organisationType, summary.organisationType) &&
         Objects.equals(this.orgRoles, summary.orgRoles) &&
         Objects.equals(this.user, summary.user) &&
         Objects.equals(this.status, summary.status);
@@ -199,7 +187,7 @@ public class Summary   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifierId, schemeId, rightToBuy, orgRoles, user, status);
+    return Objects.hash(identifierId, schemeId, organisationType, orgRoles, user, status);
   }
 
   @Override
@@ -209,7 +197,7 @@ public class Summary   {
     
     sb.append("    identifierId: ").append(toIndentedString(identifierId)).append("\n");
     sb.append("    schemeId: ").append(toIndentedString(schemeId)).append("\n");
-    sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
+    sb.append("    organisationType: ").append(toIndentedString(organisationType)).append("\n");
     sb.append("    orgRoles: ").append(toIndentedString(orgRoles)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");

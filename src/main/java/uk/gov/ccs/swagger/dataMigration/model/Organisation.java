@@ -1,16 +1,16 @@
 package uk.gov.ccs.swagger.dataMigration.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
-import uk.gov.ccs.swagger.dataMigration.model.User;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
 /**
  * Organisation
@@ -28,8 +28,8 @@ public class Organisation   {
   @JsonProperty("domainName")
   private String domainName = null;
 
-  @JsonProperty("rightToBuy")
-  private String rightToBuy = null;
+  @JsonProperty("organisationType")
+  private String organisationType = null;
 
   @JsonProperty("orgRoles")
   @Valid
@@ -79,8 +79,8 @@ public class Organisation   {
     this.schemeId = schemeId;
   }
 
-  public Organisation rightToBuy(String rightToBuy) {
-    this.rightToBuy = rightToBuy;
+  public Organisation organisationType(String organisationType) {
+    this.organisationType = organisationType;
     return this;
   }
 
@@ -106,21 +106,17 @@ public class Organisation   {
 
   /**
    * Buyer status
-   * @return rightToBuy
+   * @return organisationType
    **/
   @Schema(example = "true", required = true, description = "Buyer status")
       @NotNull
 
-  @Pattern(regexp="^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$") @Size(min=1)   public String getRightToBuy() {
-    return rightToBuy;
+  @Pattern(regexp="^[0-9]{0,2}$") @Size(min=1)   public String getOrganisationType() {
+    return organisationType;
   }
 
-  public void setRightToBuy(String rightToBuy) {
-    this.rightToBuy = rightToBuy;
-  }
-
-  public Boolean isRightToBuy() {
-    return Boolean.parseBoolean(rightToBuy);
+  public void setOrganisationType(String organisationType) {
+    this.organisationType = organisationType;
   }
 
   public Organisation orgRoles(List<OrgRole> orgRoles) {
@@ -189,7 +185,7 @@ public class Organisation   {
     Organisation organisation = (Organisation) o;
     return Objects.equals(this.identifierId, organisation.identifierId) &&
         Objects.equals(this.schemeId, organisation.schemeId) &&
-        Objects.equals(this.rightToBuy, organisation.rightToBuy) &&
+        Objects.equals(this.organisationType, organisation.organisationType) &&
         Objects.equals(this.domainName, organisation.domainName) &&
         Objects.equals(this.orgRoles, organisation.orgRoles) &&
         Objects.equals(this.user, organisation.user);
@@ -197,7 +193,7 @@ public class Organisation   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifierId, schemeId, domainName, rightToBuy, orgRoles, user);
+    return Objects.hash(identifierId, schemeId, domainName, organisationType, orgRoles, user);
   }
 
   @Override
@@ -208,7 +204,7 @@ public class Organisation   {
     sb.append("    identifierId: ").append(toIndentedString(identifierId)).append("\n");
     sb.append("    schemeId: ").append(toIndentedString(schemeId)).append("\n");
     sb.append("    domainName: ").append(toIndentedString(domainName)).append("\n");
-    sb.append("    rightToBuy: ").append(toIndentedString(rightToBuy)).append("\n");
+    sb.append("    organisationType: ").append(toIndentedString(organisationType)).append("\n");
     sb.append("    orgRoles: ").append(toIndentedString(orgRoles)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("}");
