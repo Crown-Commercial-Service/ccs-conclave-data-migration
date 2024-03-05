@@ -23,6 +23,7 @@ import uk.gov.ccs.swagger.sso.model.OrganisationProfileInfo;
 
 import java.util.stream.Stream;
 
+import static java.lang.Integer.valueOf;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
 
@@ -160,8 +161,7 @@ public class OrganisationService {
     private OrganisationDetail buildOrgDetail(OrgMigration ciiResponse, Organisation org) {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
-        organisationDetail.setRightToBuy(org.isRightToBuy());
-        //organisationDetail.setSupplierBuyerType(!org.isRightToBuy() ? 0: 1);
+        organisationDetail.setSupplierBuyerType(valueOf(org.getOrganisationType()));
         organisationDetail.setDomainName(org.getDomainName());
         return organisationDetail;
     }
