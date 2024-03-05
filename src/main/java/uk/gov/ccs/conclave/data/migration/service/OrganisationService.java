@@ -62,7 +62,7 @@ public class OrganisationService {
         if (idp != null && orgId != null) {
             Org migratedOrg = (orgExistsInConclave ?
                     errorService.saveOrgDetailsWithStatusCode(org, SSO_DUPLICATE_ORG_ERROR_MESSAGE, 409) :
-                    errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200)) ;
+                    errorService.saveOrgDetailsWithStatusCode(org, ORG_MIGRATION_SUCCESS, 200));
             response = new OrgMigrationResponse(orgId, idp, migratedOrg);
         }
 
@@ -161,7 +161,7 @@ public class OrganisationService {
     private OrganisationDetail buildOrgDetail(OrgMigration ciiResponse, Organisation org) {
         OrganisationDetail organisationDetail = new OrganisationDetail();
         organisationDetail.setOrganisationId(ciiResponse.getOrganisationId());
-        organisationDetail.setRightToBuy(org.isRightToBuy());
+        organisationDetail.setSupplierBuyerType(valueOf(org.getOrganisationType()));
         organisationDetail.setDomainName(org.getDomainName());
         return organisationDetail;
     }
