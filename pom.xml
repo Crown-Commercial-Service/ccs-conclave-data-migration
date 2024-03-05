@@ -10,7 +10,7 @@
     </parent>
     <groupId>uk.gov.ccs.conclave.data</groupId>
     <artifactId>migration</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.1</version>
     <name>migration</name>
     <description>Data migration service for conclave</description>
     <properties>
