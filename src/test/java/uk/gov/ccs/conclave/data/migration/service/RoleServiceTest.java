@@ -9,16 +9,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ccs.conclave.data.migration.client.ConclaveClient;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.sso.ApiException;
 import uk.gov.ccs.swagger.sso.model.OrganisationAutoValidationRoleUpdate;
 import uk.gov.ccs.swagger.sso.model.OrganisationRole;
-import uk.gov.ccs.swagger.sso.model.OrganisationRoleUpdate;
+import uk.gov.ccs.swagger.sso.model.RoleEligibleTradeType;
 
 import java.util.List;
 
 import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -61,22 +59,22 @@ public class RoleServiceTest {
         var roleName = "Org Role";
         given(conclaveClient.getAllConfiguredRoles()).willReturn(List.of(new OrganisationRole().roleName(roleName)));
 
-        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole().name(roleName))));
+        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole().name(roleName))).organisationType("2"));
 
         ArgumentCaptor<OrganisationAutoValidationRoleUpdate> argumentCaptor = ArgumentCaptor.forClass(OrganisationAutoValidationRoleUpdate.class);
         verify(conclaveClient).updateOrganisationRole(eq(ORGANISATION_ID), argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getRolesToAdd().get(0).getRoleName()).isEqualTo(roleName);
     }
 
-    /*@Test
+    @Test
     public void shouldPassBuyerStatus() throws Exception {
         var roleName = "Org Role";
         given(conclaveClient.getAllConfiguredRoles()).willReturn(List.of(new OrganisationRole().roleName(roleName)));
 
-        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole().name(roleName))).rightToBuy(true));
+        roleService.applyOrganisationRole(ORGANISATION_ID, new Organisation().orgRoles(List.of(new OrgRole().name(roleName))).organisationType("2"));
 
-        ArgumentCaptor<OrganisationRoleUpdate> argumentCaptor = ArgumentCaptor.forClass(OrganisationRoleUpdate.class);
+        ArgumentCaptor<OrganisationAutoValidationRoleUpdate> argumentCaptor = ArgumentCaptor.forClass(OrganisationAutoValidationRoleUpdate.class);
         verify(conclaveClient).updateOrganisationRole(eq(ORGANISATION_ID), argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue().isIsBuyer()).isEqualTo(true);
-    }*/
+        assertThat(argumentCaptor.getValue().getOrgType()).isEqualTo(RoleEligibleTradeType.NUMBER_2);
+    }
 }
