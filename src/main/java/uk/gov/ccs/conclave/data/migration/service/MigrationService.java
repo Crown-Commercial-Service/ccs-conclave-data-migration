@@ -1,37 +1,25 @@
 package uk.gov.ccs.conclave.data.migration.service;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
+import uk.gov.ccs.swagger.dataMigration.model.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import static java.time.LocalDateTime.now;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
+import static java.time.LocalDateTime.now;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.springframework.http.HttpStatus.valueOf;
-
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-
-import lombok.RequiredArgsConstructor;
-import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
-import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
-import uk.gov.ccs.swagger.dataMigration.model.Organisation;
-import uk.gov.ccs.swagger.dataMigration.model.User;
-import uk.gov.ccs.swagger.dataMigration.model.UserRole;
-import uk.gov.ccs.swagger.dataMigration.model.UserTitle;
-
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_ABORTED;
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_COMPLETE;
-import static uk.gov.ccs.conclave.data.migration.service.ErrorService.MIGRATION_STATUS_PARTIAL;
+import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
 
 
 @Service
@@ -92,7 +80,7 @@ public class MigrationService {
                       org.setSchemeId(schemeId);
 
                     String organisationType = (record[2] != null) ? record[2] : null;
-                      org.setRightToBuy(organisationType); // Needs 'rightToBuy' updating to 'OrganisationType' (0, 1 or 2). Replace rightToBuy, or, add as an extra alongside making rightToBuy optional?
+                      org.setOrganisationType(organisationType); // Needs 'rightToBuy' updating to 'OrganisationType' (0, 1 or 2). Replace rightToBuy, or, add as an extra alongside making rightToBuy optional?
 
                     List<User> users = new ArrayList<User>();
                     User user = new User();

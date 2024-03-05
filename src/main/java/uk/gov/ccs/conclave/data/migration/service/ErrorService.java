@@ -4,16 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import uk.gov.ccs.conclave.data.migration.domain.Client;
 import uk.gov.ccs.conclave.data.migration.domain.Org;
 import uk.gov.ccs.conclave.data.migration.domain.User;
-import uk.gov.ccs.conclave.data.migration.domain.Client;
 import uk.gov.ccs.conclave.data.migration.exception.DataMigrationException;
+import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 import uk.gov.ccs.conclave.data.migration.repository.OrganisationRepository;
 import uk.gov.ccs.conclave.data.migration.repository.UserRepository;
-import uk.gov.ccs.conclave.data.migration.repository.ClientRepository;
 import uk.gov.ccs.swagger.dataMigration.model.OrgRole;
 import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -155,7 +156,7 @@ public class ErrorService {
         Org org = new Org();
         org.setIdentifierId(organisation.getIdentifierId());
         org.setSchemeId(organisation.getSchemeId());
-        org.setRightToBuy(organisation.isRightToBuy());
+        org.setRightToBuy(!organisation.getOrganisationType().equalsIgnoreCase("0"));
         org.setDomainName(organisation.getDomainName());
         var orgRoles = organisation.getOrgRoles();
         if (isNotEmpty(orgRoles)) {

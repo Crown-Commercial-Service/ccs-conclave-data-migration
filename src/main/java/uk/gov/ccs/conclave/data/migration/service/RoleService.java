@@ -13,7 +13,10 @@ import uk.gov.ccs.swagger.dataMigration.model.Organisation;
 import uk.gov.ccs.swagger.dataMigration.model.User;
 import uk.gov.ccs.swagger.dataMigration.model.UserRole;
 import uk.gov.ccs.swagger.sso.ApiException;
-import uk.gov.ccs.swagger.sso.model.*;
+import uk.gov.ccs.swagger.sso.model.OrganisationAutoValidationRoleUpdate;
+import uk.gov.ccs.swagger.sso.model.OrganisationRole;
+import uk.gov.ccs.swagger.sso.model.RolePermissionInfo;
+import uk.gov.ccs.swagger.sso.model.UserProfileResponseInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ import static java.util.Collections.EMPTY_LIST;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static uk.gov.ccs.conclave.data.migration.service.ErrorService.*;
+import static uk.gov.ccs.swagger.sso.model.RoleEligibleTradeType.fromValue;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +33,7 @@ public class RoleService {
 
     private final ConclaveClient conclaveClient;
     private final ErrorService errorService;
-    private static final Logger log = LoggerFactory.getLogger(ContactService.class);
+    private static final Logger log = LoggerFactory.getLogger(RoleService.class);
 
     private OrganisationRole filterOrganisationRoleByName(final List<OrganisationRole> roles, final String roleName) throws ApiException {
         return roles.stream().filter(role -> role.getRoleName().equalsIgnoreCase(roleName)).findFirst().orElseThrow(() -> new ApiException(404, roleName + SSO_ROLE_NOT_FOUND));
@@ -64,7 +68,7 @@ public class RoleService {
                 }
             }
             OrganisationAutoValidationRoleUpdate organisationAutoValidationRoleUpdate = new OrganisationAutoValidationRoleUpdate();
-            organisationAutoValidationRoleUpdate.orgType(RoleEligibleTradeType.NUMBER_2);
+            organisationAutoValidationRoleUpdate.orgType(fromValue(organisation.getOrganisationType()));
             organisationAutoValidationRoleUpdate.rolesToAdd(rolesToAdd);
             organisationAutoValidationRoleUpdate.rolesToDelete(EMPTY_LIST);
             organisationAutoValidationRoleUpdate.rolesToAutoValid(EMPTY_LIST);
