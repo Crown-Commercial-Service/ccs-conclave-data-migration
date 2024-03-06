@@ -106,12 +106,12 @@ components:
           minLength: 1
           description: Scheme ID (GB-COH, US-DUNS, SF-URN, SF-ID)
           example: GB-COH
-        rightToBuy:
+        organisationType:
           type: string
           minLength: 1
-          pattern: '^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$'
+          pattern: '^([0-9]{0,2})$'
           description: Buyer status
-          example: true
+          example: 0
         orgRoles:
           type: array
           items:

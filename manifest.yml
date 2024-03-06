@@ -2,10 +2,10 @@ applications:
   - name: ccs-conclave-data-migration
     instances: 1
     routes:
-      - route: sandbox-ccs-conclave-data-migration.london.cloudapps.digital
+      - route: int-ccs-conclave-data-migration.london.cloudapps.digital
     buildpacks:
       - https://github.com/cloudfoundry/java-buildpack.git
-    path: target/migration-0.0.1-SNAPSHOT.jar
+    path: target/migration-0.1.1.jar
     services:
       - conclave-data-migration-pg-service
       - logit-ssl-drain

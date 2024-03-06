@@ -10,7 +10,7 @@
     </parent>
     <groupId>uk.gov.ccs.conclave.data</groupId>
     <artifactId>migration</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.1</version>
     <name>migration</name>
     <description>Data migration service for conclave</description>
     <properties>
@@ -63,12 +63,12 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.16.0</version>
+            <version>1.16.1</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
