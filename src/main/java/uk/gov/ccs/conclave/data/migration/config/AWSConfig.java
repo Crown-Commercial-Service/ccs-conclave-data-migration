@@ -1,11 +1,14 @@
 package uk.gov.ccs.conclave.data.migration.config;
 
+/*
 import io.pivotal.cfenv.core.CfCredentials;
 import io.pivotal.cfenv.core.CfEnv;
+*/
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+/*
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -14,6 +17,7 @@ import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.GetParameterRequest;
 import software.amazon.awssdk.services.ssm.model.GetParameterResponse;
 import software.amazon.awssdk.services.ssm.model.SsmException;
+*/
 
 import static java.lang.Boolean.parseBoolean;
 import static uk.gov.ccs.conclave.data.migration.config.MigrationProperties.*;
@@ -22,11 +26,14 @@ import static uk.gov.ccs.conclave.data.migration.config.MigrationProperties.*;
 @Profile("cloud")
 public class AWSConfig {
     private static final Logger log = LoggerFactory.getLogger(AWSConfig.class);
+/*
     private static final CfEnv cfEnv = new CfEnv();
     private static final CfCredentials awsCredentials = cfEnv.findCredentialsByTag("aws-ssm");
     private static final String AWS_ACCESS_KEY_ID = awsCredentials.getString("aws_access_key_id");
     private static final String AWS_SECRET_ACCESS_KEY = awsCredentials.getString("aws_secret_access_key");
+*/
     public static final String X_API_KEY = "x-api-key";
+/*
     public static final String CII_API_KEY = "ciiApiKey";
     public static final String CII_DELETE_TOKEN = "ciiDeleteToken";
     public static final String CII_ORIGIN = "ciiOrigin";
@@ -36,21 +43,43 @@ public class AWSConfig {
     public static final String ACCOUNT_VERIFIED = "accountVerified";
     public static final String CONCLAVE_CONFIG_KEY = "conclaveConfigKey";
     public static final String CONCLAVE_USER_KEY = "conclaveUserKey";
+*/
     private static final Boolean AWS_SECRETS = getAWSSecrets();
 
     private static Boolean getAWSSecrets() {
         log.info("Configuring AWS SSM Credentials & Client.");
-
+/*
         AwsCredentials credentials = AwsBasicCredentials.create(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
 
         SsmClient ssmClient = SsmClient.builder()
                 .region(Region.EU_WEST_2)
                 .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .build();
-
+*/
         try {
             log.info("Getting App Parameters.");
 
+            String CII_API_KEY = System.getenv("CII_API_KEY");
+            String CII_DELETE_TOKEN = System.getenv("CII_DELETE_TOKEN");
+            String CII_ORIGIN = System.getenv("CII_ORIGIN");
+            String CONCLAVE_ORIGIN = System.getenv("CONCLAVE_ORIGIN");
+            String CONCLAVE_API_KEY = System.getenv("CONCLAVE_API_KEY");
+            String CONCLAVE_CONFIG_KEY = System.getenv("CONCLAVE_CONFIG_KEY");
+            String CONCLAVE_USER_KEY = System.getenv("CONCLAVE_USER_KEY");
+            String SEND_USER_REGISTRATION_EMAIL = System.getenv("SEND_USER_REGISTRATION_EMAIL");
+            String ACCOUNT_VERIFIED = System.getenv("ACCOUNT_VERIFIED");
+
+            setCiiApiKey(CII_API_KEY);
+            setCiiDeleteToken(CII_DELETE_TOKEN);
+            setCiiOrigin(CII_ORIGIN);
+            setConclaveOrigin(CONCLAVE_ORIGIN);
+            setConclaveApiKey(CONCLAVE_API_KEY);
+            setConclaveConfigApiKey(CONCLAVE_CONFIG_KEY);
+            setConclaveUserApiKey(CONCLAVE_USER_KEY);
+            setSendUserRegistrationEmail(parseBoolean(SEND_USER_REGISTRATION_EMAIL));
+            setAccountVerified(parseBoolean(ACCOUNT_VERIFIED));
+
+/*
             String[] keys = {CII_API_KEY, CII_DELETE_TOKEN, CII_ORIGIN, CONCLAVE_API_KEY, CONCLAVE_ORIGIN, SEND_USER_REGISTRATION_EMAIL, ACCOUNT_VERIFIED, CONCLAVE_CONFIG_KEY, CONCLAVE_USER_KEY};
 
             for (String key : keys) {
@@ -68,15 +97,18 @@ public class AWSConfig {
                     default -> throw new IllegalStateException("Unexpected value: " + key);
                 }
             }
+*/
             log.info("Application Parameters Configured Successfully.");
             return true;
 
-        } catch (SsmException e) {
+//        } catch (SsmException e) {
+        } catch (Exception e) {
             log.error("AWS SSM Config Error: %s : %s".formatted(e.getMessage(), AWS_SECRETS));
             return false;
         }
     }
 
+/*
     private static GetParameterResponse getGetParameterResponse(SsmClient ssmClient, String key) {
         GetParameterRequest awsParameter = GetParameterRequest.builder()
                 .name("/conclave-data-migration/" + key).withDecryption(true)
@@ -84,4 +116,6 @@ public class AWSConfig {
 
         return ssmClient.getParameter(awsParameter);
     }
+*/
+
 }
