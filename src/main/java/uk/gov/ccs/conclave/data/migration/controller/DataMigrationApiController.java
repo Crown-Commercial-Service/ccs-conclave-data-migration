@@ -51,21 +51,7 @@ public class DataMigrationApiController implements DataMigrationApi {
 
         log.info("Data Migration API invoked for file format: " + fileFormat);
 
-        if (!migrationService.isValidClientApiKey(xApiKey)) {
-            responseBody.put( "Error", API_KEY_ERROR);
-
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(responseBody);
-
-        } else if (fileFormat.equals("newApiKey")) {
-            migrationService.createClientApiKey();
-            responseBody.put( "Info", API_KEY_INFO);
-
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(responseBody);
-        } else if (fileFormat.equalsIgnoreCase("json")) {
+        if (fileFormat.equalsIgnoreCase("json")) {
             migrationService.migrate(body);
 
         } else if (fileFormat.equalsIgnoreCase("csv")) {
