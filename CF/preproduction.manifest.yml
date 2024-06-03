@@ -1,0 +1,10 @@
+---
+applications:
+- name: ccs-conclave-data-migration-csv-ingester
+  buildpacks:
+    - https://github.com/cloudfoundry/ruby-buildpack.git#v1.10.0
+  instances: 1
+  routes:
+    - route: preprod-ccs-conclave-data-migration-csv-ingester.london.cloudapps.digital
+  env:
+    SERVER_ENV_NAME: preproduction
