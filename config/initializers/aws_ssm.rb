@@ -50,4 +50,4 @@ def set_env(ssm_client, params_list)
     end
 end
 
-config_aws if ENV.fetch('REMOTE_APP', "false") == 'true'
+#config_aws if ENV.fetch('REMOTE_APP', "false") == 'true'
