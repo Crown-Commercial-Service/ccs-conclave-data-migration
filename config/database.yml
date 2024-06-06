@@ -30,21 +30,21 @@ default: &default
 
 development:
   <<: *default
-  database: data_migration_local
-  username: dm_user
-  password: Password1235!
-  host: localhost
+  database: <%= ENV.fetch("DATABASE_NAME") { "data_migration_local" } %>
+  username: <%= ENV.fetch("DATABASE_USER") { "dm_user" } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { "Password1235!" } %>
+  host: <%= ENV.fetch("DATABASE_HOST") { "localhost" } %>
 
 test:
   <<: *default
-  database: data_migration_test
-  username: dm_user
-  password: Password1235!
-  host: localhost
+  database: <%= ENV.fetch("DATABASE_NAME") { "data_migration_test" } %>
+  username: <%= ENV.fetch("DATABASE_USER") { "dm_user" } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { "Password1235!" } %>
+  host: <%= ENV.fetch("DATABASE_HOST") { "localhost" } %>
 
 production:
   <<: *default
-  database: data_migration
-  username: dm_user_prod
-  password: dhs!jGDSK6_73fvd734HDFY_62dywd
-  host: localhost
+  database: <%= ENV.fetch("DATABASE_NAME") { "data_migration" } %>
+  username: <%= ENV.fetch("DATABASE_USER") { "dm_user_prod" } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { "dhs!jGDSK6_73fvd734HDFY_62dywd" } %>
+  host: <%= ENV.fetch("DATABASE_HOST") { "localhost" } %>
