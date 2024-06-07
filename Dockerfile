@@ -14,10 +14,7 @@ WORKDIR /app
 COPY --chown=rails:rails Gemfile Gemfile.lock ./
 
 # Run Bundler
-RUN bundle config set --global no_document true && \
-  bundle config set --global no_ri true && \
-  bundle config set --global no-cache true && \
-  bundle install --jobs 4 --retry 5
+RUN bundle install
 
 # Stage 2: Run
 FROM ruby:3.2.2-alpine
