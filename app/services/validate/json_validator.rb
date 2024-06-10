@@ -12,6 +12,8 @@ module Validate
       return false unless validate_json_array(data)
 
       # Validate each organization entry in the array
+      data = data.is_a?(String) ? JSON.parse(data) : data
+
       data.each do |org_data|
         return false unless validate_organization(org_data)
       end

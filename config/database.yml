@@ -44,7 +44,7 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV.fetch("DATABASE_NAME") { "data_migration" } %>
-  username: <%= ENV.fetch("DATABASE_USER") { "dm_user_prod" } %>
-  password: <%= ENV.fetch("DATABASE_PASSWORD") { "dhs!jGDSK6_73fvd734HDFY_62dywd" } %>
+  database: <%= ENV.fetch("DATABASE_NAME") { "data_migration_prod_local" } %>
+  username: <%= ENV.fetch("DATABASE_USER") { "dm_user_prod_local" } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { "prod_password_local" } %>
   host: <%= ENV.fetch("DATABASE_HOST") { "localhost" } %>

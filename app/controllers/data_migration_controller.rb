@@ -124,6 +124,8 @@ class DataMigrationController < ApplicationController
         validator = Validate::JsonValidator.new
 
         if validator.validate(json_data)
+            json_data = json_data.is_a?(String) ? JSON.parse(json_data) : json_data
+
             data_migration_service = Migrate::DataMigration.new(json_data)
             dm_migrate_orgs_report = data_migration_service.migrate_orgs # {  dmOrgSuccessList: @orgSuccessList, dmOrgErrorsList: @orgErrorsList  }
             dm_migrate_users_report = data_migration_service.migrate_users # {  dmUserSuccessList: @userSuccessList, dmUserErrorsList: @userErrorsList  }
