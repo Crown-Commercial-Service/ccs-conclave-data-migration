@@ -4,11 +4,9 @@ require 'uri'
 module Migrate
   class Cii
     def initialize(json_data)
-      @api_key = ENV.fetch('CII_API_KEY', nil)
       @data = json_data
       @orgErrorsList = []
       @orgSuccessList = []
-      @response_status = nil
     end
 
 
@@ -29,23 +27,37 @@ module Migrate
             response_body = JSON.parse(response.body)
 
             if response.code.present? && response.code.to_i == 201 && response_body.present? && response_body.is_a?(Hash)
-              @response_status = 201
-              next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: true, status: @response_status, data: response_body  } # Organisation Migrated to CII.
+              next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 201, data: response_body  } # Organisation Migrated to CII.
             elsif response.code.present? && response.code.to_i == 409 && response_body.present? && response_body.is_a?(Hash)
-              @response_status = 409
-              next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: true, status: @response_status, data: response_body  } # Organisation Already Migrated to CII.
+              next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409, data: response_body  } # Organisation Already Migrated to CII.
+            elsif response.code.present? && response.code.to_i == 404 && response_body.present? && response_body.is_a?(Hash)
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 404, data: response_body, status_error: 'Not Found Response from CII.', response: response  } # Organisation Not Migrated to CII.
+            elsif response.code.present? && response.code.to_i == 401 && response_body.present? && response_body.is_a?(Hash)
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 401, data: response_body, status_error: 'Unauthorized Response from CII.', response: response  } # Organisation Not Migrated to CII.
+            elsif response.code.present? && response.code.to_i == 400 && response_body.present? && response_body.is_a?(Hash)
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 400, data: response_body, status_error: 'Bad Request Response from CII.', response: response  } # Organisation Not Migrated to CII.
+            elsif response.code.present? && response_body.present? && response_body.is_a?(Hash)
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response.code.to_i, data: response_body, status_error: 'Unknown Error from CII.', response: response  } # Organisation Not Migrated to CII.
             else
-              @response_status = response.code.to_i
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: false, status: @response_status, error: nil, data: response.body, response: response  } # Organisation Not Migrated to CII.
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: response.body, status_error: 'Internal Error.', response: response  } # Organisation Not Migrated to CII.
             end
           rescue JSON::ParserError => err
             log_error(err)
-            @response_status = 500
-            next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: false, status: @response_status, error: err.message, data: response.body, response: nil  } # Organisation Not Migrated to CII.
+
+            if response.code.present? && response.code.to_i == 400 && response.body.present?
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 400, data: response.body, status_error: 'Bad Request Response from CII.', response: response  } # Organisation Not Migrated to CII.
+            elsif response.code.present? && response.code.to_i == 401 && response.body.present?
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 401, data: response.body, status_error: 'Unauthorized Response from CII.', response: response  } # Organisation Not Migrated to CII.
+            elsif response.code.present? && response.code.to_i == 404 && response.body.present?
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 404, data: response.body, status_error: 'Not Found Response from CII.', response: response  } # Organisation Not Migrated to CII.
+            elsif response.code.present? && response.body.present?
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response.code.to_i, data: response.body, status_error: 'Unknown Error from CII.', response: response  } # Organisation Not Migrated to CII.
+            else
+              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: response.body, status_error: err.message, response: response  } # Organisation Not Migrated to CII.
+            end
           end
         else
-          @response_status = 500
-          next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: false, status: @response_status, error: 'Empty or no response received from CII.', data: nil, response: nil  } # Organisation Not Migrated to CII.
+          next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: nil, status_error: 'Empty or No Response from CII.  (DEVELOPER NOTE: Either a 500 internal error, a 404 from the external call, or just no response at all recieved.)', response: nil  } # Organisation Not Migrated to CII.
         end
       end
 
@@ -64,14 +76,15 @@ module Migrate
 
       rescue StandardError => err
         log_error(err)
-        @orgErrorsList << {  organisation: "#{organisation_id_type}-#{organisation_id}", success: false, status: 500, error: err.message, data: request, response: response  } # Organisation Not Migrated to CII.
+
+        @orgErrorsList << {  organisation: "#{organisation_id_type}-#{organisation_id}", successful: false, status: 500, data: request, status_error: err.message, response: response  } # Organisation Not Migrated to CII.
         return nil
       end
     end
 
 
     def build_uri(url)
-      URI.parse(url)
+      URI.parse(url.to_s)
     end
 
 
@@ -89,7 +102,7 @@ module Migrate
 
     def build_request(uri)
       request = Net::HTTP::Post.new(uri.request_uri)
-      request["x-api-key"] = @api_key
+      request["x-api-key"] = ENV.fetch('CII_API_KEY', nil)
       request
     end
 

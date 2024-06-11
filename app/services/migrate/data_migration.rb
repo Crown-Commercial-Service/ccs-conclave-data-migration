@@ -35,9 +35,9 @@ module Migrate
         )
 
         if organisation.save
-          next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: true, status: 201, data: organisation  } # Organisation Saved.
+          next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 201, data: organisation  } # Organisation Saved.
         else
-          next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: false, status: 500, error: organisation.errors, data: org, response: nil  } # Organisation Not Saved.
+          next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: org, status_error: organisation.errors, response: nil  } # Organisation Not Saved.
         end
       end
 
@@ -68,7 +68,7 @@ module Migrate
           if user.save
             next @userSuccessList << {  user: "#{usr["email"]}", organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: true, status: 201, data: user  } # User Saved.
           else
-            next @userErrorsList << {  user: "#{usr["email"]}", organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: false, status: 500, error: user.errors, data: usr, response: nil  } # User Not Saved.
+            next @userErrorsList << {  user: "#{usr["email"]}", organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: false, status: 500, data: usr, status_error: user.errors, response: nil  } # User Not Saved.
           end
         end
       end

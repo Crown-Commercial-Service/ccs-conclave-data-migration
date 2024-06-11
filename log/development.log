@@ -4430,3 +4430,7 @@ Processing by DataMigrationController#validate_as_csv as */*
 Completed 200 OK in 71ms (Views: 0.6ms | ActiveRecord: 54.5ms | Allocations: 17091)
 
 
+[dotenv] Set [36mCII_DOMAIN[0m, [36mCII_API_KEY[0m, [36mPPG_DOMAIN[0m, [36mPPG_API_KEY[0m, and [36mREMOTE_APP[0m
+[dotenv] Loaded [33m.env.local[0m
+[dotenv] Set [36mCII_DOMAIN[0m, [36mCII_API_KEY[0m, [36mPPG_DOMAIN[0m, [36mPPG_API_KEY[0m, and [36mREMOTE_APP[0m
+[dotenv] Loaded [33m.env.local[0m

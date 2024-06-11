@@ -107,7 +107,7 @@ class DataMigrationController < ApplicationController
         when 0
           return "false"
         when 1..2
-          return "false"
+          return "true"
         else
           raise "OrganisationType Error: Please enter 0, 1 or 2."
         end
@@ -133,8 +133,24 @@ class DataMigrationController < ApplicationController
             cii_migration_service = Migrate::Cii.new(json_data)
             cii_migrate_orgs_report = cii_migration_service.migrate_orgs # {  ciiOrgSuccessList: @orgSuccessList, ciiOrgErrorsList: @orgErrorsList  }
 
+            #ppg_migration_service = Migrate::Ppg.new(json_data)
+            #ppg_migrate_orgs_report = ppg_migration_service.migrate_orgs # {  ppgOrgSuccessList: @orgSuccessList, ppgOrgErrorsList: @orgErrorsList  }
+            #ppg_migrate_users_report = ppg_migration_service.migrate_users # {  ppgUserSuccessList: @userSuccessList, ppgUserErrorsList: @userErrorsList  }
 
-            return render json: {  dm_migration_report: { dm_orgs: dm_migrate_orgs_report, dm_users: dm_migrate_users_report }, cii_migration_report: { cii_orgs: cii_migrate_orgs_report }  }, status: :ok
+            return render json: {
+                dm_migration_report: {
+                    dm_orgs: dm_migrate_orgs_report,
+                    dm_users: dm_migrate_users_report
+                },
+                cii_migration_report: {
+                    cii_orgs: cii_migrate_orgs_report
+                },
+                #ppg_migration_report: {
+                #    ppg_orgs: ppg_migrate_orgs_report,
+                #    ppg_users: ppg_migrate_users_report
+                #}
+            }, status: :ok
+
             # return render json: json_data, status: :ok
         else
             return render json: {  error: validator.errors  }, status: :unprocessable_entity
