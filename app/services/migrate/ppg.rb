@@ -1,20 +1,22 @@
 require 'net/http'
 require 'uri'
 
-# This is where the data will be added to external PPG.
 module Migrate
   class Ppg
-    def initialize(json_data)
+    def initialize(json_data, cii_response_list)
       @data = json_data
+      @cii_responses = cii_response_list
       @orgErrorsList = []
       @orgSuccessList = []
       @userErrorsList = []
       @userSuccessList = []
     end
 
+
     def migrate_orgs
       migrate_orgs_to_ppg
     end
+
 
     def migrate_users
       migrate_users_to_ppg
@@ -26,7 +28,7 @@ module Migrate
 
     def migrate_orgs_to_ppg
       @data.each do |org|
-        response = post_data_to_ppg('/organisation-profile', org)
+        response = send_request_to_ppg('/organisation-profile', org)
 
         if response.present?
           begin
@@ -67,10 +69,11 @@ module Migrate
         end
       end
 
-      return {  ppgOrgSuccessList: @orgSuccessList, ppgOrgErrorsList: @orgErrorsList  }
+      return {  responses: nil, report: { ppg_orgs_success_list: @orgSuccessList, ppg_orgs_error_list: @orgErrorsList }  }
     end
 
-    def post_data_to_ppg(endpoint, data)
+
+    def send_request_to_ppg(endpoint, data = nil)
       uri = build_uri(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = build_http(uri)
       request = build_request(uri, data)
@@ -87,9 +90,11 @@ module Migrate
       end
     end
 
+
     def build_uri(url)
       URI.parse(url.to_s)
     end
+
 
     def build_http(uri)
       http = Net::HTTP.new(uri.host, uri.port)
@@ -102,20 +107,27 @@ module Migrate
       http
     end
 
+
     def build_request(uri, data)
-      request = Net::HTTP::Post.new(uri.request_uri)
+      if data
+        request = Net::HTTP::Post.new(uri.request_uri)
+        request.body = build_body(data).to_json
+        request["Content-Type"] = "application/json"
+      else
+        request = Net::HTTP::Get.new(uri.request_uri)
+      end
+
       request["x-api-key"] = ENV.fetch('PPG_API_KEY', nil)
-      request.body = build_body(data.to_json)
-      request["Content-Type"] = "application/json"
       request
     end
+
 
     def build_body(data)
       # Need CII Data to fill to be this data. So call an endpoint of CII and directly deposit response as body for this PPG request?
       {
         "identifier": {
           "id": data["identifier-id"],
-          "legalName": "<CII Data>",
+          "legalName": @cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"]['identifier']['legalName'],
           "uri": "",
           "scheme": data["scheme-id"]
         },
@@ -126,7 +138,7 @@ module Migrate
           "region": "",
           "postalCode": "SL1 8DF",
           "countryCode": "GB",
-          "countryName": null
+          "countryName": nil
         },
         "detail": {
           "organisationId": "441761659268971733",
@@ -140,6 +152,7 @@ module Migrate
         }
       }
     end
+
 
     def log_error(err)
       puts "Error: #{err.message}"
