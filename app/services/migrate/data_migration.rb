@@ -27,15 +27,15 @@ module Migrate
         organisation = Organisation.new(
           scheme_id: "#{org["scheme-id"]}",
           identifier_id: "#{org["identifier-id"]}",
-          right_to_buy: right_to_boolean("#{org["rightToBuy"]}"),
+          right_to_buy: Common::Helper.org_type_to_boolean("#{org["organisationType"]}"),
           domain_name: "#{org["domainName"]}",
-          org_roles: get_roles_from_list(org["orgRoles"]),
-          status: 200,# Need to do DM last? So it can report on the CII and PPG statuses here. It must be on a per ORG basis, in order to carry on with migration with other orgs/users! !!!!!
+          org_roles: Common::Helper.get_roles_from_list(org["orgRoles"]),
+          status: 201,# Need to do DM last? So it can report on the CII and PPG statuses here. It must be on a per ORG basis, in order to carry on with migration with other orgs/users! !!!!!
           status_description: 'Success.'# Need to do DM last? So it can report on the CII and PPG responses here. It must be on a per ORG basis, in order to carry on with migration with other orgs/users! !!!!!
         )
 
         if organisation.save
-          next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 201, data: organisation  } # Organisation Saved.
+          next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 201, data: org  } # Organisation Saved.
         else
           next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: org, status_error: organisation.errors, response: nil  } # Organisation Not Saved.
         end
@@ -60,13 +60,13 @@ module Migrate
             title: "#{usr["title"]}",
             first_name: "#{usr["firstName"]}",
             last_name: "#{usr["lastName"]}",
-            user_roles: get_roles_from_list(usr["userRoles"]),
+            user_roles: Common::Helper.get_roles_from_list(usr["userRoles"]),
             status: 201,# Need to do DM last? So it can report on the CII and PPG statuses here. It must be on a per USER basis, in order to carry on with migration with other orgs/users! !!!!!
             status_description: 'Success.'# Need to do DM last? So it can report on the CII and PPG responses here. It must be on a per USER basis, in order to carry on with migration with other orgs/users! !!!!!
           )
 
           if user.save
-            next @userSuccessList << {  user: "#{usr["email"]}", organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: true, status: 201, data: user  } # User Saved.
+            next @userSuccessList << {  user: "#{usr["email"]}", organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: true, status: 201, data: usr  } # User Saved.
           else
             next @userErrorsList << {  user: "#{usr["email"]}", organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", success: false, status: 500, data: usr, status_error: user.errors, response: nil  } # User Not Saved.
           end
@@ -74,18 +74,6 @@ module Migrate
       end
 
       return {  responses: nil, report: { dm_users_success_list: @userSuccessList, dm_users_error_list: @userErrorsList }  }
-    end
-
-
-    def get_roles_from_list(roles_list)
-      "#{roles_list.map { |role| role["name"] }.join(',')}"
-    end
-
-
-    def right_to_boolean(right_to_buy_string)
-      return true if right_to_buy_string.downcase == 'true'
-
-      false
     end
   end
 end

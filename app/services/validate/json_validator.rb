@@ -42,7 +42,7 @@ module Validate
       # Validate required fields for organization
       return false unless org_data.key?("identifier-id") &&
                           org_data.key?("scheme-id") &&
-                          org_data.key?("rightToBuy") &&
+                          org_data.key?("organisationType") &&
                           org_data.key?("domainName") &&
                           org_data.key?("orgRoles") &&
                           org_data.key?("user") &&
