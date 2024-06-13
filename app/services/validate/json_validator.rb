@@ -7,6 +7,7 @@ module Validate
       @errors = []
     end
 
+
     def validate(data)
       # Validate that 'data' is an array
       return false unless validate_json_array(data)
@@ -22,7 +23,9 @@ module Validate
       true
     end
 
+
     private
+
 
     def validate_json_array(data)
       begin
@@ -53,6 +56,7 @@ module Validate
       # If all validations pass, return true
       true
     end
+
 
     def validate_user(user_data)
       # Validate required fields for user

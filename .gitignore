@@ -1,4 +1,4 @@
 .env.local
 
-log/
-tmp/
+log/*
+tmp/*

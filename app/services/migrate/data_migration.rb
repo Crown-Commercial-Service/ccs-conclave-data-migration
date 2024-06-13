@@ -41,7 +41,7 @@ module Migrate
         end
       end
 
-      return {  dmOrgSuccessList: @orgSuccessList, dmOrgErrorsList: @orgErrorsList  }
+      return {  responses: nil, report: { dm_orgs_success_list: @orgSuccessList, dm_orgs_error_list: @orgErrorsList }  }
     end
 
 
@@ -73,7 +73,7 @@ module Migrate
         end
       end
 
-      return {  dmUserSuccessList: @userSuccessList, dmUserErrorsList: @userErrorsList  }
+      return {  responses: nil, report: { dm_users_success_list: @userSuccessList, dm_users_error_list: @userErrorsList }  }
     end
 
 
