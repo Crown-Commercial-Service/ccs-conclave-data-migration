@@ -2,7 +2,7 @@ module Common
   class Helper
 
     def self.org_type_to_boolean(org_type)
-      return true if org_type == 1 || org_type == 2
+      return true if org_type == 1 || org_type == "1" || org_type == 2 || org_type == "2"
 
       false
     end
