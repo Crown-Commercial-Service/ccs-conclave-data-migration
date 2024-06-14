@@ -5,9 +5,10 @@ module Migrate
   class Cii
     def initialize(json_data)
       @data = json_data
-      @orgErrorsList = []
-      @orgSuccessList = []
-      @ciiResponseList = {}
+      @org_success_list = []
+      @org_error_list = []
+      @response_list = {}
+      @response_status_code_list = {}
     end
 
 
@@ -25,29 +26,38 @@ module Migrate
 
         if response.present? && response[:response]
           if response[:response].code.present? && response[:response].code.to_i == 201 && response[:response].body.present?
-            @ciiResponseList["#{org["scheme-id"]}-#{org["identifier-id"]}"] = response[:response].body
-            next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 201, data: org  } # Organisation Migrated to CII.
+            @response_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = response[:response].body
+            @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 201  }
+            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 201  } # Organisation Migrated to CII.
           elsif response[:response].code.present? && response[:response].code.to_i == 409 && response[:response].body.present?
-            next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409, data: org  } # Organisation Already Migrated to CII.
+            @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 409  }
+            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409  } # Organisation Already Migrated to CII.
           elsif response[:response].code.present? && response[:response].code.to_i == 404
-            next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 404, data: org, status_error: 'Not Found Response from CII.', response: response  } # Organisation Not Migrated to CII.
+            @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 404  }
+            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 404, status_error: 'Not Found Response from CII.', response: response  } # Organisation Not Migrated to CII.
           elsif response[:response].code.present? && response[:response].code.to_i == 401
-            next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 401, data: org, status_error: 'Unauthorized Response from CII.', response: response  } # Organisation Not Migrated to CII.
+            @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 401  }
+            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 401, status_error: 'Unauthorized Response from CII.', response: response  } # Organisation Not Migrated to CII.
           elsif response[:response].code.present? && response[:response].code.to_i == 400
-            next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 400, data: org, status_error: 'Bad Request Response from CII.', response: response  } # Organisation Not Migrated to CII.
+            @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 400  }
+            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 400, status_error: 'Bad Request Response from CII.', response: response  } # Organisation Not Migrated to CII.
           elsif response[:response].code.present?
-            next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, data: org, status_error: 'Unknown Error from CII.', response: response  } # Organisation Not Migrated to CII.
+            @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: response[:response].code.to_i  }
+            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_error: 'Unknown Error from CII.', response: response  } # Organisation Not Migrated to CII.
           else
-            next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: org, status_error: 'Internal Error.', response: response  } # Organisation Not Migrated to CII.
+            @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
+            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: 'Internal Error.', response: response  } # Organisation Not Migrated to CII.
           end
-        elsif response.present? && response['error']
-          next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: org, status_error: response['error'], response: response  } # Organisation Not Migrated to CII.
+        elsif response.present? && response[:error]
+          @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
+          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: response[:error], response: response  } # Organisation Not Migrated to CII.
         else
-          next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: org, status_error: 'Empty or No Response from CII. (Either a 500 internal error, a url 404 from the external call, or just no response at all received).', response: nil  } # Organisation Not Migrated to CII.
+          @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
+          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: 'Empty or No Response from CII. (Either a 500 internal error, a url 404 from the external call, or just no response at all received).', response: nil  } # Organisation Not Migrated to CII.
         end
       end
 
-      return {  responses: @ciiResponseList, report: { cii_orgs_success_list: @orgSuccessList, cii_orgs_error_List: @orgErrorsList }  }
+      return {  responses: @response_list, reports: {  success_report: @org_success_list, error_report: @org_error_list  }, statuses: @response_status_code_list  }
     end
 
 

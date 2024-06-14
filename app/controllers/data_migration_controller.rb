@@ -110,35 +110,29 @@ class DataMigrationController < ApplicationController
         if validator.validate(json_data)
             json_data = json_data.is_a?(String) ? JSON.parse(json_data) : json_data
 
-            data_migration_service = Migrate::DataMigration.new(json_data)
-            dm_migrate_orgs = data_migration_service.migrate_orgs # { responses: nil, report: { dm_orgs_success_list: @orgSuccessList, dm_orgs_error_list: @orgErrorsList } }
-            dm_migrate_orgs_report = dm_migrate_orgs[:report] # { dm_orgs_success_list: @orgSuccessList, dm_orgs_error_list: @orgErrorsList }
-            dm_migrate_users = data_migration_service.migrate_users # { responses: nil, report: { dm_users_success_list: @userSuccessList, dm_users_error_list: @userErrorsList } }
-            dm_migrate_users_report = dm_migrate_users[:report] # { dm_users_success_list: @userSuccessList, dm_users_error_list: @userErrorsList }
-
             cii_migration_service = Migrate::Cii.new(json_data)
-            cii_migrate_orgs = cii_migration_service.migrate_orgs # { responses: @ciiResposeList, report: { cii_orgs_success_list: @orgSuccessList, cii_orgs_error_List: @orgErrorsList } }
-            cii_migrate_orgs_report = cii_migrate_orgs[:report] # { cii_orgs_success_list: @orgSuccessList, cii_orgs_error_List: @orgErrorsList }
-            #cii_response_list = cii_migrate_orgs[:responses]
+            cii_migrate_orgs = cii_migration_service.migrate_orgs # { responses: @response_list, reports: { success_report: @org_success_list, error_report: @org_error_list }, statuses: @response_status_code_list }
 
-            #ppg_migration_service = Migrate::Ppg.new(json_data, cii_response_list)
-            #ppg_migrate_orgs = ppg_migration_service.migrate_orgs # { responses: nil, report: { ppg_orgs_success_list: @orgSuccessList, ppg_orgs_error_list: @orgErrorsList } }
-            #ppg_migrate_orgs_report = ppg_migrate_orgs[:report] # { ppg_orgs_success_list: @orgSuccessList, ppg_orgs_error_list: @orgErrorsList }
-            #ppg_migrate_users = ppg_migration_service.migrate_users # { responses: nil, report: { ppg_users_success_list: @orgSuccessList, ppg_users_error_list: @orgErrorsList } }
-            #ppg_migrate_users_report = ppg_migrate_users[:report] # { ppg_users_success_list: @orgSuccessList, ppg_users_error_list: @orgErrorsList }
+            ppg_migration_service = Migrate::Ppg.new(json_data, cii_migrate_orgs[:responses])
+            ppg_migrate_orgs = ppg_migration_service.migrate_orgs # { responses: nil, reports: { success_report: @org_success_list, error_report: @org_error_list }, statuses: @org_response_status_code_list }
+            # ppg_migrate_users = ppg_migration_service.migrate_users # { responses: nil, reports: { success_report: @user_success_list, error_report: @user_error_list }, statuses: @user_response_status_code_list }
+
+            data_migration_service = Migrate::DataMigration.new(json_data, cii_migrate_orgs[:statuses], ppg_migrate_orgs[:statuses], 'ppg_migrate_users[:statuses]')
+            dm_migrate_orgs = data_migration_service.migrate_orgs # { responses: nil, reports: { report: @org_list }, statuses: nil }
+            dm_migrate_users = data_migration_service.migrate_users # { responses: nil, reports: { report: @user_list }, statuses: nil }
 
             return render json: {
-                dm_migration_report: {
-                    dm_orgs: dm_migrate_orgs_report,
-                    dm_users: dm_migrate_users_report
+                dm_report: {
+                    orgs: dm_migrate_orgs[:reports],
+                    users: dm_migrate_users[:reports]
                 },
-                cii_migration_report: {
-                    cii_orgs: cii_migrate_orgs_report
-                }#,
-                #ppg_migration_report: {
-                    #ppg_orgs: ppg_migrate_orgs_report,
-                    #ppg_users: ppg_migrate_users_report
-                #}
+                cii_report: {
+                    orgs: cii_migrate_orgs[:reports]
+                },
+                ppg_report: {
+                    orgs: ppg_migrate_orgs[:reports],
+                    users: 'ppg_migrate_users[:reports]'
+                }
             }, status: :ok
         else
             return render json: {  error: validator.errors  }, status: :unprocessable_entity

@@ -7,7 +7,6 @@ class DataMigration < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-
     add_index :clients, [:client_id, :api_key], unique: true
 
     create_table :organisations, id: false do |t|
@@ -16,14 +15,13 @@ class DataMigration < ActiveRecord::Migration[7.1]
       t.string :org_roles
       t.boolean :right_to_buy
       t.string :scheme_id, null: false
-      t.integer :status
-      t.string :status_description
+      t.integer :cii_status
+      t.integer :ppg_status
       t.string :domain_name
 
       t.timestamps
     end
-
-    add_index :organisations, [:org_id, :identifier_id], unique: true
+    add_index :organisations, [:org_id], unique: true
 
     create_table :users, id: false do |t|
       t.bigserial :user_id, primary_key: true
@@ -35,8 +33,7 @@ class DataMigration < ActiveRecord::Migration[7.1]
       t.string :email, null: false
       t.string :first_name, null: false
       t.string :last_name, null: false
-      t.integer :status
-      t.string :status_description
+      t.integer :ppg_status
       t.string :title
       t.string :user_roles
       t.string :identifier_id, null: false
@@ -44,7 +41,6 @@ class DataMigration < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-
-    add_index :users, [:user_id, :email], unique: true
+    add_index :users, [:user_id], unique: true
   end
 end
