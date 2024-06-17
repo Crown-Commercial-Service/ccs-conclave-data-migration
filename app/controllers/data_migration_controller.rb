@@ -135,7 +135,7 @@ class DataMigrationController < ApplicationController
                 }
             }, status: :ok
         else
-            return render json: {  error: validator.errors  }, status: :unprocessable_entity
+            return render json: {  error: validator.errors  }, status: :bad_request
         end
     end
 end
