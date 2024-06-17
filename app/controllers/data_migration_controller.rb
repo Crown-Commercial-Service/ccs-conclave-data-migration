@@ -53,7 +53,7 @@ class DataMigrationController < ApplicationController
                 data << {
                     "identifier-id" => row["IdentifierId"],
                     "scheme-id" => row["SchemeId"],
-                    "organisationType" => row["OrganisationType"],
+                    "organisationType" => row["OrganisationType"].to_s,
                     "domainName" => row["DomainName"],
                     "orgRoles" => Common::Helper.parse_comma_separated_list(row["OrganisationRoles"]),
                     "user" => [{
