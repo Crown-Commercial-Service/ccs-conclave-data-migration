@@ -53,7 +53,7 @@ class DataMigrationController < ApplicationController
                 data << {
                     "identifier-id" => row["IdentifierId"],
                     "scheme-id" => row["SchemeId"],
-                    "organisationType" => row["OrganisationType"],
+                    "organisationType" => row["OrganisationType"].to_s,
                     "domainName" => row["DomainName"],
                     "orgRoles" => Common::Helper.parse_comma_separated_list(row["OrganisationRoles"]),
                     "user" => [{
@@ -135,7 +135,7 @@ class DataMigrationController < ApplicationController
                 }
             }, status: :ok
         else
-            return render json: {  error: validator.errors  }, status: :unprocessable_entity
+            return render json: {  error: validator.errors  }, status: :bad_request
         end
     end
 end
