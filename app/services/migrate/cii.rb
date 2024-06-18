@@ -28,10 +28,10 @@ module Migrate
           if response[:response].code.present? && response[:response].code.to_i == 201 && response[:response].body.present?
             @response_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = response[:response].body
             @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 201  }
-            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 201  } # Organisation Migrated to CII.
+            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 201, cii_org_id: JSON.parse(response[:response].body)['organisationId']  } # Organisation Migrated to CII.
           elsif response[:response].code.present? && response[:response].code.to_i == 409 && response[:response].body.present?
             @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 409  }
-            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409  } # Organisation Already Migrated to CII.
+            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409, cii_org_id: JSON.parse(response[:response].body)['organisationId']  } # Organisation Already Migrated to CII.
           elsif response[:response].code.present? && response[:response].code.to_i == 404
             @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 404  }
             next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 404, status_error: 'Not Found Response from CII.', response: response  } # Organisation Not Migrated to CII.

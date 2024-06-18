@@ -79,13 +79,13 @@ module Migrate
 
         if response.present? && response[:response]
           if response[:response] == 409
-            @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409  } # Organisation Already Migrated to PPG.
+            @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409, data: nil  } # Organisation Already Migrated to PPG.
           elsif response[:response].code.present? && response[:response].code.to_i == 200
             @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 200  }
-            @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 200  } # Organisation Migrated to PPG.
+            @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 200, data: nil  } # Organisation Migrated to PPG.
           elsif response[:response].code.present? && response[:response].code.to_i == 409
             @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 409  }
-            @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409  } # Organisation Already Migrated to PPG.
+            @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409, data: nil  } # Organisation Already Migrated to PPG.
           elsif response[:response].code.present? && response[:response].code.to_i == 404
             @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 404  }
             @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 404, status_error: 'Not Found Response from PPG.', response: response  } # Organisation Not Migrated to PPG.

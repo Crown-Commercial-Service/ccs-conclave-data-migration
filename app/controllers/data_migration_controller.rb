@@ -5,7 +5,7 @@ require 'net/http'
 
 class DataMigrationController < ApplicationController
     include Authorize::Token
-    before_action :validate_api_key
+    #before_action :validate_api_key
 
 
     def validate_as_csv
