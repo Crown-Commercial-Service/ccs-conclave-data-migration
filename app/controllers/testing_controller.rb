@@ -11,6 +11,7 @@ class TestingController < ApplicationController
 
     def test
         # contactPoint = { name: "", email: "test@test.com" }
-        # puts contactPoint[:email].blank?
+        # data = nil
+        # puts data.present?
     end
 end
