@@ -45,7 +45,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_152659) do
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.integer "ppg_status"
-    t.string "title"
     t.string "user_roles"
     t.string "identifier_id", null: false
     t.string "scheme_id", null: false
