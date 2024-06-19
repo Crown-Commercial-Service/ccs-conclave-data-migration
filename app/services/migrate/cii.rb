@@ -3,71 +3,58 @@ require 'uri'
 
 module Migrate
   class Cii
-    def initialize(json_data)
-      @data = json_data
+    attr_reader :org_success_list, :org_error_list
+
+    def initialize()
       @org_success_list = []
       @org_error_list = []
-      @response_list = {}
-      @response_status_code_list = {}
     end
 
 
-    def migrate_orgs
-      migrate_orgs_to_cii
+    def migrate_org(org)
+      migrate_org_to_cii(org)
     end
 
 
     private
 
 
-    def migrate_orgs_to_cii
-      @data.each do |org|
-        response = post_data_to_cii(org["scheme-id"], org["identifier-id"])
+    def migrate_org_to_cii(org)
+      response = post_data_to_cii(org["scheme-id"], org["identifier-id"])
 
-        if response.present? && response[:response].present? && response[:response].code.present?
-          @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: response[:response].code.to_i  }
-
-          if (response[:response].code.to_i == 200 || response[:response].code.to_i == 201) && response[:response].body.present?
-            @response_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = response[:response].body
-            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, cii_org_id: JSON.parse(response[:response].body)['organisationId']  } # Organisation Migrated to CII.
-          elsif response[:response].code.to_i == 409 && response[:response].body.present?
-            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, cii_org_id: JSON.parse(response[:response].body)['organisationId']  } # Organisation Already Migrated to CII.
-          else
-            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_error: 'Unsuccessful Response from CII. Organisation Not Migrated to CII.', response: response  } # Organisation Not Migrated to CII.
-          end
+      if response.present? && response[:response].present? && response[:response].code.present?
+        if (response[:response].code.to_i == 200 || response[:response].code.to_i == 201 || response[:response].code.to_i == 409) && response[:response].body.present?
+          @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, cii_org_id: JSON.parse(response[:response].body)['organisationId']  } # Organisation Migrated or Already Exists.
+          return {  response_status_code: response[:response].code.to_i, response_body: response[:response].body  }
         else
-          @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
-          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: response[:error], response: response  } # Organisation Not Migrated to CII.
+          @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description], response: response  } # Organisation Not Migrated.
+          return {  response_status_code: response[:response].code.to_i, response_body: nil  }
         end
+      else
+        @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_description: response[:status_description], response: response  } # Organisation Not Migrated.
+        return {  response_status_code: 500, response_body: nil  }
       end
-
-      return {  responses: @response_list, reports: {  success_report: @org_success_list, error_report: @org_error_list  }, statuses: @response_status_code_list  }
     end
 
 
     def post_data_to_cii(organisation_id_type, organisation_id)
       uri = URI.parse(ENV.fetch('CII_DOMAIN', nil) + "/identities/organisations/schemes/#{organisation_id_type}/identifiers/#{organisation_id}")
-
       http = Net::HTTP.new(uri.host, uri.port)
-      if ENV.fetch('REMOTE_APP', nil) == 'true'
-        http.use_ssl = true
-      else
-        http.use_ssl = false
-      end
+      http.use_ssl = false # Set to false, if using HTTP (or locally hosting).
 
       request = Net::HTTP::Post.new(uri.request_uri)
       request["x-api-key"] = ENV.fetch('CII_API_KEY', nil)
 
       begin
         response = http.request(request)
-        return {  request: request, response: response, error: nil  }
+        return {  request: request, response: response, status_description: 'Unsuccessful Response from CII. Organisation Not Created in CII.'  } # This 'status_description' is hidden in responses, unless needed to be displayed in a negative scenario.
 
       rescue StandardError => err
         Common::Helper.log_error(err)
-        return {  request: request, response: nil, error: err  }
+        return {  request: request, response: nil, status_description: err  }
       end
 
-      {  request: nil, response: nil, error: nil  } # Fallback, to avoid 500 errors.
+      {  request: nil, response: nil, status_description: 'Internal Error.'  } # Fallback, to prevent 500 errors.
     end
   end
 end
