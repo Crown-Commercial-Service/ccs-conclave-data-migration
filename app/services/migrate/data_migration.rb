@@ -2,17 +2,17 @@ module Migrate
   class DataMigration
     attr_reader :org_list, :user_list
 
-    def initialize(cii_response_status_code, ppg_org_response_status_code, ppg_user_response_status_code)
-      @cii_status_code = cii_response_status_code
-      @ppg_org_status_code = ppg_org_response_status_code
-      @ppg_user_status_code = ppg_user_response_status_code
-
+    def initialize()
       @org_list = []
       @user_list = []
     end
 
 
-    def migrate_org(org)
+    def migrate_org(org, cii_response_status_code, ppg_org_response_status_code, ppg_user_response_status_code)
+      @cii_status_code = cii_response_status_code
+      @ppg_org_status_code = ppg_org_response_status_code
+      @ppg_user_status_code = ppg_user_response_status_code
+
       migrate_org_to_db(org)
     end
 

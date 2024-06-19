@@ -5,9 +5,7 @@ module Migrate
   class Ppg
     attr_reader :org_success_list, :org_error_list, :user_success_list, :user_error_list
 
-    def initialize(cii_response_status_code, cii_response_body)
-      @cii_status_code = cii_response_status_code
-      @cii_body = cii_response_body
+    def initialize()
       @org_success_list = []
       @org_error_list = []
       @user_success_list = []
@@ -15,7 +13,10 @@ module Migrate
     end
 
 
-    def migrate_org(org)
+    def migrate_org(org, cii_response_status_code, cii_response_body)
+      @cii_status_code = cii_response_status_code
+      @cii_body = cii_response_body
+
       migrate_org_to_ppg(org)
     end
 
