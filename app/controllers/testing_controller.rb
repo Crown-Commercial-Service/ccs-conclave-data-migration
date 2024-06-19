@@ -13,5 +13,7 @@ class TestingController < ApplicationController
         # contactPoint = { name: "", email: "test@test.com" }
         # data = nil
         # puts data.present?
+        # response = {  request: request, response: Struct.new(:code).new(409), error: "CII returned 409 Conflict for this org. Organisation already exists in PPG."  }
+        # puts response[:response].code
     end
 end

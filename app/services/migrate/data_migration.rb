@@ -55,7 +55,6 @@ module Migrate
             contact_fax: "#{usr["contactFax"]}",
             contact_social: "#{usr["contactSocial"]}",
             email: "#{usr["email"]}",
-            title: "#{usr["title"]}",
             first_name: "#{usr["firstName"]}",
             last_name: "#{usr["lastName"]}",
             user_roles: Common::Helper.get_roles_from_list(usr["userRoles"]),

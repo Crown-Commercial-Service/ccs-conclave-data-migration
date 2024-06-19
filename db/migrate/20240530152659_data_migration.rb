@@ -34,7 +34,6 @@ class DataMigration < ActiveRecord::Migration[7.1]
       t.string :first_name, null: false
       t.string :last_name, null: false
       t.integer :ppg_status
-      t.string :title
       t.string :user_roles
       t.string :identifier_id, null: false
       t.string :scheme_id, null: false

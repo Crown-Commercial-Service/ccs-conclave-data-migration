@@ -61,7 +61,6 @@ module Validate
     def validate_user(user_data)
       # Validate required fields for user
       return false unless user_data.key?("email") &&
-                          user_data.key?("title") &&
                           user_data.key?("firstName") &&
                           user_data.key?("lastName") &&
                           user_data.key?("contactEmail") &&
