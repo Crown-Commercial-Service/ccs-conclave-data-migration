@@ -35,12 +35,9 @@ module Migrate
           else
             next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_error: 'Unsuccessful Response from CII. Organisation Not Migrated to CII.', response: response  } # Organisation Not Migrated to CII.
           end
-        elsif response.present? && response[:error].present?
-          @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
-          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: response[:error], response: response  } # Organisation Not Migrated to CII.
         else
           @response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
-          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: 'Empty or No Response from CII. 500/404/NoResponse/NoStatusCode.', response: nil  } # Organisation Not Migrated to CII.
+          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: response[:error], response: response  } # Organisation Not Migrated to CII.
         end
       end
 
@@ -69,6 +66,8 @@ module Migrate
         Common::Helper.log_error(err)
         return {  request: request, response: nil, error: err  }
       end
+
+      {  request: nil, response: nil, error: nil  } # Fallback, to avoid 500 errors.
     end
   end
 end
