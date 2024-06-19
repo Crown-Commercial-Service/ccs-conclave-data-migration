@@ -3,60 +3,55 @@ require 'uri'
 
 module Migrate
   class Ppg
-    def initialize(json_data, cii_response_list, cii_status_list)
-      @data = json_data
-      @cii_responses = cii_response_list
-      @cii_statuses = cii_status_list
-      @org_error_list = []
+    attr_reader :org_success_list, :org_error_list, :user_success_list, :user_error_list
+
+    def initialize(cii_response_status_code, cii_response_body)
+      @cii_status_code = cii_response_status_code
+      @cii_body = cii_response_body
       @org_success_list = []
-      @user_error_list = []
+      @org_error_list = []
       @user_success_list = []
-      @org_response_status_code_list = {}
-      @user_response_status_code_list = {}
+      @user_error_list = []
     end
 
 
-    def migrate_orgs
-      migrate_orgs_to_ppg
+    def migrate_org(org)
+      migrate_org_to_ppg(org)
     end
 
 
-    def migrate_users
-      migrate_users_to_ppg
+    def migrate_users(org)
+      migrate_users_to_ppg(org)
     end
 
 
     private
 
 
-    def migrate_orgs_to_ppg
-      @data.each do |org|
-        response = send_request_to_ppg('/organisation-profile', org)
+    def migrate_org_to_ppg(org)
+      response = send_request_to_ppg('/organisation-profile', org)
 
-        if response.present? && response[:response].present? && response[:response].code.present?
-          @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: response[:response].code.to_i  }
-
-          if response[:response].code.to_i == 200 || response[:response].code.to_i == 201
-            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_response: add_organisation_contact(org)  } # Organisation Migrated to PPG.
-          elsif response[:response].code.to_i == 409
-            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_response: nil  } # Organisation Already Migrated to PPG.
-          else
-            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_error: 'Unsuccessful Response from PPG. Organisation Not Migrated to PPG.', response: response  } # Organisation Not Migrated to PPG.
-          end
+      if response.present? && response[:response].present? && response[:response].code.present?
+        if response[:response].code.to_i == 200 || response[:response].code.to_i == 201 || response[:response].code.to_i == 409
+          org_contact_response = 409
+          org_contact_response = add_organisation_contact(org) if response[:response].code.to_i != 409
+          @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_status: org_contact_response  } # Organisation Migrated or Already Exists.
+          return {  response_status_code: response[:response].code.to_i, response_body: nil  }
         else
-          @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
-          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: response[:error], response: response  } # Organisation Not Migrated to PPG.
+          @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description], response: response  } # Organisation Not Migrated.
+          return {  response_status_code: response[:response].code.to_i, response_body: nil  }
         end
+      else
+        @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_description: response[:status_description], response: response  } # Organisation Not Migrated.
+        return {  response_status_code: 500, response_body: nil  }
       end
-
-      return {  responses: nil, reports: {  success_report: @org_success_list, error_report: @org_error_list  }, statuses: @org_response_status_code_list  }
     end
 
 
     def add_organisation_contact(org)
-      return 500 if @cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"].blank? || JSON.parse(@cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"])['organisationId'].blank?
+      return 500 if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
 
-      response = send_request_to_ppg("/contact-service/organisations/#{JSON.parse(@cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"])['organisationId']}/registry-contact", org)
+      response = send_request_to_ppg("/contact-service/organisations/#{JSON.parse(@cii_body)['organisationId']}/registry-contact", org)
 
       return response[:response].code.to_i if response.present? && response[:response].present? && response[:response].code.present?
 
@@ -65,25 +60,23 @@ module Migrate
 
 
     def send_request_to_ppg(endpoint, data = nil)
-      uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
+      return {  request: nil, response: Struct.new(:code).new(409), status_description: 'Organisation Already Exists in CII. Duplicate Organisation Not Created in PPG'  } if @cii_status_code == 409
+      return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG'  } unless (200..201).include?(@cii_status_code)
 
+      uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
-      if ENV.fetch('REMOTE_APP', nil) == 'true'
-        http.use_ssl = true
-      else
-        http.use_ssl = true
-      end
+      http.use_ssl = true # Set to false, if using HTTP (or locally hosting).
 
       case endpoint
       when '/organisation-profile'
         request = Net::HTTP::Post.new(uri.request_uri)
-        request["Content-Type"] = "application/json"
         request["x-api-key"] = ENV.fetch('PPG_ORG_API_KEY', nil)
+        request["Content-Type"] = "application/json"
         request.body = build_org_post_body(data)
       when ->(e) { e.start_with?('/contact-service/organisations') }
         request = Net::HTTP::Post.new(uri.request_uri)
-        request["Content-Type"] = "application/json"
         request["x-api-key"] = ENV.fetch('PPG_ORG_CONTACT_API_KEY', nil)
+        request["Content-Type"] = "application/json"
         request.body = build_org_contact_patch_body(data)
       else
         request = Net::HTTP::Get.new(uri.request_uri)
@@ -91,26 +84,26 @@ module Migrate
       end
 
       if data.present? && request.body == nil
-        return {  request: request, response: Struct.new(:code).new(@cii_statuses["#{data["scheme-id"]}-#{data["identifier-id"]}"][:status].to_i), error: nil  }
+        return {  request: request, response: Struct.new(:code).new(500), status_description: 'Internal Error.'  }
       end
 
       begin
         response = http.request(request)
-        return {  request: request, response: response, error: nil  }
+        return {  request: request, response: response, status_description: 'Unsuccessful Response from PPG. Organisation Not Created in PPG.'  } # This 'status_description' is hidden in responses, unless needed to be displayed in a negative scenario.
 
       rescue StandardError => err
         Common::Helper.log_error(err)
-        return {  request: request, response: nil, error: err  }
+        return {  request: request, response: nil, status_description: err  }
       end
 
-      {  request: nil, response: nil, error: nil  } # Fallback, to avoid 500 errors.
+      {  request: nil, response: nil, status_description: 'Internal Error.'  } # Fallback, to prevent 500 errors.
     end
 
 
     def build_org_post_body(data)
-      return nil if data.blank? || @cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"].blank?
+      return nil if data.blank? || @cii_body.blank?
 
-      cii_org_data = JSON.parse(@cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"])
+      cii_org_data = JSON.parse(@cii_body)
 
       return {
         identifier: cii_org_data['identifier'],
@@ -128,9 +121,9 @@ module Migrate
 
 
     def build_org_contact_patch_body(data)
-      return nil if data.blank? || @cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"].blank? || JSON.parse(@cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"])['contactPoint'].blank?
+      return nil if data.blank? || @cii_body.blank? || JSON.parse(@cii_body)['contactPoint'].blank?
 
-      cii_org_data = JSON.parse(@cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"])
+      cii_org_data = JSON.parse(@cii_body)
       org_contacts = []
 
       if cii_org_data['contactPoint']['email'].present?
