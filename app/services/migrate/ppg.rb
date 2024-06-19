@@ -56,7 +56,7 @@ module Migrate
 
 
     def add_organisation_contact(org)
-      return 500 if @cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"].blank? || JSON.parse(@cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"])['organisationId'].blank?
+      return 500 if @cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"].blank? || JSON.parse(@cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"])['organisationId'].blank?
 
       response = send_request_to_ppg("/contact-service/organisations/#{JSON.parse(@cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"])['organisationId']}/registry-contact", org)
 
