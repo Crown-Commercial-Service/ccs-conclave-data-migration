@@ -27,12 +27,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_152659) do
     t.string "org_roles"
     t.boolean "right_to_buy"
     t.string "scheme_id", null: false
-    t.integer "status"
-    t.string "status_description"
+    t.integer "cii_status"
+    t.integer "ppg_status"
     t.string "domain_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["org_id", "identifier_id"], name: "index_organisations_on_org_id_and_identifier_id", unique: true
+    t.index ["org_id"], name: "index_organisations_on_org_id", unique: true
   end
 
   create_table "users", primary_key: "user_id", force: :cascade do |t|
@@ -44,15 +44,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_152659) do
     t.string "email", null: false
     t.string "first_name", null: false
     t.string "last_name", null: false
-    t.integer "status"
-    t.string "status_description"
-    t.string "title"
+    t.integer "ppg_status"
     t.string "user_roles"
     t.string "identifier_id", null: false
     t.string "scheme_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id", "email"], name: "index_users_on_user_id_and_email", unique: true
+    t.index ["user_id"], name: "index_users_on_user_id", unique: true
   end
 
 end

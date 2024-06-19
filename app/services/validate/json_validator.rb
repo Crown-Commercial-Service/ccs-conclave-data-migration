@@ -42,7 +42,7 @@ module Validate
       # Validate required fields for organization
       return false unless org_data.key?("identifier-id") &&
                           org_data.key?("scheme-id") &&
-                          org_data.key?("rightToBuy") &&
+                          org_data.key?("organisationType") &&
                           org_data.key?("domainName") &&
                           org_data.key?("orgRoles") &&
                           org_data.key?("user") &&
@@ -61,7 +61,6 @@ module Validate
     def validate_user(user_data)
       # Validate required fields for user
       return false unless user_data.key?("email") &&
-                          user_data.key?("title") &&
                           user_data.key?("firstName") &&
                           user_data.key?("lastName") &&
                           user_data.key?("contactEmail") &&

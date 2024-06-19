@@ -14,7 +14,7 @@ module Validate
                         return false if @csv_data.nil?
 
                         # Define a list of fields that are required
-                        required_fields = %w[IdentifierId SchemeId OrganisationType EmailAddress Title FirstName LastName]
+                        required_fields = %w[IdentifierId SchemeId OrganisationType EmailAddress FirstName LastName]
 
                         # Validate that each required field exists and is not blank in each row of the CSV data.
                         @csv_data.each do |row|

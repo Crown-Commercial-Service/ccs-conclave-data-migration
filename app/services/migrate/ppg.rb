@@ -6,10 +6,12 @@ module Migrate
     def initialize(json_data, cii_response_list)
       @data = json_data
       @cii_responses = cii_response_list
-      @orgErrorsList = []
-      @orgSuccessList = []
-      @userErrorsList = []
-      @userSuccessList = []
+      @org_error_list = []
+      @org_success_list = []
+      @user_error_list = []
+      @user_success_list = []
+      @org_response_status_code_list = {}
+      @user_response_status_code_list = {}
     end
 
 
@@ -30,133 +32,128 @@ module Migrate
       @data.each do |org|
         response = send_request_to_ppg('/organisation-profile', org)
 
-        if response.present?
-          begin
-            response_body = JSON.parse(response.body)
+        if response.present? && response[:response].present? && response[:response].code.present?
+          @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: response[:response].code.to_i  }
 
-            if response.code.present? && response.code.to_i == 201 && response_body.present? && response_body.is_a?(Hash)
-              next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 201, data: response_body  } # Organisation Migrated to PPG.
-            elsif response.code.present? && response.code.to_i == 409 && response_body.present? && response_body.is_a?(Hash)
-              next @orgSuccessList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409, data: response_body  } # Organisation Already Migrated to PPG.
-            elsif response.code.present? && response.code.to_i == 404 && response_body.present? && response_body.is_a?(Hash)
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 404, data: response_body, status_error: 'Not Found Response from PPG.', response: response  } # Organisation Not Migrated to PPG.
-            elsif response.code.present? && response.code.to_i == 401 && response_body.present? && response_body.is_a?(Hash)
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 401, data: response_body, status_error: 'Unauthorized Response from PPG.', response: response  } # Organisation Not Migrated to PPG.
-            elsif response.code.present? && response.code.to_i == 400 && response_body.present? && response_body.is_a?(Hash)
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 400, data: response_body, status_error: 'Bad Request Response from PPG.', response: response  } # Organisation Not Migrated to PPG.
-            elsif response.code.present? && response_body.present? && response_body.is_a?(Hash)
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response.code.to_i, data: response_body, status_error: 'Unknown Error from PPG.', response: response  } # Organisation Not Migrated to PPG.
-            else
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: response.body, status_error: 'Internal Error.', response: response  } # Organisation Not Migrated to PPG.
-            end
-          rescue JSON::ParserError => err
-            log_error(err)
-
-            if response.code.present? && response.code.to_i == 400 && response.body.present?
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 400, data: response.body, status_error: 'Bad Request Response from PPG.', response: response  } # Organisation Not Migrated to PPG.
-            elsif response.code.present? && response.code.to_i == 401 && response.body.present?
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 401, data: response.body, status_error: 'Unauthorized Response from PPG.', response: response  } # Organisation Not Migrated to PPG.
-            elsif response.code.present? && response.code.to_i == 404 && response.body.present?
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 404, data: response.body, status_error: 'Not Found Response from PPG.', response: response  } # Organisation Not Migrated to PPG.
-            elsif response.code.present? && response.body.present?
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response.code.to_i, data: response.body, status_error: 'Unknown Error from PPG.', response: response  } # Organisation Not Migrated to PPG.
-            else
-              next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: response.body, status_error: err.message, response: response  } # Organisation Not Migrated to PPG.
-            end
+          if response[:response].code.to_i == 200 || response[:response].code.to_i == 201
+            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_response: add_organisation_contact(org)  } # Organisation Migrated to PPG.
+          elsif response[:response].code.to_i == 409
+            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_response: nil  } # Organisation Already Migrated to PPG.
+          else
+            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_error: 'Unsuccessful Response from PPG. Organisation Not Migrated to PPG.', response: response  } # Organisation Not Migrated to PPG.
           end
+        elsif response.present? && response[:error].present?
+          @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
+          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: response[:error], response: response  } # Organisation Not Migrated to PPG.
         else
-          next @orgErrorsList << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, data: nil, status_error: 'Empty or No Response from PPG.  (DEVELOPER NOTE: Either a 500 internal error, a 404 from the external call, or just no response at all recieved.)', response: nil  } # Organisation Not Migrated to PPG.
+          @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
+          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: 'Empty or No Response from CII. 500/404/NoResponse/NoStatusCode.', response: nil  } # Organisation Not Migrated to PPG.
         end
       end
 
-      return {  responses: nil, report: { ppg_orgs_success_list: @orgSuccessList, ppg_orgs_error_list: @orgErrorsList }  }
+      return {  responses: nil, reports: {  success_report: @org_success_list, error_report: @org_error_list  }, statuses: @org_response_status_code_list  }
+    end
+
+
+    def add_organisation_contact(org)
+      return 500 if @cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"].blank? || JSON.parse(@cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"])['organisationId'].blank?
+
+      response = send_request_to_ppg("/contact-service/organisations/#{JSON.parse(@cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"])['organisationId']}/registry-contact", org)
+
+      return response[:response].code.to_i if response.present? && response[:response].present? && response[:response].code.present?
+
+      return 500
     end
 
 
     def send_request_to_ppg(endpoint, data = nil)
-      uri = build_uri(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
-      http = build_http(uri)
-      request = build_request(uri, data)
+      uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
 
-      begin
-        response = http.request(request)
-        return response
-
-      rescue StandardError => err
-        log_error(err)
-
-        @orgErrorsList << {  organisation: "#{organisation_id_type}-#{organisation_id}", successful: false, status: 500, data: request, status_error: err.message, response: response  } # Organisation Not Migrated to PPG.
-        return nil
-      end
-    end
-
-
-    def build_uri(url)
-      URI.parse(url.to_s)
-    end
-
-
-    def build_http(uri)
       http = Net::HTTP.new(uri.host, uri.port)
       if ENV.fetch('REMOTE_APP', nil) == 'true'
         http.use_ssl = true
       else
-        http.use_ssl = false
+        http.use_ssl = true
       end
 
-      http
-    end
-
-
-    def build_request(uri, data)
-      if data
+      case endpoint
+      when '/organisation-profile'
         request = Net::HTTP::Post.new(uri.request_uri)
-        request.body = build_body(data).to_json
         request["Content-Type"] = "application/json"
+        request["x-api-key"] = ENV.fetch('PPG_ORG_API_KEY', nil)
+        request.body = build_org_post_body(data)
+      when ->(e) { e.start_with?('/contact-service/organisations') }
+        request = Net::HTTP::Post.new(uri.request_uri)
+        request["Content-Type"] = "application/json"
+        request["x-api-key"] = ENV.fetch('PPG_ORG_CONTACT_API_KEY', nil)
+        request.body = build_org_contact_patch_body(data)
       else
         request = Net::HTTP::Get.new(uri.request_uri)
+        request["x-api-key"] = ENV.fetch('PPG_ORG_API_KEY', nil)
       end
 
-      request["x-api-key"] = ENV.fetch('PPG_API_KEY', nil)
-      request
+      if data.present? && request.body == nil
+        return {  request: request, response: Struct.new(:code).new(409), error: "CII returned 409 Conflict for this org #{data["scheme-id"]}-#{data["identifier-id"]}. Organisation already exists in PPG."  }
+      end
+
+      begin
+        response = http.request(request)
+        return {  request: request, response: response, error: nil  }
+
+      rescue StandardError => err
+        Common::Helper.log_error(err)
+        return {  request: request, response: nil, error: err  }
+      end
     end
 
 
-    def build_body(data)
-      # Need CII Data to fill to be this data. So call an endpoint of CII and directly deposit response as body for this PPG request?
-      {
-        "identifier": {
-          "id": data["identifier-id"],
-          "legalName": @cii_responses["#{org["scheme-id"]}-#{org["identifier-id"]}"]['identifier']['legalName'],
-          "uri": "",
-          "scheme": data["scheme-id"]
-        },
-        "additionalIdentifiers": [],
-        "address": {
-          "streetAddress": "Grenville Court, Britwell Road, Burnham",
-          "locality": "Buckinghamshire",
-          "region": "",
-          "postalCode": "SL1 8DF",
-          "countryCode": "GB",
-          "countryName": nil
-        },
-        "detail": {
-          "organisationId": "441761659268971733",
-          "creationDate": "10/01/2022",
-          "businessType": "",
-          "supplierBuyerType": 0,
-          "isSme": false,
-          "isVcse": false,
-          "rightToBuy": false,
-          "isActive": true
+    def build_org_post_body(data)
+      return nil if data.blank? || @cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"].blank?
+
+      cii_org_data = JSON.parse(@cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"])
+
+      return {
+        identifier: cii_org_data['identifier'],
+        additionalIdentifiers: cii_org_data['additionalIdentifier'],
+        address: cii_org_data['address'],
+        detail: {
+          organisationId: cii_org_data['organisationId'],
+          supplierBuyerType: data["organisationType"].to_i,
+          rightToBuy: Common::Helper.org_type_to_boolean("#{data["organisationType"]}"),
+          isActive: true,
+          domainName: data["domainName"]
         }
-      }
+      }.to_json
     end
 
 
-    def log_error(err)
-      puts "Error: #{err.message}"
-      puts err.backtrace.join("\n")
+    def build_org_contact_patch_body(data)
+      return nil if data.blank? || @cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"].blank? || JSON.parse(@cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"])['contactPoint'].blank?
+
+      cii_org_data = JSON.parse(@cii_responses["#{data["scheme-id"]}-#{data["identifier-id"]}"])
+      org_contacts = []
+
+      if cii_org_data['contactPoint']['email'].present?
+        org_contacts << {  contactType: "EMAIL", contactValue: cii_org_data['contactPoint']['email']  }
+      end
+
+      if cii_org_data['contactPoint']['telephone'].present?
+        org_contacts << {  contactType: "PHONE", contactValue: cii_org_data['contactPoint']['telephone']  }
+      end
+
+      if cii_org_data['contactPoint']['faxNumber'].present?
+        org_contacts << {  contactType: "FAX", contactValue: cii_org_data['contactPoint']['faxNumber']  }
+      end
+
+      if cii_org_data['contactPoint']['uri'].present?
+        org_contacts << {  contactType: "WEB_ADDRESS", contactValue: cii_org_data['contactPoint']['uri']  }
+      end
+
+      return {
+        address: cii_org_data['address'],
+        contactPointName: "#{cii_org_data['contactPoint']['name']}",
+        contacts: org_contacts
+      }.to_json
     end
   end
 end
