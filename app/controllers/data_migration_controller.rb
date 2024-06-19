@@ -3,11 +3,13 @@ require 'uri'
 require 'net/http'
 
 
+# Controller for both the JSON and CSV endpoints. Validates and process both sets of data, when either is provided in a request.
 class DataMigrationController < ApplicationController
     include Authorize::Token
     before_action :validate_api_key
 
 
+    # CSV request endpoint entry point.
     def validate_as_csv
         # Check a file was uploaded.
         file = params[:file]
@@ -20,6 +22,7 @@ class DataMigrationController < ApplicationController
     end
 
 
+    # JSON request endpoint entry point.
     def validate_as_json
         # Check content type is correct.
         return render json: {  error: "Bad Request", description: "Incorrect Content-Type. Content and body must be JSON."  }, status: :bad_request unless request.content_type == 'application/json'
@@ -34,7 +37,7 @@ class DataMigrationController < ApplicationController
     private
 
 
-    # Read, validate and process the CSV data, to be converted to JSON.
+    # Read, validate and process the CSV data, to then be converted into JSON.
     def process_csv_data(csv_data)
         line_number = 0
         validator = Validate::CsvValidator.new(csv_data)
@@ -79,7 +82,7 @@ class DataMigrationController < ApplicationController
     end
 
 
-    # If the organization already exists, instead add data row as a new user to the 'user' array for the org.
+    # If the organization already exists and so is a duplicate, add all the user(s) to the already existing organisation entry.
     def add_users_to_existing_org(unique_org_id_list, row, data)
         existing_org_index = data.find_index { |org| org["identifier-id"] == row["IdentifierId"] }
 
@@ -101,7 +104,7 @@ class DataMigrationController < ApplicationController
     end
 
 
-    # Check, validate and process the JSON data, to be migrated.
+    # Check, validate and process the JSON data, and then migrate.
     def process_json_data(json_data)
         validator = Validate::JsonValidator.new
 
@@ -111,7 +114,7 @@ class DataMigrationController < ApplicationController
             cii_migration_service = Migrate::Cii.new(json_data)
             cii_migrate_orgs = cii_migration_service.migrate_orgs # { responses: @response_list, reports: { success_report: @org_success_list, error_report: @org_error_list }, statuses: @response_status_code_list }
 
-            ppg_migration_service = Migrate::Ppg.new(json_data, cii_migrate_orgs[:responses])
+            ppg_migration_service = Migrate::Ppg.new(json_data, cii_migrate_orgs[:responses], cii_migrate_orgs[:statuses])
             ppg_migrate_orgs = ppg_migration_service.migrate_orgs # { responses: nil, reports: { success_report: @org_success_list, error_report: @org_error_list }, statuses: @org_response_status_code_list }
             # ppg_migrate_users = ppg_migration_service.migrate_users # { responses: nil, reports: { success_report: @user_success_list, error_report: @user_error_list }, statuses: @user_response_status_code_list }
 

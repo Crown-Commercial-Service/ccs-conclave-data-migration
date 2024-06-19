@@ -3,9 +3,10 @@ require 'uri'
 
 module Migrate
   class Ppg
-    def initialize(json_data, cii_response_list)
+    def initialize(json_data, cii_response_list, cii_status_list)
       @data = json_data
       @cii_responses = cii_response_list
+      @cii_statuses = cii_status_list
       @org_error_list = []
       @org_success_list = []
       @user_error_list = []
@@ -42,12 +43,9 @@ module Migrate
           else
             next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_error: 'Unsuccessful Response from PPG. Organisation Not Migrated to PPG.', response: response  } # Organisation Not Migrated to PPG.
           end
-        elsif response.present? && response[:error].present?
-          @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
-          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: response[:error], response: response  } # Organisation Not Migrated to PPG.
         else
           @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
-          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: 'Empty or No Response from CII. 500/404/NoResponse/NoStatusCode.', response: nil  } # Organisation Not Migrated to PPG.
+          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: response[:error], response: response  } # Organisation Not Migrated to PPG.
         end
       end
 
@@ -93,7 +91,7 @@ module Migrate
       end
 
       if data.present? && request.body == nil
-        return {  request: request, response: Struct.new(:code).new(409), error: "CII returned 409 Conflict for this org #{data["scheme-id"]}-#{data["identifier-id"]}. Organisation already exists in PPG."  }
+        return {  request: request, response: Struct.new(:code).new(@cii_statuses["#{data["scheme-id"]}-#{data["identifier-id"]}"][:status].to_i), error: nil  }
       end
 
       begin
@@ -104,6 +102,8 @@ module Migrate
         Common::Helper.log_error(err)
         return {  request: request, response: nil, error: err  }
       end
+
+      {  request: nil, response: nil, error: nil  } # Fallback, to avoid 500 errors.
     end
 
 
