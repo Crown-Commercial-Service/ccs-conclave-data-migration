@@ -58,7 +58,6 @@ class DataMigrationController < ApplicationController
                     "orgRoles" => Common::Helper.parse_comma_separated_list(row["OrganisationRoles"]),
                     "user" => [{
                         "email" => row["EmailAddress"],
-                        "title" => row["Title"],
                         "firstName" => row["FirstName"],
                         "lastName" => row["LastName"],
                         "contactEmail" => row["ContactEmail"],
@@ -87,7 +86,6 @@ class DataMigrationController < ApplicationController
         if existing_org_index
           data[existing_org_index]["user"] << {
             "email" => row["EmailAddress"],
-            "title" => row["Title"],
             "firstName" => row["FirstName"],
             "lastName" => row["LastName"],
             "contactEmail" => row["ContactEmail"],

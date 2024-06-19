@@ -32,38 +32,22 @@ module Migrate
       @data.each do |org|
         response = send_request_to_ppg('/organisation-profile', org)
 
-        if response.present? && response[:response]
-          if response[:response] == 409
-            @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 409  }
-            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409, org_contact_response: nil  } # Organisation Already Migrated to PPG.
-          elsif response[:response].code.present? && (response[:response].code.to_i == 200 || response[:response].code.to_i == 201)
-            @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 200  }
+        if response.present? && response[:response].present? && response[:response].code.present?
+          @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: response[:response].code.to_i  }
+
+          if response[:response].code.to_i == 200 || response[:response].code.to_i == 201
             next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_response: add_organisation_contact(org)  } # Organisation Migrated to PPG.
-          elsif response[:response].code.present? && response[:response].code.to_i == 409
-            @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 409  }
-            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: 409, org_contact_response: nil  } # Organisation Already Migrated to PPG.
-          elsif response[:response].code.present? && response[:response].code.to_i == 404
-            @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 404  }
-            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 404, status_error: 'Not Found Response from PPG.', response: response  } # Organisation Not Migrated to PPG.
-          elsif response[:response].code.present? && response[:response].code.to_i == 401
-            @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 401  }
-            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 401, status_error: 'Unauthorized Response from PPG.', response: response  } # Organisation Not Migrated to PPG.
-          elsif response[:response].code.present? && response[:response].code.to_i == 400
-            @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 400  }
-            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 400, status_error: 'Bad Request Response from PPG.', response: response  } # Organisation Not Migrated to PPG.
-          elsif response[:response].code.present?
-            @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: response[:response].code.to_i  }
-            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_error: 'Unknown Error from PPG.', response: response  } # Organisation Not Migrated to PPG.
+          elsif response[:response].code.to_i == 409
+            next @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_response: nil  } # Organisation Already Migrated to PPG.
           else
-            @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
-            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: 'Internal Error.', response: response  } # Organisation Not Migrated to PPG.
+            next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_error: 'Unsuccessful Response from PPG. Organisation Not Migrated to PPG.', response: response  } # Organisation Not Migrated to PPG.
           end
-        elsif response.present? && response[:error]
+        elsif response.present? && response[:error].present?
           @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
           next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: response[:error], response: response  } # Organisation Not Migrated to PPG.
         else
           @org_response_status_code_list["#{org["scheme-id"]}-#{org["identifier-id"]}"] = {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", status: 500  }
-          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: 'Empty or No Response from PPG. (Either a 500 internal error, a url 404 from the external call, or just no response at all received).', response: nil  } # Organisation Not Migrated to PPG.
+          next @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_error: 'Empty or No Response from CII. 500/404/NoResponse/NoStatusCode.', response: nil  } # Organisation Not Migrated to PPG.
         end
       end
 
@@ -109,7 +93,7 @@ module Migrate
       end
 
       if data.present? && request.body == nil
-        return {  request: request, response: 409, error: "CII returned 409 Conflict for this org #{data["scheme-id"]}-#{data["identifier-id"]}. Organisation already exists in PPG."  }
+        return {  request: request, response: Struct.new(:code).new(409), error: "CII returned 409 Conflict for this org #{data["scheme-id"]}-#{data["identifier-id"]}. Organisation already exists in PPG."  }
       end
 
       begin
