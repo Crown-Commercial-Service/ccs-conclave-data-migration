@@ -13,7 +13,8 @@ module Migrate
     end
 
 
-    def migrate_org(org, cii_response_status_code, cii_response_body)
+    def migrate_org(org, org_admin_status, cii_response_status_code, cii_response_body)
+      @admin_check = org_admin_status
       @cii_status_code = cii_response_status_code
       @cii_body = cii_response_body
 
@@ -61,6 +62,7 @@ module Migrate
 
 
     def send_request_to_ppg(endpoint, data = nil)
+      return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator found for this Organisation. Organisation Not Created in PPG'  } if @admin_check == 0
       return {  request: nil, response: Struct.new(:code).new(409), status_description: 'Organisation Already Exists in CII. Duplicate Organisation Not Created in PPG'  } if @cii_status_code == 409
       return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG'  } unless (200..201).include?(@cii_status_code)
 

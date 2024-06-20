@@ -50,9 +50,10 @@ class DataMigrationController < ApplicationController
                 line_number += 1
 
                 next if line_number == 1
-                next add_users_to_existing_org(unique_org_id_list, row, data) if unique_org_id_list.include?(row["IdentifierId"])
+                next add_users_to_existing_org(row, data) if unique_org_id_list.include?("#{row["SchemeId"]}-#{row["IdentifierId"]}")
 
-                unique_org_id_list << row["IdentifierId"]
+                unique_org_id_list << "#{row["SchemeId"]}-#{row["IdentifierId"]}"
+
                 data << {
                     "identifier-id" => row["IdentifierId"],
                     "scheme-id" => row["SchemeId"],
@@ -82,9 +83,9 @@ class DataMigrationController < ApplicationController
     end
 
 
-    # If the organization already exists and so is a duplicate, add all the user(s) to the already existing organisation entry.
-    def add_users_to_existing_org(unique_org_id_list, row, data)
-        existing_org_index = data.find_index { |org| org["identifier-id"] == row["IdentifierId"] }
+    # If an organisation already exists and so is a duplicate, add user(s) to the already existing organisation entry.
+    def add_users_to_existing_org(row, data)
+        existing_org_index = data.find_index { |org| "#{org["scheme-id"]}-#{org["identifier-id"]}" == "#{row["SchemeId"]}-#{row["IdentifierId"]}" }
 
         if existing_org_index
           data[existing_org_index]["user"] << {
@@ -111,44 +112,61 @@ class DataMigrationController < ApplicationController
         if validator.validate(json_data)
             json_data = json_data.is_a?(String) ? JSON.parse(json_data) : json_data
 
-            @cii_migration_service = Migrate::Cii.new()
-            @ppg_migration_service = Migrate::Ppg.new()
-            @data_migration_service = Migrate::DataMigration.new()
+            cii_migration_service = Migrate::Cii.new()
+            ppg_migration_service = Migrate::Ppg.new()
+            data_migration_service = Migrate::DataMigration.new()
+            administrated_organisations_list = []
 
             json_data.each do |org|
-                cii_migration_service_response = @cii_migration_service.migrate_org(org) # { response_status_code: <code>, response_body: <body> }
+                org_admin_status = org_admin_check(org, administrated_organisations_list)
+                administrated_organisations_list << "#{org["scheme-id"]}-#{org["identifier-id"]}" if org_admin_status == 2
 
-                ppg_migration_service_response_org = @ppg_migration_service.migrate_org(org, cii_migration_service_response[:response_status_code], cii_migration_service_response[:response_body]) # { response_status_code: <code>, response_body: nil }
-                #ppg_migration_service_response_users = @ppg_migration_service.migrate_users(org) # { response_status_code: <code>, response_body: nil }
+                cii_migration_service_response = cii_migration_service.migrate_org(org, org_admin_status)
 
-                @data_migration_service.migrate_org(org, cii_migration_service_response[:response_status_code], ppg_migration_service_response_org[:response_status_code], 'ppg_migration_service_response_users[:response_status_code]')
-                @data_migration_service.migrate_users(org)
+                ppg_migration_service_response_org = ppg_migration_service.migrate_org(org, org_admin_status, cii_migration_service_response[:response_status_code], cii_migration_service_response[:response_body])
+                #ppg_migration_service_response_users = ppg_migration_service.migrate_users(org)
+
+                data_migration_service.migrate_org(org, cii_migration_service_response[:response_status_code], ppg_migration_service_response_org[:response_status_code], 'ppg_migration_service_response_users[:response_status_code]')
+                data_migration_service.migrate_users(org)
             end
 
             return render json: {
                 dm_report: {
-                    orgs: @data_migration_service.org_list,
-                    users: @data_migration_service.user_list
+                    orgs: data_migration_service.org_list,
+                    users: data_migration_service.user_list
                 },
                 cii_report: {
                     orgs: {
-                        success_report: @cii_migration_service.org_success_list,
-                        error_report: @cii_migration_service.org_error_list
+                        success_report: cii_migration_service.org_success_list,
+                        error_report: cii_migration_service.org_error_list
                     }
                 },
                 ppg_report: {
                     orgs: {
-                        success_report: @ppg_migration_service.org_success_list,
-                        error_report: @ppg_migration_service.org_error_list
+                        success_report: ppg_migration_service.org_success_list,
+                        error_report: ppg_migration_service.org_error_list
                     },
                     users: {
-                        success_report: @ppg_migration_service.user_success_list,
-                        error_report: @ppg_migration_service.user_error_list
+                        success_report: ppg_migration_service.user_success_list,
+                        error_report: ppg_migration_service.user_error_list
                     }
                 }
             }, status: :ok
         else
             return render json: {  error: validator.errors  }, status: :bad_request
         end
+    end
+
+
+    # Checks whether an organisation users list has at least one org admin, and returns an integer for the results of this check.
+    def org_admin_check(org, admin_orgs_list)
+        return 1 if admin_orgs_list.include?("#{org["scheme-id"]}-#{org["identifier-id"]}")
+
+        org["user"].each do |user|
+            user["userRoles"].each do |role|
+                return 2 if role["name"].upcase == "ORGANISATION_ADMINISTRATOR" || role["name"].upcase == "ORGANISATION ADMINISTRATOR"
+            end
+        end
+        return 0
     end
 end
