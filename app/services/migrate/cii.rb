@@ -40,7 +40,7 @@ module Migrate
     def post_data_to_cii(organisation_id_type, organisation_id)
       uri = URI.parse(ENV.fetch('CII_DOMAIN', nil) + "/identities/organisations/schemes/#{organisation_id_type}/identifiers/#{organisation_id}")
       http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = false # Set to false, if using HTTP (or locally hosting).
+      http.use_ssl = true # Set to false, if using HTTP (or locally hosting).
 
       request = Net::HTTP::Post.new(uri.request_uri)
       request["x-api-key"] = ENV.fetch('CII_API_KEY', nil)
