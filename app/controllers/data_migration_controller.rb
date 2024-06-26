@@ -118,7 +118,7 @@ class DataMigrationController < ApplicationController
             administrated_organisations_list = []
 
             json_data.each do |org|
-                org_admin_status = org_admin_check(org, administrated_organisations_list)
+                org_admin_status = Common::Helper.org_admin_check(org, administrated_organisations_list)
                 administrated_organisations_list << "#{org["scheme-id"]}-#{org["identifier-id"]}" if org_admin_status == 2
 
                 cii_migration_service_response = cii_migration_service.migrate_org(org, org_admin_status)
@@ -155,18 +155,5 @@ class DataMigrationController < ApplicationController
         else
             return render json: {  error: validator.errors  }, status: :bad_request
         end
-    end
-
-
-    # Checks whether an organisation users list has at least one org admin, and returns an integer for the results of this check.
-    def org_admin_check(org, admin_orgs_list)
-        return 1 if admin_orgs_list.include?("#{org["scheme-id"]}-#{org["identifier-id"]}")
-
-        org["user"].each do |user|
-            user["userRoles"].each do |role|
-                return 2 if role["name"].upcase == "ORGANISATION_ADMINISTRATOR" || role["name"].upcase == "ORGANISATION ADMINISTRATOR"
-            end
-        end
-        return 0
     end
 end
