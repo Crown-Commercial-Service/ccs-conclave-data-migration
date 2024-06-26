@@ -37,7 +37,8 @@ module Migrate
         if response[:response].code.to_i == 200 || response[:response].code.to_i == 201 || response[:response].code.to_i == 409
           org_contact_response = 409
           org_contact_response = add_organisation_contact(org) if response[:response].code.to_i != 409
-          @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_status: org_contact_response  } # Organisation Migrated or Already Exists.
+          org_role_response = add_organisation_role(org)
+          @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_status: org_contact_response, org_roles_status: org_role_response  } # Organisation Migrated or Already Exists.
           return {  response_status_code: response[:response].code.to_i, response_body: nil  }
         else
           @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description], response: response  } # Organisation Not Migrated.
@@ -61,10 +62,57 @@ module Migrate
     end
 
 
+    def add_organisation_role(org)
+      return 500 if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
+
+      org_roles_report = {}
+      cii_org_data = JSON.parse(@cii_body)
+      response = send_request_to_ppg('/configuration-service/roles')
+
+      return 500 unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
+
+      roles_library = JSON.parse(response[:response].body)
+
+      if @cii_status_code == 409
+        right_to_buy_status = get_right_to_buy_status
+      else
+        right_to_buy_status = Common::Helper.org_type_to_boolean("#{org["organisationType"]}")
+      end
+
+      org["orgRoles"].each do |role|
+        matching_role = roles_library.find { |role_data| role_data["roleKey"] == role[:name] }
+
+        if matching_role.present? && matching_role["roleId"].present?
+          response_put = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles", { roleId: matching_role["roleId"], right_to_buy_status: right_to_buy_status })
+        end
+
+        if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
+          org_roles_report["#{role[:name]}(#{matching_role["roleId"]})"] = response_put[:response].code
+        else
+          org_roles_report["#{role[:name]}(#{matching_role["roleId"]})"] = 500
+        end
+      end
+
+      return org_roles_report
+    end
+
+
+    def get_right_to_buy_status
+      cii_org_data = JSON.parse(@cii_body)
+
+      response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}")
+
+      if response.present? && response[:response].present? && response[:response].code.present? && (response[:response].code == 200 || response[:response].code == 201) && response[:response].body.present?
+        return JSON.parse(response[:response].body)['detail']['rightToBuy']
+      end
+
+      return false
+    end
+
+
     def send_request_to_ppg(endpoint, data = nil)
       return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator found for this Organisation. Organisation Not Created in PPG'  } if @admin_check == 0
-      return {  request: nil, response: Struct.new(:code).new(409), status_description: 'Organisation Already Exists in CII. Duplicate Organisation Not Created in PPG'  } if @cii_status_code == 409
-      return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG'  } unless (200..201).include?(@cii_status_code)
+      return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG'  } unless (200..201).include?(@cii_status_code) || @cii_status_code == 409
 
       uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
@@ -72,18 +120,30 @@ module Migrate
 
       case endpoint
       when '/organisation-profile'
+        return {  request: nil, response: Struct.new(:code).new(409), status_description: 'Organisation Already Exists in CII. Duplicate Organisation Not Created in PPG'  } if @cii_status_code == 409
+
         request = Net::HTTP::Post.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_ORG_API_KEY', nil)
         request["Content-Type"] = "application/json"
         request.body = build_org_post_body(data)
-      when ->(e) { e.start_with?('/contact-service/organisations') }
+      when ->(e) { e.start_with?('/contact-service/organisations/') }
         request = Net::HTTP::Post.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_ORG_CONTACT_API_KEY', nil)
         request["Content-Type"] = "application/json"
-        request.body = build_org_contact_patch_body(data)
+        request.body = build_org_contact_post_body(data)
+      when '/configuration-service/roles'
+        request = Net::HTTP::Get.new(uri.request_uri)
+        request["x-api-key"] = ENV.fetch('PPG_ORG_GET_ROLE_API_KEY', nil)
+      when ->(e) { e.start_with?('/organisation-profile/') && data.present? }
+        request = Net::HTTP::Put.new(uri.request_uri)
+        request["x-api-key"] = ENV.fetch('PPG_ORG_PUT_ROLE_API_KEY', nil) # Need API Key.
+        request["Content-Type"] = "application/json"
+        request.body = build_org_role_put_body(data)
+      when ->(e) { e.start_with?('/organisation-profile/') }
+        request = Net::HTTP::Get.new(uri.request_uri)
+        request["x-api-key"] = ENV.fetch('PPG_ORG_GET_DETAILS_API_KEY', nil) # Need API Key.
       else
         request = Net::HTTP::Get.new(uri.request_uri)
-        request["x-api-key"] = ENV.fetch('PPG_ORG_API_KEY', nil)
       end
 
       if data.present? && request.body == nil
@@ -92,7 +152,7 @@ module Migrate
 
       begin
         response = http.request(request)
-        return {  request: request, response: response, status_description: 'Unsuccessful Response from PPG. Organisation Not Created in PPG.'  } # This 'status_description' is hidden in responses, unless needed to be displayed in a negative scenario.
+        return {  request: request, response: response, status_description: 'Unsuccessful Response from PPG. Organisation Not Created in PPG.'  } # This 'status_description' is provided by default, and is hidden in responses, unless needed to be displayed in a negative scenario.
 
       rescue StandardError => err
         Common::Helper.log_error(err)
@@ -123,7 +183,7 @@ module Migrate
     end
 
 
-    def build_org_contact_patch_body(data)
+    def build_org_contact_post_body(data)
       return nil if data.blank? || @cii_body.blank? || JSON.parse(@cii_body)['contactPoint'].blank?
 
       cii_org_data = JSON.parse(@cii_body)
@@ -149,6 +209,18 @@ module Migrate
         address: cii_org_data['address'],
         contactPointName: "#{cii_org_data['contactPoint']['name']}",
         contacts: org_contacts
+      }.to_json
+    end
+
+
+    def build_org_role_put_body(data)
+      return nil if data.blank?
+
+      return {
+        isBuyer: data[:right_to_buy_status],
+        rolesToAdd: [
+          {  roleId: data[:roleId]  }
+        ],
       }.to_json
     end
   end
