@@ -37,7 +37,7 @@ module Migrate
         if response[:response].code.to_i == 200 || response[:response].code.to_i == 201 || response[:response].code.to_i == 409
           org_contact_response = 409
           org_contact_response = add_organisation_contact(org) if response[:response].code.to_i != 409
-          org_role_response = add_organisation_role(org)
+          org_role_response = add_organisation_roles(org)
           @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_status: org_contact_response, org_roles_status: org_role_response  } # Organisation Migrated or Already Exists.
           return {  response_status_code: response[:response].code.to_i, response_body: nil  }
         else
@@ -62,7 +62,7 @@ module Migrate
     end
 
 
-    def add_organisation_role(org)
+    def add_organisation_roles(org)
       return 500 if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
 
       org_roles_report = {}
@@ -80,16 +80,16 @@ module Migrate
       end
 
       org["orgRoles"].each do |role|
-        matching_role = roles_library.find { |role_data| role_data["roleKey"] == role[:name] }
+        matching_role = roles_library.find { |role_data| role_data["roleKey"] == role["name"] }
 
         if matching_role.present? && matching_role["roleId"].present?
           response_put = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles", { roleId: matching_role["roleId"], right_to_buy_status: right_to_buy_status })
         end
 
         if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
-          org_roles_report["#{role[:name]}(#{matching_role["roleId"]})"] = response_put[:response].code
+          org_roles_report["#{role["name"]} (ID: #{matching_role["roleId"]})"] = response_put[:response].code
         else
-          org_roles_report["#{role[:name]}(#{matching_role["roleId"]})"] = 500
+          org_roles_report["#{role["name"]}"] = 500
         end
       end
 
