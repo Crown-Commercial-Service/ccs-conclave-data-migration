@@ -34,18 +34,18 @@ module Migrate
       response = send_request_to_ppg('/organisation-profile', org)
 
       if response.present? && response[:response].present? && response[:response].code.present?
-        if response[:response].code.to_i == 200 || response[:response].code.to_i == 201 || response[:response].code.to_i == 409
+        if [200, 201, 409].include?(response[:response].code.to_i)
           org_contact_response = 409
           org_contact_response = add_organisation_contact(org) if response[:response].code.to_i != 409
           org_role_response = add_organisation_roles(org)
-          @org_success_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: true, status: response[:response].code.to_i, org_contact_status: org_contact_response, org_roles_status: org_role_response  } # Organisation Migrated or Already Exists.
+          @org_success_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, org_contact_status: org_contact_response, org_roles_status: org_role_response  } # Organisation Migrated or Already Exists.
           return {  response_status_code: response[:response].code.to_i, response_body: nil  }
         else
-          @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description], response: response  } # Organisation Not Migrated.
+          @org_error_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description]  } # Organisation Not Migrated.
           return {  response_status_code: response[:response].code.to_i, response_body: nil  }
         end
       else
-        @org_error_list << {  organisation: "#{org["scheme-id"]}-#{org["identifier-id"]}", successful: false, status: 500, status_description: response[:status_description], response: response  } # Organisation Not Migrated.
+        @org_error_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 500, status_description: response[:status_description]  } # Organisation Not Migrated.
         return {  response_status_code: 500, response_body: nil  }
       end
     end
@@ -76,20 +76,27 @@ module Migrate
       if @cii_status_code == 409
         right_to_buy_status = get_right_to_buy_status
       else
-        right_to_buy_status = Common::Helper.org_type_to_boolean("#{org["organisationType"]}")
+        right_to_buy_status = Common::Helper.org_type_to_boolean("#{org['organisationType']}")
       end
 
-      org["orgRoles"].each do |role|
-        matching_role = roles_library.find { |role_data| role_data["roleKey"] == role["name"] }
+      org['orgRoles'].each do |role|
+        response_put = nil
+        matching_roles = roles_library.select { |role_data| role_data['roleKey'] == role['key'] }
 
-        if matching_role.present? && matching_role["roleId"].present?
-          response_put = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles", { roleId: matching_role["roleId"], right_to_buy_status: right_to_buy_status })
-        end
+        if matching_roles.present? && matching_roles.any? { |role| role['roleId'].present? }
+          matching_roles.each do |matching_role|
+            if matching_role['roleId'].present?
+              response_put = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles", { roleId: matching_role['roleId'], right_to_buy_status: right_to_buy_status })
 
-        if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
-          org_roles_report["#{role["name"]} (ID: #{matching_role["roleId"]})"] = response_put[:response].code
+              if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
+                org_roles_report["#{role['key']} (ID: #{matching_role['roleId']})"] = response_put[:response].code
+              else
+                org_roles_report["#{role['key']} (ID: #{matching_role['roleId']})"] = 500
+              end
+            end
+          end
         else
-          org_roles_report["#{role["name"]}"] = 500
+          org_roles_report["#{role['key']}"] = 500
         end
       end
 
@@ -102,7 +109,7 @@ module Migrate
 
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}")
 
-      if response.present? && response[:response].present? && response[:response].code.present? && (response[:response].code == 200 || response[:response].code == 201) && response[:response].body.present?
+      if response.present? && response[:response].present? && response[:response].code.present? && [200, 201].include?(response[:response].code) && response[:response].body.present?
         return JSON.parse(response[:response].body)['detail']['rightToBuy']
       end
 
@@ -136,19 +143,17 @@ module Migrate
         request["x-api-key"] = ENV.fetch('PPG_ORG_GET_ROLE_API_KEY', nil)
       when ->(e) { e.start_with?('/organisation-profile/') && data.present? }
         request = Net::HTTP::Put.new(uri.request_uri)
-        request["x-api-key"] = ENV.fetch('PPG_ORG_PUT_ROLE_API_KEY', nil) # Need API Key.
+        request["x-api-key"] = ENV.fetch('PPG_ORG_PUT_ROLE_API_KEY', nil)
         request["Content-Type"] = "application/json"
         request.body = build_org_role_put_body(data)
       when ->(e) { e.start_with?('/organisation-profile/') }
         request = Net::HTTP::Get.new(uri.request_uri)
-        request["x-api-key"] = ENV.fetch('PPG_ORG_GET_DETAILS_API_KEY', nil) # Need API Key.
+        request["x-api-key"] = ENV.fetch('PPG_ORG_GET_DETAILS_API_KEY', nil)
       else
         request = Net::HTTP::Get.new(uri.request_uri)
       end
 
-      if data.present? && request.body == nil
-        return {  request: request, response: Struct.new(:code).new(500), status_description: 'Internal Error.'  }
-      end
+      return {  request: request, response: Struct.new(:code).new(500), status_description: 'Internal Error.'  } if data.present? && request.body.nil?
 
       begin
         response = http.request(request)
@@ -174,10 +179,10 @@ module Migrate
         address: cii_org_data['address'],
         detail: {
           organisationId: cii_org_data['organisationId'],
-          supplierBuyerType: data["organisationType"].to_i,
-          rightToBuy: Common::Helper.org_type_to_boolean("#{data["organisationType"]}"),
+          supplierBuyerType: data['organisationType'].to_i,
+          rightToBuy: Common::Helper.org_type_to_boolean("#{data['organisationType']}"),
           isActive: true,
-          domainName: data["domainName"]
+          domainName: data['domainName']
         }
       }.to_json
     end

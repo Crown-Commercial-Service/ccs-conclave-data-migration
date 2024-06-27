@@ -6,31 +6,31 @@ require 'net/http'
 # Controller for both the JSON and CSV endpoints. Validates and process both sets of data, when either is provided in a request.
 class DataMigrationController < ApplicationController
     include Authorize::Token
-    before_action :validate_api_key
+    #before_action :validate_api_key
 
 
     # CSV request endpoint entry point.
     def validate_as_csv
         # Check a file was uploaded.
         file = params[:file]
-        return render json: {  error: "Bad Request", description: "No file csv file found in the request."  }, status: :bad_request if file.nil?
+        return render json: {  error: 'Bad Request', description: 'No file csv file found in the request.'  }, status: :bad_request if file.nil?
 
         csv_data = CSV.parse(file.read, headers: true)
         return process_csv_data(csv_data) if csv_data
 
-        return render json: {  error: "Unprocessable Entity", description: "No file csv file found in the request."  }, status: :unprocessable_entity
+        return render json: {  error: 'Unprocessable Entity', description: 'No file csv file found in the request.'  }, status: :unprocessable_entity
     end
 
 
     # JSON request endpoint entry point.
     def validate_as_json
         # Check content type is correct.
-        return render json: {  error: "Bad Request", description: "Incorrect Content-Type. Content and body must be JSON."  }, status: :bad_request unless request.content_type == 'application/json'
+        return render json: {  error: 'Bad Request', description: 'Incorrect Content-Type. Content and body must be JSON.'  }, status: :bad_request unless request.content_type == 'application/json'
 
         json_data = request.body.read
         return process_json_data(json_data) if json_data
 
-        return render json: {  error: "Unprocessable Entity", description: "Error with JSON request body."  }, status: :unprocessable_entity
+        return render json: {  error: 'Unprocessable Entity', description: 'Error with JSON request body.'  }, status: :unprocessable_entity
     end
 
 
@@ -50,9 +50,9 @@ class DataMigrationController < ApplicationController
                 line_number += 1
 
                 next if line_number == 1
-                next add_users_to_existing_org(row, data) if unique_org_id_list.include?("#{row["SchemeId"]}-#{row["IdentifierId"]}")
+                next add_users_to_existing_org(row, data) if unique_org_id_list.include?("#{row['SchemeId']}-#{row['IdentifierId']}")
 
-                unique_org_id_list << "#{row["SchemeId"]}-#{row["IdentifierId"]}"
+                unique_org_id_list << "#{row['SchemeId']}-#{row['IdentifierId']}"
 
                 data << {
                     "identifier-id" => row["IdentifierId"],
@@ -76,7 +76,7 @@ class DataMigrationController < ApplicationController
 
             return process_json_data(data) if data
 
-            return render json: {  error: "Internal Server Error", description: "Something went wrong and no data was found processed."  }, status: :internal_server_error
+            return render json: {  error: 'Internal Server Error', description: 'Something went wrong and no data was found processed.'  }, status: :internal_server_error
         else
             return render json: {  error: validator.errors  }, status: :unprocessable_entity
         end
@@ -85,10 +85,10 @@ class DataMigrationController < ApplicationController
 
     # If an organisation already exists and so is a duplicate, add user(s) to the already existing organisation entry.
     def add_users_to_existing_org(row, data)
-        existing_org_index = data.find_index { |org| "#{org["scheme-id"]}-#{org["identifier-id"]}" == "#{row["SchemeId"]}-#{row["IdentifierId"]}" }
+        existing_org_index = data.find_index { |org| "#{org['scheme-id']}-#{org['identifier-id']}" == "#{row['SchemeId']}-#{row['IdentifierId']}" }
 
         if existing_org_index
-          data[existing_org_index]["user"] << {
+          data[existing_org_index]['user'] << {
             "email" => row["EmailAddress"],
             "firstName" => row["FirstName"],
             "lastName" => row["LastName"],
@@ -119,7 +119,7 @@ class DataMigrationController < ApplicationController
 
             json_data.each do |org|
                 org_admin_status = Common::Helper.org_admin_check(org, administrated_organisations_list)
-                administrated_organisations_list << "#{org["scheme-id"]}-#{org["identifier-id"]}" if org_admin_status == 2
+                administrated_organisations_list << "#{org['scheme-id']}-#{org['identifier-id']}" if org_admin_status == 2
 
                 cii_migration_service_response = cii_migration_service.migrate_org(org, org_admin_status)
 
