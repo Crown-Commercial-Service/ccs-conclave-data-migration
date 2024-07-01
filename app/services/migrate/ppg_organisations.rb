@@ -2,7 +2,7 @@ require 'net/http'
 require 'uri'
 
 module Migrate
-  class Ppg
+  class PpgOrganisations
     attr_reader :org_success_list, :org_error_list
 
     def initialize()
@@ -142,8 +142,6 @@ module Migrate
       when ->(e) { e.start_with?('/organisation-profile/') }
         request = Net::HTTP::Get.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_ORG_PROFILE', nil)
-      else
-        request = Net::HTTP::Get.new(uri.request_uri)
       end
 
       return {  request: request, response: Struct.new(:code).new(500), status_description: 'Internal Error.'  } if data.present? && request.body.nil?

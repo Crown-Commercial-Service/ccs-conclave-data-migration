@@ -112,8 +112,9 @@ class DataMigrationController < ApplicationController
         if validator.validate(json_data)
             json_data = json_data.is_a?(String) ? JSON.parse(json_data) : json_data
 
-            cii_migration_service = Migrate::Cii.new()
-            ppg_migration_service = Migrate::Ppg.new()
+            cii_org_migration_service = Migrate::Cii.new()
+            ppg_org_migration_service = Migrate::PpgOrganisations.new()
+            ppg_user_migration_service = Migrate::PpgUsers.new()
             data_migration_service = Migrate::DataMigration.new()
             administrated_organisations_list = []
 
@@ -121,13 +122,13 @@ class DataMigrationController < ApplicationController
                 org_admin_status = Common::Helper.org_admin_check(org, administrated_organisations_list)
                 administrated_organisations_list << "#{org['scheme-id']}-#{org['identifier-id']}" if org_admin_status == 2
 
-                cii_migration_service_response = cii_migration_service.migrate_org(org, org_admin_status)
+                cii_migration_service_response = cii_org_migration_service.migrate_org(org, org_admin_status)
 
-                ppg_migration_service_response_org = ppg_migration_service.migrate_org(org, org_admin_status, cii_migration_service_response[:response_status_code], cii_migration_service_response[:response_body])
-                #ppg_migration_service_response_users = ppg_migration_service.migrate_users(org)
+                ppg_migration_service_response_org = ppg_org_migration_service.migrate_org(org, org_admin_status, cii_migration_service_response[:response_status_code], cii_migration_service_response[:response_body])
+                ppg_migration_service_response_users = ppg_user_migration_service.migrate_users(org, ppg_migration_service_response_org[:response_status_code])
 
-                data_migration_service.migrate_org(org, cii_migration_service_response[:response_status_code], ppg_migration_service_response_org[:response_status_code], 'ppg_migration_service_response_users[:response_status_code]')
-                data_migration_service.migrate_users(org)
+                data_migration_service.migrate_org(org, cii_migration_service_response[:response_status_code], ppg_migration_service_response_org[:response_status_code])
+                data_migration_service.migrate_users(org, ppg_migration_service_response_users[:response_status_code])
             end
 
             return render json: {
@@ -137,18 +138,18 @@ class DataMigrationController < ApplicationController
                 },
                 cii_report: {
                     orgs: {
-                        success_report: cii_migration_service.org_success_list,
-                        error_report: cii_migration_service.org_error_list
+                        success_report: cii_org_migration_service.org_success_list,
+                        error_report: cii_org_migration_service.org_error_list
                     }
                 },
                 ppg_report: {
                     orgs: {
-                        success_report: ppg_migration_service.org_success_list,
-                        error_report: ppg_migration_service.org_error_list
+                        success_report: ppg_org_migration_service.org_success_list,
+                        error_report: ppg_org_migration_service.org_error_list
                     },
                     users: {
-                        success_report: ppg_migration_service.user_success_list,
-                        error_report: ppg_migration_service.user_error_list
+                        success_report: ppg_user_migration_service.user_success_list,
+                        error_report: ppg_user_migration_service.user_error_list
                     }
                 }
             }, status: :ok
