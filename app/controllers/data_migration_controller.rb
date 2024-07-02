@@ -76,7 +76,7 @@ class DataMigrationController < ApplicationController
 
             return process_json_data(data) if data
 
-            return render json: {  error: 'Internal Server Error', description: 'Something went wrong and no data was found processed.'  }, status: :internal_server_error
+            return render json: {  error: 'Internal Server Error', description: 'Internal Error.'  }, status: :internal_server_error
         else
             return render json: {  error: validator.errors  }, status: :unprocessable_entity
         end
@@ -112,6 +112,7 @@ class DataMigrationController < ApplicationController
         if validator.validate(json_data)
             json_data = json_data.is_a?(String) ? JSON.parse(json_data) : json_data
 
+            # Initialise all Migration Services.
             cii_org_migration_service = Migrate::Cii.new()
             ppg_org_migration_service = Migrate::PpgOrganisations.new()
             ppg_user_migration_service = Migrate::PpgUsers.new()
@@ -119,18 +120,23 @@ class DataMigrationController < ApplicationController
             administrated_organisations_list = []
 
             json_data.each do |org|
+                # Organisation Check for an Admin User.
                 org_admin_status = Common::Helper.org_admin_check(org, administrated_organisations_list)
                 administrated_organisations_list << "#{org['scheme-id']}-#{org['identifier-id']}" if org_admin_status == 2
 
+                # Migrate Organisations.
                 cii_migration_service_response = cii_org_migration_service.migrate_org(org, org_admin_status)
-
                 ppg_migration_service_response_org = ppg_org_migration_service.migrate_org(org, org_admin_status, cii_migration_service_response[:response_status_code], cii_migration_service_response[:response_body])
-                ppg_migration_service_response_users = ppg_user_migration_service.migrate_users(org, ppg_migration_service_response_org[:response_status_code])
-
                 data_migration_service.migrate_org(org, cii_migration_service_response[:response_status_code], ppg_migration_service_response_org[:response_status_code])
-                data_migration_service.migrate_users(org, ppg_migration_service_response_users[:response_status_code])
+
+                # Migrate Users.
+                org['user'].each do |user|
+                    ppg_migration_service_response_user = ppg_user_migration_service.migrate_user(org, user, org_admin_status, ppg_migration_service_response_org[:response_status_code], cii_migration_service_response[:response_body])
+                    data_migration_service.migrate_user(org, user, ppg_migration_service_response_user[:response_status_code])
+                end
             end
 
+            # Return a Compiled Report for the Completed Migration, in the response.
             return render json: {
                 dm_report: {
                     orgs: data_migration_service.org_list,
