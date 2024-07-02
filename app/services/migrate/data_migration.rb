@@ -8,17 +8,18 @@ module Migrate
     end
 
 
-    def migrate_org(org, cii_response_status_code, ppg_org_response_status_code, ppg_user_response_status_code)
+    def migrate_org(org, cii_response_status_code, ppg_org_response_status_code)
       @cii_status_code = cii_response_status_code
       @ppg_org_status_code = ppg_org_response_status_code
-      @ppg_user_status_code = ppg_user_response_status_code
 
       migrate_org_to_db(org)
     end
 
 
-    def migrate_users(org)
-      migrate_users_to_db(org)
+    def migrate_user(org, user, ppg_user_response_status_code)
+      @ppg_user_status_code = ppg_user_response_status_code
+
+      migrate_user_to_db(org, user)
     end
 
 
@@ -40,27 +41,23 @@ module Migrate
     end
 
 
-    def migrate_users_to_db(org)
-      org["user"].each do |user|
-        User.new(
-          scheme_id: "#{org['scheme-id']}",
-          identifier_id: "#{org['identifier-id']}",
-          contact_email: "#{user['contactEmail']}",
-          contact_mobile: "#{user['contactMobile']}",
-          contact_phone: "#{user['contactPhone']}",
-          contact_fax: "#{user['contactFax']}",
-          contact_social: "#{user['contactSocial']}",
-          email: "#{user['email']}",
-          first_name: "#{user['firstName']}",
-          last_name: "#{user['lastName']}",
-          user_roles: Common::Helper.get_roles_from_list(user['userRoles']),
-          ppg_status: 123#@ppg_user_status_code
-        ).save
+    def migrate_user_to_db(org, user)
+      User.new(
+        scheme_id: "#{org['scheme-id']}",
+        identifier_id: "#{org['identifier-id']}",
+        contact_email: "#{user['contactEmail']}",
+        contact_mobile: "#{user['contactMobile']}",
+        contact_phone: "#{user['contactPhone']}",
+        contact_fax: "#{user['contactFax']}",
+        contact_social: "#{user['contactSocial']}",
+        email: "#{user['email']}",
+        first_name: "#{user['firstName']}",
+        last_name: "#{user['lastName']}",
+        user_roles: Common::Helper.get_roles_from_list(user['userRoles']),
+        ppg_status: @ppg_user_status_code
+      ).save
 
-        next @user_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", ppg_user_status: 123, migrated_data: user  }#@ppg_user_status_code
-      end
-
-      return
+      return @user_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", ppg_user_status: @ppg_user_status_code, migrated_data: user  }
     end
   end
 end

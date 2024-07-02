@@ -2,7 +2,7 @@ require 'net/http'
 require 'uri'
 
 module Migrate
-  class Ppg
+  class PpgOrganisations
     attr_reader :org_success_list, :org_error_list
 
     def initialize()
@@ -76,7 +76,7 @@ module Migrate
         response_put = nil
         matching_roles = roles_library.select { |role_data| role_data['roleKey'] == role['key'] }
 
-        if matching_roles.present? && matching_roles.any? { |role| role['roleId'].present? }
+        if matching_roles.present? && matching_roles.any? { |matched_role| matched_role['roleId'].present? }
           matching_roles.each do |matching_role|
             if matching_role['roleId'].present?
               response_put = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles", { roleId: matching_role['roleId'], right_to_buy_status: right_to_buy_status })
@@ -102,7 +102,7 @@ module Migrate
 
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}")
 
-      if response.present? && response[:response].present? && response[:response].code.present? && [200, 201].include?(response[:response].code) && response[:response].body.present?
+      if response.present? && response[:response].present? && response[:response].code.present? && [200, 201].include?(response[:response].code.to_i) && response[:response].body.present?
         return JSON.parse(response[:response].body)['detail']['rightToBuy']
       end
 
@@ -142,8 +142,6 @@ module Migrate
       when ->(e) { e.start_with?('/organisation-profile/') }
         request = Net::HTTP::Get.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_ORG_PROFILE', nil)
-      else
-        request = Net::HTTP::Get.new(uri.request_uri)
       end
 
       return {  request: request, response: Struct.new(:code).new(500), status_description: 'Internal Error.'  } if data.present? && request.body.nil?

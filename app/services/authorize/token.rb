@@ -15,7 +15,7 @@ module Authorize
     end
 
     def validate_api_key
-      render json: { error: "Unauthorized", description: "Please check you provided an x-api-key, and that it is corret." }, status: :unauthorized unless authenticate_api_key
+      render json: { error: "Unauthorized", description: "Please check you provided an x-api-key, and that it is correct." }, status: :unauthorized unless authenticate_api_key
     end
   end
 end
