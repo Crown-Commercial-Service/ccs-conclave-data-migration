@@ -111,16 +111,15 @@ module Migrate
 
 
     def send_request_to_ppg(endpoint, data = nil)
-      return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator found for this Organisation. Organisation Not Created in PPG'  } if @admin_check == 0
-      return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG'  } unless (200..201).include?(@cii_status_code) || @cii_status_code == 409
-
+      return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator found for this Organisation. Organisation Not Created in PPG.'  } if @admin_check == 0
+      return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG.'  } unless (200..201).include?(@cii_status_code) || @cii_status_code == 409
       uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true # Set to false, if using HTTP (or locally hosting).
 
       case endpoint
       when '/organisation-profile'
-        return {  request: nil, response: Struct.new(:code).new(409), status_description: 'Organisation Already Exists in CII. Duplicate Organisation Not Created in PPG'  } if @cii_status_code == 409
+        return {  request: nil, response: Struct.new(:code).new(409), status_description: 'Organisation Already Exists in CII. Duplicate Organisation Not Created in PPG.'  } if @cii_status_code == 409
 
         request = Net::HTTP::Post.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_ORG_PROFILE', nil)

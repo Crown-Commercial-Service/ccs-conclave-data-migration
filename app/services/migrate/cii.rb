@@ -40,7 +40,7 @@ module Migrate
 
 
     def post_data_to_cii(organisation_id_type, organisation_id)
-      return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator found for this Organisation. Organisation Not Created in CII'  } if @admin_check == 0
+      return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator found for this Organisation. Organisation Not Created in CII.'  } if @admin_check == 0
 
       uri = URI.parse(ENV.fetch('CII_DOMAIN', nil) + "/identities/organisations/schemes/#{organisation_id_type}/identifiers/#{organisation_id}")
       http = Net::HTTP.new(uri.host, uri.port)

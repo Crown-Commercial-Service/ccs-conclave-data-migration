@@ -24,6 +24,7 @@ module Migrate
 
 
     def migrate_user_to_ppg(org, user)
+      if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
         user_roles = get_user_roles(user)
         identity_provider = get_identity_provider
 
@@ -48,12 +49,14 @@ module Migrate
           @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 500, status_description: 'Error Getting User Roles or Identity Provider. User Not Creatd in PPG.'  } # User Not Migrated.
           return {  response_status_code: 500, response_body: nil  }
         end
+      else
+        @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 403, status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG.'  } # User Not Migrated.
+        return {  response_status_code: 403, response_body: nil  }
+      end
     end
 
 
     def get_user_roles(user)
-      return nil if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
-
       cii_org_data = JSON.parse(@cii_body)
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles")
 
@@ -72,8 +75,6 @@ module Migrate
 
 
     def get_identity_provider
-      return nil if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
-
       cii_org_data = JSON.parse(@cii_body)
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/identity-providers")
 
@@ -88,8 +89,8 @@ module Migrate
 
 
     def send_request_to_ppg(endpoint, data = nil)
-      return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator was found for this Organisation. User Not Created in PPG'  } if @admin_check == 0
-      return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from PPG Organisation Creation flow. User Not Created in PPG'  } unless (200..201).include?(@ppg_status_code) || @ppg_status_code == 409
+      return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator was found for this Organisation. User Not Created in PPG.'  } if @admin_check == 0
+      return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from PPG Organisation Creation. User Not Created in PPG.'  } unless (200..201).include?(@ppg_status_code) || @ppg_status_code == 409
 
       uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
@@ -122,7 +123,7 @@ module Migrate
 
 
     def build_user_post_body(data)
-      return nil if data.blank? || data[:user].blank? || @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
+      return nil if data.blank? || data[:user].blank?
 
       cii_org_data = JSON.parse(@cii_body)
 
