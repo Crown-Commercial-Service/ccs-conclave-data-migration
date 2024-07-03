@@ -27,7 +27,7 @@ module Migrate
         user_roles = get_user_roles(user)
         identity_provider = get_identity_provider
 
-        if user_roles.present? && identity_providers.present?
+        if user_roles.present? && identity_provider.present?
           response = send_request_to_ppg('/user-profile', {  user: user, user_roles: user_roles, identity_provider: identity_provider  })
 
           if response.present? && response[:response].present? && response[:response].code.present?
