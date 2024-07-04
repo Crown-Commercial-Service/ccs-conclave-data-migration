@@ -81,7 +81,7 @@ module Migrate
       return nil unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
 
       identity_providers_library = JSON.parse(response[:response].body)
-      matching_provider = identity_providers_library.find { |identity_provider| identity_provider['connectionName'] == ENV.fetch('AUTH_TYPE', nil) }
+      matching_provider = identity_providers_library.find { |identity_provider| identity_provider['connectionName'] == ENV.fetch('PPG_AUTH_TYPE', nil) }
 
       return matching_provider if matching_provider.present? && matching_provider['id'].present?
       nil
@@ -105,6 +105,11 @@ module Migrate
         request["x-api-key"] = ENV.fetch('PPG_USER_PROFILE', nil)
         request["Content-Type"] = "application/json"
         request.body = build_user_post_body(data)
+      when ->(e) { e.start_with?('/contact-service/user/contacts') }
+        request = Net::HTTP::Post.new(uri.request_uri)
+        request["x-api-key"] = ENV.fetch('PPG_CONTACT_SERVICE', nil)
+        request["Content-Type"] = "application/json"
+        request.body = build_user_contact_post_body(data)
       end
 
       return {  request: request, response: Struct.new(:code).new(500), status_description: 'Internal Error.'  } if data.present? && request.body.nil?
@@ -137,6 +142,36 @@ module Migrate
           "identityProviderIds": [ data[:identity_provider]['id'] ],
           "roleIds": data[:user_roles]
         }
+      }.to_json
+    end
+
+
+    def build_user_contact_post_body(data)
+      return nil if data.blank? || @cii_body.blank? || JSON.parse(@cii_body)['contactPoint'].blank?
+
+      cii_org_data = JSON.parse(@cii_body)
+      org_contacts = []
+
+      if cii_org_data['contactPoint']['email'].present?
+        org_contacts << {  contactType: "EMAIL", contactValue: cii_org_data['contactPoint']['email']  }
+      end
+
+      if cii_org_data['contactPoint']['telephone'].present?
+        org_contacts << {  contactType: "PHONE", contactValue: cii_org_data['contactPoint']['telephone']  }
+      end
+
+      if cii_org_data['contactPoint']['faxNumber'].present?
+        org_contacts << {  contactType: "FAX", contactValue: cii_org_data['contactPoint']['faxNumber']  }
+      end
+
+      if cii_org_data['contactPoint']['uri'].present?
+        org_contacts << {  contactType: "WEB_ADDRESS", contactValue: cii_org_data['contactPoint']['uri']  }
+      end
+
+      return {
+        address: cii_org_data['address'],
+        contactPointName: "#{cii_org_data['contactPoint']['name']}",
+        contacts: org_contacts
       }.to_json
     end
   end

@@ -126,7 +126,7 @@ module Migrate
         request["Content-Type"] = "application/json"
         request.body = build_org_post_body(data)
       when ->(e) { e.start_with?('/contact-service/organisations/') }
-        request = Net::HTTP::Post.new(uri.request_uri)
+        request = Net::HTTP::Patch.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_CONTACT_SERVICE', nil)
         request["Content-Type"] = "application/json"
         request.body = build_org_contact_post_body(data)
