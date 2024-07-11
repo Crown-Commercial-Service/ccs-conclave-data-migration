@@ -20,14 +20,14 @@ module Common
 
     # Checks whether an organisation users list has at least one org admin, and returns an integer for the results of this check.
     def self.org_admin_check(org, admin_orgs_list)
-      return 1 if admin_orgs_list.include?("#{org['scheme-id']}-#{org['identifier-id']}")
+      return 1 if admin_orgs_list.include?("#{org['scheme-id']}-#{org['identifier-id']}") # Admin found.
 
       org['user'].each do |user|
           user['userRoles'].each do |role|
-              return 2 if role['key'].upcase == 'ORG_ADMINISTRATOR'
+              return 2 if role['key'].upcase == 'ORG_ADMINISTRATOR' # Admin found.
           end
       end
-      return 0
+      return 0 # No Admin found.
   end
 
 
