@@ -24,7 +24,7 @@ module Migrate
 
 
     def migrate_user_to_ppg(org, user)
-      if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
+      unless @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
         user_roles = get_user_roles(user)
         identity_provider = get_identity_provider
 
