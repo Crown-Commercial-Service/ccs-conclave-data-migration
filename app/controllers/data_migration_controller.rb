@@ -6,7 +6,7 @@ require 'net/http'
 # Controller for both the JSON and CSV endpoints. Validates and process both sets of data, when either is provided in a request.
 class DataMigrationController < ApplicationController
     include Authorize::Token
-    before_action :validate_api_key
+    #before_action :validate_api_key
 
 
     # CSV request endpoint entry point.
@@ -125,7 +125,7 @@ class DataMigrationController < ApplicationController
                 administrated_organisations_list << "#{org['scheme-id']}-#{org['identifier-id']}" if org_admin_status == 2
 
                 # Migrate Organisations.
-                cii_migration_service_response = cii_org_migration_service.migrate_org(org, org_admin_status)
+                cii_migration_service_response = cii_org_migration_service.migrate_org(org)
                 ppg_migration_service_response_org = ppg_org_migration_service.migrate_org(org, org_admin_status, cii_migration_service_response[:response_status_code], cii_migration_service_response[:response_body])
                 data_migration_service.migrate_org(org, cii_migration_service_response[:response_status_code], ppg_migration_service_response_org[:response_status_code])
 

@@ -38,10 +38,13 @@ module Migrate
               @user_success_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, user_contact_status: 123  } # User Migrated or Already Exists.
               return {  response_status_code: response[:response].code.to_i, response_body: nil  }
             else
+              puts "here-->1.1  #{response[:response].inspect}"
+              puts "here-->1.2  #{response[:request].inspect}"
               @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description]  } # User Not Migrated.
               return {  response_status_code: response[:response].code.to_i, response_body: nil  }
             end
           else
+            puts "here-->1.4  #{response}"
             @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 500, status_description: response[:status_description]  } # User Not Migrated.
             return {  response_status_code: 500, response_body: nil  }
           end
@@ -63,13 +66,14 @@ module Migrate
       return nil unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
 
       roles_library = JSON.parse(response[:response].body)
-      matching_roles = []
+      matching_role_ids = []
 
       user['userRoles'].each do |role|
-        matching_roles.concat(roles_library.select { |role_data| role_data['roleKey'] == role['key'] })
+        matching_roles = roles_library.select { |role_data| role_data['roleKey'] == role['key'] }
+        matching_role_ids.concat(matching_roles.map { |role_data| role_data['roleId'] })
       end
 
-      return matching_roles if matching_roles.present? && matching_roles.any? { |matched_role| matched_role['roleId'].present? }
+      return matching_role_ids if matching_role_ids.present? && matching_role_ids.any?
       nil
     end
 
@@ -95,16 +99,21 @@ module Migrate
       uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true # Set to false, if using HTTP (or locally hosting).
-
+      #puts "uri0:  #{uri.request_uri}"
+      puts "endpoint:  #{endpoint}"
       case endpoint
       when ->(e) { e.start_with?('/organisation-profile/') }
         request = Net::HTTP::Get.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_ORG_PROFILE', nil)
       when '/user-profile'
         request = Net::HTTP::Post.new(uri.request_uri)
+        puts "uri.request_uri:  #{uri.request_uri}"
+        puts "uri:  #{uri}"
+        puts "ENV.fetch('PPG_DOMAIN', nil) + endpoint:  #{ENV.fetch('PPG_DOMAIN', nil) + endpoint}"
         request["x-api-key"] = ENV.fetch('PPG_USER_PROFILE', nil)
         request["Content-Type"] = "application/json"
         request.body = build_user_post_body(data)
+        puts "request.body:  #{request.body}"
       when ->(e) { e.start_with?('/contact-service/user/contacts') }
         request = Net::HTTP::Post.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_CONTACT_SERVICE', nil)
