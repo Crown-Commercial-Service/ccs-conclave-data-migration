@@ -11,7 +11,9 @@ module Migrate
     end
 
 
-    def migrate_org(org)
+    def migrate_org(org, org_admin_status)
+      @admin_check = org_admin_status
+
       migrate_org_to_cii(org)
     end
 
@@ -20,12 +22,18 @@ module Migrate
 
 
     def migrate_org_to_cii(org)
-      response = post_data_to_cii(org['scheme-id'], org['identifier-id'])
+      response = send_request_to_cii("/identities/organisations/schemes/#{org['scheme-id']}/identifiers/#{org['identifier-id']}")
 
       if response.present? && response[:response].present? && response[:response].code.present?
         if [200, 201, 409].include?(response[:response].code.to_i) && response[:response].body.present?
-          @org_success_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, cii_org_id: JSON.parse(response[:response].body)['organisationId']  } # Organisation Migrated or Already Exists.
-          return {  response_status_code: response[:response].code.to_i, response_body: response[:response].body  }
+          if @admin_check == 0 && (200..201).include?(response[:response].code.to_i)
+            delete_response = send_request_to_cii("/identities/organisations/#{JSON.parse(response[:response].body)['organisationId']}")
+            @org_error_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']} (ID #{JSON.parse(response[:response].body)['organisationId']} Deleted Status: #{delete_response[:response].code.to_i})", successful: false, status: 400, status_description: 'New Organisation with No Organisation Administrator. Organisation will be Deleted from CII, and Not Progressed.'  } # Organisation Not Migrated.
+            return {  response_status_code: 400, response_body: nil  }
+          else
+            @org_success_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, cii_org_id: JSON.parse(response[:response].body)['organisationId']  } # Organisation Migrated or Already Exists.
+            return {  response_status_code: response[:response].code.to_i, response_body: response[:response].body  }
+          end
         else
           @org_error_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description]  } # Organisation Not Migrated.
           return {  response_status_code: response[:response].code.to_i, response_body: nil  }
@@ -37,13 +45,19 @@ module Migrate
     end
 
 
-    def post_data_to_cii(organisation_id_type, organisation_id)
-      uri = URI.parse(ENV.fetch('CII_DOMAIN', nil) + "/identities/organisations/schemes/#{organisation_id_type}/identifiers/#{organisation_id}")
+    def send_request_to_cii(endpoint)
+      uri = URI.parse(ENV.fetch('CII_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true # Set to false, if using HTTP (or locally hosting).
 
-      request = Net::HTTP::Post.new(uri.request_uri)
-      request['x-api-key'] = ENV.fetch('CII_API_KEY', nil)
+      case endpoint
+      when ->(e) { e.start_with?('/identities/organisations/schemes/') }
+        request = Net::HTTP::Post.new(uri.request_uri)
+        request['x-api-key'] = ENV.fetch('CII_API_KEY', nil)
+      when ->(e) { e.start_with?('/identities/organisations/') }
+        request = Net::HTTP::Delete.new(uri.request_uri)
+        request['x-api-key'] = ENV.fetch('CII_DELETE_KEY', nil)
+      end
 
       begin
         response = http.request(request)
