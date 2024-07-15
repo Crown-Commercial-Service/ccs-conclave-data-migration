@@ -28,10 +28,10 @@ module Migrate
 
       if response.present? && response[:response].present? && response[:response].code.present?
         if [200, 201, 409].include?(response[:response].code.to_i)
-          org_contact_response = 409
+          org_contact_response = 204
           org_contact_response = add_organisation_contact(org) if response[:response].code.to_i != 409
-          org_role_response = add_organisation_roles(org)
-          @org_success_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, org_contact_status: org_contact_response, org_roles_status: org_role_response  } # Organisation Migrated or Already Exists.
+          org_roles_response = add_organisation_roles(org)
+          @org_success_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, roles_status: org_roles_response, contact_status: org_contact_response  } # Organisation Migrated or Already Exists.
           return {  response_status_code: response[:response].code.to_i, response_body: nil  }
         else
           @org_error_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description]  } # Organisation Not Migrated.
@@ -63,6 +63,7 @@ module Migrate
       response = send_request_to_ppg('/configuration-service/roles')
 
       return 500 unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
+      return response[:response].code.to_i unless (200..201).include?(response[:response].code.to_i)
 
       roles_library = JSON.parse(response[:response].body)
 
@@ -79,7 +80,7 @@ module Migrate
         if matching_roles.present? && matching_roles.any? { |matched_role| matched_role['roleId'].present? }
           matching_roles.each do |matching_role|
             if matching_role['roleId'].present?
-              response_put = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles", { roleId: matching_role['roleId'], right_to_buy_status: right_to_buy_status })
+              response_put = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles", { role_id: matching_role['roleId'], right_to_buy_status: right_to_buy_status })
 
               if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
                 org_roles_report["#{role['key']} (ID: #{matching_role['roleId']})"] = response_put[:response].code
@@ -102,7 +103,7 @@ module Migrate
 
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}")
 
-      if response.present? && response[:response].present? && response[:response].code.present? && [200, 201].include?(response[:response].code.to_i) && response[:response].body.present?
+      if response.present? && response[:response].present? && response[:response].code.present? && (200..201).include?(response[:response].code.to_i) && response[:response].body.present?
         return JSON.parse(response[:response].body)['detail']['rightToBuy']
       end
 
@@ -112,7 +113,7 @@ module Migrate
 
     def send_request_to_ppg(endpoint, data = nil)
       return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator found for this Organisation. Organisation Not Created in PPG.'  } if @admin_check == 0 && @cii_status_code != 409
-      return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG.'  } unless (200..201).include?(@cii_status_code) || @cii_status_code == 409
+      return {  request: nil, response: Struct.new(:code).new(424), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG.'  } unless (200..201).include?(@cii_status_code) || @cii_status_code == 409
       uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true # Set to false, if using HTTP (or locally hosting).
@@ -214,7 +215,7 @@ module Migrate
       return {
         isBuyer: data[:right_to_buy_status],
         rolesToAdd: [
-          {  roleId: data[:roleId]  }
+          {  roleId: data[:role_id]  }
         ],
       }.to_json
     end

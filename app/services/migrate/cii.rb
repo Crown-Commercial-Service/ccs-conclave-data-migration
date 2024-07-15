@@ -28,7 +28,7 @@ module Migrate
         if [200, 201, 409].include?(response[:response].code.to_i) && response[:response].body.present?
           if @admin_check == 0 && (200..201).include?(response[:response].code.to_i)
             delete_response = send_request_to_cii("/identities/organisations/#{JSON.parse(response[:response].body)['organisationId']}")
-            @org_error_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']} (ID #{JSON.parse(response[:response].body)['organisationId']} Deleted Status: #{delete_response[:response].code.to_i})", successful: false, status: 400, status_description: 'New Organisation with No Organisation Administrator. Organisation will be Deleted from CII, and Not Progressed.'  } # Organisation Not Migrated.
+            @org_error_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 400, status_description: "New Organisation with No Organisation Administrator. Organisation ID #{JSON.parse(response[:response].body)['organisationId']} will be Deleted from CII, and Not Progressed. (Deleted Status: #{delete_response[:response].code.to_i})"  } # Organisation Not Migrated.
             return {  response_status_code: 400, response_body: nil  }
           else
             @org_success_list << {  organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, cii_org_id: JSON.parse(response[:response].body)['organisationId']  } # Organisation Migrated or Already Exists.
