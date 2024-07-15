@@ -1,0 +1,88 @@
+[
+    {
+        "identifier-id": "009z0000AbC1DEFG",
+        "scheme-id": "SF-ID",
+        "domainName": "testing.gov.uk",
+        "organisationType": "1",
+        "orgRoles": [
+            {
+                "key": "TEST_USER"
+            }
+        ],
+        "user": [
+            {
+                "email": "test-user-1@testing.gov.uk",
+                "firstName": "Test",
+                "lastName": "One",
+                "contactsPointName": "Test One",
+                "contactEmail": "test-user-1.contact@email.com",
+                "contactMobile": "+447123456789",
+                "contactPhone": "",
+                "contactFax": "",
+                "contactSocial": "https://www.example.com",
+                "userRoles": [
+                    {
+                        "key": "TEST_USER"
+                    }
+                ]
+            },
+            {
+                "email": "test-user-2@testing.gov.uk",
+                "firstName": "Test",
+                "lastName": "Two",
+                "contactsPointName": "Test Two",
+                "contactEmail": "test-user-2.contact@email.com",
+                "contactMobile": "+447123456789",
+                "contactPhone": "",
+                "contactFax": "",
+                "contactSocial": "https://www.example.com",
+                "userRoles": [
+                    {
+                        "key": "TEST_USER"
+                    },
+                    {
+                        "key": "TEST_ADMINISTRATOR"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "identifier-id": "001a0000ZyX9WVUT",
+        "scheme-id": "SF-ID",
+        "domainName": "test-domain-two.com",
+        "organisationType": "2",
+        "orgRoles": [
+            {
+                "key": "TEST_USER"
+            },
+            {
+                "key": "ANOTHER_ROLE"
+            }
+        ],
+        "user": [
+            {
+                "email": "test-user-1@test-domain-two.com",
+                "firstName": "Test",
+                "lastName": "One",
+                "contactsPointName": "Test One",
+                "contactEmail": "test-user-3.contact@email.com",
+                "contactMobile": "",
+                "contactPhone": "",
+                "contactFax": "",
+                "contactSocial": "https://www.example.com",
+                "userRoles": [
+                    {
+                        "key": "TEST_USER"
+                    },
+                    {
+                        "key": "ANOTHER_ROLE"
+                    },
+                    {
+                        "key": "TEST_ADMINISTRATOR"
+                    }
+                ]
+            }
+        ]
+    }
+]
