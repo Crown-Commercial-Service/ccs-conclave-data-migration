@@ -1,5 +1,6 @@
 require 'net/http'
 require 'uri'
+require 'json'
 
 module Migrate
   class PpgUsers
@@ -8,6 +9,7 @@ module Migrate
     def initialize()
       @user_success_list = []
       @user_error_list = []
+      @id_provider = nil
     end
 
 
@@ -24,34 +26,32 @@ module Migrate
 
 
     def migrate_user_to_ppg(org, user)
-      unless @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
-        user_roles = get_user_roles(user)
-        identity_provider = get_identity_provider
+      user_roles = get_user_roles(user)
+      identity_provider = get_identity_provider
+      @id_provider = identity_provider
 
-        if user_roles.present? && identity_provider.present?
-          response = send_request_to_ppg('/user-profile', {  user: user, user_roles: user_roles, identity_provider: identity_provider  })
+      if user_roles.present? && identity_provider.present?
+        response = send_request_to_ppg('/user-profile', {  user: user, user_roles: user_roles, identity_provider: identity_provider  })
 
-          if response.present? && response[:response].present? && response[:response].code.present?
-            if [200, 201, 409].include?(response[:response].code.to_i)
-              # user_contact_response = 409
-              # user_contact_response = add_user_contact(user) if response[:response].code.to_i != 409
-              @user_success_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, user_contact_status: 123  } # User Migrated or Already Exists.
-              return {  response_status_code: response[:response].code.to_i, response_body: nil  }
-            else
-              @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description]  } # User Not Migrated.
-              return {  response_status_code: response[:response].code.to_i, response_body: nil  }
-            end
+        if response.present? && response[:response].present? && response[:response].code.present?
+          if [200, 201, 409].include?(response[:response].code.to_i)
+            user_roles_response = 204
+            user_roles_response = update_existing_user_roles(user) if response[:response].code.to_i == 409
+            user_contact_response = 1234
+            # user_contact_response = add_user_contact(user) if response[:response].code.to_i != 409
+            @user_success_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, update_roles_status: user_roles_response, contact_status: user_contact_response  } # User Migrated or Already Exists.
+            return {  response_status_code: response[:response].code.to_i, response_body: nil  }
           else
-            @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 500, status_description: response[:status_description]  } # User Not Migrated.
-            return {  response_status_code: 500, response_body: nil  }
+            @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description]  } # User Not Migrated.
+            return {  response_status_code: response[:response].code.to_i, response_body: nil  }
           end
         else
-          @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 500, status_description: 'Error Getting User Roles or Identity Provider. User Not Creatd in PPG.'  } # User Not Migrated.
+          @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 500, status_description: response[:status_description]  } # User Not Migrated.
           return {  response_status_code: 500, response_body: nil  }
         end
       else
-        @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 403, status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG.'  } # User Not Migrated.
-        return {  response_status_code: 403, response_body: nil  }
+        @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 500, status_description: 'Error Getting User Roles or Identity Provider. User Not Creatd in PPG.'  } # User Not Migrated.
+        return {  response_status_code: 500, response_body: nil  }
       end
     end
 
@@ -61,6 +61,7 @@ module Migrate
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles")
 
       return nil unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
+      return nil unless (200..201).include?(response[:response].code.to_i)
 
       roles_library = JSON.parse(response[:response].body)
       matching_role_ids = []
@@ -80,6 +81,7 @@ module Migrate
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/identity-providers")
 
       return nil unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
+      return nil unless (200..201).include?(response[:response].code.to_i)
 
       identity_providers_library = JSON.parse(response[:response].body)
       matching_provider = identity_providers_library.find { |identity_provider| identity_provider['connectionName'] == ENV.fetch('PPG_AUTH_TYPE', nil) }
@@ -89,9 +91,32 @@ module Migrate
     end
 
 
+    def update_existing_user_roles(user)
+      response = send_request_to_ppg("/user-profile?user-id=#{user['email']}")
+
+      return 500 unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
+      return response[:response].code.to_i unless (200..201).include?(response[:response].code.to_i)
+
+      user_data = JSON.parse(response[:response].body)
+
+      # Extract Role IDs from rolePermissionInfo and only Unique Group IDs from userGroups, in the user_data response payload.
+      role_ids = user_data.dig('detail', 'rolePermissionInfo')&.map { |role| role['roleId'] } || []
+      group_ids = user_data.dig('detail', 'userGroups')&.map { |group| group['groupId'] }&.uniq || []
+
+      return 500 unless role_ids.present? && group_ids.present?
+
+      response_put = send_request_to_ppg("/user-profile?user-id=#{user['email']}", { role_ids: role_ids, group_ids: group_ids, user_data: user_data })
+
+      return response_put[:response].code.to_i if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
+      return 500
+
+    end
+
+
     def send_request_to_ppg(endpoint, data = nil)
       return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator was found for this Organisation. User Not Created in PPG.'  } if @admin_check == 0
-      return {  request: nil, response: Struct.new(:code).new(403), status_description: 'Unsuccessful Response from PPG Organisation Creation. User Not Created in PPG.'  } unless (200..201).include?(@ppg_status_code) || @ppg_status_code == 409
+      return {  request: nil, response: Struct.new(:code).new(424), status_description: 'Unsuccessful Response from CII. User Not Created in PPG.'  } if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
+      return {  request: nil, response: Struct.new(:code).new(424), status_description: 'Unsuccessful Response from PPG Organisation Creation. User Not Created in PPG.'  } unless (200..201).include?(@ppg_status_code) || @ppg_status_code == 409
 
       uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
@@ -101,6 +126,14 @@ module Migrate
       when ->(e) { e.start_with?('/organisation-profile/') }
         request = Net::HTTP::Get.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_ORG_PROFILE', nil)
+      when ->(e) { e.start_with?('/user-profile?user-id') && data.present? }
+        request = Net::HTTP::Put.new(uri.request_uri)
+        request["x-api-key"] = ENV.fetch('PPG_USER_PROFILE', nil)
+        request["Content-Type"] = "application/json"
+        request.body = build_user_role_put_body(data)
+      when ->(e) { e.start_with?('/user-profile?user-id') }
+        request = Net::HTTP::Get.new(uri.request_uri)
+        request["x-api-key"] = ENV.fetch('PPG_USER_PROFILE', nil)
       when '/user-profile'
         request = Net::HTTP::Post.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_USER_PROFILE', nil)
@@ -173,6 +206,34 @@ module Migrate
         address: cii_org_data['address'],
         contactPointName: "#{cii_org_data['contactPoint']['name']}",
         contacts: org_contacts
+      }.to_json
+    end
+
+
+    def build_user_role_put_body(data)
+      return nil if data.blank? || data[:user_data].blank? || data[:role_ids].blank? || data[:group_ids].blank? || @id_provider.blank? || @id_provider['id'].blank?
+
+      return {
+        organisationId: data[:user_data]['organisationId'],
+        userName: data[:user_data]['userName'],
+        firstName: data[:user_data]['firstName'],
+        lastName: data[:user_data]['lastName'],
+        title: data[:user_data]['title'],
+        mfaEnabled: data[:user_data]['mfaEnabled'],
+        mfaOpted: data[:user_data]['mfaOpted'],
+        password: data[:user_data]['password'],
+        accountVerified: data[:user_data]['accountVerified'],
+        sendUserRegistrationEmail: data[:user_data]['sendUserRegistrationEmail'],
+        originOrganisationName: data[:user_data]['originOrganisationName'],
+        companyHouseId: data[:user_data]['companyHouseId'],
+        isAdminUser: data[:user_data]['isAdminUser'],
+        organisationMfaRequired: data[:user_data]['organisationMfaRequired'],
+        isDormant: data[:user_data]['isDormant'],
+        detail: {
+          identityProviderIds: [ @id_provider['id'] ],
+          roleIds: data[:role_ids],
+          groupIds: data[:group_ids]
+        }
       }.to_json
     end
   end
