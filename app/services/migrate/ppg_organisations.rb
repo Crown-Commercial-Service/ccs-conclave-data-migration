@@ -62,8 +62,8 @@ module Migrate
       cii_org_data = JSON.parse(@cii_body)
       response = send_request_to_ppg('/configuration-service/roles')
 
-      return 500 unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
-      return response[:response].code.to_i unless (200..201).include?(response[:response].code.to_i)
+      return 500 unless response.present? && response[:response].present? && response[:response].code.present?
+      return response[:response].code.to_i unless (200..201).include?(response[:response].code.to_i) && response[:response].body.present?
 
       roles_library = JSON.parse(response[:response].body)
 

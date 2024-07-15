@@ -60,8 +60,8 @@ module Migrate
       cii_org_data = JSON.parse(@cii_body)
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles")
 
-      return nil unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
-      return nil unless (200..201).include?(response[:response].code.to_i)
+      return nil unless response.present? && response[:response].present? && response[:response].code.present?
+      return nil unless (200..201).include?(response[:response].code.to_i) && response[:response].body.present?
 
       roles_library = JSON.parse(response[:response].body)
       matching_role_ids = []
@@ -80,8 +80,8 @@ module Migrate
       cii_org_data = JSON.parse(@cii_body)
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/identity-providers")
 
-      return nil unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
-      return nil unless (200..201).include?(response[:response].code.to_i)
+      return nil unless response.present? && response[:response].present? && response[:response].code.present?
+      return nil unless (200..201).include?(response[:response].code.to_i) && response[:response].body.present?
 
       identity_providers_library = JSON.parse(response[:response].body)
       matching_provider = identity_providers_library.find { |identity_provider| identity_provider['connectionName'] == ENV.fetch('PPG_AUTH_TYPE', nil) }
@@ -94,8 +94,8 @@ module Migrate
     def update_existing_user_roles(user)
       response = send_request_to_ppg("/user-profile?user-id=#{user['email']}")
 
-      return 500 unless response.present? && response[:response].present? && response[:response].code.present? && response[:response].body.present?
-      return response[:response].code.to_i unless (200..201).include?(response[:response].code.to_i)
+      return 500 unless response.present? && response[:response].present? && response[:response].code.present?
+      return response[:response].code.to_i unless (200..201).include?(response[:response].code.to_i) && response[:response].body.present?
 
       user_data = JSON.parse(response[:response].body)
 
