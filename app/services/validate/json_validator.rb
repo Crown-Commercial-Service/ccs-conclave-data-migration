@@ -1,3 +1,6 @@
+require 'json'
+
+
 # JsonValidator class responsible for validating JSON data against specific requirements/conditions.
 module Validate
   class JsonValidator
@@ -71,8 +74,20 @@ module Validate
                           user_data.key?("userRoles") &&
                           user_data["userRoles"].is_a?(Array)
 
+      # Sanitize contact number fields
+      user_data["contactMobile"] = sanitize_contact_number(user_data["contactMobile"]) if user_data["contactMobile"]
+      user_data["contactPhone"] = sanitize_contact_number(user_data["contactPhone"]) if user_data["contactPhone"]
+      user_data["contactFax"] = sanitize_contact_number(user_data["contactFax"]) if user_data["contactFax"]
+
       # If all validations pass, return true
       true
+    end
+
+
+    def sanitize_contact_number(number)
+      return number unless number.is_a?(String)
+      # Remove all non-digit characters except for the leading plus sign
+      number.gsub(/(?!\A\+)[^\d]/, '')
     end
   end
 end

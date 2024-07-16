@@ -154,7 +154,7 @@ module Migrate
         return {  request: request, response: nil, status_description: err  }
       end
 
-      {  request: nil, response: nil, status_description: 'Internal Error.'  } # Fallback, to prevent 500 errors.
+      {  request: nil, response: Struct.new(:code).new(418), status_description: nil  } # Fallback, to prevent 500 errors.
     end
 
 
