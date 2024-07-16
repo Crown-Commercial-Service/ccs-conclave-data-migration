@@ -9,7 +9,6 @@ module Migrate
     def initialize()
       @user_success_list = []
       @user_error_list = []
-      @id_provider = nil
     end
 
 
@@ -28,7 +27,6 @@ module Migrate
     def migrate_user_to_ppg(org, user)
       user_roles = get_user_roles(user)
       identity_provider = get_identity_provider
-      @id_provider = identity_provider
 
       if user_roles.present? && identity_provider.present?
         response = send_request_to_ppg('/user-profile', {  user: user, user_roles: user_roles, identity_provider: identity_provider  })
@@ -36,9 +34,8 @@ module Migrate
         if response.present? && response[:response].present? && response[:response].code.present?
           if [200, 201, 409].include?(response[:response].code.to_i)
             user_roles_response = 204
-            user_roles_response = update_existing_user_roles(user) if response[:response].code.to_i == 409
-            user_contact_response = 1234
-            # user_contact_response = add_user_contact(user) if response[:response].code.to_i != 409
+            user_roles_response = update_existing_user_roles(user, user_roles, identity_provider) if response[:response].code.to_i == 409
+            user_contact_response = add_user_contact(user)
             @user_success_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, update_roles_status: user_roles_response, contact_status: user_contact_response  } # User Migrated or Already Exists.
             return {  response_status_code: response[:response].code.to_i, response_body: nil  }
           else
@@ -91,7 +88,7 @@ module Migrate
     end
 
 
-    def update_existing_user_roles(user)
+    def update_existing_user_roles(user, new_role_ids, identity_provider)
       response = send_request_to_ppg("/user-profile?user-id=#{user['email']}")
 
       return 500 unless response.present? && response[:response].present? && response[:response].code.present?
@@ -100,16 +97,23 @@ module Migrate
       user_data = JSON.parse(response[:response].body)
 
       # Extract Role IDs from rolePermissionInfo and only Unique Group IDs from userGroups, in the user_data response payload.
-      role_ids = user_data.dig('detail', 'rolePermissionInfo')&.map { |role| role['roleId'] } || []
+      exising_role_ids = user_data.dig('detail', 'rolePermissionInfo')&.map { |role| role['roleId'] } || []
       group_ids = user_data.dig('detail', 'userGroups')&.map { |group| group['groupId'] }&.uniq || []
 
-      return 500 unless role_ids.present? && group_ids.present?
+      return 500 unless exising_role_ids.present? && group_ids.present?
 
-      response_put = send_request_to_ppg("/user-profile?user-id=#{user['email']}", { role_ids: role_ids, group_ids: group_ids, user_data: user_data })
+      response_put = send_request_to_ppg("/user-profile?user-id=#{user['email']}", { role_ids: (exising_role_ids + new_role_ids), group_ids: group_ids, identity_provider: identity_provider, user_data: user_data })
 
       return response_put[:response].code.to_i if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
-      return 500
+      500
+    end
 
+
+    def add_user_contact(user)
+      response = send_request_to_ppg("/contact-service/user/contacts?user-id=#{user['email']}", user)
+
+      return response[:response].code.to_i if response.present? && response[:response].present? && response[:response].code.present?
+      500
     end
 
 
@@ -139,7 +143,7 @@ module Migrate
         request["x-api-key"] = ENV.fetch('PPG_USER_PROFILE', nil)
         request["Content-Type"] = "application/json"
         request.body = build_user_post_body(data)
-      when ->(e) { e.start_with?('/contact-service/user/contacts') }
+      when ->(e) { e.start_with?('/contact-service/user/contacts?user-id') }
         request = Net::HTTP::Post.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_CONTACT_SERVICE', nil)
         request["Content-Type"] = "application/json"
@@ -180,38 +184,8 @@ module Migrate
     end
 
 
-    def build_user_contact_post_body(data)
-      return nil if data.blank? || @cii_body.blank? || JSON.parse(@cii_body)['contactPoint'].blank?
-
-      cii_org_data = JSON.parse(@cii_body)
-      org_contacts = []
-
-      if cii_org_data['contactPoint']['email'].present?
-        org_contacts << {  contactType: "EMAIL", contactValue: cii_org_data['contactPoint']['email']  }
-      end
-
-      if cii_org_data['contactPoint']['telephone'].present?
-        org_contacts << {  contactType: "PHONE", contactValue: cii_org_data['contactPoint']['telephone']  }
-      end
-
-      if cii_org_data['contactPoint']['faxNumber'].present?
-        org_contacts << {  contactType: "FAX", contactValue: cii_org_data['contactPoint']['faxNumber']  }
-      end
-
-      if cii_org_data['contactPoint']['uri'].present?
-        org_contacts << {  contactType: "WEB_ADDRESS", contactValue: cii_org_data['contactPoint']['uri']  }
-      end
-
-      return {
-        address: cii_org_data['address'],
-        contactPointName: "#{cii_org_data['contactPoint']['name']}",
-        contacts: org_contacts
-      }.to_json
-    end
-
-
     def build_user_role_put_body(data)
-      return nil if data.blank? || data[:user_data].blank? || data[:role_ids].blank? || data[:group_ids].blank? || @id_provider.blank? || @id_provider['id'].blank?
+      return nil if data.blank? || data[:user_data].blank? || data[:role_ids].blank? || data[:group_ids].blank? || data[:identity_provider].blank?
 
       return {
         organisationId: data[:user_data]['organisationId'],
@@ -230,10 +204,61 @@ module Migrate
         organisationMfaRequired: data[:user_data]['organisationMfaRequired'],
         isDormant: data[:user_data]['isDormant'],
         detail: {
-          identityProviderIds: [ @id_provider['id'] ],
+          identityProviderIds: [ data[:identity_provider]['id'] ],
           roleIds: data[:role_ids],
           groupIds: data[:group_ids]
         }
+      }.to_json
+    end
+
+
+    def build_user_contact_post_body(data)
+      return nil if data.blank? || data['email'].blank?
+
+      user_contacts = []
+      no_data_count = 0
+
+      if data['contactEmail'].present?
+        user_contacts << {  contactType: "EMAIL", contactValue: data['contactEmail']  }
+      else
+        user_contacts << {  contactType: "EMAIL", contactValue: ""  }
+        no_data_count+= 1
+      end
+
+      if data['contactPhone'].present?
+        user_contacts << {  contactType: "PHONE", contactValue: data['contactPhone']  }
+      else
+        user_contacts << {  contactType: "PHONE", contactValue: ""  }
+        no_data_count+= 1
+      end
+
+      if data['contactMobile'].present?
+        user_contacts << {  contactType: "MOBILE", contactValue: data['contactMobile']  }
+      else
+        user_contacts << {  contactType: "MOBILE", contactValue: ""  }
+        no_data_count+= 1
+      end
+
+      if data['contactFax'].present?
+        user_contacts << {  contactType: "FAX", contactValue: data['contactFax']  }
+      else
+        user_contacts << {  contactType: "FAX", contactValue: ""  }
+        no_data_count+= 1
+      end
+
+      if data['contactSocial'].present?
+        user_contacts << {  contactType: "WEB_ADDRESS", contactValue: data['contactSocial']  }
+      else
+        user_contacts << {  contactType: "WEB_ADDRESS", contactValue: ""  }
+        no_data_count+= 1
+      end
+
+      return nil if no_data_count >= 5
+
+      return {
+        contactPointReason: "GENERAL",
+        contactPointName: "User Contact",
+        contacts: user_contacts
       }.to_json
     end
   end

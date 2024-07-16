@@ -50,8 +50,7 @@ module Migrate
       response = send_request_to_ppg("/contact-service/organisations/#{JSON.parse(@cii_body)['organisationId']}/registry-contact", org)
 
       return response[:response].code.to_i if response.present? && response[:response].present? && response[:response].code.present?
-
-      return 500
+      500
     end
 
 
