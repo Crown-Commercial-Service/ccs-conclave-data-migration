@@ -205,7 +205,7 @@ module Migrate
         isDormant: data[:user_data]['isDormant'],
         detail: {
           identityProviderIds: [ data[:identity_provider]['id'] ],
-          roleIds: data[:role_ids],#  CONCERN: Where are we changing or addng any new roles to the user? The list of IDs are simply from the GET request response, so we do we need to add in DM request data role IDs???
+          roleIds: data[:role_ids],
           groupIds: data[:group_ids]
         }
       }.to_json
