@@ -100,9 +100,9 @@ module Migrate
       exising_role_ids = user_data.dig('detail', 'rolePermissionInfo')&.map { |role| role['roleId'] } || []
       group_ids = user_data.dig('detail', 'userGroups')&.map { |group| group['groupId'] }&.uniq || []
 
-      return 500 unless exising_role_ids.present? && group_ids.present?
+      return 500 unless exising_role_ids.present?
 
-      response_put = send_request_to_ppg("/user-profile?user-id=#{user['email']}", { role_ids: (exising_role_ids + new_role_ids), group_ids: group_ids, identity_provider: identity_provider, user_data: user_data })
+      response_put = send_request_to_ppg("/user-profile?user-id=#{user['email']}", { role_ids: (exising_role_ids + new_role_ids).uniq, group_ids: group_ids, identity_provider: identity_provider, user_data: user_data })
 
       return response_put[:response].code.to_i if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
       500
@@ -160,7 +160,7 @@ module Migrate
         return {  request: request, response: nil, status_description: err  }
       end
 
-      {  request: nil, response: nil, status_description: 'Internal Error.'  } # Fallback, to prevent 500 errors.
+      {  request: nil, response: Struct.new(:code).new(418), status_description: nil  } # Fallback, to prevent 500 errors.
     end
 
 
@@ -184,7 +184,7 @@ module Migrate
 
 
     def build_user_role_put_body(data)
-      return nil if data.blank? || data[:user_data].blank? || data[:role_ids].blank? || data[:group_ids].blank? || data[:identity_provider].blank?
+      return nil if data.blank? || data[:user_data].blank? || data[:role_ids].blank? || data[:identity_provider].blank?
 
       return {
         organisationId: data[:user_data]['organisationId'],
