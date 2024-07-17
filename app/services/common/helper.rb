@@ -9,6 +9,8 @@ module Common
 
 
     def self.parse_comma_separated_list(data_list)
+      return [] if data_list.blank?
+
       data_list.split(',').map { |item| { 'key' => item.strip } }
     end
 

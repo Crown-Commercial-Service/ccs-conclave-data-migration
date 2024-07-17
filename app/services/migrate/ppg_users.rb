@@ -150,6 +150,7 @@ module Migrate
       end
 
       return {  request: request, response: Struct.new(:code).new(500), status_description: 'Internal Error.'  } if data.present? && request.body.nil?
+      return {  request: request, response: Struct.new(:code).new(204), status_description: 'No contact data to send. New contact not needed.'  } if data.present? && request.body == 'NA'
 
       begin
         response = http.request(request)
@@ -252,7 +253,7 @@ module Migrate
         no_data_count+= 1
       end
 
-      return nil if no_data_count >= 5
+      return 'NA' if no_data_count >= 5
 
       return {
         contactPointReason: "GENERAL",
