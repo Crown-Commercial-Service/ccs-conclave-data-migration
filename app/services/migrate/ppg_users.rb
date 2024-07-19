@@ -35,7 +35,8 @@ module Migrate
           if [200, 201, 409].include?(response[:response].code.to_i)
             user_roles_response = 204
             user_roles_response = update_existing_user_roles(user, user_roles, identity_provider) if response[:response].code.to_i == 409
-            user_contact_response = add_user_contact(user)
+            user_contact_response = 204
+            user_contact_response = add_user_contact(user) if response[:response].code.to_i != 409
             @user_success_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, update_roles_status: user_roles_response, contact_status: user_contact_response  } # User Migrated or Already Exists.
             return {  response_status_code: response[:response].code.to_i, response_body: nil  }
           else
@@ -112,7 +113,7 @@ module Migrate
     def add_user_contact(user)
       response = send_request_to_ppg("/contact-service/user/contacts?user-id=#{user['email']}", user)
 
-      return "#{response[:response].code} (#{response[:response].body})" if response.present? && response[:response].present? && response[:response].code.present? && [200, 201, 409].exclude?(response[:response].code) && response[:response].body.present?
+      return "#{response[:response].code} (#{response[:response].body})" if response.present? && response[:response].present? && response[:response].code.present? && response[:response].code == 400 && response[:response].body.present?
       return response[:response].code.to_i if response.present? && response[:response].present? && response[:response].code.present?
       500
     end
