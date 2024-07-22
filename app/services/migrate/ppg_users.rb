@@ -48,13 +48,20 @@ module Migrate
           return {  response_status_code: 500, response_body: nil  }
         end
       else
-        @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 500, status_description: 'Error Getting User Roles or Identity Provider. User Not Creatd in PPG.'  } # User Not Migrated.
-        return {  response_status_code: 500, response_body: nil  }
+        if @cii_body.blank? && ![200, 201, 409].include?(@ppg_status_code)
+          @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 400, status_description: 'No Organisation Administrator found for this Organisation. User Not Created in PPG.'  } # User Not Migrated.
+          return {  response_status_code: 400, response_body: nil  }
+        else
+          @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 500, status_description: 'Error Getting User Roles or Identity Provider. User Not Creatd in PPG.'  } # User Not Migrated.
+          return {  response_status_code: 500, response_body: nil  }
+        end
       end
     end
 
 
     def get_user_roles(user)
+      return nil if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
+
       cii_org_data = JSON.parse(@cii_body)
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles")
 
@@ -75,6 +82,8 @@ module Migrate
 
 
     def get_identity_provider
+      return nil if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
+
       cii_org_data = JSON.parse(@cii_body)
       response = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/identity-providers")
 
@@ -168,7 +177,7 @@ module Migrate
 
 
     def build_user_post_body(data)
-      return nil if data.blank? || data[:user].blank?
+      return nil if data.blank? || data[:user].blank? || @cii_body.blank?
 
       cii_org_data = JSON.parse(@cii_body)
 
