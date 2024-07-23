@@ -128,7 +128,6 @@ module Migrate
           response_put = send_request_to_ppg("/user-profile?user-id=#{user['email']}", {  role_ids: (existing_role_ids + [role['roleId']]).uniq, group_ids: group_ids, identity_provider: identity_provider, user_data: user_data  })
 
           if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
-            puts "here->L   #{role}"
             next user_roles_report["#{role['roleKey']} (ID: #{role['ccsAccessRoleId']})"] = "#{response_put[:response].code} (#{response_put[:response].body})" if !(200..201).include?(response_put[:response].code.to_i) && response_put[:response].body.present?
             user_roles_report["#{role['roleKey']} (ID: #{role['ccsAccessRoleId']})"] = response_put[:response].code
           else
@@ -138,7 +137,6 @@ module Migrate
       end
 
       if invalid_user_roles.any?
-        puts "here-> invalid_user_roles:  #{invalid_user_roles}"
         invalid_user_roles.each do |invalid_role|
           user_roles_report["#{invalid_role}"] = "400 (INVALID_USER_ROLE)"
         end
@@ -182,8 +180,6 @@ module Migrate
         request["x-api-key"] = ENV.fetch('PPG_USER_PROFILE', nil)
         request["Content-Type"] = "application/json"
         request.body = build_user_post_body(data)
-        puts "here->1 request.body:  #{request.body}"
-        puts "here->2 uri:  #{uri}"
       when ->(e) { e.start_with?('/contact-service/user/contacts?user-id') }
         request = Net::HTTP::Post.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_CONTACT_SERVICE', nil)
@@ -211,7 +207,6 @@ module Migrate
       return nil if data.blank? || data[:user].blank? || data[:identity_provider].blank? || data[:user_roles].blank? || @cii_body.blank?
 
       cii_org_data = JSON.parse(@cii_body)
-      puts "here->X   #{data[:user_roles]}"
       role_ids = data[:user_roles].map { |role| role['roleId'] }
 
       return {
