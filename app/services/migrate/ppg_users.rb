@@ -34,10 +34,10 @@ module Migrate
         if response.present? && response[:response].present? && response[:response].code.present?
           if [200, 201, 409].include?(response[:response].code.to_i)
             user_roles_response = 204
-            user_roles_response = update_existing_user_roles(user, user_roles, identity_provider) if response[:response].code.to_i == 409
+            user_roles_response = update_user_roles(user, user_roles, identity_provider) if response[:response].code.to_i == 409
             user_contact_response = 204
             user_contact_response = add_user_contact(user) if response[:response].code.to_i != 409
-            @user_success_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, update_roles_status: user_roles_response, contact_status: user_contact_response  } # User Migrated or Already Exists.
+            @user_success_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: true, status: response[:response].code.to_i, roles_status: user_roles_response, contact_status: user_contact_response  } # User Migrated or Already Exists.
             return {  response_status_code: response[:response].code.to_i, response_body: nil  }
           else
             @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: response[:response].code.to_i, status_description: response[:status_description]  } # User Not Migrated.
@@ -48,7 +48,7 @@ module Migrate
           return {  response_status_code: 500, response_body: nil  }
         end
       else
-        if @cii_body.blank? && ![200, 201, 409].include?(@ppg_status_code)
+        if @cii_body.blank? && ![200, 201, 409].include?(@ppg_status_code.to_i)
           @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 400, status_description: 'No Organisation Administrator found for this Organisation. User Not Created in PPG.'  } # User Not Migrated.
           return {  response_status_code: 400, response_body: nil  }
         else
@@ -69,14 +69,14 @@ module Migrate
       return nil unless (200..201).include?(response[:response].code.to_i) && response[:response].body.present?
 
       roles_library = JSON.parse(response[:response].body)
-      matching_role_ids = []
+      matching_roles = []
 
       user['userRoles'].each do |role|
-        matching_roles = roles_library.select { |role_data| role_data['roleKey'] == role['key'] }
-        matching_role_ids.concat(matching_roles.map { |role_data| role_data['roleId'] })
+        matched_roles = roles_library.select { |role_data| role_data['roleKey'] == role['key'] }
+        matching_roles.concat(matched_roles) if matched_roles.any?
       end
 
-      return matching_role_ids if matching_role_ids.present? && matching_role_ids.any?
+      return matching_roles if matching_roles.present? && matching_roles.any?
       nil
     end
 
@@ -98,7 +98,10 @@ module Migrate
     end
 
 
-    def update_existing_user_roles(user, new_role_ids, identity_provider)
+    def update_user_roles(user, new_user_roles, identity_provider)
+      return 500 if user.blank? || user['email'].blank?
+
+      user_roles_report = {}
       response = send_request_to_ppg("/user-profile?user-id=#{user['email']}")
 
       return 500 unless response.present? && response[:response].present? && response[:response].code.present?
@@ -107,15 +110,41 @@ module Migrate
       user_data = JSON.parse(response[:response].body)
 
       # Extract Role IDs from rolePermissionInfo and only Unique Group IDs from userGroups, in the user_data response payload.
-      exising_role_ids = user_data.dig('detail', 'rolePermissionInfo')&.map { |role| role['roleId'] } || []
+      existing_role_ids = user_data.dig('detail', 'rolePermissionInfo')&.map { |role| role['roleId'] } || []
       group_ids = user_data.dig('detail', 'userGroups')&.map { |group| group['groupId'] }&.uniq || []
 
-      return 500 unless exising_role_ids.present?
+      return 500 if existing_role_ids.blank? || new_user_roles.blank? || user['userRoles'].blank?
 
-      response_put = send_request_to_ppg("/user-profile?user-id=#{user['email']}", { role_ids: (exising_role_ids + new_role_ids).uniq, group_ids: group_ids, identity_provider: identity_provider, user_data: user_data })
+      request_role_keys = user['userRoles'].map { |userRole| userRole['key'] }
+      new_role_keys = new_user_roles.map { |role| role['roleKey'] }
+      invalid_user_roles = request_role_keys - new_role_keys
 
-      return response_put[:response].code.to_i if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
-      500
+      new_user_roles.each do |role|
+        response_put = nil
+
+        if existing_role_ids.include?(role['roleId'])
+          user_roles_report["#{role['roleKey']} (ID: #{role['ccsAccessRoleId']})"] = "400 (ROLE_ALREADY_EXISTS_FOR_USER)"
+        else
+          response_put = send_request_to_ppg("/user-profile?user-id=#{user['email']}", {  role_ids: (existing_role_ids + [role['roleId']]).uniq, group_ids: group_ids, identity_provider: identity_provider, user_data: user_data  })
+
+          if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
+            puts "here->L   #{role}"
+            next user_roles_report["#{role['roleKey']} (ID: #{role['ccsAccessRoleId']})"] = "#{response_put[:response].code} (#{response_put[:response].body})" if !(200..201).include?(response_put[:response].code.to_i) && response_put[:response].body.present?
+            user_roles_report["#{role['roleKey']} (ID: #{role['ccsAccessRoleId']})"] = response_put[:response].code
+          else
+            user_roles_report["#{role['roleKey']} (ID: #{role['ccsAccessRoleId']})"] = "500 (PPG_RESPONSE_ERROR)"
+          end
+        end
+      end
+
+      if invalid_user_roles.any?
+        puts "here-> invalid_user_roles:  #{invalid_user_roles}"
+        invalid_user_roles.each do |invalid_role|
+          user_roles_report["#{invalid_role}"] = "400 (INVALID_USER_ROLE)"
+        end
+      end
+
+      return user_roles_report
     end
 
 
@@ -130,7 +159,7 @@ module Migrate
 
     def send_request_to_ppg(endpoint, data = nil)
       return {  request: nil, response: Struct.new(:code).new(424), status_description: 'Unsuccessful Response from CII. User Not Created in PPG.'  } if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
-      return {  request: nil, response: Struct.new(:code).new(424), status_description: 'Unsuccessful Response from PPG Organisation Creation. User Not Created in PPG.'  } unless [200, 201, 409].include?(@ppg_status_code)
+      return {  request: nil, response: Struct.new(:code).new(424), status_description: 'Unsuccessful Response from PPG Organisation Creation. User Not Created in PPG.'  } unless [200, 201, 409].include?(@ppg_status_code.to_i)
 
       uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
@@ -153,6 +182,8 @@ module Migrate
         request["x-api-key"] = ENV.fetch('PPG_USER_PROFILE', nil)
         request["Content-Type"] = "application/json"
         request.body = build_user_post_body(data)
+        puts "here->1 request.body:  #{request.body}"
+        puts "here->2 uri:  #{uri}"
       when ->(e) { e.start_with?('/contact-service/user/contacts?user-id') }
         request = Net::HTTP::Post.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_CONTACT_SERVICE', nil)
@@ -177,9 +208,11 @@ module Migrate
 
 
     def build_user_post_body(data)
-      return nil if data.blank? || data[:user].blank? || @cii_body.blank?
+      return nil if data.blank? || data[:user].blank? || data[:identity_provider].blank? || data[:user_roles].blank? || @cii_body.blank?
 
       cii_org_data = JSON.parse(@cii_body)
+      puts "here->X   #{data[:user_roles]}"
+      role_ids = data[:user_roles].map { |role| role['roleId'] }
 
       return {
         "userName": data[:user]['email'],
@@ -189,14 +222,14 @@ module Migrate
         "sendUserRegistrationEmail": true,
         "detail": {
           "identityProviderIds": [ data[:identity_provider]['id'] ],
-          "roleIds": data[:user_roles]
+          "roleIds": role_ids
         }
       }.to_json
     end
 
 
     def build_user_role_put_body(data)
-      return nil if data.blank? || data[:user_data].blank? || data[:role_ids].blank? || data[:identity_provider].blank?
+      return nil if data.blank? || data[:user_data].blank? || data[:role_ids].blank? || data[:identity_provider].blank? || data[:group_ids].blank?
 
       return {
         organisationId: data[:user_data]['organisationId'],
