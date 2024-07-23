@@ -67,11 +67,15 @@ module Migrate
 
       roles_library = JSON.parse(response[:response].body)
 
+      right_to_buy_status = nil
+
       if @cii_status_code == 409
         right_to_buy_status = get_right_to_buy_status
       else
         right_to_buy_status = Common::Helper.org_type_to_boolean("#{org['organisationType']}")
       end
+
+      return 500 if right_to_buy_status.nil?
 
       org['orgRoles'].each do |role|
         response_put = nil
@@ -83,14 +87,15 @@ module Migrate
               response_put = send_request_to_ppg("/organisation-profile/#{cii_org_data['organisationId']}/roles", { role_id: matching_role['roleId'], right_to_buy_status: right_to_buy_status })
 
               if response_put.present? && response_put[:response].present? && response_put[:response].code.present?
+                next org_roles_report["#{role['key']} (ID: #{matching_role['roleId']})"] = "#{response_put[:response].code} (#{response_put[:response].body})" if !(200..201).include?(response_put[:response].code.to_i) && response_put[:response].body.present?
                 org_roles_report["#{role['key']} (ID: #{matching_role['roleId']})"] = response_put[:response].code
               else
-                org_roles_report["#{role['key']} (ID: #{matching_role['roleId']})"] = 500
+                org_roles_report["#{role['key']} (ID: #{matching_role['roleId']})"] = "500 (PPG_RESPONSE_ERROR)"
               end
             end
           end
         else
-          org_roles_report["#{role['key']}"] = 500
+          org_roles_report["#{role['key']}"] = "400 (INVALID_ORGANISATION_ROLE)"
         end
       end
 
