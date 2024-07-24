@@ -156,8 +156,8 @@ module Migrate
 
 
     def send_request_to_ppg(endpoint, data = nil)
-      return {  request: nil, response: Struct.new(:code).new(424), status_description: 'Unsuccessful Response from CII. User Not Created in PPG.'  } if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
-      return {  request: nil, response: Struct.new(:code).new(424), status_description: 'Unsuccessful Response from PPG Organisation Creation. User Not Created in PPG.'  } unless [200, 201, 409].include?(@ppg_status_code.to_i)
+      return {  request: nil, response: Struct.new(:code, :body).new(424, ''), status_description: 'Unsuccessful Response from CII. User Not Created in PPG.'  } if @cii_body.blank? || JSON.parse(@cii_body)['organisationId'].blank?
+      return {  request: nil, response: Struct.new(:code, :body).new(424, ''), status_description: 'Unsuccessful Response from PPG Organisation Creation. User Not Created in PPG.'  } unless [200, 201, 409].include?(@ppg_status_code.to_i)
 
       uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
@@ -187,8 +187,8 @@ module Migrate
         request.body = build_user_contact_post_body(data)
       end
 
-      return {  request: request, response: Struct.new(:code).new(500), status_description: 'Internal Error.'  } if data.present? && request.body.nil?
-      return {  request: request, response: Struct.new(:code).new(204), status_description: 'No contact data to send. New contact not needed.'  } if data.present? && request.body == 'NA'
+      return {  request: request, response: Struct.new(:code, :body).new(500, ''), status_description: 'Internal Error.'  } if data.present? && request.body.nil?
+      return {  request: request, response: Struct.new(:code, :body).new(204, ''), status_description: 'No contact data to send. New contact not needed.'  } if data.present? && request.body == 'NA'
 
       begin
         response = http.request(request)
@@ -199,7 +199,7 @@ module Migrate
         return {  request: request, response: nil, status_description: err  }
       end
 
-      {  request: nil, response: Struct.new(:code).new(418), status_description: nil  } # Fallback, to prevent 500 errors.
+      {  request: nil, response: Struct.new(:code, :body).new(418, ''), status_description: nil  } # Fallback, to prevent 500 errors.
     end
 
 
