@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_30_152659) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_25_184900) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,9 +30,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_152659) do
     t.integer "cii_status"
     t.integer "ppg_status"
     t.string "domain_name"
+    t.string "query_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["org_id"], name: "index_organisations_on_org_id", unique: true
+  end
+
+  create_table "queries", primary_key: "query_number", force: :cascade do |t|
+    t.string "query_id", null: false
+    t.string "migration_report", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["query_id"], name: "index_queries_on_query_id", unique: true
+    t.index ["query_number"], name: "index_queries_on_query_number", unique: true
   end
 
   create_table "users", primary_key: "user_id", force: :cascade do |t|
@@ -48,6 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_152659) do
     t.string "user_roles"
     t.string "identifier_id", null: false
     t.string "scheme_id", null: false
+    t.string "query_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_users_on_user_id", unique: true

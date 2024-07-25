@@ -117,15 +117,15 @@ module Migrate
 
 
     def send_request_to_ppg(endpoint, data = nil)
-      return {  request: nil, response: Struct.new(:code).new(400), status_description: 'No Organisation Administrator found for this Organisation. Organisation Not Created in PPG.'  } if @admin_check == 0 && @cii_status_code != 409
-      return {  request: nil, response: Struct.new(:code).new(424), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG.'  } unless [200, 201, 409].include?(@cii_status_code)
+      return {  request: nil, response: Struct.new(:code, :body).new(400, ''), status_description: 'No Organisation Administrator found for this Organisation. Organisation Not Created in PPG.'  } if @admin_check == 0 && @cii_status_code != 409
+      return {  request: nil, response: Struct.new(:code, :body).new(424, ''), status_description: 'Unsuccessful Response from CII. Organisation Not Created in PPG.'  } unless [200, 201, 409].include?(@cii_status_code)
       uri = URI.parse(ENV.fetch('PPG_DOMAIN', nil) + endpoint)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true # Set to false, if using HTTP (or locally hosting).
 
       case endpoint
       when '/organisation-profile'
-        return {  request: nil, response: Struct.new(:code).new(409), status_description: 'Organisation Already Exists in CII. Duplicate Organisation Not Created in PPG.'  } if @cii_status_code == 409
+        return {  request: nil, response: Struct.new(:code, :body).new(409, ''), status_description: 'Organisation Already Exists in CII. Duplicate Organisation Not Created in PPG.'  } if @cii_status_code == 409
 
         request = Net::HTTP::Post.new(uri.request_uri)
         request["x-api-key"] = ENV.fetch('PPG_ORG_PROFILE', nil)
@@ -149,7 +149,7 @@ module Migrate
         request["x-api-key"] = ENV.fetch('PPG_ORG_PROFILE', nil)
       end
 
-      return {  request: request, response: Struct.new(:code).new(500), status_description: 'Internal Error.'  } if data.present? && request.body.nil?
+      return {  request: request, response: Struct.new(:code, :body).new(500, ''), status_description: 'Internal Error.'  } if data.present? && request.body.nil?
 
       begin
         response = http.request(request)
@@ -160,7 +160,7 @@ module Migrate
         return {  request: request, response: nil, status_description: err  }
       end
 
-      {  request: nil, response: Struct.new(:code).new(418), status_description: nil  } # Fallback, to prevent 500 errors.
+      {  request: nil, response: Struct.new(:code, :body).new(418, ''), status_description: nil  } # Fallback, to prevent 500 errors.
     end
 
 

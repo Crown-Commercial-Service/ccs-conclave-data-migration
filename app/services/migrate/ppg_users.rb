@@ -224,7 +224,7 @@ module Migrate
 
 
     def build_user_role_put_body(data)
-      return nil if data.blank? || data[:user_data].blank? || data[:role_ids].blank? || data[:identity_provider].blank? || data[:group_ids].blank?
+      return nil if data.blank? || data[:user_data].blank? || data[:role_ids].blank? || data[:identity_provider].blank?
 
       return {
         organisationId: data[:user_data]['organisationId'],

@@ -18,6 +18,7 @@ class DataMigration < ActiveRecord::Migration[7.1]
       t.integer :cii_status
       t.integer :ppg_status
       t.string :domain_name
+      t.string :query_id, null: false
 
       t.timestamps
     end
@@ -37,9 +38,19 @@ class DataMigration < ActiveRecord::Migration[7.1]
       t.string :user_roles
       t.string :identifier_id, null: false
       t.string :scheme_id, null: false
+      t.string :query_id, null: false
 
       t.timestamps
     end
     add_index :users, [:user_id], unique: true
+
+    create_table :queries, id: false do |t|
+      t.bigserial :query_number, primary_key: true
+      t.string :query_id, null: false
+      t.string :migration_report, null: false
+
+      t.timestamps
+    end
+    add_index :queries, [:query_number], unique: true
   end
 end
