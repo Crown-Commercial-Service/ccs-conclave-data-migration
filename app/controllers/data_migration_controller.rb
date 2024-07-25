@@ -17,7 +17,7 @@ class DataMigrationController < ApplicationController
         csv_data = CSV.parse(file.read, headers: true)
         return process_csv_data(csv_data) if csv_data
 
-        return render json: {  error: 'Unprocessable Entity', description: 'No file csv file found in the request.'  }, status: :unprocessable_entity
+        return render json: {  error: 'Unprocessable Entity', description: 'Error with CSV file data.'  }, status: :unprocessable_entity
     end
 
 
@@ -33,7 +33,29 @@ class DataMigrationController < ApplicationController
     end
 
 
+    # Query request endpoint entry point.
+    def migration_query
+        # Check a query ID was provided.
+        return render json: {  error: 'Bad Request', description: 'No Query ID provided in request URL. Please provide a valid query ID.'  }, status: :bad_request unless params[:query_id].present?
+
+        query_id = params[:query_id].to_i
+
+        return process_migration_query(query_id) if query_id.present? && query_id > 0
+
+        render json: {  error: 'Unprocessable Entity', description: 'Error with the provided Query ID.'  }, status: :unprocessable_entity
+    end
+
+
     private
+
+
+    # Generate non-repeating Query ID.
+    def generate_query_id
+        timestamp = (Time.now.to_f * 1_000_000).to_i.to_s # Current time in microseconds.
+        sequence = (1 + SecureRandom.random_number(9_999)).to_s.rjust(4, '0') # 4-digit random number, not starting with zero.
+        secret = ENV.fetch('SECRET_ID', nil)
+        return "#{sequence}#{secret}#{timestamp}"
+    end
 
 
     # Read, validate and process the CSV data, to then be converted into JSON.
@@ -117,7 +139,9 @@ class DataMigrationController < ApplicationController
             ppg_user_migration_service = Migrate::PpgUsers.new()
             data_migration_service = Migrate::DataMigration.new()
             administrated_organisations_list = []
+            query_id = generate_query_id
 
+            # Begin Migration process.
             json_data.each do |org|
                 # Organisation Check for an Admin User.
                 org_admin_status = Common::Helper.org_admin_check(org, administrated_organisations_list)
@@ -126,17 +150,18 @@ class DataMigrationController < ApplicationController
                 # Migrate Organisations.
                 cii_migration_service_response = cii_org_migration_service.migrate_org(org, org_admin_status)
                 ppg_migration_service_response_org = ppg_org_migration_service.migrate_org(org, org_admin_status, cii_migration_service_response[:response_status_code], cii_migration_service_response[:response_body])
-                data_migration_service.migrate_org(org, cii_migration_service_response[:response_status_code], ppg_migration_service_response_org[:response_status_code])
+                data_migration_service.migrate_org(org, cii_migration_service_response[:response_status_code], ppg_migration_service_response_org[:response_status_code], query_id)
 
                 # Migrate Users.
                 org['user'].each do |user|
                     ppg_migration_service_response_user = ppg_user_migration_service.migrate_user(org, user, org_admin_status, ppg_migration_service_response_org[:response_status_code], cii_migration_service_response[:response_body])
-                    data_migration_service.migrate_user(org, user, ppg_migration_service_response_user[:response_status_code])
+                    data_migration_service.migrate_user(org, user, ppg_migration_service_response_user[:response_status_code], query_id)
                 end
             end
 
-            # Return a Compiled Report for the Completed Migration, in the response.
-            return render json: {
+            # Compile Migration Results into one single report.
+            migration_report = {
+                query_id: query_id,
                 dm_report: {
                     orgs: data_migration_service.org_list,
                     users: data_migration_service.user_list
@@ -157,9 +182,27 @@ class DataMigrationController < ApplicationController
                         error_report: ppg_user_migration_service.user_error_list
                     }
                 }
-            }, status: :ok
+            }
+
+            # Create Migration Report database entry, to query if needed.
+            dm_status = data_migration_service.query_report(query_id, migration_report)
+
+            # Return the Compiled Report for the Completed Migration, in the response.
+            return render json: migration_report, status: dm_status.to_i
         else
             return render json: {  error: validator.errors  }, status: :bad_request
         end
+    end
+
+
+    # Process Query ID Requests.
+    def process_migration_query(query_id)
+        text = "QueryID = #{query_id}.\n\n
+        A new DB table that will have at least two columns.
+        In this new table, one column will be the query ID, and the second column will be the entire string for the response (trimmed down as much as possible, perhaps start by removing 'migrated data').
+        This can then be queried, returned and reformatted back to object.
+        A single query ID is generated/assigned per request, regardless of whether it is the same csv, json or user. Always a new Query ID with a new request into DM.
+        Also add a new column to the existing users and orgs table, so that the generated query ID is given to new rows too, just in case it's needed."
+        return render json: {  Feature_To_Be_Done: text  }, status: :ok
     end
 end
