@@ -1,4 +1,3 @@
-# CsvValidator class responsible for validating CSV data against specific requirements/conditions.
 module Validate
         class CsvValidator
                 attr_reader :errors
@@ -6,7 +5,7 @@ module Validate
                 def initialize(csv_data)
                         @csv_data = csv_data
                         @errors = []
-                        @line_no = 0
+                        @line_no = 1
                 end
 
                 def validate
@@ -20,7 +19,8 @@ module Validate
                         @csv_data.each do |row|
                         @line_no += 1
 
-                        next if @line_no == 1
+                        # Skip completely blank rows
+                        next if row.to_h.values.all?(&:blank?) || @line_no == 2
 
                         required_fields.each do |field|
                                 value = row[field]

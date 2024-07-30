@@ -71,6 +71,7 @@ class DataMigrationController < ApplicationController
                 line_number += 1
 
                 next if line_number == 1
+                next if row.to_h.values.all?(&:blank?)
                 next add_users_to_existing_org(row, data) if unique_org_id_list.include?("#{row['SchemeId']}-#{row['IdentifierId']}")
 
                 unique_org_id_list << "#{row['SchemeId']}-#{row['IdentifierId']}"
