@@ -6,7 +6,7 @@ require 'net/http'
 # Controller for both the JSON and CSV endpoints. Validates and process both sets of data, when either is provided in a request.
 class DataMigrationController < ApplicationController
     include Authorize::Token
-    before_action :validate_api_key
+    #before_action :validate_api_key
 
     # CSV request endpoint entry point.
     def validate_as_csv
@@ -71,6 +71,7 @@ class DataMigrationController < ApplicationController
                 line_number += 1
 
                 next if line_number == 1
+                next if row.to_h.values.all?(&:blank?)
                 next add_users_to_existing_org(row, data) if unique_org_id_list.include?("#{row['SchemeId']}-#{row['IdentifierId']}")
 
                 unique_org_id_list << "#{row['SchemeId']}-#{row['IdentifierId']}"
