@@ -1,3 +1,4 @@
+# CsvValidator class responsible for validating CSV data against specific requirements/conditions.
 module Validate
         class CsvValidator
                 attr_reader :errors
@@ -19,34 +20,34 @@ module Validate
                         @csv_data.each do |row|
                         @line_no += 1
 
-                        # Skip completely blank rows
-                        next if row.to_h.values.all?(&:blank?) || @line_no == 2
+                                # Skip completely blank rows
+                                next if row.to_h.values.all?(&:blank?) || @line_no == 2
 
-                        required_fields.each do |field|
-                                value = row[field]
+                                required_fields.each do |field|
+                                        value = row[field]
 
-                                # Check that the value exists and is not blank.
-                                if value.nil? || value.empty?
-                                        @errors << "Row #{@line_no}: '#{field}' field is required and cannot be blank"
-                                elsif field == "EmailAddress" && !valid_email?(value)
-                                        @errors << "Row #{@line_no}: '#{field}' field must be a valid email address"
-                                elsif %w[ContactMobile ContactPhone].include?(field) && !valid_phone_number?(value)
-                                        @errors << "Row #{@line_no}: '#{field}' field must be a valid phone number"
-                                end
-                        end
-
-                        # Validate optional fields if present.
-                        optional_fields = %w[OrganisationRoles UserRoles ContactName ContactEmail ContactMobile ContactPhone ContactFax ContactSocial]
-                        optional_fields.each do |field|
-                                value = row[field]
-                                if !value.nil? && !value.empty?
-                                        if field == "ContactEmail" && !valid_email?(value)
+                                        # Check that the value exists and is not blank.
+                                        if value.nil? || value.empty?
+                                                @errors << "Row #{@line_no}: '#{field}' field is required and cannot be blank"
+                                        elsif field == "EmailAddress" && !valid_email?(value)
                                                 @errors << "Row #{@line_no}: '#{field}' field must be a valid email address"
                                         elsif %w[ContactMobile ContactPhone].include?(field) && !valid_phone_number?(value)
                                                 @errors << "Row #{@line_no}: '#{field}' field must be a valid phone number"
                                         end
                                 end
-                        end
+
+                                # Validate optional fields if present.
+                                optional_fields = %w[OrganisationRoles UserRoles ContactName ContactEmail ContactMobile ContactPhone ContactFax ContactSocial]
+                                optional_fields.each do |field|
+                                        value = row[field]
+                                        if !value.nil? && !value.empty?
+                                                if field == "ContactEmail" && !valid_email?(value)
+                                                        @errors << "Row #{@line_no}: '#{field}' field must be a valid email address"
+                                                elsif %w[ContactMobile ContactPhone].include?(field) && !valid_phone_number?(value)
+                                                        @errors << "Row #{@line_no}: '#{field}' field must be a valid phone number"
+                                                end
+                                        end
+                                end
                         end
 
                         # Return true if there are no errors, false otherwise.

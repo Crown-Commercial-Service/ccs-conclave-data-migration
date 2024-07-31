@@ -48,7 +48,11 @@ module Migrate
           return {  response_status_code: 500, response_body: nil  }
         end
       else
-        if @cii_body.blank? && ![200, 201, 409].include?(@ppg_status_code.to_i)
+        if @cii_body.blank? && @ppg_status_code.to_i == 424
+          @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 424, status_description: 'Unsuccessful Response from CII. User Not Created in PPG.'  } # User Not Migrated.
+          return {  response_status_code: 424, response_body: nil  }
+        elsif @cii_body.blank? && ![200, 201, 409].include?(@ppg_status_code.to_i)
+          puts "here->X @ppg_status_code.to_i:  #{@ppg_status_code.to_i}"
           @user_error_list << {  user: "#{user['email']}", organisation: "#{org['scheme-id']}-#{org['identifier-id']}", successful: false, status: 400, status_description: 'No Organisation Administrator found for this Organisation. User Not Created in PPG.'  } # User Not Migrated.
           return {  response_status_code: 400, response_body: nil  }
         else
