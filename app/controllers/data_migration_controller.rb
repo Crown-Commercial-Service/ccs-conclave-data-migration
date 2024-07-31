@@ -6,7 +6,7 @@ require 'net/http'
 # Controller for both the JSON and CSV endpoints. Validates and process both sets of data, when either is provided in a request.
 class DataMigrationController < ApplicationController
     include Authorize::Token
-    #before_action :validate_api_key
+    before_action :validate_api_key
 
     # CSV request endpoint entry point.
     def validate_as_csv
@@ -54,7 +54,7 @@ class DataMigrationController < ApplicationController
         timestamp = (Time.now.to_f * 1_000_000).to_i.to_s # Current time in microseconds.
         sequence = (1 + SecureRandom.random_number(9_999)).to_s.rjust(4, '0') # 4-digit random number, not starting with zero.
         secret = ENV.fetch('SECRET_ID', nil)
-        return "#{sequence}#{secret}#{timestamp}"
+        return "#{secret}#{sequence}#{timestamp}"
     end
 
 
