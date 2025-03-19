@@ -9,4 +9,6 @@ Rails.application.routes.draw do
 
   # Root route to respond with a 404 JSON response
   root to: proc { [404, { 'Content-Type' => 'application/json' }, [{ error: 'Not Found', description: 'The requested resource does not exist.' }.to_json]] }
+
+  match '*unmatched', to: 'application#route_not_found', via: :all
 end
