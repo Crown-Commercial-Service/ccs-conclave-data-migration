@@ -1,4 +1,4 @@
-FROM ruby:3.3.3
+FROM ruby:3.4.8
 
 WORKDIR /app
 RUN apt-get update -qq
